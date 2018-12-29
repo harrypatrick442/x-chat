@@ -1,0 +1,11 @@
+{
+  "name": "adultwork-scraper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-ws": "^4.0.0",
+    "mssql": "^4.3.0",
+    "relaxed-json": "^1.0.1"
+  }
+}
