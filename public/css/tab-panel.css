@@ -1,0 +1,32 @@
+.tab-panel{ 
+    width:100%;
+    float:left;
+}
+.tab-panel .tabs{
+   width :100%;
+   height:20px;
+}
+.tab-panel .tab{
+	height :18px;
+        top :2px;
+        float:left;
+        position:absolute;
+        border-top-right-radius :10px;
+		cursor:pointer;
+		}
+.tab-panel .tab .name{
+	padding-left:5px;
+	height :100%;
+	width :calc(100% - 5px);
+	white-space :nowrap;
+	overflow :hidden;
+	text-overflow :ellipsis;
+	display :inline-block;
+	font-family:Arial;
+}
+.tab-panel .panel{
+        width :100%;
+        top :3px;
+        float:left;
+        left :0px;
+}

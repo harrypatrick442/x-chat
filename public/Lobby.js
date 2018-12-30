@@ -13,19 +13,42 @@ var Lobby = new (function(){
 		mysocket.send({type:'test'});
 		buttonUsers.addEventListener('click', onClickButtonUsers);
 		this.getElement = ui.getElement;
+		initialize();
 		function onOpen(){ }
 		function onMessage(e){
 			var msg = e.msg;
+			console.log(msg);
 			switch(msg.type){
 				case 'test':
 					console.log(msg);
 				break;
 				case 'users':
 					users.update(msg.users);
+				break;
+				case 'authenticate':
+				break;
+				case 'register':
+				break;
 			}
 		}
 		function onClickButtonUsers(){
 			ui.showUsers();
+		}
+		function initialize(){
+			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
+		}
+		function callbackRegister(obj){
+			obj.type='register';
+			mysocket.send(obj);
+		}
+		function callbackSignIn(obj){
+			obj.type='authenticate';
+			mysocket.send(obj);
+		}
+		function callbackGuest(obj){
+			obj.type='authenticate';
+			obj.isGuest=true;
+			mysocket.send(obj);
 		}
 	};
 	function UI(params){

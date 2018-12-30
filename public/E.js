@@ -26,6 +26,12 @@ var E = new (function () {
     this.TEXT = function () {
         return i('input', 'text');
     };
+    this.PASSWORD = function () {
+        return i('input','password');
+    };
+    this.TEXTAREA = function () {
+        return c('textarea');
+    };
     this.SPAN = function () {
         return c('span');
     };

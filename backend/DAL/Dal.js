@@ -1,21 +1,22 @@
-module.Dal= new (function(){
-	const CALL="CALL";
-    var sql = require("mssql");
+exports.Dal= new (function(){
+	const CALL="CALL ";
+    var mysql = require("mysql");
 	var _Dal = function(config){
+		var pool = mysql.createPool(config);
 		this.nonQuery = function(){
 			var storedProcedure = params.storedProcedure;
 			var sql = CALL+storedProcedure;
-			var connection = mysql.createConnection(config);
-			connection.connect(function(err)
-			{
-				if(err) throw(err, "Connection to database to execute "+storedProcedure+" failed.");
-				connection.query(sql, function(err, rows)
+			var parametersArray=[];
+			var sql = getSql(storedProcedure, parameters);
+			pool.getConnection(function(err, connection) {
+				if(err) throw err;
+				connection.query(sql, parameters, function(err, rows)
 				{
 					if(err){
 						console.log(err.message); 
-						throw (err, storedProcedure+" failed.");//this is where the error occurs
+						throw err;
 					}
-					connection.end(function(err){
+					connection.release(function(err){
 						if (err) throw err;
 						console.log("Connection closed.");
 					});
@@ -24,18 +25,20 @@ module.Dal= new (function(){
 		};
 		this.query = function(params){
 			var storedProcedure = params.storedProcedure;
+			var parameters = params.parameters?params.parameters:[];
 			var callbackRead= params.callbackRead;
-			var sql = CALL+storedProcedure;
-			var connection = mysql.createConnection(config);
-			connection.connect(function(err)
-			{
-				if(err) throw(err, "Connection to database to execute "+storedProcedure+" failed.");
-				connection.query(sql, function(err, rows)
+			var sql = getSql(storedProcedure, parameters);
+			pool.getConnection(function(err, connection) {
+				if(err) throw err;
+				connection.query(sql, parameters, function(err, result, fields)
 				{
 					if(err){
 						console.log(err.message); 
-						throw (err, storedProcedure+" failed.");//this is where the error occurs
+						throw err;
 					}
+					console.log(result);
+					var rows = result[0];
+					console.log(rows);
 					try{
 						callbackRead(rows);
 					}
@@ -43,7 +46,7 @@ module.Dal= new (function(){
 						throw ex;
 					}
 					finally{
-						connection.end(function(err){
+						connection.release(function(err){
 							if (err) throw err;
 							console.log("Connection closed.");
 						});
@@ -51,6 +54,48 @@ module.Dal= new (function(){
 				});
 			});
 		};
+		this.scalar = function(params){
+			var value;
+			var storedProcedure = params.storedProcedure;
+			var parameters = params.parameters?params.parameters:[];
+			var sql = getSql(storedProcedure, parameters);
+			var callback = params.callback;
+			pool.getConnection(function(err, connection) {
+				if(err) throw err;
+				connection.query(sql, parameters, function(err, result, fields)
+				{
+					if(err){
+						console.log(err.message); 
+						throw err;
+					}
+					try{
+						value = result[0].result;
+					}
+					catch(ex){
+						throw ex;
+					}
+					finally{
+						connection.release(function(err){
+							if (err) throw err;
+							console.log("Connection closed.");
+						});
+					}
+				});
+			});
+			return value;
+		};
+		function getSql(storedProcedure, parameters){
+			var sql = CALL+storedProcedure+'(';
+			var first = true;
+			if(parameters.length>0){
+				sql+='?';
+				for(var i=1; i<parameters.length; i++){
+					sql+=',?';
+				}
+			}
+			sql+=')';
+			return sql;
+		}
 	};
 	return _Dal;
 })();

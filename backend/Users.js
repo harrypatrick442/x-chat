@@ -1,4 +1,4 @@
-var Users = new (function(){
+exports.Users = new (function(){
 	var _Users = function(){
 		
 	};

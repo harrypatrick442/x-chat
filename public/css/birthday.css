@@ -1,0 +1,12 @@
+.birthday{
+    height :25px;
+    float :left;
+    width :100%;
+}
+.birthday select{
+	
+        width :calc(33.33% - 1.33px);
+        height :100%;
+        position :relative;
+        float :left;
+}
