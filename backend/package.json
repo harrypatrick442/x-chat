@@ -7,6 +7,7 @@
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
     "mysql": "^2.16.0",
-    "relaxed-json": "^1.0.1"
+    "relaxed-json": "^1.0.1",
+    "uuid": "^3.3.2"
   }
 }

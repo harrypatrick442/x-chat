@@ -135,20 +135,22 @@ var Authenticate = new (function(){
 		textUsername.addEventListener('click', function ()
 		{
 			textUsername.focus();
-		});var showingRegister=false;
-
+		});
+		const Showings={Guest:0, SignIn:1, Register:2};
+		var showing = Showings.Guest;
 		var tabPanel = new TabPanel(['Guest', 'Sign In', 'Register'], true);
 		tabPanel.onChangeTab = function (i) {
 			setError('');
 			switch (i)
 			{
 				case 1:
-					showingRegister=true;
-					tabPanel.div.style.height = 'auto';
+					showing=Showings.SignIn;
+					break;
+				case 2:
+					showing = Showings.Register;
 					break;
 				default:
-					showingRegister=false;
-					tabPanel.div.style.height = 'auto';
+					showing= Showings.Guest;
 					break;
 			}
 		};
@@ -214,13 +216,23 @@ var Authenticate = new (function(){
 		function sendGuest(){
 			this.blur();
 			showSpinner();
-			callbackGuest({username :textUsername.value});
+			callbackGuest({username :textUsernameGuest.value});
 		}
 		function detectEnterKey(evt) {
 			evt = evt || window.event;
 			if (evt.keyCode == 13)
 			{
-				(showingRegister?sendRegister:sendSignIn)();
+				switch(showing){
+					case Showings.Guest:
+						sendGuest();
+						break;
+					case Showings.SignIn:
+						sendSignIn();
+						break;
+					default:
+						sendRegister();
+						break;
+				}
 			}
 		}
 		function styleTextInputGuest(txt, placeholder)

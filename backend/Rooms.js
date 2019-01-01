@@ -3,24 +3,43 @@ exports.Rooms = new (function(){
 	var each = require('./each').each;
 	var _Rooms = function(){
 		var self = this;
-		var mapUuidToRoom={};
+		var mapIdToRoom={};
+		var loaded=false;
 		this.getRoom=function(roomId){
-			return mapUuidToRoom[roomId];
+			return mapIdToRoom[roomId];
 		};
 		this.createRoom=function(name){
 			var room = new Room({name:name});
-			mapUuidToRoom[room.getUuid()]=room;
+			mapIdToRoom[room.getId()]=room;
 			return room;
 		};
-		initialize();
-		function initialize(){
-			loadRooms();
+		this.getInfos= function(callback){
+			if(!loaded){
+				loadRooms(function(){
+					callback(_getInfos());
+					loaded=true;
+				});
+				return;
+			}
+			callback(_getInfos());
+			return list;
+		};
+		function _getInfos(){
+			var list =[];
+			for(var id in mapIdToRoom){
+				var room = mapIdToRoom[id];
+				if(!room.isPm()){
+					list.push(room.getInfo());
+				}
+			}
+			return list;
 		}
-		function loadRooms(){
-			console.log('loading rooms');
-			var rooms = dalRooms.getRooms();
-			each(rooms, function(room){
-				mapUuidToRoom[room.getId()]=room;
+		function loadRooms(callback){
+			dalRooms.getRooms(function(rooms){
+				each(rooms, function(room){
+					mapIdToRoom[room.getId()]=room;
+				});
+				callback();
 			});
 		}
 	};

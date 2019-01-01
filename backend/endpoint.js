@@ -9,7 +9,7 @@ exports.endpoint = function(app){
 	app.ws('/endpoint', function(ws, req) {
 		console.log('created endpoint');
 	  ws.on('message', function(msg) {
-		ws.send(handler.process(JSON.parse(msg)));
+		handler.process(JSON.parse(msg), function(res){ws.send(JSON.stringify(res));});
 	  });
 	  console.log('socket', req.testing);
 	});

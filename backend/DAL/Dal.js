@@ -54,36 +54,6 @@ exports.Dal= new (function(){
 				});
 			});
 		};
-		this.scalar = function(params){
-			var value;
-			var storedProcedure = params.storedProcedure;
-			var parameters = params.parameters?params.parameters:[];
-			var sql = getSql(storedProcedure, parameters);
-			var callback = params.callback;
-			pool.getConnection(function(err, connection) {
-				if(err) throw err;
-				connection.query(sql, parameters, function(err, result, fields)
-				{
-					if(err){
-						console.log(err.message); 
-						throw err;
-					}
-					try{
-						value = result[0].result;
-					}
-					catch(ex){
-						throw ex;
-					}
-					finally{
-						connection.release(function(err){
-							if (err) throw err;
-							console.log("Connection closed.");
-						});
-					}
-				});
-			});
-			return value;
-		};
 		function getSql(storedProcedure, parameters){
 			var sql = CALL+storedProcedure+'(';
 			var first = true;

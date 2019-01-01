@@ -7,15 +7,19 @@ exports.dalRooms= new (function(){
 	var Room = require('./../Room').Room;
 	var Message = require('./../Message').Message;
 	var each = require('./../each').each;
-	this.getRooms = function(){
+	this.getRooms = function(callback){
 		var rooms=[];
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOMS, callbackRead:function(rows){
+			console.log(rows);
+			console.log('is rows');
+			var rooms=[];
 			each(rows, function(row){
 				console.log(row);
 				rooms.push(Room.fromSqlRow(row));
 			});
+			console.log(rooms);
+			callback(rooms);
 		}});
-		return rooms;
 	};
 	
 	this.createRoom = function(room){

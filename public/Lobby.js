@@ -1,6 +1,7 @@
 var Lobby = new (function(){
 	var _Lobby = function(){
 		var self = this;
+		var sessionId;
 		const url = '/servlet';
 		var users = new Users();
 		var rooms = new Rooms();
@@ -21,14 +22,20 @@ var Lobby = new (function(){
 			switch(msg.type){
 				case 'test':
 					console.log(msg);
-				break;
+					break;
 				case 'users':
 					users.update(msg.users);
-				break;
+					break;
 				case 'authenticate':
-				break;
+				console.log('authenticate');
+					authenticateResponse(msg);
+					break;
 				case 'register':
-				break;
+					registerResponse(msg);
+					break;
+				case 'rooms':
+					rooms.set(msg.rooms);
+					break;
 			}
 		}
 		function onClickButtonUsers(){
@@ -47,8 +54,27 @@ var Lobby = new (function(){
 		}
 		function callbackGuest(obj){
 			obj.type='authenticate';
-			obj.isGuest=true;
+			obj.isGuest=true;	
 			mysocket.send(obj);
+		}
+		function authenticateResponse(msg){
+			authenticateRegisterResponse(msg);
+		}
+		function registerResponse(msg){
+			authenticateRegisterResponse(msg);
+		}
+		function authenticateRegisterResponse(msg){
+			if(msg.successful){
+				sessionId = msg.sessionId;
+				Authenticate.hide();
+				getRooms();
+				return;
+			}
+			console.log(msg);
+			Authenticate.error(msg.error);
+		}
+		function getRooms(){
+			mysocket.send({type:'rooms_get', sessionId:sessionId});
 		}
 	};
 	function UI(params){

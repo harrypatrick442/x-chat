@@ -1,7 +1,7 @@
 exports.handler = new (function(){
 		var lobby = new (require('./Lobby').Lobby)();
 		console.log(require('./Lobby'));
-		this.process = function(req){
+		this.process = function(req, callback){
 			var res = {};
 			try{
 				var sessions = lobby.getSessions();
@@ -10,19 +10,25 @@ exports.handler = new (function(){
 				switch(req.type){
 					case 'test':
 					console.log('was test');
-						res = test(req);
+						callback(test(req));
 					break;
 					case 'register':
-						res = lobby.register(req);
+						lobby.register(req, callback);
 						break;
 					case 'authenticate':
-						res = lobby.authenticate(req);
+						lobby.authenticate(req, callback);
+					break;
+					case 'rooms_get':
+						rooms:lobby.getRooms().getInfos(function(infos){
+							callback({type:'rooms', rooms:infos});
+						});
 					break;
 					case 'room_join':
 						var room = getRoom(req);
 						var user = getUser(req);
 						if(room.isPm()&&!room.userAllowed(user))return;
 						room.join(user);
+						callback({});
 					break;
 					case 'room_send_message':
 						var room = getRoom(req);
@@ -30,7 +36,7 @@ exports.handler = new (function(){
 						room.sendMessage(req.message);
 					break;
 					case 'room_get_users':
-						res = getRoom(req).getUsers();
+						callback({type:'users', users:getRoom(req).getUsers()});
 					break;
 				}
 			}

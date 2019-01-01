@@ -2,6 +2,7 @@ var E = new (function () {
     this.DIV = function () {
         return c('div');
     };
+	this.IMG= function(){ return c('img');};
     this.TABLE = function () {
         return c('table');
     };

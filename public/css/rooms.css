@@ -16,5 +16,6 @@ body{
 	box-sizing:border-box;	
 	min-height:100px;
 	background-color:rgb(32, 31, 31);
+	height:100%;
 
 }

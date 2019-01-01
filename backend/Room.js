@@ -16,6 +16,9 @@ exports.Room = new (function(){
 			if(!users.contains(user))
 				users.add(user);
 		};
+		this.getInfo = function(){
+			return {id:String(params.id), name:params.name};
+		};
 		this.getSqlParameters= function(){
 		   return {name:params.name, id:params.id};
 		};

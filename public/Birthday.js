@@ -18,7 +18,7 @@ function Birthday()
         var option = createOption(i, String(i));
         selectDay.appendChild(option);
     }
-    for (var i = 0; i < 12; i++)
+    for (var i = 1; i < 12; i++)
     {
         var option = createOption(i, months[i]);
         selectMonth.appendChild(option);
