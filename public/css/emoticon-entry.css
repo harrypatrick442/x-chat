@@ -1,0 +1,7 @@
+.lobby .emoticons .entries .emoticon-entry{
+	position:relative;
+	float:left;
+	width:auto;
+	box-sizing:border-box;
+	height:32px;
+}

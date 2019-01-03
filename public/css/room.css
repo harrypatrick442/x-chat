@@ -5,6 +5,83 @@ body{
 	position:relative;
 	float:left;
 	width:100%;
+	box-sizing:border-box;		
+	min-height:200px;
+	display:block;
+}
+.lobby .rooms .entries .room .top{
+	position:absolute;
+	float:left;
+	height:calc(100% - 58px);
+	width:100%;
+	box-sizing:border-box;
+	display:block;
+}
+.lobby .rooms .entries .room .top .feed{
+	position:relative;
+	height:100%;
+	width:100%;
+	background-color:rgb(32, 31, 31);
+}
+.lobby .rooms .entries .room .bottom{
+	position:absolute;
+	bottom:0px;
+	float:left;
+	height:58px;
+	width:100%;
 	box-sizing:border-box;	
-	min-height:100px;
+	background-color:orange;
+	display:block;
+	background-color:rgb(44, 43, 43);
+}
+.lobby .rooms .entries .room .bottom .text{
+	width:100%;
+	border:0px;
+	margin:0px;
+	height:26px;
+	position:absolute;
+	top:4px;
+	font-family:Arial;
+	font-size:16px;
+	padding-left:2px;
+	padding-right:2px;
+	box-sizing: border-box;
+}
+.lobby .rooms .entries .room .bottom .menu{
+	width:100%;
+	border:0px;
+	margin:0px;
+	height:24px;
+	position:absolute;
+	bottom:0px;
+	background-color:rgb(32, 31, 31);
+}
+.lobby .rooms .entries .room .bottom .menu .button-emoticons{
+	float:right;
+	width:24px;
+	height:24px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/smiley.png');	
+	cursor:pointer;
+}
+.lobby .rooms .entries .room .bottom .menu .button-emoticons:hover{
+	background-image:url('/images/smiley-hover.png');	
+}
+.lobby .rooms .entries .room .bottom .menu .button-send{
+	float:right;
+	width:48px;
+	height:20px;
+	margin-top:1px;
+	line-height:19px;
+	background-color:#2592E9;
+	border:1px solid #000000;
+	border-radius:2px;
+	cursor:pointer;
+	font-family:Arial;
+	text-align:center;
+	vertical-align:middle;
+}
+.lobby .rooms .entries .room .bottom .menu .button-send:hover{
+	background-color:#8092E9;
 }

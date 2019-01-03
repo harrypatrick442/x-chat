@@ -4,9 +4,11 @@ var Rooms = new (function(){
 		var self = this;
 		var mapIdToRoom={};
 		var roomsMenu = new RoomsMenu();
-		var entries = [roomsMenu];
+		var emoticons = new Emoticons();
+		var entries = [roomsMenu, emoticons];
 		roomsMenu.addEventListener('showroom', showRoom);
-		var ui = new UI({menu: roomsMenu});
+		emoticons.addEventListener('addemoticon', addEmoticon);
+		var ui = new UI({menu: roomsMenu, emoticons:emoticons});
 		this.getElement = ui.getElement;
 		this.set = function(roomInfos){
 			roomsMenu.set(roomInfos);
@@ -36,7 +38,15 @@ var Rooms = new (function(){
 			mapIdToRoom[roomInfo.id]=room;
 			entries.push(room);
 			ui.addEntry(room);
+			room.addEventListener('show-emoticons', showEmoticons);
 			return room;
+		}
+		function addEmoticon(e){
+			var emoticonEntry = e.emoticonEntry;
+		}
+		function showEmoticons(e){
+			var picked = e.picked;
+			emoticons.show({picked:picked});
 		}
 		function remove(room){
 			delete mapIdToRoom[room.getId()];
@@ -48,12 +58,14 @@ var Rooms = new (function(){
 	return _Rooms;
 	function UI(params){
 		var menu = params.menu;
+		var emoticons = params.emoticons;
 		var element = E.DIV();
 		element.classList.add('rooms');
 		var entries = E.DIV();
 		entries.classList.add('entries');
 		element.appendChild(entries);
 		entries.appendChild(menu.getElement());
+		entries.appendChild(emoticons.getElement());
 		this.getElement = function(){return element;};
 		this.addEntry = function(entry){
 			entries.appendChild(entry.getElement());

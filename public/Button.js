@@ -7,8 +7,10 @@ var Button = new (function(){
 		var classNameToggled = params.classNameToggled;
 		var isToggle = params.toggle;
 		var toggled = params.toggled?true:false;
-		
+		var text = params.text;
 		var element = E.DIV();
+		if(text)
+			element.innerHTML = text;
 		if(className)
 			element.classList.add(className);
 		if(classNames)
