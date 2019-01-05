@@ -1,7 +1,8 @@
 
 var Rooms = new (function(){
-	var _Rooms = function(){
+	var _Rooms = function(params){
 		var self = this;
+		var getUserMe = params.getUserMe;
 		var mapIdToRoom={};
 		var roomsMenu = new RoomsMenu();
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
@@ -39,7 +40,7 @@ var Rooms = new (function(){
 			});
 		}
 		function loadRoom(roomInfo){
-			var room = new Room(roomInfo);
+			var room = new Room({id:roomInfo.id, name:roomInfo.name, getUserMe:getUserMe});
 			mapIdToRoom[roomInfo.id]=room;
 			entries.push(room);
 			ui.addEntry(room);

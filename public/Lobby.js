@@ -4,7 +4,8 @@ var Lobby = new (function(){
 		var sessionId;
 		const url = '/servlet';
 		var users = new Users();
-		var rooms = new Rooms();
+		var rooms = new Rooms({getUserMe:getUserMe});
+		var userMe;
 		var pmsMenu = new PmsMenu();
 		var buttonUsers = new Button({classNames:['button-users']});
 		var ui = new UI({rooms:rooms, users:users, buttonUsers:buttonUsers, pmsMenu:pmsMenu});
@@ -78,6 +79,9 @@ var Lobby = new (function(){
 		}
 		function getRooms(){
 			mysocket.send({type:'rooms_get', sessionId:sessionId});
+		}
+		function getUserMe(){
+			return userMe;
 		}
 	};
 	function UI(params){

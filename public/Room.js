@@ -2,33 +2,46 @@ var Room = new (function(){
 	var _Room = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var userId = params.userId;
+		var getUserMe = params.getUserMe;
+		var name = params.name;
+		var id = params.id;
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
 		var users = new Users();
-		var messages = new Messages({userId:userId});
+		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed()});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
-		this.incomingMessage = function(message){
-			messages.addReceived(message);
+		this.incomingMessage = function(jObjectMessage){
+			messages.addReceived(Messages.fromJSON(jObjectMessage));
 		};
 		this.dispose = function(){
 			messages.dispose();
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
-		buttonSend.addEventListener('click', dispatchSendMessage);
+		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
+		
+		function sendMessage(){
+			var messageSending = Message.fromComponents({components:[new MessageComponents.Text({})], user:getUserMe(), uniqueId:messages.nextUniqueId()});
+			messages.addSending(messageSending);
+		}
 		function dispatchShowEmoticons(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
 		}
 		function dispatchSendMessage(){
 			
 		}
+		function getUserIdMe(){
+			var user = getUserMe();
+			if(user)
+				return user.getId();
+		}
 		function callbackPicked(emoticonInfo){
 			ui.appendToText(emoticonInfo.getStringRepresentation());
 		}
+		
 	};
 	return _Room;
 	function UI(params){
@@ -56,6 +69,7 @@ var Room = new (function(){
 		this.getElement = function(){
 			return element;
 		};
+		this.getFeed= function(){return feed;};
 		this.setVisible = function(value){
 			element.style.display=value?'block':'none';
 		};

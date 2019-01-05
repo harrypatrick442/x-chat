@@ -2,7 +2,7 @@ var Messages = new (function(){
 	var uniqueIdCount=0;
 	var _Messages = function(params){
 		var self = this;
-		var userId = params.useId;
+		var getUserId = params.getUserId;
 		var element = params.element;
 		var maxNMessages = params.maxNMessages;
 		var messages=[];
@@ -30,7 +30,7 @@ var Messages = new (function(){
 			element.removeChild(message.getElement());
 		};
 		this.nextUniqueId=function(){
-			return userId+'_'+uniqueIdCount++;
+			return getUserId()+'_'+uniqueIdCount++;
 		};
 		this.dispose = function(){
 			each(messages, function(message){

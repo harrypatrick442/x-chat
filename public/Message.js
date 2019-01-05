@@ -3,8 +3,14 @@ var Message = new (function(){
 		var self = this;
 		var element = E.DIV();
 		var markup = params.markup;
-		var connectedImage = new ConnectedImage({id:uniqueId, type:User.TYPE});
+		var uniqueId = params.uniqueId;
+		var userId = params.userId;
+		var connectedImage = new ConnectedImage({id:userId, type:User.TYPE});
 		this.getElement = function(){return element;};
+		this.getUniqueId = function(){
+			return uniqueId;
+		};
+		
 	};
 	_Message.fromJSON = function(params){
 		var jObject = params.jObject;
@@ -14,14 +20,14 @@ var Message = new (function(){
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
-		var markup = generateMarkupFromComponents(messageComponents);
+		var markup = generateMarkupFromMessageComponents(components);
 		return new Message({markup:markup});
 	};
 	function generateMarkupFromMessageComponents(components){
 		var str='';
-		each(components, function(component)){
+		each(components, function(component){
 			str+=component.getMarkup();
-		}
+		});
 		return str;
 	}
 	return _Message;
