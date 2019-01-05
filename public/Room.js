@@ -10,8 +10,11 @@ var Room = new (function(){
 		var messages = new Messages({userId:userId});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
+		this.incomingMessage = function(message){
+			messages.addReceived(message);
+		};
 		this.dispose = function(){
-			
+			messages.dispose();
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;

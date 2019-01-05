@@ -21,6 +21,11 @@ var Rooms = new (function(){
 					remove(mapIdToRoom[id]);
 			}
 		};
+		this.incomingMessage = function(msg){
+			var room = mapIdToRoom [msg.roomId];
+			if(!room)return;
+			room.incomingMessage(msg.message);
+		};
 		function showRoom(roomInfo){
 			console.log(roomInfo);
 			var room = mapIdToRoom[roomInfo.id];

@@ -4,10 +4,12 @@ var Messages = new (function(){
 		var self = this;
 		var userId = params.useId;
 		var element = params.element;
+		var maxNMessages = params.maxNMessages;
 		var messages=[];
 		var mapUniqueIdToMessage={};
 		this.addSending = function(message){
 			append(message);
+			overflow();
 		};
 		this.addReceived=function(message){
 			var mappedMessage = mapUniqueIdToMessage[message.getUniqueId()];
@@ -18,41 +20,56 @@ var Messages = new (function(){
 				mapUniqueIdToMessage[message.getUniqueId()]=message;
 				insertInPlace(message);
 			}
+			overflow();
 		};
 		this.remove = function(message){
 			var index = messages.indexOf(message);
 			if(index<0)return;
 			messages.splice(index, 1);
 			delete mapUniqueIdToMessage[message.getUniqueId()];
+			element.removeChild(message.getElement());
 		};
 		this.nextUniqueId=function(){
 			return userId+'_'+uniqueIdCount++;
 		};
+		this.dispose = function(){
+			each(messages, function(message){
+				message.dispose();
+			});
+		};
 		function insertInPlace(message){
-			var serverAssignedNmessage = message.getServerAssignedNMessage();
+			var serverAssignedNMessage = message.getServerAssignedNMessage();
 			if(messages.length<1)
 			{
 				element.appendChild(message.getElement());
 				return;
 			}
-			for(var i=messages.length-1; i>=0; i--){
-				var placedMessage = messages[i];
-				if(placedMessage.getServerAssignedNMessage()<serverAssignedNmessage){
-					
-					var insertIndex = i+1;
-					if(insertIndex>=messages.length)
+			var reverseIterator = new ReverseIterator(messages);
+			while(reverseIterator.hasNext()){
+				var placedMessage = reverseIterator.next();
+				if(placedMessage.getServerAssignedNMessage()<serverAssignedNMessage){
+					iterator.insert(message);
+					if(!iterator.hasPrevious())
 						element.appendChild(message.getElement());
 					else
-						messages[insertIndex].getElement().insertBefore(message.getElement());
+						iterator.previous().getElement().insertBefore(message.getElement());
 					return;
 				}
 			}
 			messages[0].getElement().insertBefore(message.getElement());
+			mapUniqueIdToMessage[message.getUniqueId()]=message;
 		}
 		function append(message){
 			messages.push(message);
 			mapUniqueIdToMessage[message.getUniqueId()]=message;
 			element.appendChild(message.getElement());
+		}
+		function overflow(){
+			while(messages.length>maxNMessages){
+				var message = messages.splice(0, 1)[0];
+				delete mapUniqueIdToMessage[message.getUniqueId()];
+				element.removeChild(message.getElement());
+			}
 		}
 	};
 	return _Messages;

@@ -36,6 +36,9 @@ var Lobby = new (function(){
 				case 'rooms':
 					rooms.set(msg.rooms);
 					break;
+				case 'message':
+					rooms.incomingMessage(msg);
+					break;
 			}
 		}
 		function onClickButtonUsers(){
