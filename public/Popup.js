@@ -7,14 +7,17 @@ var Popup= new (function(){
 		this.show = function(){
 			if(active)
 				active.hide();
-			ClickedOff.register(element);
+			ClickedOff.register(element, hide);
 			setVisible(true);
 			active = self;
 		};
 		this.hide = function(){
 			ClickedOff.remove(element);
-			setVisible(false);
+			hide();
 		};
+		function hide(){
+			setVisible(false);
+		}
 		this.getElement = function(){return element;};
 		function setVisible(value){
 			element.style.display=value?'block':'none';

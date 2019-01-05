@@ -9,6 +9,7 @@ var Emoticons = new (function(){
 			popup.show();
 		};
 		this.getElement = ui.getElement;
+		this.setVisible = ui.setVisible;
 		function addEmoticonEntry(){
 			var emoticonEntry = new EmoticonEntry();
 			emoticonEntry.addEventListener('selected', selected);
@@ -18,6 +19,9 @@ var Emoticons = new (function(){
 			var emoticonEntry = e.emoticonEntry;
 			if(callbackPicked)
 				callbackPicked(emoticonEntry);
+		}
+		function load(jObjectEmoticons){
+			
 		}
 	};
 	return _Emoticons;
@@ -30,6 +34,10 @@ var Emoticons = new (function(){
 		element.appendChild(entries);
 		this.addEntry = function(entry){
 			entries.appendChild(entry.getElement());
+		};
+		this.getElement = function(){return element;};
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
 		};
 	}
 })();

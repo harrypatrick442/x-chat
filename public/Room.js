@@ -1,7 +1,10 @@
 var Room = new (function(){
 	var _Room = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
-		var ui = new UI();
+		var buttonSend = new Button({className:'button-send', text:'Send'});
+		var buttonEmoticons = new Button({className:'button-emoticons'});
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
 		var users = new Users();
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
@@ -10,9 +13,22 @@ var Room = new (function(){
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
+		buttonSend.addEventListener('click', dispatchSendMessage);
+		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
+		function dispatchShowEmoticons(){
+			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
+		}
+		function dispatchSendMessage(){
+			
+		}
+		function callbackPicked(emoticonEntry){
+			
+		}
 	};
 	return _Room;
-	function UI(){
+	function UI(params){
+		var buttonSend = params.buttonSend;
+		var buttonEmoticons = params.buttonEmoticons;
 		var element = E.DIV();
 		element.classList.add('room');
 		var top = E.DIV();
@@ -25,8 +41,6 @@ var Room = new (function(){
 		menu.classList.add('menu');
 		var text = E.TEXT();
 		text.classList.add('text');
-		var buttonSend = new Button({className:'button-send', text:'Send'});
-		var buttonEmoticons = new Button({className:'button-emoticons'});
 		element.appendChild(top);
 		element.appendChild(bottom);
 	    top.appendChild(feed);

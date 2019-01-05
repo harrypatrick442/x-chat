@@ -21,7 +21,7 @@ var ClickedOff = new (function () {
 				break;
 			}
 				
-		});
+		}
 	};
     document.addEventListener('mousedown', clickedDocument);
     function clickedDocument(e) {

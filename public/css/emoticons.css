@@ -1,55 +1,20 @@
-body{
-	
-}
-.lobby .rooms-menu .room-entry{
-	position:relative;
-	float:left;
-	width:25%; 	
+.lobby .rooms .emoticons{
+	position:absolute;
+	display:none;
+	bottom:30px;
+	left:0px;
+	right:0px;
+	min-height:auto;
 	box-sizing:border-box;
 	padding:3px;
-}
-.lobby .rooms-menu .room-entry .inner{
-	position:absolute;
-	float:left;
+	background-color:rgb(44, 43, 43);
+}.lobby .rooms .emoticons .entries{
+	position:relative;
 	width:100%;
+	min-height:70px;
+	max-height:160px;
+	overflow-y:auto;
 	box-sizing:border-box;
-	height:30px;
-	background-color:#cccccc;
-	border-radius:7px;
-	overflow:hidden;
-	border:2px solid #efefef;
-}
-.lobby .rooms-menu .room-entry .inner:hover{
-	background-color:#dddddd;
-	cursor:pointer;
-}
-.lobby .rooms-menu .room-entry .connected-image{
-	float:left;
-	box-sizing:border-box;
-	height:30px;
-	width:30px;
-	border-radius:2px;
-	display:inline-block;
-}
-.lobby .rooms-menu .room-entry .connected-image img{
-	box-sizing:border-box;
-	height:100%;
-	width:100%;
-	background-image:url('/images/room-default.png');
-    background-repeat: no-repeat;
-    background-position: center; 
-	background-size:contain;
-}
-.lobby .rooms-menu .room-entry .name{
-	float:left;
-	width:calc(100% - 36px);
-	padding-top:5px;
-	padding-left:2px;
-	padding-right:2px;
-	font-size:16px;
-	font-family :Arial;
-	display:inline;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
+	padding:3px;
+	background-color:rgb(32, 31, 31);
 }
