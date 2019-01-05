@@ -25,6 +25,7 @@ var Room = new (function(){
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		ui.addEventListener('keypress',keyPressed);
 		function sendMessage(){
+			console.log(getUserMe());
 			var messageSending = Message.fromTypedString({str:ui.getTextValue(), user:getUserMe(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
 			messages.addSending(messageSending);
 			ui.clearText();

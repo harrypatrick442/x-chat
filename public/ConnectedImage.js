@@ -11,6 +11,7 @@ var ConnectedImage = new (function(){
 		element.classList.add('connected-image');
 		var img = E.IMG();
 		element.appendChild(img);
+		img.src=def;
 		img.onerror = function () {
 			img.src = def;
 		};
