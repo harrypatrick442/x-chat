@@ -1,5 +1,6 @@
 var Emoticons = new (function(){
-	var _Emoticons = function(){
+	var _Emoticons = function(params){
+		var emoticonsLibrary = params.emoticonsLibrary;
 		EventEnabledBuilder(this);
 		var popup = new Popup();
 		var ui = new UI({popup:popup});
@@ -10,18 +11,19 @@ var Emoticons = new (function(){
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
-		function addEmoticonEntry(){
-			var emoticonEntry = new EmoticonEntry();
-			emoticonEntry.addEventListener('selected', selected);
-			ui.addEntry(emoticonEntry);
-		}
+		load();
 		function selected(e){
-			var emoticonEntry = e.emoticonEntry;
+			var emoticonInfo = e.emoticonInfo;
 			if(callbackPicked)
-				callbackPicked(emoticonEntry);
+				callbackPicked(emoticonInfo);
+			popup.hide();
 		}
-		function load(jObjectEmoticons){
-			
+		function load(){
+			each(emoticonsLibrary.emoticons, function(emoticon){
+				var emoticonEntry = new EmoticonEntry({emoticonInfo:new EmoticonInfo(emoticon)});
+				emoticonEntry.addEventListener('selected', selected);
+				ui.addEntry(emoticonEntry);
+			});
 		}
 	};
 	return _Emoticons;

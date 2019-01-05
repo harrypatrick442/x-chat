@@ -2,10 +2,12 @@ var Room = new (function(){
 	var _Room = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var userId = params.userId;
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
 		var users = new Users();
+		var messages = new Messages({userId:userId});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.dispose = function(){
@@ -21,8 +23,8 @@ var Room = new (function(){
 		function dispatchSendMessage(){
 			
 		}
-		function callbackPicked(emoticonEntry){
-			
+		function callbackPicked(emoticonInfo){
+			ui.appendToText(emoticonInfo.getStringRepresentation());
 		}
 	};
 	return _Room;
@@ -59,6 +61,10 @@ var Room = new (function(){
 		};
 		this.removeMessage = function(message){
 			feed.removeChild(message.getElement());
+		};
+		this.appendToText = function(str){
+			if(str)
+				text.value+=str;
 		};
 	}
 })();

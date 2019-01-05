@@ -16,6 +16,4 @@ var MessageComponents = new (function(){
 		};
 	};
 	this.Emoticon.TYPE=EMOTICON;
-	
-	return _MessageComponents;
 })();

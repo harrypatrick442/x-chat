@@ -4,7 +4,7 @@ var Rooms = new (function(){
 		var self = this;
 		var mapIdToRoom={};
 		var roomsMenu = new RoomsMenu();
-		var emoticons = new Emoticons();
+		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
 		var entries = [roomsMenu];
 		roomsMenu.addEventListener('showroom', showRoom);
 		emoticons.addEventListener('addemoticon', addEmoticon);

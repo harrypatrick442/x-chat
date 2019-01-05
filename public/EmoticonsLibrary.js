@@ -1,5 +1,5 @@
 var EmoticonsLibrary = {
-	folders:{folderName:'/path'}
+	folders:{folderName:'/path'},
 	emoticons:[
 		{
 			strings:[':)','/smile',':smile:'],
@@ -15,15 +15,15 @@ var EmoticonsLibrary = {
 			character:'😘'
 		},
 		{
-			strings[':cry:',':\'',':,('],
+			strings:[':cry:',':\'',':,('],
 			character:'😢'
 		},
 		{
-			strings['/speachless', '/shocked', ':speachless:',':shocked:',':O',':o'],
+			strings:['/speachless', '/shocked', ':speachless:',':shocked:',':O',':o'],
 			character:'😮'
 		},
 		{
-			strings['/laugh',':laugh:',':lol:'],
+			strings:['/laugh',':laugh:',':lol:'],
 			character:'😂'
 		}
 	]

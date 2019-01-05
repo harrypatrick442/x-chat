@@ -61,3 +61,5 @@ var EmoticonsParser = new (function(){
 			subTree.emoticonInfo = emoticonInfo;
 		}
 	}
+	return _EmoticonsParser;
+})();

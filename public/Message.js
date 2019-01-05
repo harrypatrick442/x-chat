@@ -3,6 +3,7 @@ var Message = new (function(){
 		var self = this;
 		var element = E.DIV();
 		var markup = params.markup;
+		var connectedImage = new ConnectedImage({id:uniqueId, type:User.TYPE});
 		this.getElement = function(){return element;};
 	};
 	_Message.fromJSON = function(params){
@@ -24,4 +25,7 @@ var Message = new (function(){
 		return str;
 	}
 	return _Message;
+	function UI(){
+		
+	}
 })();
