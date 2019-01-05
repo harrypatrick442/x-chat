@@ -1,0 +1,6 @@
+.lobby .rooms .room .feed .message{
+	width:100%;
+	height:auto;
+	font-weight:bold;
+	font-size:18px;
+}

@@ -7,11 +7,11 @@ var EmoticonsLibrary = {
 			character:'🙂'
 		},
 		{
-			string:[':D',':d','/grin',':grin:'],
+			strings:[':D',':d','/grin',':grin:'],
 			character:'😀'
 		},
 		{
-			string:['/kiss',':kiss:',':*',':-*'],
+			strings:['/kiss',':kiss:',':*',':-*'],
 			character:'😘'
 		},
 		{

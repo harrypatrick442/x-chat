@@ -3,6 +3,7 @@ var Room = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var getUserMe = params.getUserMe;
+		var emoticonsParser = params.emoticonsParser;
 		var name = params.name;
 		var id = params.id;
 		var buttonSend = new Button({className:'button-send', text:'Send'});
@@ -22,10 +23,11 @@ var Room = new (function(){
 		this.setVisible = ui.setVisible;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
-		
+		ui.addEventListener('keypress',keyPressed);
 		function sendMessage(){
-			var messageSending = Message.fromComponents({components:[new MessageComponents.Text({})], user:getUserMe(), uniqueId:messages.nextUniqueId()});
+			var messageSending = Message.fromTypedString({str:ui.getTextValue(), user:getUserMe(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
 			messages.addSending(messageSending);
+			ui.clearText();
 		}
 		function dispatchShowEmoticons(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
@@ -41,10 +43,19 @@ var Room = new (function(){
 		function callbackPicked(emoticonInfo){
 			ui.appendToText(emoticonInfo.getStringRepresentation());
 		}
+		function keyPressed(e){
+			var keyCode = e.keyCode;
+			if (keyCode == '13'){
+				sendMessage();
+			  return false;
+			}
+		}
 		
 	};
 	return _Room;
 	function UI(params){
+		EventEnabledBuilder(this);
+		var self = this;
 		var buttonSend = params.buttonSend;
 		var buttonEmoticons = params.buttonEmoticons;
 		var element = E.DIV();
@@ -66,6 +77,7 @@ var Room = new (function(){
 		bottom.appendChild(menu);
 		menu.appendChild(buttonEmoticons.getElement());
 		menu.appendChild(buttonSend.getElement());
+		text.addEventListener('keypress',dispatchKeyPress);
 		this.getElement = function(){
 			return element;
 		};
@@ -73,6 +85,7 @@ var Room = new (function(){
 		this.setVisible = function(value){
 			element.style.display=value?'block':'none';
 		};
+		this.getTextValue= function(){return text.value;};
 		this.addMessage = function(message){
 			feed.appendChild(message.getElement());
 		};
@@ -83,5 +96,10 @@ var Room = new (function(){
 			if(str)
 				text.value+=str;
 		};
+	    this.clearText = function(){text.value='';};
+		function dispatchKeyPress(e){
+			if (!e) e = window.event;
+			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
+		}
 	}
 })();

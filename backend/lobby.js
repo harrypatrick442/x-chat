@@ -45,6 +45,7 @@ exports.Lobby = new (function(){
 			if(!usernameIsAvailable){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
 					users.add(user);
+					console.log(user);
 					var res = createSession(user);
 					res.type='authenticate';
 					callback(res);
@@ -60,14 +61,14 @@ exports.Lobby = new (function(){
 					users.add(user);
 					var res = createSession(user);
 					res.type='authenticate';
-					callback(res);
+					callback(res);	
 				});
 		    });
 		}
 		function createSession(user){
 			var session = new Session({user:user});
 			sessions.add(session);
-			return {successful:true, sessionId:session.getId()};
+			return {successful:true, sessionId:session.getId(), user:user.toJSON()};
 		}
 		function invalidUsernameOrPassword(type){return {successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type};}
 	};

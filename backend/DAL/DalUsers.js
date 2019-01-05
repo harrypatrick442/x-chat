@@ -25,9 +25,8 @@ exports.dalUsers= new (function(){
 		[
 			params.email, params.username, params.hash, params.gender, formatBirthday(params.birthday), params.isGuest
 		],
-		callbackRead:function(result){
+		callbackRead:function(rows){
 			var user;	
-			var rows =result[0];
 			if(rows.length>0){
 				user = User.fromSqlRow(rows[0]);
 			}

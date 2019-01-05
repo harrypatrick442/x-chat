@@ -2,29 +2,31 @@ var EmoticonsParser = new (function(){
 	var _EmoticonsParser = function(params){
 		var emoticonsLibrary = params.emoticonsLibrary;
 		var searchTree = {};
+		populateSearchTree(emoticonsLibrary);
 		this.pipe = function(component, callback){
-			if(component.type!=MessageComponents.Text.TYPE){callback(component);return;}
+			if(component.TYPE!=MessageComponents.Text.TYPE){callback(component);return;}
 			var str = component.getString();
 			var subTree = searchTree;
 			var i={value:0};
 			var length = str.length;
 			var startIndex=0;
 			while(i.value<length){
-				var sub =searchTree[str[i]];
+				var sub =searchTree[str[i.value]];
 				if(sub){
 					var matchStartIndex =i.value;
 					var emoticonInfo = matching(i, length, str, sub);
+					console.log(emoticonInfo);
 					if(emoticonInfo){
 						if(matchStartIndex>startIndex)
 							callback(new MessageComponents.Text(str.substring(startIndex, matchStartIndex)));
 						callback(new MessageComponents.Emoticon(emoticonInfo));
-						startIndex=i;
+						startIndex=i.value;
 					}
 				}
 				else 
 					i.value++;
 			}
-			if(i>startIndex)
+			if(i.value>startIndex)
 				callback(new MessageComponents.Text(str.substring(startIndex, i.value)));
 		};
 		function matching(i, length, str, sub){
@@ -37,13 +39,14 @@ var EmoticonsParser = new (function(){
 					if(!sub) return latestMatch;
 			}
 		}
-		function populateSearchTree(emoticonLibrary){
-			var emoticons = emoticonLibrary;
-			each(emoticons, function(emoticon){
+		function populateSearchTree(emoticonsLibrary){
+			each(emoticonsLibrary.emoticons, function(emoticon){
 				var emoticonInfo = new EmoticonInfo(emoticon);
-				each(emoticon.strings, function(str){
-					createBranch(str, emoticonInfo);
-				});
+				console.log(emoticon);
+				if(emoticon.strings)
+					each(emoticon.strings, function(str){
+						createBranch(str, emoticonInfo);
+					});
 			});
 		}
 		function createBranch(str, emoticonInfo){

@@ -2,10 +2,10 @@ var Lobby = new (function(){
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;
+		var userMe;
 		const url = '/servlet';
 		var users = new Users();
 		var rooms = new Rooms({getUserMe:getUserMe});
-		var userMe;
 		var pmsMenu = new PmsMenu();
 		var buttonUsers = new Button({classNames:['button-users']});
 		var ui = new UI({rooms:rooms, users:users, buttonUsers:buttonUsers, pmsMenu:pmsMenu});
@@ -70,6 +70,7 @@ var Lobby = new (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
+				userMe = User.fromJSON(msg.user);
 				Authenticate.hide();
 				getRooms();
 				return;
