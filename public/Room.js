@@ -1,5 +1,6 @@
 var Room = new (function(){
 	var _Room = function(params){
+		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
 		var getUserMe = params.getUserMe;
@@ -25,16 +26,22 @@ var Room = new (function(){
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		ui.addEventListener('keypress',keyPressed);
 		function sendMessage(){
+			var text = ui.getTextValue();
+			if(text=='')return;
 			console.log(getUserMe());
-			var messageSending = Message.fromTypedString({str:ui.getTextValue(), user:getUserMe(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
+			var messageSending = Message.fromTypedString({str:text, user:getUserMe(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
+			dispatchSendMessage(messageSending);
+			var scroll = ui.feedIsAtBottom();
 			messages.addSending(messageSending);
 			ui.clearText();
+			if(scroll)
+				ui.scrollFeedToBottom();
 		}
 		function dispatchShowEmoticons(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
 		}
-		function dispatchSendMessage(){
-			
+		function dispatchSendMessage(message){
+			self.dispatchEvent({type:'sendmessage',message:message, roomId:id});
 		}
 		function getUserIdMe(){
 			var user = getUserMe();
@@ -98,6 +105,13 @@ var Room = new (function(){
 				text.value+=str;
 		};
 	    this.clearText = function(){text.value='';};
+		this.scrollFeedToBottom = function(){
+			feed.scrollTop = feed.scrollHeight;
+		};
+		this.feedIsAtBottom = function(){
+			return feed.scrollTop >= (feed.scrollHeight - feed.offsetHeight)-10;
+		};
+		
 		function dispatchKeyPress(e){
 			if (!e) e = window.event;
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});

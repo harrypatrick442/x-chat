@@ -14,6 +14,7 @@ var Lobby = new (function(){
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
 		buttonUsers.addEventListener('click', onClickButtonUsers);
+		rooms.addEventListener('sendmessage', sendMessage);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -83,6 +84,12 @@ var Lobby = new (function(){
 		}
 		function getUserMe(){
 			return userMe;
+		}
+		function sendMessage(e){
+			var jObject = e.message.toJSON();
+			jObject.roomId = e.roomId;
+			jObject.type='room_message_send';
+			mysocket.send(jObject);
 		}
 	};
 	function UI(params){

@@ -1,6 +1,7 @@
 
 var Rooms = new (function(){
 	var _Rooms = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var mapIdToRoom={};
@@ -28,8 +29,8 @@ var Rooms = new (function(){
 			if(!room)return;
 			room.incomingMessage(msg.message);
 		};
-		function showRoom(roomInfo){
-			console.log(roomInfo);
+		function showRoom(e){
+			var roomInfo = e.roomInfo;
 			var room = mapIdToRoom[roomInfo.id];
 			if(!room)
 				room = loadRoom(roomInfo);
@@ -41,11 +42,13 @@ var Rooms = new (function(){
 			});
 		}
 		function loadRoom(roomInfo){
+			console.log(roomInfo);
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, getUserMe:getUserMe, emoticonsParser:emoticonsParser});
 			mapIdToRoom[roomInfo.id]=room;
 			entries.push(room);
 			ui.addEntry(room);
 			room.addEventListener('showemoticons', showEmoticons);
+			room.addEventListener('sendmessage', dispatchSendMessage);
 			return room;
 		}
 		function addEmoticon(e){
@@ -55,6 +58,9 @@ var Rooms = new (function(){
 			console.log('show emoticons');
 			var picked = e.picked;
 			emoticons.show({picked:picked});
+		}
+		function dispatchSendMessage(e){
+			self.dispatchEvent(e);
 		}
 		function remove(room){
 			delete mapIdToRoom[room.getId()];
