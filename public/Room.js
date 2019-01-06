@@ -15,21 +15,36 @@ var Room = new (function(){
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.incomingMessage = function(jObjectMessage){
-			messages.addReceived(Messages.fromJSON(jObjectMessage));
+			jObjectMessage.emoticonsParser=emoticonsParser;
+			messages.addReceived(Message.fromJSON(jObjectMessage));
+		};
+		this.incomingMessages=function(jArrayMessages){
+			each(jArrayMessages, function(jObjectMessage){
+				self.incomingMessage(jObjectMessage);
+			});
 		};
 		this.dispose = function(){
 			messages.dispose();
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
+		
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		ui.addEventListener('keypress',keyPressed);
+		new Task(load).run();
+		function load(){
+			getMessagesFromServer();
+		}
+		function getMessagesFromServer(){
+			self.dispatchEvent({type:'getmessages', roomId:id});
+		}
 		function sendMessage(){
 			var text = ui.getTextValue();
 			if(text=='')return;
-			console.log(getUserMe());
-			var messageSending = Message.fromTypedString({str:text, user:getUserMe(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
+			var userMe = getUserMe();
+			console.log(userMe);
+			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
 			dispatchSendMessage(messageSending);
 			var scroll = ui.feedIsAtBottom();
 			messages.addSending(messageSending);

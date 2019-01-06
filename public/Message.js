@@ -2,18 +2,18 @@ var Message = new (function(){
 	var _Message = function(params){
 		console.log(params);
 		var self = this;
-		var user = params.user;
+		var userId = params.userId;
+		var username = params.username;
 		var content = params.content;
 		var uniqueId = params.uniqueId;
-		var connectedImage = new ConnectedImage({type:User.TYPE, id:user.getId(),def:'/images/user-blank.png'});
-		var ui = new UI({connectedImage:connectedImage, content:content, username:user.getUsername()});
-		var userId = params.userId;
+		var connectedImage = new ConnectedImage({type:User.TYPE, id:userId,def:'/images/user-blank.png'});
+		var ui = new UI({connectedImage:connectedImage, content:content, username:username});
 		this.getElement = ui.getElement;
 		this.getUniqueId = function(){
 			return uniqueId;
 		};
 		this.toJSON = function(){
-		return {content:content, userId:user.getId()};
+		return {content:content, userId:userId};
 		};
 	};
 	_Message.fromJSON = function(params){
@@ -28,12 +28,12 @@ var Message = new (function(){
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  console.log(component); components.push(component);});
 		console.log(params);
-		return _Message.fromComponents({user:params.user, uniqueId:params.uniqueId, components:components});
+		return _Message.fromComponents({userId:params.userId, username:params.userName, uniqueId:params.uniqueId, components:components});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
-		return new Message({content:content, user:params.user, uniqueId:params.uniqueId});
+		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId});
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';

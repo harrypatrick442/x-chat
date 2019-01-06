@@ -3,10 +3,9 @@ exports.Dal= new (function(){
     var mysql = require("mysql");
 	var _Dal = function(config){
 		var pool = mysql.createPool(config);
-		this.nonQuery = function(){
+		this.nonQuery = function(params){
 			var storedProcedure = params.storedProcedure;
-			var sql = CALL+storedProcedure;
-			var parametersArray=[];
+			var parameters = params.parameters;
 			var sql = getSql(storedProcedure, parameters);
 			pool.getConnection(function(err, connection) {
 				if(err) throw err;

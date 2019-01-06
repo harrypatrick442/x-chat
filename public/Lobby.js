@@ -15,6 +15,7 @@ var Lobby = new (function(){
 		mysocket.send({type:'test'});
 		buttonUsers.addEventListener('click', onClickButtonUsers);
 		rooms.addEventListener('sendmessage', sendMessage);
+		rooms.addEventListener('getmessages', getMessages);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -41,6 +42,8 @@ var Lobby = new (function(){
 				case 'message':
 					rooms.incomingMessage(msg);
 					break;
+				case 'messages':
+					rooms.incomingMessages(msg);
 			}
 		}
 		function onClickButtonUsers(){
@@ -71,6 +74,7 @@ var Lobby = new (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
+				console.log(msg.user);
 				userMe = User.fromJSON(msg.user);
 				Authenticate.hide();
 				getRooms();
@@ -81,6 +85,9 @@ var Lobby = new (function(){
 		}
 		function getRooms(){
 			mysocket.send({type:'rooms_get', sessionId:sessionId});
+		}
+		function getMessages(e){
+			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
 		}
 		function getUserMe(){
 			return userMe;

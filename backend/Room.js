@@ -6,10 +6,11 @@ exports.Room = new (function(){
 		var self = this;
 		var messages;
 		var users = new Users();
+		var id = params.id;
 		this.getId= function(){return params.id;};
 		this.getName = function(){ return params.name;};
-		this.getMessages = function(){
-			return getMessages();
+		this.getMessages = function(callback){
+			getMessages(callback);
 		};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
@@ -22,15 +23,18 @@ exports.Room = new (function(){
 		this.getSqlParameters= function(){
 		   return {name:params.name, id:params.id};
 		};
-		this.sendMessage = function(user, message){
-			messages.add(message);
+		this.sendMessage = function(message){
+			getMessages(function(messages){messages.add(message);});
 		};
 		initialize();
 		function initialize(){
 		}
-		function getMessages(){
-			if(!messages)messages = new Messages(params.roomId);
-			return messages;
+		function getMessages(callback){
+			if(!messages){
+				messages = new Messages({roomId:id}, callback);
+				return;
+			}
+			callback(messages);
 		}
 	};
 	_Room.fromSqlRow = function(row){

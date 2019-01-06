@@ -1,6 +1,6 @@
 exports.handler = new (function(){
 		var lobby = new (require('./Lobby').Lobby)();
-		console.log(require('./Lobby'));
+		var Message = require('./Message').Message;
 		this.process = function(req, callback){
 			var res = {};
 			try{
@@ -30,12 +30,21 @@ exports.handler = new (function(){
 						room.join(user);
 						callback({});
 					break;
-					case 'room_send_message':
+					case 'room_message_send':
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
-						room.sendMessage(req.message);
+						room.sendMessage(Message.fromRequest(req));
 					break;
-					case 'room_get_users':
+					case 'room_messages_get':
+						var room = getRoom(req);
+						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
+						console.log('passed validation on get messages');
+						room.getMessages(function(messages){
+							console.log('and now doing callback');
+							callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
+						});	
+					break;
+					case 'room_users_get':
 						callback({type:'users', users:getRoom(req).getUsers()});
 					break;
 				}
@@ -44,6 +53,6 @@ exports.handler = new (function(){
 			return JSON.stringify(res);
 		};
 		function getUser(req){return sessions.getById(req.sessionId).getUser();}
-		function getRoom(){return lobby.getRooms().getRoom(req.roomId);}
+		function getRoom(req){return lobby.getRooms().getRoom(req.roomId);}
 		function test(jObject){ return {type:'response',received:jObject};}
 })();

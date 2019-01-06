@@ -29,6 +29,11 @@ var Rooms = new (function(){
 			if(!room)return;
 			room.incomingMessage(msg.message);
 		};
+		this.incomingMessages = function(msg){
+			var room = mapIdToRoom [msg.roomId];
+			if(!room)return;
+			room.incomingMessages(msg.messages);
+		};
 		function showRoom(e){
 			var roomInfo = e.roomInfo;
 			var room = mapIdToRoom[roomInfo.id];
@@ -49,6 +54,7 @@ var Rooms = new (function(){
 			ui.addEntry(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('sendmessage', dispatchSendMessage);
+			room.addEventListener('getmessages', dispatchGetMessages);
 			return room;
 		}
 		function addEmoticon(e){
@@ -60,6 +66,9 @@ var Rooms = new (function(){
 			emoticons.show({picked:picked});
 		}
 		function dispatchSendMessage(e){
+			self.dispatchEvent(e);
+		}
+		function dispatchGetMessages(e){
 			self.dispatchEvent(e);
 		}
 		function remove(room){

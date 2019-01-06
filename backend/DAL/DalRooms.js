@@ -25,13 +25,4 @@ exports.dalRooms= new (function(){
 	this.createRoom = function(room){
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_CREATE_ROOM, parameters:room.getSqlParameters()});
 	};
-	
-	this.getMessages = function(roomId, nMessages, callbackGotMessage){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_MESSAGES, parameters:[roomId, nMessages], callbackRead:function(row){
-			callbackGotMessage(Message.fromSqlRow(row));
-		}});
-	};
-	this.addMessage= function(roomId, userId, message){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ADD_MESSAGE, parameters:[roomId, userId, JSON.stringify(message.toJSON())]});
-	};
 })();

@@ -22,7 +22,6 @@ exports.Rooms = new (function(){
 				return;
 			}
 			callback(_getInfos());
-			return list;
 		};
 		function _getInfos(){
 			var list =[];
