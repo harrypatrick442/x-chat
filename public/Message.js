@@ -12,6 +12,10 @@ var Message = new (function(){
 		this.getUniqueId = function(){
 			return uniqueId;
 		};
+		this.getServerAssignedNMessage = function(){
+			return params.serverAssignedNMessage;
+		};
+		this.confirm = function(){};
 		this.toJSON = function(){
 		return {content:content, userId:userId};
 		};
@@ -28,12 +32,12 @@ var Message = new (function(){
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  console.log(component); components.push(component);});
 		console.log(params);
-		return _Message.fromComponents({userId:params.userId, username:params.userName, uniqueId:params.uniqueId, components:components});
+		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, serverAssignedNMessage:params.serverAssignedNMessage});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
-		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId});
+		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId, serverAssignedNMessage:params.serverAssignedNMessage, uniqueId:params.serverAssignedNMessage});
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';

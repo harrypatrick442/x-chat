@@ -6,10 +6,11 @@ exports.Messages = new (function(){
 	{
 		var self = this;
 		var list =[];
+		var serverAssignedNMessage;
 		var roomId = params.roomId;
-		var addToListWhenLoaded=[];
 		this.add=function(message){
 			list.push(message);
+			message.setServerAssignedNMessage(serverAssignedNMessage++);
 			overflow();
 			dalMessages.addMessage(roomId, message);
 		};
@@ -25,6 +26,9 @@ exports.Messages = new (function(){
 		function loadMessages(){
 			console.log('loading messages for room: '+roomId);
 			dalMessages.getMessages(roomId, N_MESSAGES_HISTORY, function(messages){
+				serverAssignedNMessage = messages[messages.length-1].getServerAssignedNMessage()+1;
+				console.log('serverAssigendNMessaagee was');
+				console.log(messages[messages.length-1].getServerAssignedNMessage());
 				list = messages;
 				callbackLoaded(self);
 			});

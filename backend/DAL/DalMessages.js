@@ -18,6 +18,6 @@ exports.dalMessages= new (function(){
 	this.addMessage= function(roomId, message){
 		console.log('roomId is: '+roomId);
 		console.log(message);
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGE_ADD, parameters:[roomId, message.getUserId(), message.getContent()]});
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGE_ADD, parameters:[roomId, message.getUserId(), message.getContent(), message.getServerAssignedNMessage()]});
 	};
 })();
