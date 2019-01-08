@@ -1,10 +1,10 @@
 exports.handler = new (function(){
 		var lobby = new (require('./Lobby').Lobby)();
 		var Message = require('./Message').Message;
+		var sessions = lobby.getSessions();
 		this.process = function(req, callback){
 			var res = {};
 			try{
-				var sessions = lobby.getSessions();
 				console.log('doing');
 				console.log(req);
 				switch(req.type){
@@ -33,7 +33,7 @@ exports.handler = new (function(){
 					case 'room_message_send':
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
-						room.sendMessage(Message.fromRequest(req));
+						room.sendMessage(Message.fromRequest(req, getUser(req)));
 					break;
 					case 'room_messages_get':
 						var room = getRoom(req);

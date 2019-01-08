@@ -3,6 +3,7 @@ exports.Dal= new (function(){
     var mysql = require("mysql");
 	var _Dal = function(config){
 		var pool = mysql.createPool(config);
+		console.log(mysql);
 		this.nonQuery = function(params){
 			var storedProcedure = params.storedProcedure;
 			var parameters = params.parameters;

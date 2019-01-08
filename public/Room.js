@@ -9,19 +9,26 @@ var Room = new (function(){
 		var id = params.id;
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
 		var users = new Users();
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed()});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.incomingMessage = function(jObjectMessage){
+			var scroll = ui.feedIsAtBottom();
 			jObjectMessage.emoticonsParser=emoticonsParser;
 			messages.addReceived(Message.fromJSON(jObjectMessage));
+			if(scroll)
+				ui.scrollFeedToBottom();
 		};
 		this.incomingMessages=function(jArrayMessages){
+			var scroll = ui.feedIsAtBottom();
 			each(jArrayMessages, function(jObjectMessage){
-				self.incomingMessage(jObjectMessage);
+				jObjectMessage.emoticonsParser=emoticonsParser;
+				messages.addReceived(Message.fromJSON(jObjectMessage));
 			});
+			if(scroll)
+				ui.scrollFeedToBottom();
 		};
 		this.dispose = function(){
 			messages.dispose();
@@ -46,11 +53,9 @@ var Room = new (function(){
 			console.log(userMe);
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
 			dispatchSendMessage(messageSending);
-			var scroll = ui.feedIsAtBottom();
 			messages.addSending(messageSending);
 			ui.clearText();
-			if(scroll)
-				ui.scrollFeedToBottom();
+			ui.scrollFeedToBottom();
 		}
 		function dispatchShowEmoticons(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});

@@ -7,6 +7,10 @@ var EmoticonsLibrary = {
 			character:'🙂'
 		},
 		{
+			strings:[':p',':P','/tongue',':tongue:'],
+			character:'??'
+		},
+		{
 			strings:[':D',':d','/grin',':grin:'],
 			character:'😀'
 		},

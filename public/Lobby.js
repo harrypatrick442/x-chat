@@ -5,10 +5,11 @@ var Lobby = new (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users();
+		var usersMenues = new UsersMenues();
 		var rooms = new Rooms({getUserMe:getUserMe});
 		var pmsMenu = new PmsMenu();
 		var buttonUsers = new Button({classNames:['button-users']});
-		var ui = new UI({rooms:rooms, users:users, buttonUsers:buttonUsers, pmsMenu:pmsMenu});
+		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, pmsMenu:pmsMenu, usersMenues:usersMenues});
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
@@ -96,21 +97,26 @@ var Lobby = new (function(){
 			var jObject = e.message.toJSON();
 			jObject.roomId = e.roomId;
 			jObject.type='room_message_send';
+			jObject.sessionId=sessionId;
 			mysocket.send(jObject);
 		}
 	};
 	function UI(params){
-		var users = params.users;
 		var rooms = params.rooms;
 		var pmsMenu = params.pmsMenu;
 		var buttonUsers = params.buttonUsers;
+		var usersMenues = params.usersMenues;
 		var element = E.DIV();
-		element.appendChild(users.getElement());
-		element.appendChild(pmsMenu.getElement());
-		element.appendChild(rooms.getElement());
+		element.classList.add('lobby');
+		var right = E.DIV();
+		right.classList.add('right');
+		element.appendChild(usersMenues.getElement());
+		element.appendChild(right);
+		right.appendChild(pmsMenu.getElement());
+		right.appendChild(rooms.getElement());
 		element.classList.add('lobby');
 		this.getElement = function(){return element;};
-		this.showUsers= function(){ users.show(); };
+		this.showUsersMenues= function(){ usersMenues.show(); };
 	}
 	return _Lobby;
 })();

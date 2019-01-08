@@ -2,10 +2,11 @@ exports.dalXChat= new (function(){
 		var Dal = require('./Dal').Dal;
 		var config = {
 			connectionLimit: 100,
-			user: 'root',
+			user: 'xchat',
 			password: 'Afucka9',
 			server: 'localhost', 
 			database: 'xchat' ,
+			charset:'UTF8MB4',
 			typeCast: function castField( field, useDefaultTypeCasting ) {
 				// We only want to cast bit fields that have a single-bit in them. If the field
 				// has more than one bit, then we cannot assume it is supposed to be a Boolean.

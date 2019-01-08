@@ -8,10 +8,12 @@ var Rooms = new (function(){
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu();
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
-		var entries = [roomsMenu];
+		var ui = new UI({emoticons:emoticons});
+		var overlappingEntries= new OverlappingEntries({element:ui.getEntries()});
 		roomsMenu.addEventListener('showroom', showRoom);
 		emoticons.addEventListener('addemoticon', addEmoticon);
-		var ui = new UI({menu: roomsMenu, emoticons:emoticons});
+		overlappingEntries.add(roomsMenu);
+		overlappingEntries.show(roomsMenu);
 		this.getElement = ui.getElement;
 		this.set = function(roomInfos){
 			roomsMenu.set(roomInfos);
@@ -42,16 +44,13 @@ var Rooms = new (function(){
 			showEntry(room);
 		}
 		function showEntry(entryToShow){
-			each(entries, function(entry){
-				entry.setVisible(entryToShow==entry);
-			});
+			overlappingEntries.show(entryToShow);
 		}
 		function loadRoom(roomInfo){
 			console.log(roomInfo);
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, getUserMe:getUserMe, emoticonsParser:emoticonsParser});
 			mapIdToRoom[roomInfo.id]=room;
-			entries.push(room);
-			ui.addEntry(room);
+			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('sendmessage', dispatchSendMessage);
 			room.addEventListener('getmessages', dispatchGetMessages);
@@ -73,8 +72,7 @@ var Rooms = new (function(){
 		}
 		function remove(room){
 			delete mapIdToRoom[room.getId()];
-			entries.splice(entries.indexOf(room), 1);
-			ui.removeEntry(room);
+			overlappingEntries.remove(room);
 			room.dispose();
 		}
 	};
@@ -88,13 +86,9 @@ var Rooms = new (function(){
 		entries.classList.add('entries');
 		element.appendChild(entries);
 		element.appendChild(emoticons.getElement());
-		entries.appendChild(menu.getElement());
+		this.getEntries = function(){
+			return entries;
+		};
 		this.getElement = function(){return element;};
-		this.addEntry = function(entry){
-			entries.appendChild(entry.getElement());
-		};
-		this.removeEntry = function(entry){
-			entries.removeChild(entry.getElement());
-		};
 	}
 })();

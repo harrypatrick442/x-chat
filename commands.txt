@@ -1,0 +1,8 @@
+SET NAMES utf8mb4; 
+ALTER DATABASE xchat CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+ALTER TABLE xchat.tblroommessages CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE xchat.tblRooms CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE xchat.tblUsers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE xchat.tblAuthenticate CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE xchat.tblroommessages CHANGE content content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
