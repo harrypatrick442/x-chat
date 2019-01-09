@@ -1,4 +1,4 @@
-var Ajax = new (function(){
+var Ajax = (function(){
 	var _Ajax= function(url){
 		this.post = function(obj, callbackSuccessful, callbackFailed){
 			_Ajax.post(url, obj, callbackSuccessful, callbackFailed);

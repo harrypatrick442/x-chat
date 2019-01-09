@@ -1,5 +1,5 @@
-var handler = require('./handler').handler;
 exports.endpoint = function(app){
+	var handler = require('./handler').handler;
 	var expressWs = require('express-ws')(app);
 	console.log('doing endpoint');
 	app.get('/endpoint', function(req, res, next){

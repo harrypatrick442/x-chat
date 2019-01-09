@@ -1,4 +1,4 @@
-exports.Users = new (function(){
+exports.Users = (function(){
 	var _Users = function(){
 		var list=[];
 		this.add = function(user){

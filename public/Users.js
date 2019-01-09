@@ -1,4 +1,4 @@
-var Users = new (function(){
+var Users = (function(){
 	var _Users = function(){
 		var self = this;
 		var list =[];

@@ -1,4 +1,4 @@
-exports.Dal= new (function(){
+exports.Dal= (function(){
 	const CALL="CALL ";
     var mysql = require("mysql");
 	var _Dal = function(config){

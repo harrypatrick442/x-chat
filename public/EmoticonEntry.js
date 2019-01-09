@@ -1,4 +1,4 @@
-var EmoticonEntry = new (function(){
+var EmoticonEntry = (function(){
 	var _EmoticonEntry = function(params){
 		var self = this;
 		EventEnabledBuilder(this);

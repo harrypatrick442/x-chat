@@ -1,4 +1,4 @@
-exports.Lobby = new (function(){
+exports.Lobby = (function(){
 	const UNKNOWN_EXCEPTION='Unknown Exception';
 	const INVALID_USERNAME_OR_PASSWORD='Invalid Username or Password';
 	const USERNAME_NOT_AVAILABLE='Username Not Available';

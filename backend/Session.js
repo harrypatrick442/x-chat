@@ -1,4 +1,4 @@
-exports.Session = new (function(){
+exports.Session = (function(){
 	var uuid = require('uuid');
 	var _Session = function(params){
 		var id = uuid.v4();

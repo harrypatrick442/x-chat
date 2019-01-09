@@ -1,4 +1,4 @@
-var UsersMenu = new (function(){
+var UsersMenu = (function(){
 	var _UsersMenu = function(){
 		var self = this;
 		var list =[];

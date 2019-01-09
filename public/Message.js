@@ -1,4 +1,4 @@
-var Message = new (function(){
+var Message = (function(){
 	var _Message = function(params){
 		console.log(params);
 		var self = this;

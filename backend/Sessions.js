@@ -1,4 +1,4 @@
-exports.Sessions = new (function(){
+exports.Sessions = (function(){
 	var Session = require('./Session').Session;
 	var _Sessions = function(){
 		var mapSessionIdToSession=[];

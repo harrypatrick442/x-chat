@@ -1,4 +1,4 @@
-var Lobby = new (function(){
+var Lobby = (function(){
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;
@@ -48,7 +48,7 @@ var Lobby = new (function(){
 			}
 		}
 		function onClickButtonUsers(){
-			ui.showUsers();
+			ui.showUsersMenues();
 		}
 		function initialize(){
 			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});

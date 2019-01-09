@@ -1,4 +1,4 @@
-var Emoticons = new (function(){
+var Emoticons = (function(){
 	var _Emoticons = function(params){
 		var emoticonsLibrary = params.emoticonsLibrary;
 		EventEnabledBuilder(this);

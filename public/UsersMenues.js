@@ -1,8 +1,8 @@
-var UsersMenu = new (function(){
-	var _UsersMenu = function(){
+var UsersMenues = (function(){
+	var _UsersMenues = function(){
 		var self = this;
 		var ui = new UI();
-		var overlappingEntries = new overlappingEntries({element:ui.getElement()});
+		var overlappingEntries = new OverlappingEntries({element:ui.getElement()});
 		this.getElement = ui.getElement;
 		this.add=function(usersMenu){
 			overlappingEntries.add(usersMenu);
@@ -14,7 +14,7 @@ var UsersMenu = new (function(){
 			overlappingEntries.set(usersMenu);
 		};
 	};
-	return _UsersMenu;
+	return _UsersMenues;
 	function UI(params){
 		var element = E.DIV();
 		element.classList.add('users-menues');

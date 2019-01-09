@@ -1,4 +1,4 @@
-exports.Messages = new (function(){
+exports.Messages = (function(){
 	const N_MESSAGES_HISTORY=50;
 	var dalMessages = require('./Dal/DalMessages').dalMessages;
 	var each = require('./each').each;

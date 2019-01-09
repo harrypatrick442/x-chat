@@ -1,4 +1,4 @@
-exports.Rooms = new (function(){
+exports.Rooms = (function(){
 	var dalRooms = require('./Dal/DalRooms').dalRooms;
 	var each = require('./each').each;
 	var _Rooms = function(){

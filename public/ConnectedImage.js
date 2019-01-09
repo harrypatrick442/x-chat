@@ -1,4 +1,4 @@
-var ConnectedImage = new (function(){
+var ConnectedImage = (function(){
 	var mapTypeToMapIdToInstances={};
 	var _ConnectedImage = function(params)
 	{

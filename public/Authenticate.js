@@ -1,4 +1,4 @@
-var Authenticate = new (function(){
+var Authenticate = (function(){
 	var _Authenticate = function (params)
 	{
 		var callbackRegister = params.callbackRegister;

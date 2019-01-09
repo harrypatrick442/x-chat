@@ -1,4 +1,4 @@
-var Button = new (function(){
+var Button = (function(){
 	var _Button = function(params){
 		EventEnabledBuilder(this);
 		var self = this;

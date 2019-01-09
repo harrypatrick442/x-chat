@@ -1,4 +1,4 @@
-exports.User = new (function(){
+exports.User = (function(){
 	var _User = function(params){
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};

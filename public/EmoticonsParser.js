@@ -1,4 +1,4 @@
-var EmoticonsParser = new (function(){
+var EmoticonsParser = (function(){
 	var _EmoticonsParser = function(params){
 		var emoticonsLibrary = params.emoticonsLibrary;
 		var searchTree = {};

@@ -1,4 +1,4 @@
-exports.Message = new (function(){
+exports.Message = (function(){
 	var _Message = function(params){
 		this.getUserId = function(){return params.userId;};
 		this.getContent = function(){return params.content;};

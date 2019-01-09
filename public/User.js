@@ -1,4 +1,4 @@
-var User = new (function(){
+var User = (function(){
 	const TYPE = 'user';
 	var _User = function(params){
 		this.getId = function(){return params.id;};
