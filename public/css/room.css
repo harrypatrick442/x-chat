@@ -5,12 +5,10 @@ body{
 	position:absolute;
 	box-sizing:border-box;	
 	background-color:rgb(32, 31, 31);
-	
-	
-	left:6px;
-	right:6px;
+	left:0px;
+	right:0px;
 	top:6px;
-	bottom:6px;
+	bottom:0px;
 
 }
 .lobby .rooms .entries .room .top{

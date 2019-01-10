@@ -8,13 +8,15 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues();
 		var rooms = new Rooms({getUserMe:getUserMe});
 		var pmsMenu = new PmsMenu();
-		var buttonUsers = new Button({classNames:['button-users']});
-		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, pmsMenu:pmsMenu, usersMenues:usersMenues});
+		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});
+		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
+		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, pmsMenu:pmsMenu, usersMenues:usersMenues});
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
-		buttonUsers.addEventListener('click', onClickButtonUsers);
+		buttonPms.addEventListener('toggled', onToggleButtonPms);
+		buttonUsers.addEventListener('toggled', onToggleButtonUsers);
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
 		this.getElement = ui.getElement;
@@ -47,8 +49,11 @@ var Lobby = (function(){
 					rooms.incomingMessages(msg);
 			}
 		}
-		function onClickButtonUsers(){
-			ui.showUsersMenues();
+		function onToggleButtonUsers(e){
+			usersMenues.setVisible(e.toggled);
+		}
+		function onToggleButtonPms(e){
+			pmsMenu.setVisible(e.toggled);
 		}
 		function initialize(){
 			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
@@ -105,18 +110,25 @@ var Lobby = (function(){
 		var rooms = params.rooms;
 		var pmsMenu = params.pmsMenu;
 		var buttonUsers = params.buttonUsers;
+		var buttonPms = params.buttonPms;
+		var divButtonShowHideWrapper = E.DIV();
+		
+		
 		var usersMenues = params.usersMenues;
 		var element = E.DIV();
-		element.classList.add('lobby');
 		var right = E.DIV();
+		var divButtonShowHideWrapper = E.DIV();
+		element.classList.add('lobby');
 		right.classList.add('right');
+		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
 		element.appendChild(usersMenues.getElement());
 		element.appendChild(right);
 		right.appendChild(pmsMenu.getElement());
+		right.appendChild(divButtonShowHideWrapper);
 		right.appendChild(rooms.getElement());
-		element.classList.add('lobby');
+		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
+		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
 		this.getElement = function(){return element;};
-		this.showUsersMenues= function(){ usersMenues.show(); };
 	}
 	return _Lobby;
 })();

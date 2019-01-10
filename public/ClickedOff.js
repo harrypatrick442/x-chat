@@ -1,4 +1,4 @@
-var ClickedOff = (function () {
+var ClickedOff = new (function () {
     var entries = [];
     this.register = function (element, callbackHide) {
         new (function (element, callbackHide) {

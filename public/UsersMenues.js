@@ -4,6 +4,7 @@ var UsersMenues = (function(){
 		var ui = new UI();
 		var overlappingEntries = new OverlappingEntries({element:ui.getElement()});
 		this.getElement = ui.getElement;
+		this.setVisible = ui.setVisible;
 		this.add=function(usersMenu){
 			overlappingEntries.add(usersMenu);
 		};
@@ -19,5 +20,14 @@ var UsersMenues = (function(){
 		var element = E.DIV();
 		element.classList.add('users-menues');
 		this.getElement=function(){return element;};
+		var inner = E.DIV();
+		inner.classList.add('inner');
+		element.appendChild(inner);
+		var entries = E.DIV();
+		entries.classList.add('entries');
+		inner.appendChild(entries);
+		this.setVisible = function(value){
+			entries.style.display=value?'block':'none';
+		};
 	}
 })();

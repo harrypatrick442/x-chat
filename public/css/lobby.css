@@ -1,17 +1,73 @@
 body{
-	
+
 }
 .lobby{
-	border:1px solid black;
-	width:100%;
-	position:relative;
-	float:left;
-	height:300px;
-	background-color:rgb(44, 43, 43);
+border:1px solid black;
+width:100%;
+position:relative;
+float:left;
+height:300px;
+background-color:rgb(44, 43, 43);
 }
 .lobby .right{
-	height:100%;
-	overflow:hidden;
-	display: flex;
-	flex-flow: column;
+height:100%;
+overflow:hidden;
+display: flex;
+flex-flow: column;
+}
+.lobby .right .button-show-hide-wrapper{
+float:left;	
+margin-top:0px;
+text-align:center;
+width:100%;
+height:32px;	
+}
+.lobby .right .button-show-hide-wrapper .button-pms{
+cursor:pointer;
+background-repeat:no-repeat;
+background-size:contain;
+background-image:url('/images/pms-show.png');	
+margin:0px;
+position:relative;
+width:60px;
+display:inline-block;
+height:32px;	
+}
+.lobby .right .button-show-hide-wrapper .button-pms:hover{
+
+background-image:url('/images/pms-show-hover.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-pms-hide{
+
+background-image:url('/images/pms-hide.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
+
+background-image:url('/images/pms-hide-hover.png');	
+}
+
+.lobby .right .button-show-hide-wrapper .button-users{
+cursor:pointer;
+background-repeat:no-repeat;
+background-size:contain;
+background-image:url('/images/users-show.png');	
+margin:0px;
+position:relative;
+width:60px;
+display:inline-block;
+height:28px;	
+float:left;
+margin-top:4px;
+}
+.lobby .right .button-show-hide-wrapper .button-users:hover{
+
+background-image:url('/images/users-show-hover.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-users-hide{
+
+background-image:url('/images/users-hide.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-users-hide:hover{
+
+background-image:url('/images/users-hide-hover.png');	
 }
