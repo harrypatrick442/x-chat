@@ -16,7 +16,7 @@ exports.Room = (function(){
 		this.join = function(user){
 			if(users.contains(user))return;
 			users.add(user);
-			user.addEventLitener('dispose', userDispose);
+			user.addEventListener('dispose', userDispose);
 		};
 		this.leave = function(user){
 			if(!users.contains(user))return;
@@ -31,6 +31,8 @@ exports.Room = (function(){
 		};
 		this.sendMessage = function(message){
 			getMessages(function(messages){messages.add(message);});
+			console.log('returning message');
+			users.sendMessage({type:'message', roomId:id, message:message.toJSON()});
 		};
 		initialize();
 		function initialize(){

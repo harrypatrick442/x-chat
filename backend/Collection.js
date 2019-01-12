@@ -1,4 +1,6 @@
-var Collection = (function(){
+exports.Collection = (function(){
+	var each = require('./each').each;
+	console.log(each);
 	var _Collection = function(params){
 		var self = this;
 		var getEntryId = params.getEntryId;

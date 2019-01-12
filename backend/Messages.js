@@ -17,7 +17,6 @@ exports.Messages = (function(){
 		this.toJSON = function(){
 			var jArray=[];
 			each(list, function(message){
-				console.log(message);
 				jArray.push(message.toJSON());
 			});
 			return jArray;

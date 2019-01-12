@@ -109,6 +109,11 @@ var Lobby = (function(){
 		}
 		function createdRoom(e){
 			usersMenues.add(e.room.getUsersMenu());
+			sendJoinRoom(e.room.getId());
+		}
+		function sendJoinRoom(roomId){
+			console.log('sendJoinRoom');
+			mysocket.send({type:'room_join'  ,roomId:roomId, sessionId:sessionId});
 		}
 		function destroyedRoom(e){
 			usersMenues.remove(e.room.getUsersMenu());

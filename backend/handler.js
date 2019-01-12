@@ -28,6 +28,7 @@ exports.handler = new (function(){
 						var user = getUser(req);
 						if(room.isPm()&&!room.userAllowed(user))return;
 						room.join(user);
+						console.log('JOINED');
 						callback({});
 					break;
 					case 'room_message_send':

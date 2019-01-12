@@ -45,6 +45,8 @@ exports.Lobby = (function(){
 			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
 			if(!usernameIsAvailable){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
+			console.log('mysocket is: ');
+			console.log(mysocket);
 					user.setMysocket(mysocket);
 					users.add(user);
 					console.log(user);

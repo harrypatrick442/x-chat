@@ -1,6 +1,6 @@
 exports.User = (function(){
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
-	var Collection = require('./../public/Collection').Collection;
+	var Collection = require('./Collection').Collection;
 	var _User = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
@@ -28,10 +28,10 @@ exports.User = (function(){
 			dispatchDispose();
 		};
 		this.sendMessage = function(msg){
-			mysocket.send(msg);
+			mysocket.sendMessage(msg);
 		};
-		this.setMysocket =function(mysocket){
-			mysocket = mysocket;
+		this.setMysocket =function(mysocketIn){
+			mysocket = mysocketIn;
 		};
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', user:self});

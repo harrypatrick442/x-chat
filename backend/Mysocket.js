@@ -6,7 +6,7 @@ exports.Mysocket = (function(){
 		return new _Mysocket(new Websocket(websocket));
 	};
 	function Websocket(websocket){
-		this.sendMessage=function(){
+		this.sendMessage=function(msg){
 			try{websocket.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
 	}

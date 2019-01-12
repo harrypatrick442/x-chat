@@ -36,9 +36,7 @@ exports.Dal= (function(){
 						console.log(err.message); 
 						throw err;
 					}
-					console.log(result);
 					var rows = result[0];
-					console.log(rows);
 					try{
 						callbackRead(rows);
 					}
