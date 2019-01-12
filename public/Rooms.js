@@ -54,7 +54,17 @@ var Rooms = new (function(){
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('sendmessage', dispatchSendMessage);
 			room.addEventListener('getmessages', dispatchGetMessages);
+			dispatchCreatedRoom(room);
 			return room;
+		}
+		function destroyRoom(room){
+			dispatchDestroyedRoom(room);
+		}
+		function dispatchCreatedRoom(room){
+			self.dispatchEvent({type:'createdroom', room:room});
+		}
+		function dipatchDestroyedRoom(room){
+			self.dispatchEvent({type:'detroyedroom', room:room});
 		}
 		function addEmoticon(e){
 			var emoticonEntry = e.emoticonEntry;

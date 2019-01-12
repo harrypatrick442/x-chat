@@ -1,0 +1,15 @@
+
+.lobby .users-menues .entries .users-menu{
+	position:absolute;
+	height:100%;
+	width:100%;
+	box-sizing:border-box;
+	background-color:rgb(32, 31, 31);
+}
+.lobby .users-menues .entries .users-menu .entries{
+	position:relative;
+	float:left;
+	height:100%;
+	width:100%;
+	box-sizing:border-box;
+}

@@ -1,11 +1,5 @@
+
 .lobby .users-menues{
-	float:left;
-	height:100%;
-	box-sizing:border-box;
-	padding:6px;
-	padding-right:0px;
-}
-.lobby .users-menues .inner{
 	position:relative;
 	float:left;
 	height:100%;

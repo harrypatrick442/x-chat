@@ -1,26 +1,19 @@
 var Users = (function(){
 	var _Users = function(){
 		var self = this;
-		var list =[];
-		var ui = new UI();
-		this.getElement = ui.getElement;
+		var collection = new Collection({getEntryId:getEntryId});
 		this.add=function(user){
-			if(!contains(user))
-				list.push(user);
+			return collection.add(user);
+		};
+		this.getById= function(id){
+			return collection.getById(id);
 		};
 		this.remove=function(user){
-			var index = list.indexOf(user);
-			if(index<0) return;
-			list.splice(index, 1);
+			return collection.remove(user);
 		};
-		function contains(user){
-			return list.indexOf(user)>0;
+		function getEntryId(user){
+			return user.getId();
 		}
 	};
 	return _Users;
-	function UI(){
-		var element = E.DIV();
-		element.classList.add('users');
-		this.getElement=function(){return element;};
-	}
 })();

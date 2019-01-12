@@ -14,8 +14,14 @@ exports.Room = (function(){
 		};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
-			if(!users.contains(user))
-				users.add(user);
+			if(users.contains(user))return;
+			users.add(user);
+			user.addEventLitener('dispose', userDispose);
+		};
+		this.leave = function(user){
+			if(!users.contains(user))return;
+			users.remove(user);
+			user.removeEventListener('dispose', userDispose);
 		};
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};
@@ -35,6 +41,12 @@ exports.Room = (function(){
 				return;
 			}
 			callback(messages);
+		}
+		function dispatchDispose(){
+			self.dispatchEvent({type:'dispose', room:room});
+		}
+		function userDispose(e){
+			users.remove(e.user);
 		}
 	};
 	_Room.fromSqlRow = function(row){

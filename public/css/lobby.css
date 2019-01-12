@@ -9,6 +9,13 @@ float:left;
 height:300px;
 background-color:rgb(44, 43, 43);
 }
+.lobby .left{
+	float:left;
+	height:100%;
+	box-sizing:border-box;
+	padding:6px;
+	padding-right:0px;
+}
 .lobby .right{
 height:100%;
 overflow:hidden;

@@ -23,13 +23,14 @@ exports.Lobby = (function(){
 		this.createRoom = function(){
 			
 		};
-		this.register = function(req, callback){
+		this.register = function(req, mysocket, callback){
 			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
 				if(!usernameIsAvailable){callback({successful:false, error:USERNAME_NOT_AVAILABLE, type:REGISTER});return;}					
 				if(req.password.length<7){ callback( {successful:false, error:PASSWORD_MUST_BE_AT_LEAST_LONG, type:REGISTER}); return;}
 				var salt = bcrypt.genSaltSync(10);
 				var hash = bcrypt.hashSync(req.password, salt);
 				dalUsers.register({hash:hash, username:req.username, email:req.email, gender:req.gender, birthday:req.birthday, isGuest:false}, function(user){
+					user.setMysocket(mysocket);
 					users.add(user);
 					var res = createSession(user);
 					res.type='register';
@@ -37,13 +38,14 @@ exports.Lobby = (function(){
 				});
 			});
 		};
-		this.authenticate = function(req, callback){
-			(req.isGuest? authenticateGuest: authenticate)(req, callback);
+		this.authenticate = function(req, mysocket, callback){
+			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
-		function authenticateGuest(req, callback){
+		function authenticateGuest(req, mysocket, callback){
 			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
 			if(!usernameIsAvailable){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
+					user.setMysocket(mysocket);
 					users.add(user);
 					console.log(user);
 					var res = createSession(user);
@@ -52,12 +54,13 @@ exports.Lobby = (function(){
 				});
 			});
 		}
-		function authenticate(req, callback){
+		function authenticate(req, mysocket, callback){
 			dalUsers.getByName(req.username, function(user){
 				if(!user){return invalidUsernameOrPassword(AUTHENTICATE); return;}
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
 					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
+					user.setMysocket(mysocket);
 					users.add(user);
 					var res = createSession(user);
 					res.type='authenticate';
@@ -69,6 +72,9 @@ exports.Lobby = (function(){
 			var session = new Session({user:user});
 			sessions.add(session);
 			return {successful:true, sessionId:session.getId(), user:user.toJSON()};
+		}
+		function sendUserJoined(user){
+			users.sendMessage({type:'user_joined', user:user.toJSON()});
 		}
 		function invalidUsernameOrPassword(type){return {successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type};}
 	};

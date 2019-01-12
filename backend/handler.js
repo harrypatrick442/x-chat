@@ -2,7 +2,7 @@ exports.handler = new (function(){
 		var lobby = new (require('./Lobby').Lobby)();
 		var Message = require('./Message').Message;
 		var sessions = lobby.getSessions();
-		this.process = function(req, callback){
+		this.process = function(req, mysocket, callback){
 			var res = {};
 			try{
 				console.log('doing');
@@ -13,10 +13,10 @@ exports.handler = new (function(){
 						callback(test(req));
 					break;
 					case 'register':
-						lobby.register(req, callback);
+						lobby.register(req, mysocket, callback);
 						break;
 					case 'authenticate':
-						lobby.authenticate(req, callback);
+						lobby.authenticate(req, mysocket, callback);
 					break;
 					case 'rooms_get':
 						rooms:lobby.getRooms().getInfos(function(infos){

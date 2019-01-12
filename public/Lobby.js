@@ -19,6 +19,8 @@ var Lobby = (function(){
 		buttonUsers.addEventListener('toggled', onToggleButtonUsers);
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
+		rooms.addEventListener('createdroom', createdRoom);
+		rooms.addEventListener('destroyedroom', destroyedRoom);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -105,6 +107,12 @@ var Lobby = (function(){
 			jObject.sessionId=sessionId;
 			mysocket.send(jObject);
 		}
+		function createdRoom(e){
+			usersMenues.add(e.room.getUsersMenu());
+		}
+		function destroyedRoom(e){
+			usersMenues.remove(e.room.getUsersMenu());
+		}
 	};
 	function UI(params){
 		var rooms = params.rooms;
@@ -121,7 +129,10 @@ var Lobby = (function(){
 		element.classList.add('lobby');
 		right.classList.add('right');
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
-		element.appendChild(usersMenues.getElement());
+		var left = E.DIV();
+		left.classList.add('left');
+		element.appendChild(left);
+		left.appendChild(usersMenues.getElement());
 		element.appendChild(right);
 		right.appendChild(pmsMenu.getElement());
 		right.appendChild(divButtonShowHideWrapper);
