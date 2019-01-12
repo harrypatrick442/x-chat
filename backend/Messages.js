@@ -25,12 +25,19 @@ exports.Messages = (function(){
 		function loadMessages(){
 			console.log('loading messages for room: '+roomId);
 			dalMessages.getMessages(roomId, N_MESSAGES_HISTORY, function(messages){
-				serverAssignedNMessage = messages[messages.length-1].getServerAssignedNMessage()+1;
-				console.log('serverAssigendNMessaagee was');
-				console.log(messages[messages.length-1].getServerAssignedNMessage());
+				serverAssignedNMessage = getMaxServerAssignedNMessage(messages)+1;
 				list = messages;
 				callbackLoaded(self);
 			});
+		}
+		function getMaxServerAssignedNMessage(messages){
+			var max =0;
+			each(messages, function(message){
+				var serverAssignedNMessage = message.getServerAssignedNMessage();
+				if(serverAssignedNMessage>max)
+					max=serverAssignedNMessage;
+			});
+			return max;
 		}
 		function overflow(){
 			while(list.length>N_MESSAGES_HISTORY)

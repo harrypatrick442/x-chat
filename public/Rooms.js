@@ -36,7 +36,15 @@ var Rooms = new (function(){
 			if(!room)return;
 			room.incomingMessages(msg.messages);
 		};
+		this.join = function(msg, user){
+			if(!user)return;
+			var room = mapIdToRoom[msg.roomId];
+			if(!room) return;	
+			room.join(user);
+			console.log('JOIN A');
+		};
 		function showRoom(e){
+			console.log('called sow room');
 			var roomInfo = e.roomInfo;
 			var room = mapIdToRoom[roomInfo.id];
 			if(!room)

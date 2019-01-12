@@ -2,17 +2,18 @@ var Room = new (function(){
 	var _Room = function(params){
 		console.log(params);
 		EventEnabledBuilder(this);
+		const MAX_N_MESSAGES=100;
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var emoticonsParser = params.emoticonsParser;
 		var name = params.name;
 		var id = params.id;
-		var usersMenu = new UsersMenu({});
+		var users = new Users();
+		var usersMenu = new UsersMenu({users:users});
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
-		var users = new Users();
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
-		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed()});
+		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.getUsersMenu = function(){return usersMenu;};
@@ -31,6 +32,9 @@ var Room = new (function(){
 			});
 			if(scroll)
 				ui.scrollFeedToBottom();
+		};
+		this.join=function(user){
+			users.add(user);
 		};
 		this.dispose = function(){
 			messages.dispose();
@@ -53,7 +57,7 @@ var Room = new (function(){
 			if(text=='')return;
 			var userMe = getUserMe();
 			console.log(userMe);
-			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser});
+			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser, pending:true});
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);
 			ui.clearText();

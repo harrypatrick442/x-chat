@@ -3,6 +3,8 @@ exports.Room = (function(){
 	var Messages = new require('./Messages').Messages;
 	var Users = new require('./Users').Users;
 	var _Room = function(params){
+		console.log('room params are: ');
+		console.log(params);
 		var self = this;
 		var messages;
 		var users = new Users();
@@ -12,11 +14,12 @@ exports.Room = (function(){
 		this.getMessages = function(callback){
 			getMessages(callback);
 		};
+		this.getUsers=function(){return users;};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
 			if(users.contains(user))return;
 			users.add(user);
-			user.addEventListener('dispose', userDispose);
+			users.sendMessage({type:'room_join', roomId:self.getId(), userId:user.getId()});
 		};
 		this.leave = function(user){
 			if(!users.contains(user))return;
@@ -46,9 +49,6 @@ exports.Room = (function(){
 		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', room:room});
-		}
-		function userDispose(e){
-			users.remove(e.user);
 		}
 	};
 	_Room.fromSqlRow = function(row){

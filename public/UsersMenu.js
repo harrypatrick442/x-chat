@@ -1,15 +1,19 @@
 var UsersMenu =(function(){
-	var _UsersMenu = function(){
+	var _UsersMenu = function(params){
 		var self = this;
 		var ui = new UI();
-		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getElement()});
+		var users = params.users;
+		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.getElement = ui.getElement;
-		this.add=function(userEntry){
-			sortedFilteredEntries.add(userEntry);
-		};
-		this.remove=function(userEntry){
-			sortedFilteredEntries.remove(userEntry);
-		};
+		users.addEventListener('add', userAdd);
+		users.addEventListener('remove', userRemove);
+		function userAdd(e){
+			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
+			sortedFilteredEntries.addEntry(new UserEntry(e.user));
+		}
+		function userRemove(e){
+			sortedFilteredEntries.removeById(e.user.getId());
+		}
 		function compare(userEntryA, userEntryB){
 			
 		}
@@ -21,6 +25,10 @@ var UsersMenu =(function(){
 	function UI(params){
 		var element = E.DIV();
 		element.classList.add('users-menu');
+		var entries = E.DIV();
+		entries.classList.add('entries');
+		element.appendChild(entries);
+		this.getEntries = function(){return entries;};
 		this.getElement=function(){return element;};
 	}
 })();

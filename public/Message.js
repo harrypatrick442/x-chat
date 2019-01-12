@@ -5,19 +5,21 @@ var Message = (function(){
 		var userId = params.userId;
 		var username = params.username;
 		var content = params.content;
-		var uniqueId = params.uniqueId;
 		var connectedImage = new ConnectedImage({type:User.TYPE, id:userId,def:'/images/user-blank.png'});
-		var ui = new UI({connectedImage:connectedImage, content:content, username:username});
+		var ui = new UI({connectedImage:connectedImage, content:content, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
 		this.getUniqueId = function(){
-			return uniqueId;
+			return params.uniqueId;
 		};
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
 		};
-		this.confirm = function(){};
+		this.confirm = function(receivedMessage){
+			params.serverAssignedNMessage = receivedMessage.getServerAssignedNMessage();
+			ui.hidePending();
+		};
 		this.toJSON = function(){
-		return {content:content, userId:userId};
+		return {content:content, userId:userId, uniqueId:params.uniqueId};
 		};
 	};
 	_Message.fromJSON = function(params){
@@ -32,12 +34,13 @@ var Message = (function(){
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  console.log(component); components.push(component);});
 		console.log(params);
-		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, serverAssignedNMessage:params.serverAssignedNMessage});
+		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
-		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId, serverAssignedNMessage:params.serverAssignedNMessage, uniqueId:params.serverAssignedNMessage});
+		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
+		console.log(params);
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';
@@ -58,6 +61,12 @@ var Message = (function(){
 	    var username = E.DIV();
 		username.classList.add('username');
 		var innerUsername = E.DIV();
+		var pending;
+		if(params.pending){
+			pending = E.DIV();
+			pending.classList.add('pending');
+			element.appendChild(pending);
+		}
 		username.appendChild(innerUsername);
 		inner.appendChild(connectedImage.getElement());
 		inner.appendChild(username);
@@ -66,5 +75,6 @@ var Message = (function(){
 		console.log(name);
 		element.appendChild(inner);
 		this.getElement = function(){return element;};
+		this.hidePending = function(){if(pending){element.removeChild(pending);}};
 	}
 })();

@@ -1,21 +1,9 @@
 var UserEntry =(function(){
-	var _UserEntry = function(){
+	var _UserEntry = function(user){
 		var self = this;
 		var ui = new UI();
-		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getElement()});
 		this.getElement = ui.getElement;
-		this.add=function(userEntry){
-			sortedFilteredEntries.add(userEntry);
-		};
-		this.remove=function(userEntry){
-			sortedFilteredEntries.remove(userEntry);
-		};
-		function dispose(){
-			dipatchDispose();
-		}
-		function dispatchDispose(){
-			self.dispatchEvent({type:'dispose', userEntry:self});
-		}
+		this.getId = function(){return user.getId();};
 	};
 	return _UserEntry;
 	function UI(params){

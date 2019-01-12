@@ -32,6 +32,7 @@ exports.User = (function(){
 		};
 		this.setMysocket =function(mysocketIn){
 			mysocket = mysocketIn;
+			mysocket.addEventListener('close', self.dispose);
 		};
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', user:self});

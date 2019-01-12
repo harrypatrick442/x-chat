@@ -9,9 +9,11 @@ exports.Message = (function(){
 		};
 	};
 	_Message.fromSqlRow = function(row){
+		row.uniqueId = row.serverAssignedNMessage;
 		return new _Message(row);
 	};
 	_Message.fromRequest=function(req, user){
+		console.log(req);
 		req.userId = user.getId();
 		req.username = user.getUsername();
 		return new _Message(req);

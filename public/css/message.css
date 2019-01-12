@@ -8,6 +8,14 @@
 	box-sizing:border-box;
 	padding:1px;
 	display:inline-block;
+	position:relative;
+}.lobby .rooms .room .feed .message .pending{
+	left:0px;
+	right:0px;
+	top:0px;
+	bottom:0px;
+	position:absolute;
+	background-color: rgba(0, 0, 0, 0.4);
 }
 .lobby .rooms .room .feed .message .inner{
 	width:100%;

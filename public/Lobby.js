@@ -44,6 +44,11 @@ var Lobby = (function(){
 				case 'rooms':
 					rooms.set(msg.rooms);
 					break;
+				case 'room_join':
+					var user = users.getById(msg.userId);
+					if(!user)return;
+					rooms.join(msg, user);
+					break;
 				case 'message':
 					rooms.incomingMessage(msg);
 					break;
@@ -84,6 +89,7 @@ var Lobby = (function(){
 				sessionId = msg.sessionId;
 				console.log(msg.user);
 				userMe = User.fromJSON(msg.user);
+				users.add(userMe);
 				Authenticate.hide();
 				getRooms();
 				return;

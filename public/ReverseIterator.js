@@ -27,6 +27,14 @@ function ReverseIterator(array)
     };
 	this.insert = function(entry){
 		array.splice(index+1, 0, entry);
-		lenth++;
+		length++;
+	};
+	this.insertAfter = function(entry){
+		array.splice(index+2, 0, entry);
+		length++;
+	};
+	this.append = function(entry){
+		array.push(entry);
+		length++;
 	};
 }

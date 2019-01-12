@@ -12,9 +12,11 @@ var Messages = new (function(){
 			overflow();
 		};
 		this.addReceived=function(message){
+			console.log('received uniqueId is: ');
+			console.log(message.getUniqueId());
 			var mappedMessage = mapUniqueIdToMessage[message.getUniqueId()];
 			if(mappedMessage){
-				mappedMessage.confirm();
+				mappedMessage.confirm(message);
 			}
 			else{
 				mapUniqueIdToMessage[message.getUniqueId()]=message;
@@ -39,8 +41,10 @@ var Messages = new (function(){
 		};
 		function insertInPlace(message){
 			var serverAssignedNMessage = message.getServerAssignedNMessage();
+			console.log(serverAssignedNMessage);
 			if(messages.length<1)
 			{
+				messages.push(message);
 				element.appendChild(message.getElement());
 				return;
 			}
@@ -48,16 +52,23 @@ var Messages = new (function(){
 			while(reverseIterator.hasNext()){
 				var placedMessage = reverseIterator.next();
 				if(placedMessage.getServerAssignedNMessage()<serverAssignedNMessage){
-					iterator.insert(message);
-					if(!iterator.hasPrevious())
-						element.appendChild(message.getElement());
-					else
-						iterator.previous().getElement().insertBefore(message.getElement());
+					if(reverseIterator.hasPrevious())
+					{
+						var nextSibling = reverseIterator.previous().getElement().nextSibling;
+						if(nextSibling){
+							console.log('next sibling way');
+							element.insertBefore(message.getElement(), nextSibling);
+							reverseIterator.insertAfter(message);
+							return;
+						}
+						console.log('non next sibling way');
+					}
+					element.appendChild(message.getElement());
+					reverseIterator.append(message);
 					return;
 				}
 			}
-			messages[0].getElement().insertBefore(message.getElement());
-			mapUniqueIdToMessage[message.getUniqueId()]=message;
+			element.insertBefore(message.getElement(), messages[0].getElement());
 		}
 		function append(message){
 			messages.push(message);
@@ -65,6 +76,8 @@ var Messages = new (function(){
 			element.appendChild(message.getElement());
 		}
 		function overflow(){
+			console.log(messages.length);
+			console.log(maxNMessages);
 			while(messages.length>maxNMessages){
 				var message = messages.splice(0, 1)[0];
 				delete mapUniqueIdToMessage[message.getUniqueId()];

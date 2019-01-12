@@ -5,12 +5,10 @@ var Collection = (function(){
 		var list =[];
 		var mapIdToItem={};
 		this.add=function(item){
-			if(!self.contains(item))
+			if(self.contains(item))return false;
 				list.push(item);
 			mapIdToItem[getEntryId(item)]=item;
-		};
-		this.getById= function(id){
-			return mapIdToItem[id];
+			return true;
 		};
 		this.remove=function(item){
 			if(!self.contains(item)) return false;
@@ -22,6 +20,8 @@ var Collection = (function(){
 			return mapIdToItem[getEntryId(item)]?true:false;
 		};
 		this.getById= function(id){
+			console.log('asdfdfasdafs');
+			console.log(mapIdToItem);
 			return mapIdToItem[id];
 		};
 		this.each = function(func){

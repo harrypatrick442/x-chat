@@ -26,6 +26,9 @@ exports.Collection = (function(){
 		this.getById= function(id){
 			return mapIdToItem[id];
 		};
+		this.getEntryIds = function(){
+			return Object.keys(mapIdToItem);
+		};
 		this.each = function(func){
 			each(list, func);
 		};

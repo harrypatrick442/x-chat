@@ -8,14 +8,14 @@ exports.endpoint = function(app){
 	});
 	app.ws('/endpoint', function(ws, req) {
 		try{
-		console.log('created endpoint');
-	  var mysocket = Mysocket.fromWebsocket(ws);
 	  (function(mysocket){
 		  ws.on('message', function(msg) {
-			  console.log(msg);
-			handler.process(JSON.parse(msg), mysocket, function(res){ws.send(JSON.stringify(res));});
+				handler.process(JSON.parse(msg), mysocket, function(res){ws.send(JSON.stringify(res));});
 		  });
-	  })(mysocket);
+		  ws.on('close', function(){
+				mysocket.close();
+		  });
+	  })(Mysocket.fromWebsocket(ws));
 	  console.log('socket', req.testing);
 		}catch(ex){console.log(ex);}
 	});

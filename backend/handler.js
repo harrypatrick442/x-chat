@@ -28,8 +28,6 @@ exports.handler = new (function(){
 						var user = getUser(req);
 						if(room.isPm()&&!room.userAllowed(user))return;
 						room.join(user);
-						console.log('JOINED');
-						callback({});
 					break;
 					case 'room_message_send':
 						var room = getRoom(req);
@@ -39,9 +37,7 @@ exports.handler = new (function(){
 					case 'room_messages_get':
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
-						console.log('passed validation on get messages');
 						room.getMessages(function(messages){
-							console.log('and now doing callback');
 							callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
 						});	
 					break;
