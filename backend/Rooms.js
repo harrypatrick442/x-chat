@@ -23,6 +23,13 @@ exports.Rooms = (function(){
 			}
 			callback(_getInfos());
 		};
+		this.setRoomsUserIsIn=function (user, roomIds){
+			var roomIdsUserIsIn = user.getRoomIdsIsIn().select(x=>x.getId()).toList();
+			var roomsToJoin = roomIds.where(x=>roomIdsUserIsIn.indexOf(x)<0).select(x=>self.getRoom(x)).where(x=>!x.isPm()||x.userAllowed(user));
+			var roomsToLeave = roomIdsUserIsIn.where(x=>roomIds.indexOf(x)<0).select(x=>self.getRoom(x));
+			roomsToLeave.each(x=>x.leave(user));
+			roomsToJoin.each(x=>x.join(user));
+		};
 		function _getInfos(){
 			var list =[];
 			for(var id in mapIdToRoom){

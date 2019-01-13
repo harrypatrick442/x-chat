@@ -22,6 +22,7 @@ var Lobby = (function(){
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
+		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -49,7 +50,7 @@ var Lobby = (function(){
 					rooms.set(msg.rooms);
 					break;
 				case 'room_join':
-					roomJoin(msg);
+					roomJoin(msg);//sends a complete list of users who should be in the room. Ids only. it is expected the user can be acquired from the lobby, unless they are missing in which case the missingusersmanager handles that.
 					break;
 				case 'message':
 					rooms.incomingMessage(msg);
@@ -66,7 +67,7 @@ var Lobby = (function(){
 			var room = rooms.getById(msg.roomId);
 			if(!room)return;
 			each(msg.userIds, function(userId){
-				roomJoinUserById(room, userId);//does not handle dropping users.
+				roomJoinUserById(room, userId);
 			});
 		}
 		function roomJoinUserById(room, userId){
@@ -97,6 +98,10 @@ var Lobby = (function(){
 			obj.type='authenticate';
 			obj.isGuest=true;	
 			mysocket.send(obj);
+		}
+		function callbackRoomsInChanged(e){
+			console.log('ROOMS IN CHANGED');
+			mysocket.send({type:'rooms_in_changed', sessionId:sessionId, roomIds:e.roomIds});
 		}
 		function authenticateResponse(msg){
 			authenticateRegisterResponse(msg);
@@ -146,10 +151,6 @@ var Lobby = (function(){
 		}
 		function createdRoom(e){
 			usersMenues.add(e.room.getUsersMenu());
-			sendJoinRoom(e.room.getId());
-		}
-		function sendJoinRoom(roomId){
-			mysocket.send({type:'room_join'  ,roomId:roomId, sessionId:sessionId});
 		}
 		function destroyedRoom(e){
 			usersMenues.remove(e.room.getUsersMenu());

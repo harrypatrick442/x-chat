@@ -17,7 +17,9 @@ exports.Room = (function(){
 		this.getUsers=function(){return users;};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
+			console.log('JOIN');
 			if(users.contains(user))return;
+			console.log('JOIN 2')
 			users.add(user);
 			users.sendMessage({type:'room_join', roomId:self.getId(), userIds:users.getIds()});
 		};
@@ -52,7 +54,7 @@ exports.Room = (function(){
 		}
 	};
 	_Room.fromSqlRow = function(row){
-		return new _Room({name:row.name, id:row.id, isPm:row.isPm});
+		return new _Room({name:row.name, id:String(row.id), isPm:row.isPm});
 	};
 	return _Room;
 })();

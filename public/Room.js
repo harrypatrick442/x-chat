@@ -13,7 +13,8 @@ var Room = new (function(){
 		var usersMenu = new UsersMenu({users:users});
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons});
+		var buttonExit = new Button({className:'button-exit'});
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -36,6 +37,7 @@ var Room = new (function(){
 				ui.scrollFeedToBottom();
 		};
 		this.join=function(user){
+			if(users.contains(user))return;
 			users.add(user);
 		};
 		this.dispose = function(){
@@ -46,10 +48,14 @@ var Room = new (function(){
 		
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
+		buttonExit.addEventListener('exit', exit);
 		ui.addEventListener('keypress',keyPressed);
 		new Task(load).run();
 		function load(){
 			getMessagesFromServer();
+		}
+		function exit(){
+			dispatchDispose();
 		}
 		function getMessagesFromServer(){
 			self.dispatchEvent({type:'getmessages', roomId:id});
@@ -58,7 +64,6 @@ var Room = new (function(){
 			var text = ui.getTextValue();
 			if(text=='')return;
 			var userMe = getUserMe();
-			console.log(userMe);
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser, pending:true});
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);
@@ -70,6 +75,9 @@ var Room = new (function(){
 		}
 		function dispatchSendMessage(message){
 			self.dispatchEvent({type:'sendmessage',message:message, roomId:id});
+		}
+		function dispatchDispose(){
+			self.dispatchEvent({type:'dispose', room:self});
 		}
 		function getUserIdMe(){
 			var user = getUserMe();

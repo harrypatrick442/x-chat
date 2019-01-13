@@ -91,8 +91,6 @@ exports.Lobby = (function(){
 			temporalCallbackSendUserIds.trigger();
 		}
 		function callbackSendUserIds(){
-console.log(users.getIds());
-console.log('ticking a'+users.getIds);
 			users.sendMessage({type:'userids', userIds:users.getIds()});
 		}
 		function createSession(user){

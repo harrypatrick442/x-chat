@@ -29,7 +29,7 @@ Enumerable.prototype.each=function(func){
 	while (this.moveNext()) {
 		func(this.current());
 	}
-}
+};
 Array.prototype.select = function (func) {
 	return Enumerable.fromArray(this).select(func);
 };
@@ -38,4 +38,4 @@ Array.prototype.where = function (func) {
 };
 Array.prototype.each=function(func){
 	return Enumerable.fromArray(this).each(func);
-}
+};

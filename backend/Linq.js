@@ -1,21 +1,21 @@
 (function(){
 	var Enumerable = require('./Enumerable').Enumerable;
 	console.log(Enumerable);
-		Enumerable.prototype.toList = function () {
+	Enumerable.prototype.toList = function () {
 		var list = [];
 		var self = this;
-		while (self.moveNext()) {
+		while (this.moveNext()) {
 			list.push(self.current());
 		}
 		return list;
 	};
 	Enumerable.prototype.select = function (func) {
 		var self = this;
-		return new Enumerable(self.moveNext,
+		return new Enumerable(this.moveNext,
 			function current() {
 				return func(self.current());
 			},
-			self.reset);
+			this.reset);
 	};
 	Enumerable.prototype.where = function (func) {
 		var self = this;
@@ -25,13 +25,28 @@
 				} while (!func(self.current()));
 				return true;
 			},
-			self.current,
-			self.reset);
+			this.current,
+			this.reset);
+	};
+	Enumerable.prototype.each=function(func){
+		while (this.moveNext()) {
+			func(this.current());
+		}
+	};
+	Enumerable.prototype.count=function(func){
+		var count=0;
+		while (this.moveNext()) {
+			count++;
+		}
+		return count;
 	};
 	Array.prototype.select = function (func) {
 		return Enumerable.fromArray(this).select(func);
 	};
 	Array.prototype.where = function (func) {
 		return Enumerable.fromArray(this).where(func);
+	};
+	Array.prototype.each=function(func){
+		return Enumerable.fromArray(this).each(func);
 	};
 })();

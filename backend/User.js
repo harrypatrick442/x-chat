@@ -21,9 +21,6 @@ exports.User = (function(){
 			roomsCollection.remove(room);
 			room.removeEventListener('dispose', roomDisposed);
 		};
-		function roomDisposed(){
-			roomsCollection.remove(room);
-		}
 		this.dispose = function(){
 			dispatchDispose();
 		};
@@ -34,6 +31,12 @@ exports.User = (function(){
 			mysocket = mysocketIn;
 			mysocket.addEventListener('close', self.dispose);
 		};
+		this.getRoomIdsIsIn= function(){
+			return roomsCollection.getEntryIds();
+		};
+		function roomDisposed(){
+			roomsCollection.remove(room);
+		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', user:self});
 		}

@@ -7,7 +7,7 @@ exports.dalMessages= new (function(){
 	var each = require('./../each').each;
 	
 	this.getMessages = function(roomId, nMessages, callbackGotMessages){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGES_GET, parameters:[roomId, nMessages], callbackRead:function(rows){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGES_GET, parameters:[parseInt(roomId), nMessages], callbackRead:function(rows){
 			var messages=[];
 			each(rows, function(row){
 				messages.push(Message.fromSqlRow(row));
@@ -16,6 +16,6 @@ exports.dalMessages= new (function(){
 		}});
 	};
 	this.addMessage= function(roomId, message){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGE_ADD, parameters:[roomId, message.getUserId(), message.getContent(), message.getServerAssignedNMessage()]});
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGE_ADD, parameters:[parseInt(roomId), message.getUserId(), message.getContent(), message.getServerAssignedNMessage()]});
 	};
 })();

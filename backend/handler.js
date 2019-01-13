@@ -22,12 +22,11 @@ exports.handler = new (function(){
 							callback({type:'rooms', rooms:infos});
 						});
 					break;
-					case 'room_join':
-						var room = getRoom(req);
+					case 'rooms_in_changed':
 						var user = getUser(req);
-						if(room.isPm()&&!room.userAllowed(user))return;
-						room.join(user);
-					break;
+						if(!user)return;
+						lobby.getRooms().setRoomsUserIsIn(user, req.roomIds);
+						break;
 					case 'room_message_send':
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
