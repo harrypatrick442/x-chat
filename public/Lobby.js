@@ -22,7 +22,6 @@ var Lobby = (function(){
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
-		rooms.addEventListener('missingusers', missingUsersCallback);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -57,6 +56,10 @@ var Lobby = (function(){
 					break;
 				case 'messages':
 					rooms.incomingMessages(msg);
+					break;
+				case 'userids':
+					updateUserIdsLobby(msg.userIds);
+					break;
 			}
 		}
 		function roomJoin(msg){
@@ -72,9 +75,6 @@ var Lobby = (function(){
 					room.join(user);
 				else
 					missingUsersManager.get(userId);
-		}
-		function missingUsersCallback(e){
-			missingUsers.getRange(e.missingUsers);
 		}
 		function onToggleButtonUsers(e){
 			usersMenues.setVisible(e.toggled);
@@ -103,6 +103,13 @@ var Lobby = (function(){
 		}
 		function registerResponse(msg){
 			authenticateRegisterResponse(msg);
+		}
+		function updateUserIdsLobby(userIds){
+		    userIds.where(x=>!users.containsId(x)).each(x=>missingUsersManager.get(x));
+		    var toRemove = users.getIds().where(x=>userIds.indexOf(x)<0).each(function(userId){
+				var user = users.getById(userId);
+				if(user)user.dispose();
+			});
 		}
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
@@ -153,7 +160,7 @@ var Lobby = (function(){
 				users.add(user);
 			var userIds = msg.userIds;
 			if(!userIds)return;
-			users.updateFromIds(userIds);
+			updateUserIdsLobby(userIds);
 		}
 	};
 	function UI(params){

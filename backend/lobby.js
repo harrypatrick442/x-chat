@@ -39,8 +39,8 @@ exports.Lobby = (function(){
 					var res = createSession(user);
 					res.type='register';
 					res.users = users.toJSON();
-					sendJoin(user);
 					users.add(user);
+					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
 					callback(res);
 				});
@@ -58,8 +58,8 @@ exports.Lobby = (function(){
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
-					sendJoin(user);
 					users.add(user);
+					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
 					callback(res);
 				});
@@ -75,8 +75,8 @@ exports.Lobby = (function(){
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
-					sendJoin(user);
 					users.add(user);
+					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
 					callback(res);	
 				});
@@ -88,10 +88,12 @@ exports.Lobby = (function(){
 		}
 		function sendUserIds(){
 			//dont want to send too frequently.
-			temporalCallbackSendUserIds.reset();
+			temporalCallbackSendUserIds.trigger();
 		}
 		function callbackSendUserIds(){
-			users.sendMessage({type:'userIds', userIds:users.getIds()});
+console.log(users.getIds());
+console.log('ticking a'+users.getIds);
+			users.sendMessage({type:'userids', userIds:users.getIds()});
 		}
 		function createSession(user){
 			var session = new Session({user:user});

@@ -7,22 +7,22 @@ exports.TemporalCallback = (function(){
 		var maxTotalDelay = params.maxTotalDelay;
 		var delay = params.delay;
 		if(!maxNTriggers&&!maxTotalDelay)maxTotalDelay=3*delay;
-		var timerDelay = new Timer({callback:tick, delay:delay, nDelays:1});
-		var timerMaxDelay = new Timer({callback:tick, delay:maxTotalDelay, nDelays:1});
-		var nDelay=0;
+		var timerDelay = new Timer({callback:tick, delay:delay, nTicks:1});
+		var timerMaxDelay = new Timer({callback:tick, delay:maxTotalDelay, nTicks:1});
+		var nTriggers=0;
 		this.trigger=function(){
 			nTriggers++;
-			if(!timer.isRunning()){timer.start(); return;}
+			if(!timerDelay.isRunning()){timerDelay.start(); timerMaxDelay.start(); return;}
 			if(maxNTriggers&&nTriggers>maxNDelays){
 				tick();
 				return;
 			}
-			timer.reset();
+			timerDelay.reset();
 		};
 		function tick(){
 			timerDelay.stop();
-			timeMaxDelay.stop();
-			nTrigger=0;
+			timerMaxDelay.stop();
+			nTriggers=0;
 			callback();
 		}
 	};

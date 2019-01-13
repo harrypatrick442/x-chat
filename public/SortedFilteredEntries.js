@@ -25,8 +25,13 @@ var SortedFilteredEntries = new (function () {
             var index = entries.indexOf(entry);
             if (index < 0) return;
             entries.splice(index, 1);
-            element.removeChild(entry);
+            element.removeChild(entry.getElement());
             delete mapIdToEntry[getEntryId(entry)];
+        };
+        this.removeEntryById = function (entryId) {
+			var entry = self.getByEntryId(entryId);
+			if(!entry)return;
+			self.removeEntry(entry);
         };
         this.clear = function () {
             while (entries.length > 0) {

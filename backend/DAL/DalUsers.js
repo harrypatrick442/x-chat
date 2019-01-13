@@ -5,7 +5,7 @@ exports.dalUsers= new (function(){
     var dalXChat = require('./DalXChat').dalXChat;	
 	var User = require('./../User').User;
 	this.getHash = function(userId, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_HASH_GET, parameters:[userId],
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_HASH_GET, parameters:[parseInt(userId)],
 		callbackRead:function(rows){
 			var hash;
 			if(rows.length>0){

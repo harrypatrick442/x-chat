@@ -16,14 +16,21 @@ var Collection = (function(){
 			delete mapIdToItem[getEntryId(item)];
 			return true;
 		};
+		this.removeById=function(id){
+			var item = self.getById(id);
+			if(!item)return;
+			list.splice(list.indexOf(item), 1);
+			delete mapIdToItem[id];
+			return item;
+		};
 		this.contains=function(item){
 			return mapIdToItem[getEntryId(item)]?true:false;
 		};
 		this.getById= function(id){
 			return mapIdToItem[id];
 		};
-		this.containsEntryId=function(id){return mapIdToItem[id]?true:false;};
-		this.getEntryIds = function(){
+		this.containsId=function(id){return mapIdToItem[id]?true:false;};
+		this.getIds = function(){
 			return Object.keys(mapIdToItem);
 		};
 		this.each = function(func){

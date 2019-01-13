@@ -42,6 +42,7 @@ exports.User = (function(){
 		}
 	};
 	_User.fromSqlRow = function(row){
+		row.id = String(row.id);
 		return new _User(row);
 	};
 	_User.fromJSON= function(jObject){

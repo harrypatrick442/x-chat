@@ -18,7 +18,7 @@ exports.Users = (function(){
 			collection.each(function(user){
 				user.sendMessage(msg);
 			});
-		};
+		};	
 		this.toJSON=function(){
 			return collection.getEntries().select(x=>x.toJSON()).toList();
 		};

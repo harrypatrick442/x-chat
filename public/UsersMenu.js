@@ -12,7 +12,7 @@ var UsersMenu =(function(){
 			sortedFilteredEntries.addEntry(new UserEntry(e.user));
 		}
 		function userRemove(e){
-			sortedFilteredEntries.removeById(e.user.getId());
+			sortedFilteredEntries.removeEntryById(e.user.getId());
 		}
 		function compare(userEntryA, userEntryB){
 			return userEntryA.getUsername()>userEntryB.getUsername();
