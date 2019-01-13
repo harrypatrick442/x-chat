@@ -12,8 +12,10 @@ var ConnectedImage = (function(){
 		var img = E.IMG();
 		element.appendChild(img);
 		img.src=def;
+		var errorCount=0;
 		img.onerror = function () {
-			img.src = def;
+			if(errorCount++<2)
+				img.src = def;
 		};
 		this.getElement = function(){return element;};
 		this.dispose = function(){

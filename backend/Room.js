@@ -19,7 +19,7 @@ exports.Room = (function(){
 		this.join = function(user){
 			if(users.contains(user))return;
 			users.add(user);
-			users.sendMessage({type:'room_join', roomId:self.getId(), userId:user.getId()});
+			users.sendMessage({type:'room_join', roomId:self.getId(), userIds:users.getIds()});
 		};
 		this.leave = function(user){
 			if(!users.contains(user))return;

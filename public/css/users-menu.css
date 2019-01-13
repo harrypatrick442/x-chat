@@ -12,11 +12,5 @@
 	height:100%;
 	width:100%;
 	box-sizing:border-box;
-}
-.lobby .users-menues .entries .users-menu .user-entry{
-	position:relative;
-	float:left;
-	height:100%;
-	width:100%;
-	box-sizing:border-box;
+	padding:3px;
 }

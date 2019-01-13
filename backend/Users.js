@@ -1,5 +1,6 @@
 exports.Users = (function(){
 	var Collection = require('./Collection').Collection;
+	require('./Linq');
 	var _Users = function(){
 		var collection = new Collection({getEntryId:getEntryId});
 		var list=[];
@@ -17,6 +18,9 @@ exports.Users = (function(){
 			collection.each(function(user){
 				user.sendMessage(msg);
 			});
+		};
+		this.toJSON=function(){
+			return collection.getEntries().select(x=>x.toJSON()).toList();
 		};
 		function getEntryId(user){
 			return user.getId();

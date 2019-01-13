@@ -1,12 +1,11 @@
 var Message = (function(){
 	var _Message = function(params){
-		console.log(params);
 		var self = this;
 		var userId = params.userId;
 		var username = params.username;
 		var content = params.content;
-		var connectedImage = new ConnectedImage({type:User.TYPE, id:userId,def:'/images/user-blank.png'});
-		var ui = new UI({connectedImage:connectedImage, content:content, username:username, pending:params.pending});
+		var userImage = new UserImage({userId:userId});
+		var ui = new UI({userImage:userImage, content:content, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
 		this.getUniqueId = function(){
 			return params.uniqueId;
@@ -32,15 +31,13 @@ var Message = (function(){
 		var emoticonsParser = params.emoticonsParser;
 		var components =[] ;
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
-		function(component){  console.log(component); components.push(component);});
-		console.log(params);
+		function(component){  components.push(component);});
 		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
 		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
-		console.log(params);
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';
@@ -53,7 +50,7 @@ var Message = (function(){
 	function UI(params){
 		var content = params.content;
 		var name = params.username;
-		var connectedImage = params.connectedImage;
+		var userImage = params.userImage;
 		var element = E.DIV();
 		element.classList.add('message');
 		var inner = E.DIV();
@@ -68,11 +65,10 @@ var Message = (function(){
 			element.appendChild(pending);
 		}
 		username.appendChild(innerUsername);
-		inner.appendChild(connectedImage.getElement());
+		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
 		innerUsername.innerHTML += name&&name.length>0?name:'&nbsp;';
 		inner.innerHTML +=content;
-		console.log(name);
 		element.appendChild(inner);
 		this.getElement = function(){return element;};
 		this.hidePending = function(){if(pending){element.removeChild(pending);}};

@@ -50,7 +50,7 @@ var SortedFilteredEntries = new (function () {
                 return;
             }
             entries.push(entry);
-            entries[insertAtIndex].getElement().insertBefore(entry.getElement());
+            element.insertBefore(entry.getElement(),entries[insertAtIndex].getElement());
         }
         function map(entry) {
             mapIdToEntry[getEntryId(entry)] = entry;

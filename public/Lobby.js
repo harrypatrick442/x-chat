@@ -4,9 +4,10 @@ var Lobby = (function(){
 		var sessionId;
 		var userMe;
 		const url = '/servlet';
-		var users = new Users();
+		var users = new Users({});
+		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues();
-		var rooms = new Rooms({getUserMe:getUserMe});
+	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById});
 		var pmsMenu = new PmsMenu();
 		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
@@ -21,6 +22,7 @@ var Lobby = (function(){
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
+		rooms.addEventListener('missingusers', missingUsersCallback);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -30,6 +32,9 @@ var Lobby = (function(){
 			switch(msg.type){
 				case 'test':
 					console.log(msg);
+					break;
+				case 'join':
+					join(msg);
 					break;
 				case 'users':
 					users.update(msg.users);
@@ -45,9 +50,7 @@ var Lobby = (function(){
 					rooms.set(msg.rooms);
 					break;
 				case 'room_join':
-					var user = users.getById(msg.userId);
-					if(!user)return;
-					rooms.join(msg, user);
+					roomJoin(msg);
 					break;
 				case 'message':
 					rooms.incomingMessage(msg);
@@ -55,6 +58,23 @@ var Lobby = (function(){
 				case 'messages':
 					rooms.incomingMessages(msg);
 			}
+		}
+		function roomJoin(msg){
+			var room = rooms.getById(msg.roomId);
+			if(!room)return;
+			each(msg.userIds, function(userId){
+				roomJoinUserById(room, userId);//does not handle dropping users.
+			});
+		}
+		function roomJoinUserById(room, userId){
+				var user = users.getById(userId);
+				if(user)
+					room.join(user);
+				else
+					missingUsersManager.get(userId);
+		}
+		function missingUsersCallback(e){
+			missingUsers.getRange(e.missingUsers);
 		}
 		function onToggleButtonUsers(e){
 			usersMenues.setVisible(e.toggled);
@@ -90,6 +110,7 @@ var Lobby = (function(){
 				console.log(msg.user);
 				userMe = User.fromJSON(msg.user);
 				users.add(userMe);
+				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
 				getRooms();
 				return;
@@ -102,6 +123,9 @@ var Lobby = (function(){
 		}
 		function getMessages(e){
 			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
+		}
+		function getUserById(userId){
+			return users.getById(userId);
 		}
 		function getUserMe(){
 			return userMe;
@@ -118,11 +142,18 @@ var Lobby = (function(){
 			sendJoinRoom(e.room.getId());
 		}
 		function sendJoinRoom(roomId){
-			console.log('sendJoinRoom');
 			mysocket.send({type:'room_join'  ,roomId:roomId, sessionId:sessionId});
 		}
 		function destroyedRoom(e){
 			usersMenues.remove(e.room.getUsersMenu());
+		}
+		function join(msg){
+			var user = User.fromJSON(msg.user);
+			if(!users.contains(user))
+				users.add(user);
+			var userIds = msg.userIds;
+			if(!userIds)return;
+			users.updateFromIds(userIds);
 		}
 	};
 	function UI(params){

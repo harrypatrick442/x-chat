@@ -5,8 +5,11 @@ exports.Lobby = (function(){
 	const PASSWORD_MUST_BE_AT_LEAST_LONG = 'Password must be at least 7 characters long';
 	const AUTHENTICATE= 'authenticate';
 	const REGISTER='register';
+	const SEND_USER_IDS_MAX_N_DELAYS=5;
+	const SEND_USER_IDS_DELAY=1000;
 	var Rooms = require('./Rooms').Rooms;
 	var Users = require('./Users').Users;
+	var TemporalCallback=require('./TemporalCallback').TemporalCallback;
 	var Sessions = require('./Sessions').Sessions;
 	var Session = require('./Session').Session;
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
@@ -16,6 +19,8 @@ exports.Lobby = (function(){
 		var rooms = new Rooms();
 		var users = new Users();
 		var sessions = new Sessions();
+		var temporalCallbackSendUserIds = new TemporalCallback({maxNDelays:SEND_USER_IDS_MAX_N_DELAYS/*if keeps being reset within delay, will wait up to this total amount of time*/
+																			, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
 		this.getRooms = function(){return rooms;};
 		this.getSessions=function(){
 			return sessions;
@@ -31,9 +36,12 @@ exports.Lobby = (function(){
 				var hash = bcrypt.hashSync(req.password, salt);
 				dalUsers.register({hash:hash, username:req.username, email:req.email, gender:req.gender, birthday:req.birthday, isGuest:false}, function(user){
 					user.setMysocket(mysocket);
-					users.add(user);
 					var res = createSession(user);
 					res.type='register';
+					res.users = users.toJSON();
+					sendJoin(user);
+					users.add(user);
+					user.addEventListener('dispose', userDispose);
 					callback(res);
 				});
 			});
@@ -45,13 +53,14 @@ exports.Lobby = (function(){
 			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
 			if(!usernameIsAvailable){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
-			console.log('mysocket is: ');
-			console.log(mysocket);
 					user.setMysocket(mysocket);
-					users.add(user);
 					console.log(user);
 					var res = createSession(user);
 					res.type='authenticate';
+					res.users = users.toJSON();
+					sendJoin(user);
+					users.add(user);
+					user.addEventListener('dispose', userDispose);
 					callback(res);
 				});
 			});
@@ -63,20 +72,34 @@ exports.Lobby = (function(){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
 					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
 					user.setMysocket(mysocket);
-					users.add(user);
 					var res = createSession(user);
 					res.type='authenticate';
+					res.users = users.toJSON();
+					sendJoin(user);
+					users.add(user);
+					user.addEventListener('dispose', userDispose);
 					callback(res);	
 				});
 		    });
+		}
+		function userDispose(e){
+			var user = e.user;
+			sendUserIds();
+		}
+		function sendUserIds(){
+			//dont want to send too frequently.
+			temporalCallbackSendUserIds.reset();
+		}
+		function callbackSendUserIds(){
+			users.sendMessage({type:'userIds', userIds:users.getIds()});
 		}
 		function createSession(user){
 			var session = new Session({user:user});
 			sessions.add(session);
 			return {successful:true, sessionId:session.getId(), user:user.toJSON()};
 		}
-		function sendUserJoined(user){
-			users.sendMessage({type:'user_joined', user:user.toJSON()});
+		function sendJoin(user){
+			users.sendMessage({type:'join', user:user.toJSON(), userIds:users.getIds()});
 		}
 		function invalidUsernameOrPassword(type){return {successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type};}
 	};

@@ -12,8 +12,6 @@ var Messages = new (function(){
 			overflow();
 		};
 		this.addReceived=function(message){
-			console.log('received uniqueId is: ');
-			console.log(message.getUniqueId());
 			var mappedMessage = mapUniqueIdToMessage[message.getUniqueId()];
 			if(mappedMessage){
 				mappedMessage.confirm(message);
@@ -41,7 +39,6 @@ var Messages = new (function(){
 		};
 		function insertInPlace(message){
 			var serverAssignedNMessage = message.getServerAssignedNMessage();
-			console.log(serverAssignedNMessage);
 			if(messages.length<1)
 			{
 				messages.push(message);
@@ -56,12 +53,10 @@ var Messages = new (function(){
 					{
 						var nextSibling = reverseIterator.previous().getElement().nextSibling;
 						if(nextSibling){
-							console.log('next sibling way');
 							element.insertBefore(message.getElement(), nextSibling);
 							reverseIterator.insertAfter(message);
 							return;
 						}
-						console.log('non next sibling way');
 					}
 					element.appendChild(message.getElement());
 					reverseIterator.append(message);
@@ -69,6 +64,7 @@ var Messages = new (function(){
 				}
 			}
 			element.insertBefore(message.getElement(), messages[0].getElement());
+			reverseIterator.insert(message);
 		}
 		function append(message){
 			messages.push(message);
@@ -76,8 +72,6 @@ var Messages = new (function(){
 			element.appendChild(message.getElement());
 		}
 		function overflow(){
-			console.log(messages.length);
-			console.log(maxNMessages);
 			while(messages.length>maxNMessages){
 				var message = messages.splice(0, 1)[0];
 				delete mapUniqueIdToMessage[message.getUniqueId()];

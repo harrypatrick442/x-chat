@@ -15,7 +15,7 @@ var UsersMenu =(function(){
 			sortedFilteredEntries.removeById(e.user.getId());
 		}
 		function compare(userEntryA, userEntryB){
-			
+			return userEntryA.getUsername()>userEntryB.getUsername();
 		}
 		function getEntryId(userEntry){
 			return userEntry.getId();

@@ -20,13 +20,15 @@ var Collection = (function(){
 			return mapIdToItem[getEntryId(item)]?true:false;
 		};
 		this.getById= function(id){
-			console.log('asdfdfasdafs');
-			console.log(mapIdToItem);
 			return mapIdToItem[id];
+		};
+		this.containsEntryId=function(id){return mapIdToItem[id]?true:false;};
+		this.getEntryIds = function(){
+			return Object.keys(mapIdToItem);
 		};
 		this.each = function(func){
 			each(list, func);
-		};
+		};	
 	};
 	return _Collection;
 })();

@@ -5,7 +5,6 @@ exports.handler = new (function(){
 		this.process = function(req, mysocket, callback){
 			var res = {};
 			try{
-				console.log('doing');
 				console.log(req);
 				switch(req.type){
 					case 'test':
@@ -19,7 +18,7 @@ exports.handler = new (function(){
 						lobby.authenticate(req, mysocket, callback);
 					break;
 					case 'rooms_get':
-						rooms:lobby.getRooms().getInfos(function(infos){
+						lobby.getRooms().getInfos(function(infos){
 							callback({type:'rooms', rooms:infos});
 						});
 					break;
