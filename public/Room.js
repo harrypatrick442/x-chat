@@ -52,13 +52,17 @@ var Room = new (function(){
 		ui.addEventListener('keypress',keyPressed);
 		new Task(load).run();
 		function load(){
-			getMessagesFromServer();
+			dipatchGetMessages();
+			dispatchGetUserIds();
 		}
 		function exit(){
 			dispatchDispose();
 		}
-		function getMessagesFromServer(){
+		function dipatchGetMessages(){
 			self.dispatchEvent({type:'getmessages', roomId:id});
+		}
+		function dispatchGetUserIds(){
+			self.dispatchEvent({type:'getuserids', roomId:id});
 		}
 		function sendMessage(){
 			var text = ui.getTextValue();

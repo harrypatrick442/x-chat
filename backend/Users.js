@@ -10,6 +10,11 @@ exports.Users = (function(){
 			collection.add(user);
 			user.addEventListener('dispose', userDispose);
 		};
+		this.remove = function(user){
+			if(!collection.contains(user))return;
+			collection.remove(user);
+			user.removeEventListener('dispose', userDispose);
+		};
 		this.contains = collection.contains;
 		this.getIds =function(){
 			return collection.getEntryIds();

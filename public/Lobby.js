@@ -22,6 +22,7 @@ var Lobby = (function(){
 		buttonUsers.addEventListener('toggled', onToggleButtonUsers);
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
+		rooms.addEventListener('getuserids', getUserIds);
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
@@ -50,8 +51,8 @@ var Lobby = (function(){
 				case 'rooms':
 					rooms.set(msg.rooms);
 					break;
-				case 'room_join':
-					roomJoin(msg);//sends a complete list of users who should be in the room. Ids only. it is expected the user can be acquired from the lobby, unless they are missing in which case the missingusersmanager handles that.
+				case 'room_userids':
+					roomUserIds(msg);//sends a complete list of users who should be in the room. Ids only. it is expected the user can be acquired from the lobby, unless they are missing in which case the missingusersmanager handles that.
 					break;
 				case 'message':
 					rooms.incomingMessage(msg);
@@ -64,19 +65,16 @@ var Lobby = (function(){
 					break;
 			}
 		}
-		function roomJoin(msg){
+		function roomUserIds(msg){
 			var room = rooms.getById(msg.roomId);
 			if(!room)return;
 			each(msg.userIds, function(userId){
-				roomJoinUserById(room, userId);
-			});
-		}
-		function roomJoinUserById(room, userId){
 				var user = users.getById(userId);
 				if(user)
 					room.join(user);
 				else
 					missingUsersManager.get(userId);
+			});
 		}
 		function onToggleButtonUsers(e){
 			usersMenues.setVisible(e.toggled);
@@ -101,7 +99,6 @@ var Lobby = (function(){
 			mysocket.send(obj);
 		}
 		function callbackRoomsInChanged(e){
-			console.log('ROOMS IN CHANGED');
 			mysocket.send({type:'rooms_in_changed', sessionId:sessionId, roomIds:e.roomIds});
 		}
 		function authenticateResponse(msg){
@@ -137,6 +134,9 @@ var Lobby = (function(){
 		function getMessages(e){
 			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
 		}
+		function getUserIds(e){
+			mysocket.send({type:'room_userids_get', roomId:e.roomId, sessionId:sessionId});
+		}
 		function getUserById(userId){
 			return users.getById(userId);
 		}
@@ -152,8 +152,10 @@ var Lobby = (function(){
 		}
 		function createdRoom(e){
 			usersMenues.add(e.room.getUsersMenu());
+			mysocket.send({type:'room_join', sessionId:sessionId, roomId:e.room.getId()});
 		}
 		function destroyedRoom(e){
+			console.log('removing from user menues');
 			usersMenues.remove(e.room.getUsersMenu());
 		}
 		function join(msg){

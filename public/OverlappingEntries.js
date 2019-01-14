@@ -12,7 +12,6 @@ var OverlappingEntries = new (function(){
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
-			console.log('hide');
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetVisible(false);
@@ -31,7 +30,6 @@ var OverlappingEntries = new (function(){
 			if(!overlappingEntry) return;
 			collection.remove(overlappingEntry);
 			overlappingEntry.removeElement();
-			console.log('show net from remove');
 			showNext(overlappingEntry);
 		};
 		function show(e){
@@ -54,12 +52,10 @@ var OverlappingEntries = new (function(){
 			return entry.getId();
 		}
 		function getNextToShow(){
-			console.log(collection.getEntries().reverse().where(x=>x.getIsSetShow()).firstOrDefault());
 			return collection.getEntries().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
 		}
 		function OverlappingEntry(entry){
 			var isSetShow = false;
-			console.log(entry);
 			if(entry.getVisible())isSetShow = true;
 			this.getId= function(){return entry.getId();};
 			this.getIsSetShow = function(){return isSetShow;};
@@ -75,8 +71,10 @@ var OverlappingEntries = new (function(){
 				parent.removeChild(element);
 				parent.appendChild(element);
 			};
-			this.removeElement = function(){var element = entry.getElement();
-			console.log('REMOVE');element.parentNode.removeChild(element);};
+			this.removeElement = function(){
+				var element = entry.getElement();
+				element.parentNode.removeChild(element);
+			};
 		}
 	};
 	return _OverlappingEntries;

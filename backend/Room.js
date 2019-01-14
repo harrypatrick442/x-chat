@@ -1,10 +1,10 @@
 exports.Room = (function(){
 	var dalRooms = require('./DAL/DalRooms').dalRooms;
-	var Messages = new require('./Messages').Messages;
-	var Users = new require('./Users').Users;
+	var Messages = 	require('./Messages').Messages;
+	var Users = require('./Users').Users;
+	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
 	var _Room = function(params){
-		console.log('room params are: ');
-		console.log(params);
+		EventEnabledBuilder(this);
 		var self = this;
 		var messages;
 		var users = new Users();
@@ -17,16 +17,20 @@ exports.Room = (function(){
 		this.getUsers=function(){return users;};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
-			console.log('JOIN');
+						console.log('A');
 			if(users.contains(user))return;
-			console.log('JOIN 2')
+						console.log('B');
 			users.add(user);
-			users.sendMessage({type:'room_join', roomId:self.getId(), userIds:users.getIds()});
+			user.joinedRoom(self);
+			self.sendUserIds();
 		};
 		this.leave = function(user){
 			if(!users.contains(user))return;
 			users.remove(user);
-			user.removeEventListener('dispose', userDispose);
+			user.leftRoom(self);
+		};
+		this.sendUserIds=function(){
+			users.sendMessage({type:'room_userids', roomId:self.getId(), userIds:users.getIds()});
 		};
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};
@@ -36,7 +40,6 @@ exports.Room = (function(){
 		};
 		this.sendMessage = function(message){
 			getMessages(function(messages){messages.add(message);});
-			console.log('returning message');
 			users.sendMessage({type:'message', roomId:id, message:message.toJSON()});
 		};
 		initialize();

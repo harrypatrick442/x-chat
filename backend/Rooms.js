@@ -24,8 +24,10 @@ exports.Rooms = (function(){
 			callback(_getInfos());
 		};
 		this.setRoomsUserIsIn=function (user, roomIds){
-			var roomIdsUserIsIn = user.getRoomIdsIsIn().select(x=>x.getId()).toList();
+			var roomIdsUserIsIn = user.getRoomIdsIsIn();
 			var roomsToJoin = roomIds.where(x=>roomIdsUserIsIn.indexOf(x)<0).select(x=>self.getRoom(x)).where(x=>!x.isPm()||x.userAllowed(user));
+			console.log(roomIdsUserIsIn);
+			console.log('a');
 			var roomsToLeave = roomIdsUserIsIn.where(x=>roomIds.indexOf(x)<0).select(x=>self.getRoom(x));
 			roomsToLeave.each(x=>x.leave(user));
 			roomsToJoin.each(x=>x.join(user));

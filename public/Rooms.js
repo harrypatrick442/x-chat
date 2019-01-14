@@ -5,8 +5,7 @@ var Rooms = new (function(){
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
-		var collection = new Collection({getEntryId:getEntryId});	
-		var mapIdToRoom={};
+		var collection = new Collection({getEntryId:getEntryId});
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu();
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
@@ -25,8 +24,10 @@ var Rooms = new (function(){
 				ids.push(roomInfo.id);
 			});
 			each(collection.getIds(), function(id){
-				if(ids.indexOf(id)<0)
-					remove(collection.getById(id));
+				if(ids.indexOf(id)>=0)return;
+				var room = collection.getById(id);
+				room.dispose();
+				remove(room);
 			});
 		};
 		this.incomingMessage = function(msg){
@@ -63,13 +64,13 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			console.log(roomInfo);
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, getUserMe:getUserMe, emoticonsParser:emoticonsParser, getUserById:getUserById});
 			collection.add(room);
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('sendmessage', dispatchSendMessage);
 			room.addEventListener('getmessages', dispatchGetMessages);
+			//room.addEventListener('getuserids', self.dispatchEvent);
 			room.addEventListener('missingusers', self.dispatchEvent);
 			dispatchCreatedRoom(room);
 			room.addEventListener('dispose',callbackRoomDispose);
@@ -105,10 +106,9 @@ var Rooms = new (function(){
 			self.dispatchEvent(e);
 		}
 		function remove(room){
-			collection.removeById(room.getId());
+			collection.remove(room);
 			overlappingEntries.remove(room);
 			dispatchDestroyedRoom(room);
-			room.dispose();
 		}
 	};
 	return _Rooms;

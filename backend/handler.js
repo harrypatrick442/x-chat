@@ -39,6 +39,14 @@ exports.handler = new (function(){
 							callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
 						});	
 					break;
+					case 'room_join':
+						var user = getUser(req);
+						if(!user)return;
+						var room = getRoom(req);
+						if(!room)return;
+						console.log('room join wa called');
+						room.join(user);
+					break;
 					case 'room_users_get':
 						callback({type:'users', users:getRoom(req).getUsers()});
 					break;
