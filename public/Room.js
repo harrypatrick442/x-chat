@@ -10,7 +10,7 @@ var Room = new (function(){
 		var name = params.name;
 		var id = params.id;
 		var users = new Users({getUserById:getUserById});
-		var usersMenu = new UsersMenu({users:users});
+		var usersMenu = new UsersMenu({users:users, id:id});
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
@@ -45,7 +45,7 @@ var Room = new (function(){
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
-		
+		this.getVisible = ui.getVisible;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		buttonExit.addEventListener('click', exit);
@@ -100,6 +100,7 @@ var Room = new (function(){
 	function UI(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var visible = false;
 		var buttonSend = params.buttonSend;
 		var buttonExit = params.buttonExit;
 		var buttonEmoticons = params.buttonEmoticons;
@@ -129,8 +130,10 @@ var Room = new (function(){
 		};
 		this.getFeed= function(){return feed;};
 		this.setVisible = function(value){
+			visible = value;
 			element.style.display=value?'block':'none';
 		};
+		this.getVisible = function(){return visible;};
 		this.getTextValue= function(){return text.value;};
 		this.addMessage = function(message){
 			feed.appendChild(message.getElement());

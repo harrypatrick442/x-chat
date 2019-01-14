@@ -2,12 +2,16 @@ var UsersMenu =(function(){
 	var _UsersMenu = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var id = params.id;
 		var ui = new UI();
 		var users = params.users;
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.getElement = ui.getElement;
+		this.getId = function(){return id;};
 		users.addEventListener('add', userAdd);
 		users.addEventListener('remove', userRemove);
+		this.getVisible = ui.getVisible;
+		this.setVisible = ui.setVisible;
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
 			sortedFilteredEntries.addEntry(new UserEntry(e.user));
@@ -27,6 +31,7 @@ var UsersMenu =(function(){
 	};
 	return _UsersMenu;
 	function UI(params){
+		var visible=false;
 		var element = E.DIV();
 		element.classList.add('users-menu');
 		var entries = E.DIV();
@@ -34,5 +39,10 @@ var UsersMenu =(function(){
 		element.appendChild(entries);
 		this.getEntries = function(){return entries;};
 		this.getElement=function(){return element;};
+		this.setVisible = function(value){
+			visible = value;
+			element.style.display=value?'block':'none';
+		};
+		this.getVisible = function(){return visible;};
 	}
 })();

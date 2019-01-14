@@ -5,9 +5,10 @@ var Lobby = (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
-		var usersMenu= new UsersMenu({users:users});
+		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby'});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues();
+		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById});
 		var pmsMenu = new PmsMenu();
 		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});

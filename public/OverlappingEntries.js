@@ -5,18 +5,19 @@ var OverlappingEntries = new (function(){
 		var collection=new Collection({getEntryId:getEntryId});
 		var element = params.element;
 		this.show= function(entryToShow){
-			var overlappingEntry = collection.getById(entryShow.getId());
+			var overlappingEntry = collection.getById(entryToShow.getId());
 			if(!overlappingEntry)return;
 			collection.each(x=>x.setVisible(x==overlappingEntry));
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
-			var overlappingEntry = collection.getById(entryShow.getId());
+			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetVisible(false);
 			var overlappingEntryToShow = getNextToShow(entryToHide);
 		};
 		this.add = function(entry){
+			console.log(entry);
 			if(collection.containsId(entry.getId()))return;
 			entry.addEventListener('show', show);
 			entry.addEventListener('show', hide);
@@ -49,7 +50,8 @@ var OverlappingEntries = new (function(){
 		}
 		function OverlappingEntry(entry){
 			var isSetShow = false;
-			if(entry.getSetVisible())isSetShow = true;
+			console.log(entry);
+			if(entry.getVisible())isSetShow = true;
 			this.getId= function(){return entry.getId();};
 			this.getIsSetShow = function(){return isSetShow;};
 			this.setIsSetShow=function(value){

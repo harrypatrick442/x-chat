@@ -5,6 +5,7 @@ var RoomsMenu = new (function(){
 		var ui = new UI();
 		var mapIdToRoomEntry={};
 		var entries =[];
+		this.getId =function(){return 'RoomsMenu';};
 		this.set = function(roomInfos){
 			var ids=[];
 			each(roomInfos, function(roomInfo){
@@ -21,6 +22,7 @@ var RoomsMenu = new (function(){
 		};
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
+		this.getVisible = ui.getVisible;
 		function add(roomInfo){
 			var roomEntry = new RoomEntry(roomInfo);
 			entries.push(roomEntry);
@@ -53,6 +55,7 @@ var RoomsMenu = new (function(){
 	};
 	return _RoomsMenu;
 	function UI(){
+		var visible=false;
 		var element = E.DIV();
 		element.classList.add('rooms-menu');
 		this.getElement = function(){
@@ -64,7 +67,9 @@ var RoomsMenu = new (function(){
 		this.add = function(entryElement){element.appendChild(entryElement);};
 		this.remove = function(entryElement){element.removeChild(entryElement);};
 		this.setVisible = function(value){
+			visible = value;
 			element.style.display=value?'block':'none';
 		};
+		this.getVisible = function(){return visible;};
 	}
 })();
