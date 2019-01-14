@@ -17,6 +17,7 @@ Enumerable.prototype.select = function (func) {
 };
 Enumerable.prototype.where = function (func) {
 	var self = this;
+	console.log('where');
 	return new Enumerable(function () {
 			do {
 				if (!self.moveNext()) return false;

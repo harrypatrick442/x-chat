@@ -19,6 +19,7 @@
 	};
 	Enumerable.prototype.where = function (func) {
 		var self = this;
+		conole.log('where');
 		return new Enumerable(function () {
 				do {
 					if (!self.moveNext()) return false;

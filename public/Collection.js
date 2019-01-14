@@ -33,6 +33,7 @@ var Collection = (function(){
 		this.getIds = function(){
 			return Object.keys(mapIdToItem);
 		};
+		this.getEntries = function(){return list;};
 		this.each = function(func){
 			each(list, func);
 		};	

@@ -7,17 +7,18 @@ var OverlappingEntries = new (function(){
 		this.show= function(entryToShow){
 			var overlappingEntry = collection.getById(entryToShow.getId());
 			if(!overlappingEntry)return;
+			overlappingEntry.setIsSetShow(true);
 			collection.each(x=>x.setVisible(x==overlappingEntry));
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
+			console.log('hide');
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetVisible(false);
-			var overlappingEntryToShow = getNextToShow(entryToHide);
+			showNext(overlappingEntry)
 		};
 		this.add = function(entry){
-			console.log(entry);
 			if(collection.containsId(entry.getId()))return;
 			entry.addEventListener('show', show);
 			entry.addEventListener('show', hide);
@@ -30,6 +31,8 @@ var OverlappingEntries = new (function(){
 			if(!overlappingEntry) return;
 			collection.remove(overlappingEntry);
 			overlappingEntry.removeElement();
+			console.log('show net from remove');
+			showNext(overlappingEntry);
 		};
 		function show(e){
 			self.show(e.entry);
@@ -42,10 +45,16 @@ var OverlappingEntries = new (function(){
 			collection.add(overlappingEntry);
 			overlappingEntry.bringElementToFront();
 		}
+		function showNext(entryToHide){
+			var overlappingEntryToShow = getNextToShow(entryToHide);
+			if(!overlappingEntryToShow)return;
+			overlappingEntryToShow.setVisible(true);
+		}
 		function getEntryId(entry){
 			return entry.getId();
 		}
 		function getNextToShow(){
+			console.log(collection.getEntries().reverse().where(x=>x.getIsSetShow()).firstOrDefault());
 			return collection.getEntries().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
 		}
 		function OverlappingEntry(entry){
@@ -66,7 +75,8 @@ var OverlappingEntries = new (function(){
 				parent.removeChild(element);
 				parent.appendChild(element);
 			};
-			this.removeElement = function(){element.parentNode.removeChild(element);};
+			this.removeElement = function(){var element = entry.getElement();
+			console.log('REMOVE');element.parentNode.removeChild(element);};
 		}
 	};
 	return _OverlappingEntries;

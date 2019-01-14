@@ -16,7 +16,7 @@ var Enumerable = (function () {
                 return arr[index];
             },
             function () {
-                index = 0;
+                index = -1;
             });
         })(arr);
     };
