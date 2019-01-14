@@ -68,12 +68,22 @@ var Lobby = (function(){
 		function roomUserIds(msg){
 			var room = rooms.getById(msg.roomId);
 			if(!room)return;
-			each(msg.userIds, function(userId){
+			roomUserIds_Join(room, msg.userIds);
+			roomUserIds_Leave(room, msg.userIds);
+		}
+		function roomUserIds_Join(room, userIds){
+			each(userIds, function(userId){
 				var user = users.getById(userId);
 				if(user)
 					room.join(user);
 				else
 					missingUsersManager.get(userId);
+			});
+		}
+		function roomUserIds_Leave(room, userIds){
+			var usersToRemove = room.getUsers().getEntries().where(x=>!userIds.indexOf(x.getId())).toList();
+			each(usersToRemove, function(userToRemove){
+				room.leave(userToRemove);
 			});
 		}
 		function onToggleButtonUsers(e){
@@ -157,6 +167,7 @@ var Lobby = (function(){
 		function destroyedRoom(e){
 			console.log('removing from user menues');
 			usersMenues.remove(e.room.getUsersMenu());
+			mysocket.send({type:'room_leave', sessionId:sessionId, roomId:e.room.getId()});
 		}
 		function join(msg){
 			var user = User.fromJSON(msg.user);

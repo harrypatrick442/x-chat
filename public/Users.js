@@ -17,6 +17,7 @@ var Users = (function(){
 			remove(user);
 		};
 		this.getIds = collection.getIds;
+		this.getEntries=collection.getEntries;
 		function remove(user){
 			if(!collection.remove(user))return false;
 			dispatchRemove(user);

@@ -17,9 +17,7 @@ exports.Room = (function(){
 		this.getUsers=function(){return users;};
 		this.isPm=function(){return params.isPm;};
 		this.join = function(user){
-						console.log('A');
 			if(users.contains(user))return;
-						console.log('B');
 			users.add(user);
 			user.joinedRoom(self);
 			self.sendUserIds();
@@ -28,6 +26,7 @@ exports.Room = (function(){
 			if(!users.contains(user))return;
 			users.remove(user);
 			user.leftRoom(self);
+			self.sendUserIds();
 		};
 		this.sendUserIds=function(){
 			users.sendMessage({type:'room_userids', roomId:self.getId(), userIds:users.getIds()});
