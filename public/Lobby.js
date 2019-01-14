@@ -81,8 +81,11 @@ var Lobby = (function(){
 			});
 		}
 		function roomUserIds_Leave(room, userIds){
-			var usersToRemove = room.getUsers().getEntries().where(x=>!userIds.indexOf(x.getId())).toList();
+			var usersToRemove = room.getUsers().getEntries().where(x=>userIds.indexOf(x.getId())<0).toList();
+			console.log('n remove: ');
+			console.log(usersToRemove.length);
 			each(usersToRemove, function(userToRemove){
+				console.log(userToRemove.getId());
 				room.leave(userToRemove);
 			});
 		}

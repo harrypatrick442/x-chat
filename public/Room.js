@@ -40,6 +40,10 @@ var Room = new (function(){
 			if(users.contains(user))return;
 			users.add(user);
 		};
+		this.leave = function(user){
+			if(!users.contains(user))return;
+			users.remove(user);
+		};
 		this.getUsers = function(){return users;};
 		this.dispose = function(){
 			messages.dispose();
