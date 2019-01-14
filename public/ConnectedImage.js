@@ -61,7 +61,7 @@ var ConnectedImage = (function(){
 		instances.splice(index, 1);
 		if(instances.length>0) return;
 		delete mapTypeToMapIdToInstances[type][id];
-		if(mapTypeToMapIdToInstances[type].keys()<2)
+		if(Object.keys(mapTypeToMapIdToInstances[type]).length<2)
 		delete mapTypeToMapIdToInstances[type];
 	}
 })();

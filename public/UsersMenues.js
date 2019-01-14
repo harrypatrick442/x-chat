@@ -9,7 +9,7 @@ var UsersMenues = (function(){
 			overlappingEntries.add(usersMenu);
 		};
 		this.remove=function(usersMenu){
-			overlappingEntries.add(usersMenu);
+			overlappingEntries.remove(usersMenu);
 		};
 		this.setUsers = function(usersMenu){
 			overlappingEntries.set(usersMenu);

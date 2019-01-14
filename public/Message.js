@@ -18,7 +18,10 @@ var Message = (function(){
 			ui.hidePending();
 		};
 		this.toJSON = function(){
-		return {content:content, userId:userId, uniqueId:params.uniqueId};
+			return {content:content, userId:userId, uniqueId:params.uniqueId};
+		};
+		this.dispose = function(){
+			userImage.dispose();
 		};
 	};
 	_Message.fromJSON = function(params){

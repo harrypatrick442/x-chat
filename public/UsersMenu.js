@@ -1,5 +1,6 @@
 var UsersMenu =(function(){
 	var _UsersMenu = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var ui = new UI();
 		var users = params.users;
@@ -20,6 +21,9 @@ var UsersMenu =(function(){
 		function getEntryId(userEntry){
 			return userEntry.getId();
 		}
+		this.show = function(){
+			self.dispatchEvent({type:'show', entry:self});
+		};
 	};
 	return _UsersMenu;
 	function UI(params){

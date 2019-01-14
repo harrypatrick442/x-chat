@@ -5,6 +5,7 @@ var Lobby = (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
+		var usersMenu= new UsersMenu({users:users});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues();
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById});
@@ -37,10 +38,9 @@ var Lobby = (function(){
 					join(msg);
 					break;
 				case 'users':
-					users.update(msg.users);
+					users.update(msg.users);//and the above carry with them the full user information. this isnt needed for leaving, hence userids is used. this also ensures other missed user leaves are accounted for. A missed user join will be accounted for when userids causes MissingUsersManager to get the missing information.
 					break;
 				case 'authenticate':
-				console.log('authenticate');
 					authenticateResponse(msg);
 					break;
 				case 'register':
@@ -59,7 +59,7 @@ var Lobby = (function(){
 					rooms.incomingMessages(msg);
 					break;
 				case 'userids':
-					updateUserIdsLobby(msg.userIds);
+					updateUserIdsLobby(msg.userIds);//is used for leave.
 					break;
 			}
 		}

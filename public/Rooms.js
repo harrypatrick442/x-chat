@@ -78,20 +78,17 @@ var Rooms = new (function(){
 		}
 		function callbackRoomDispose(e){
 			var room = e.room;
-			collection.remove(room);
+			remove(room);
 			dispatchRoomsInChanged();
 		}
 		function dispatchRoomsInChanged(){
 			self.dispatchEvent({type:'roomsinchanged', roomIds:collection.getIds()});
 		}
-		function destroyRoom(room){
-			dispatchDestroyedRoom(room);
-		}
 		function dispatchCreatedRoom(room){
 			self.dispatchEvent({type:'createdroom', room:room});
 		}
-		function dipatchDestroyedRoom(room){
-			self.dispatchEvent({type:'detroyedroom', room:room});
+		function dispatchDestroyedRoom(room){
+			self.dispatchEvent({type:'destroyedroom', room:room});
 		}
 		function addEmoticon(e){
 			var emoticonEntry = e.emoticonEntry;
@@ -110,6 +107,7 @@ var Rooms = new (function(){
 		function remove(room){
 			collection.removeById(room.getId());
 			overlappingEntries.remove(room);
+			dispatchDestroyedRoom(room);
 			room.dispose();
 		}
 	};

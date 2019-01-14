@@ -92,3 +92,16 @@ body{
 .lobby .rooms .entries .room .bottom .menu .button-send:hover{
 	background-color:#8092E9;
 }
+.lobby .rooms .entries .room .bottom .menu .button-exit{
+	float:right;
+	width:28px;
+	height:24px;
+	margin-right:6px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/room-exit.png');	
+	cursor:pointer;
+}
+.lobby .rooms .entries .room .bottom .menu .button-exit:hover{
+	background-image:url('/images/room-exit-hover.png');	
+}

@@ -48,7 +48,7 @@ var Room = new (function(){
 		
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
-		buttonExit.addEventListener('exit', exit);
+		buttonExit.addEventListener('click', exit);
 		ui.addEventListener('keypress',keyPressed);
 		new Task(load).run();
 		function load(){
@@ -101,6 +101,7 @@ var Room = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var buttonSend = params.buttonSend;
+		var buttonExit = params.buttonExit;
 		var buttonEmoticons = params.buttonEmoticons;
 		var element = E.DIV();
 		element.classList.add('room');
@@ -121,6 +122,7 @@ var Room = new (function(){
 		bottom.appendChild(menu);
 		menu.appendChild(buttonEmoticons.getElement());
 		menu.appendChild(buttonSend.getElement());
+		menu.appendChild(buttonExit.getElement());
 		text.addEventListener('keypress',dispatchKeyPress);
 		this.getElement = function(){
 			return element;

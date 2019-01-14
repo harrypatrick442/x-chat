@@ -1,4 +1,5 @@
 Enumerable.prototype.toList = function () {
+	this.reset();
 	var list = [];
 	var self = this;
 	while (this.moveNext()) {
@@ -25,7 +26,17 @@ Enumerable.prototype.where = function (func) {
 		this.current,
 		this.reset);
 };
+Enumerable.prototype.firstOrDefault = function () {
+		this.reset();
+		this.moveNext();
+		return this.current();
+};
+Enumerable.prototype.reverse=function(func){
+	this.reset();
+	return Enumerable.fromArray(this.toList().reverse());
+};
 Enumerable.prototype.each=function(func){
+	this.reset();
 	while (this.moveNext()) {
 		func(this.current());
 	}
