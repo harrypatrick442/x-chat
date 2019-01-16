@@ -2,10 +2,10 @@
 	position:absolute;
 	width:100px;
 	box-sizing:border-box;	
-	padding:6px;
+	padding:1px;
 	padding-bottom:0px;
-	background-color:black;
-	border:1px solid #ffffff;
+	background-color:#111111;
+	border:2px solid #222222;
 	border-radius:2px;
 }
 .click-menu .option-entry{
@@ -15,5 +15,7 @@
 	box-sizing:border-box;	
 	padding:3px;
 	background-color:black;
-	border:1px solid red;
+	background-color:#131313;
+	font-size:14px;
+	color:#ffffff;
 }

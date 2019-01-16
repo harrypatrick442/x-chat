@@ -1,6 +1,25 @@
  
 var ClickMenu = new (function () {
+	var OptionEntry=(function(){
+		var _OptionEntry=function(params){
+			EventEnabledBuilder(this);
+			var self = this;
+			var text = params.text;
+			var tooltip = params.tooltip;
+			var ui = new UI({text:text, tooltip:tooltip});
+			this.getElement = ui.getElement;
+		};
+		return _OptionEntry;
+		function UI(params){
+			var element = E.DIV();
+			element.classList.add('option-entry');
+			element.innerText = params.text;
+			this.getElement = function(){return element;};
+		}
+	})();
 	var _ClickMenu= function(params){
+		EventEnabledBuilder(this);
+		var self = this;
 		if(params.options)setOption(params.option);
 		console.log(new Error().stack);
 		var currentOptionEntries=[];
@@ -11,7 +30,7 @@ var ClickMenu = new (function () {
 		this.show = function(params){
 			if(params.options){
 				clearOptions();
-				showOptions(params.options);
+				setOptions(params.options);
 			}
 		};
 		this.setPosition = popup.setPosition;
@@ -19,17 +38,18 @@ var ClickMenu = new (function () {
 			self.dispatchEvent({type:'selected', option:option});
 		}
 		function setOptions(options){
-			ui.clearOptionEntries();
 			each(options, function(option){
 				var optionEntry=new OptionEntry(option);
-				ui.addOptionEntries(optionEntry);
+				ui.addOptionEntry(optionEntry);
 				optionEntry.addEventListener('selected', callbackSelected);
+				currentOptionEntries.push(optionEntry);
 			});
 		}
 		function clearOptions(){
-			each(currentOptionEntries, function(){
-				ui.removeOptionEntry();
+			each(currentOptionEntries, function(optionEntry){
+				ui.removeOptionEntry(optionEntry);
 			});
+			currentOptionEntries=[];
 		}
 		function callbackSelected(e){
 			dispatchSelected(e.option);
@@ -46,18 +66,4 @@ var ClickMenu = new (function () {
 			element.appendChild(optionEntry.getElement());
 		};
 	}
-	var OptionEntry=(function(){
-		var _OptionEntry=function(params){
-			var text = params.text;
-			var tooltip = params.tooltip;
-			var ui = new UI({text:text, tooltip:tooltip});
-			this.getElement = ui.getElement;
-		};
-		return _OptionEntry;
-		function UI(params){
-			var element = E.DIV();
-			element.classList.add('option-entry');
-			this.getElement = function(){return element;};
-		}
-	})();
 })();

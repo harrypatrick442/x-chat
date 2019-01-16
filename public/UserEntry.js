@@ -12,7 +12,7 @@ var UserEntry =(function(){
 		function click(e){
 			console.log(e);
 			clickMenu.setPosition({left:e.clientX, top:e.clientY});
-			clickMenu.show({options:[{text:'Pm '+user.getUsername(), callback:pm}, {text:'Ignore', callback:ignore}]}
+			clickMenu.show({options:[{text:'Pm '+user.getUsername(), callback:pm}, {text:'Ignore', callback:ignore}]});
 		}
 		function pm(){
 			
