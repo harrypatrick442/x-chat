@@ -5,6 +5,7 @@
 	width:100%;
 	box-sizing:border-box;
 	margin-bottom:3px;
+	cursor:pointer;
 }
 .lobby .users-menues .entries .users-menu .user-entry .inner{
 	position:relative;

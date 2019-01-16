@@ -32,6 +32,7 @@ var ClickMenu = new (function () {
 				clearOptions();
 				setOptions(params.options);
 			}
+			popup.show();
 		};
 		this.setPosition = popup.setPosition;
 		function dispatchSelected(option){
