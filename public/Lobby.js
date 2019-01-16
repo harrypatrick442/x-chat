@@ -10,7 +10,8 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues();
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById});
-		var pmsMenu = new PmsMenu();
+		var pms = new Pms({room:rooms});
+		var pmsMenu = new PmsMenu({pms:pms});
 		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, pmsMenu:pmsMenu, usersMenues:usersMenues});
@@ -62,6 +63,9 @@ var Lobby = (function(){
 					break;
 				case 'userids':
 					updateUserIdsLobby(msg.userIds);//is used for leave.
+					break;
+				case 'pm':
+					pms.incomingMessage(msg);
 					break;
 			}
 		}
@@ -164,8 +168,12 @@ var Lobby = (function(){
 			mysocket.send(jObject);
 		}
 		function createdRoom(e){
-			usersMenues.add(e.room.getUsersMenu());
-			mysocket.send({type:'room_join', sessionId:sessionId, roomId:e.room.getId()});
+			var room = e.room;
+			usersMenues.add(room.getUsersMenu());
+			mysocket.send({type:'room_join', sessionId:sessionId, roomId:room.getId()});
+			if(room.isPm()){
+				pms.addRoom(room);
+			}
 		}
 		function destroyedRoom(e){
 			console.log('removing from user menues');

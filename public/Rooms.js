@@ -40,8 +40,8 @@ var Rooms = new (function(){
 			if(!room)return;
 			room.incomingMessages(msg.messages);
 		};
-		this.setRoomsIn=function(roomsIn){
-				
+		this.showPm=function(pm){
+			
 		};
 		this.join = function(msg, user){
 			if(!user)return;
@@ -50,13 +50,16 @@ var Rooms = new (function(){
 			room.join(user);
 		};
 		this.getById= collection.getById;
-		function showRoom(e){
-			var roomInfo = e.roomInfo;
+		this.showRoom = function(roomInfo){
 			var room = collection.getById(roomInfo.id);
 			if(!room)
 				room = loadRoom(roomInfo);
 			showEntry(room);
+		};
+		function showRoom(e){
+			self.showRoom(e.roomInfo);
 		}
+		
 		function showEntry(entryToShow){
 			overlappingEntries.show(entryToShow);
 		}
@@ -64,17 +67,19 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			var room = new Room({id:roomInfo.id, name:roomInfo.name, getUserMe:getUserMe, emoticonsParser:emoticonsParser, getUserById:getUserById});
+			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, getUserById:getUserById});
 			collection.add(room);
+			var isPm = room.isPm();
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('sendmessage', dispatchSendMessage);
 			room.addEventListener('getmessages', dispatchGetMessages);
 			//room.addEventListener('getuserids', self.dispatchEvent);
-			room.addEventListener('missingusers', self.dispatchEvent);
 			dispatchCreatedRoom(room);
 			room.addEventListener('dispose',callbackRoomDispose);
 			dispatchRoomsInChanged();
+			if(!isPm)
+				room.addEventListener('missingusers', self.dispatchEvent);
 			return room;
 		}
 		function callbackRoomDispose(e){
