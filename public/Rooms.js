@@ -5,6 +5,7 @@ var Rooms = new (function(){
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
+		var ignoreManager = params.ignoreManager;
 		var collection = new Collection({getEntryId:getEntryId});
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu();
@@ -67,7 +68,7 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, getUserById:getUserById});
+			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, getUserById:getUserById, ignoreManager:ignoreManager});
 			collection.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);

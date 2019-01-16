@@ -8,6 +8,14 @@ var ClickMenu = new (function () {
 			var tooltip = params.tooltip;
 			var ui = new UI({text:text, tooltip:tooltip});
 			this.getElement = ui.getElement;
+			ui.getElement().addEventListener('click', click);
+			function click(){
+				params.callback();
+				dispatchHide();
+			}
+			function dispatchHide(){
+				self.dispatchEvent({type:'hide'});
+			}
 		};
 		return _OptionEntry;
 		function UI(params){
@@ -42,7 +50,7 @@ var ClickMenu = new (function () {
 			each(options, function(option){
 				var optionEntry=new OptionEntry(option);
 				ui.addOptionEntry(optionEntry);
-				optionEntry.addEventListener('selected', callbackSelected);
+				optionEntry.addEventListener('hide', hide);
 				currentOptionEntries.push(optionEntry);
 			});
 		}
@@ -52,8 +60,8 @@ var ClickMenu = new (function () {
 			});
 			currentOptionEntries=[];
 		}
-		function callbackSelected(e){
-			dispatchSelected(e.option);
+		function hide(e){
+			popup.hide();
 		}
 	};
 	return _ClickMenu;

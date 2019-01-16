@@ -5,6 +5,7 @@ var UsersMenu =(function(){
 		var id = params.id;
 		var ui = new UI();
 		var users = params.users;
+		var ignoreManager = params.ignoreManager;
 		var clickMenu = new ClickMenu({});
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.getElement = ui.getElement;
@@ -15,7 +16,7 @@ var UsersMenu =(function(){
 		this.setVisible = ui.setVisible;
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
-			sortedFilteredEntries.addEntry(new UserEntry({user:e.user, clickMenu:clickMenu}));
+			sortedFilteredEntries.addEntry(new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager}));
 		}
 		function userRemove(e){
 			sortedFilteredEntries.removeEntryById(e.user.getId());

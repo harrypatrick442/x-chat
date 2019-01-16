@@ -23,7 +23,6 @@ var Settings = (function(){
 				console.log(ex);
 			}
 		};
-		Settings.instances.push(this);
 	};
 	return _Settings;
 })();

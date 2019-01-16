@@ -5,11 +5,12 @@ var Lobby = (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
-		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby'});
+		var ignoreManager = new IgnoreManager();
+		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager});
 		var missingUsersManager = new MissingUsersManager();
-		var usersMenues = new UsersMenues();
+		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
-	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById});
+	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager});
 		var pms = new Pms({room:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});

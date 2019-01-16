@@ -2,6 +2,7 @@ var UserEntry =(function(){
 	var _UserEntry = function(params){
 		var self = this;
 		var user = params.user;
+		var ignoreManager = params.ignoreManager;
 		var clickMenu = params.clickMenu;
 		var userImage = new UserImage({userId:user.getId(), username:user.getUsername()});
 		var ui = new UI({name:user.getUsername(), userImage:userImage});
@@ -12,13 +13,21 @@ var UserEntry =(function(){
 		function click(e){
 			console.log(e);
 			clickMenu.setPosition({left:e.clientX, top:e.clientY});
-			clickMenu.show({options:[{text:'Pm '+user.getUsername(), callback:pm}, {text:'Ignore', callback:ignore}]});
+			var ignored = isIgnored();
+			var username = user.getUsername();
+			clickMenu.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
 		}
 		function pm(){
 			
 		}
+		function isIgnored(){
+			return ignoreManager.userIsIgnored(user);
+		}
 		function ignore(){
-			
+			ignoreManager.ignoreUser(user);
+		}
+		function unignore(){
+			ignoreManager.unignoreUser(user);
 		}
 	};
 	return _UserEntry;

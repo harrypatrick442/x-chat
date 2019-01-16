@@ -1,8 +1,8 @@
 var Users = (function(){
 	var _Users = function(params){
 		EventEnabledBuilder(this);
-		var getUserById=params.getUserById;
 		var self = this;
+		var getUserById=params.getUserById;
 		var collection = new Collection({getEntryId:getEntryId});
 		this.add=function(user){
 			if(!collection.add(user))return;
