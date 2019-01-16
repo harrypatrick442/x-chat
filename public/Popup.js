@@ -15,10 +15,16 @@ var Popup= new (function(){
 			ClickedOff.remove(element);
 			hide();
 		};
+		this.setPosition=function(params){
+			if(params.left)
+				element.style.left=String(params.left)+'px';
+			if(params.top)
+				element.style.top=String(params.top)+'px';
+		};
+		this.getElement = function(){return element;};
 		function hide(){
 			setVisible(false);
 		}
-		this.getElement = function(){return element;};
 		function setVisible(value){
 			element.style.display=value?'block':'none';
 		}

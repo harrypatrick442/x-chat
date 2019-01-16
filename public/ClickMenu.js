@@ -1,8 +1,12 @@
+ 
 var ClickMenu = new (function () {
 	var _ClickMenu= function(params){
 		if(params.options)setOption(params.option);
+		console.log(new Error().stack);
 		var currentOptionEntries=[];
 		var popup = new Popup();
+		var element = popup.getElement();
+		document.body.appendChild(element);
 		var ui = new UI({element:element});
 		this.show = function(params){
 			if(params.options){
@@ -10,6 +14,7 @@ var ClickMenu = new (function () {
 				showOptions(params.options);
 			}
 		};
+		this.setPosition = popup.setPosition;
 		function dispatchSelected(option){
 			self.dispatchEvent({type:'selected', option:option});
 		}
@@ -31,7 +36,7 @@ var ClickMenu = new (function () {
 		}
 	};
 	return _ClickMenu;
-	function(params){
+	function UI(params){
 		var element = params.element;
 		element.classList.add('click-menu');
 		this.removeOptionEntry=function(optionEntry){
