@@ -2,6 +2,7 @@ var OverflowManager = new (function(){
 	var _OverflowManager = function(params){
 		var getMessages = params.getMessages;
 		var remove = params.remove;
+		var maxNMessages = params.maxNMessages;
 		var self = this;
 		var temporalCallback = new TemporalCallback({callback:overflow, maxNDelays:50, maxTotalDelay:6000});
 		this.trigger = temporalCallback.trigger;

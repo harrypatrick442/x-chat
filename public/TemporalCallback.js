@@ -1,5 +1,4 @@
-exports.TemporalCallback = (function(){
-	var Timer = require('./Timer').Timer;
+var TemporalCallback = (function(){
 	var _TemporalCallback = function(params){
 		var self = this;
 		var callback = params.callback;

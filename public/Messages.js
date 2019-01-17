@@ -8,7 +8,7 @@ var Messages = new (function(){
 		var maxNMessages = params.maxNMessages;
 		var messages=[];
 		var mapUniqueIdToMessage={};
-		var overflowManager = new OverflowManager({getMessages:getMessages, remove:remove});
+		var overflowManager = new OverflowManager({getMessages:getMessages, remove:remove, maxNMessages:maxNMessages});
 		this.addSending = function(message){
 			append(message);
 			overflow();

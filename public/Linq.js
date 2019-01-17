@@ -19,10 +19,8 @@ Enumerable.prototype.take = function (n) {
 	return (function(n, self){
 		var count=0;
 		return new Enumerable(function(){
-			console.log(count);
 			var next = self.moveNext();
 			if(next){
-				console.log('has next');
 				count++;
 				if(count<=n)
 					return true;
