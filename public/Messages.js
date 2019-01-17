@@ -3,10 +3,12 @@ var Messages = new (function(){
 	var _Messages = function(params){
 		var self = this;
 		var getUserId = params.getUserId;
+		var ignoreManager = params.ignoreManager;
 		var element = params.element;
 		var maxNMessages = params.maxNMessages;
 		var messages=[];
 		var mapUniqueIdToMessage={};
+		var overflowManager = new OverflowManager({getMessages:getMessages, remove:remove});
 		this.addSending = function(message){
 			append(message);
 			overflow();
@@ -20,6 +22,8 @@ var Messages = new (function(){
 				mapUniqueIdToMessage[message.getUniqueId()]=message;
 				insertInPlace(message);
 			}
+			if(ignoreManager.userIdIsIgnored(message.getUserId()))
+				message.setIgnored(true);
 			overflow();
 		};
 		this.remove = function(message){
@@ -72,11 +76,15 @@ var Messages = new (function(){
 			element.appendChild(message.getElement());
 		}
 		function overflow(){
-			while(messages.length>maxNMessages){
-				var message = messages.splice(0, 1)[0];
-				delete mapUniqueIdToMessage[message.getUniqueId()];
-				element.removeChild(message.getElement());
-			}
+			overflowManager.trigger();
+		}
+		function getMessages(){return messages;}
+		function remove(message){
+			var index = messages.indexOf(message);
+			if(index<0)return;
+			messages.splice(index, 1);
+			delete mapUniqueIdToMessage[message.getUniqueId()];
+			element.removeChild(message.getElement());
 		}
 	};
 	return _Messages;

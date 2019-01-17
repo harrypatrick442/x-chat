@@ -5,11 +5,13 @@ var Message = (function(){
 		var username = params.username;
 		var content = params.content;
 		var userImage = new UserImage({userId:userId});
+		var ignored=false;
 		var ui = new UI({userImage:userImage, content:content, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
 		this.getUniqueId = function(){
 			return params.uniqueId;
 		};
+		this.getUserId=function(){return params.userId;};
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
 		};
@@ -23,6 +25,14 @@ var Message = (function(){
 		this.dispose = function(){
 			userImage.dispose();
 		};
+		this.setIgnored=function(value){
+			ignored = value;
+			updateVisibility();
+		};
+		this.getIgnored = function(){return ignored;};
+		function updateVisibility(){
+			ui.setVisible(!ignored);
+		}
 	};
 	_Message.fromJSON = function(params){
 		return _from(params, params.content);
@@ -74,6 +84,7 @@ var Message = (function(){
 		inner.innerHTML +=content;
 		element.appendChild(inner);
 		this.getElement = function(){return element;};
+		this.setViibible=function(value){element.style.display=value?'block':'none';};
 		this.hidePending = function(){if(pending){element.removeChild(pending);}};
 	}
 })();

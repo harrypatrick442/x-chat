@@ -15,6 +15,24 @@ Enumerable.prototype.select = function (func) {
 		},
 		this.reset);
 };
+Enumerable.prototype.take = function (n) {
+	return (function(n, self){
+		var count=0;
+		return new Enumerable(function(){
+			console.log(count);
+			var next = self.moveNext();
+			if(next){
+				console.log('has next');
+				count++;
+				if(count<=n)
+					return true;
+			}
+			return false;
+		},
+		self.current,
+		self.reset);
+	})(n, this);
+};
 Enumerable.prototype.where = function (func) {
 	var self = this;
 	console.log('where');
@@ -50,4 +68,7 @@ Array.prototype.where = function (func) {
 };
 Array.prototype.each=function(func){
 	return Enumerable.fromArray(this).each(func);
+};
+Array.prototype.take=function(n){
+	return Enumerable.fromArray(this).take(n);
 };
