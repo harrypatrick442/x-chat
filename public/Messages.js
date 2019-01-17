@@ -21,17 +21,14 @@ var Messages = new (function(){
 			else{
 				mapUniqueIdToMessage[message.getUniqueId()]=message;
 				insertInPlace(message);
+				message.addEventListener('showpm', showPm);
 			}
 			if(ignoreManager.userIdIsIgnored(message.getUserId()))
 				message.setIgnored(true);
 			overflow();
 		};
 		this.remove = function(message){
-			var index = messages.indexOf(message);
-			if(index<0)return;
-			messages.splice(index, 1);
-			delete mapUniqueIdToMessage[message.getUniqueId()];
-			element.removeChild(message.getElement());
+			remove(message);
 		};
 		this.nextUniqueId=function(){
 			return getUserId()+'_'+uniqueIdCount++;
@@ -40,7 +37,11 @@ var Messages = new (function(){
 			each(messages, function(message){
 				message.dispose();
 			});
+			ignoreManager.removeEventListener('ignored', ignored);
+			ignoreManager.removeEventListener('unignored', unignored);
 		};
+		ignoreManager.addEventListener('ignored', ignored);
+		ignoreManager.addEventListener('unignored', unignored);
 		function insertInPlace(message){
 			var serverAssignedNMessage = message.getServerAssignedNMessage();
 			if(messages.length<1)
@@ -85,6 +86,16 @@ var Messages = new (function(){
 			messages.splice(index, 1);
 			delete mapUniqueIdToMessage[message.getUniqueId()];
 			element.removeChild(message.getElement());
+			message.removeEventListener('showpm', showPm);
+		}
+		function ignored(e){
+			messages.where(x=>x.getUserId()==e.userId).each(x=>x.setIgnored(true));
+		}
+		function unignored(e){
+			messages.where(x=>x.getUserId()==e.userId).each(x=>x.setIgnored(false));
+		}
+		function showPm(){
+			
 		}
 	};
 	return _Messages;

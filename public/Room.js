@@ -10,8 +10,9 @@ var Room = new (function(){
 		var name = params.name;
 		var id = params.id;
 		var ignoreManager = params.ignoreManager;
+		var clickMenuUser =params.clickMenuUser;
 		var users = new Users({getUserById:getUserById});
-		var usersMenu = new UsersMenu({users:users, id:id, ignoreManager:ignoreManager});
+		var usersMenu = new UsersMenu({users:users, id:id, ignoreManager:ignoreManager, clickMenu:clickMenuUser});
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
@@ -34,6 +35,8 @@ var Room = new (function(){
 			var scroll = ui.feedIsAtBottom();
 			each(jArrayMessages, function(jObjectMessage){
 				jObjectMessage.emoticonsParser=emoticonsParser;
+				jObjectMessage.clickMenuUser = clickMenuUser;
+				jObjectMessage.ignoreManager = ignoreManager;
 				messages.addReceived(Message.fromJSON(jObjectMessage));
 			});
 			if(scroll)
@@ -76,7 +79,8 @@ var Room = new (function(){
 			var text = ui.getTextValue();
 			if(text=='')return;
 			var userMe = getUserMe();
-			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() , emoticonsParser:emoticonsParser, pending:true});
+			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() 
+			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser});
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);
 			ui.clearText();

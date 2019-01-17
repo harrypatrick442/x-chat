@@ -1,10 +1,13 @@
 var Message = (function(){
 	var _Message = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var userId = params.userId;
 		var username = params.username;
 		var content = params.content;
+		var clickMenuUser=params.clickMenuUser;
 		var userImage = new UserImage({userId:userId});
+		var ignoreManager = params.ignoreManager;
 		var ignored=false;
 		var ui = new UI({userImage:userImage, content:content, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
@@ -30,8 +33,23 @@ var Message = (function(){
 			updateVisibility();
 		};
 		this.getIgnored = function(){return ignored;};
+		ui.addEventListener('showusermenu', showUserMenu);
 		function updateVisibility(){
 			ui.setVisible(!ignored);
+		}
+		function showUserMenu(e){
+			clickMenuUser.setPosition(e);
+			console.log('show');
+			clickMenuUser.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
+		}
+		function pm(){
+			self.dispatchEvent({type:'pm', userId:userId});
+		}
+		function ignore(){
+			ignoreManager.ignoreUserById(userId);
+		}
+		function unignore(){
+			ignoreManager.unignoreUserById(userId);
 		}
 	};
 	_Message.fromJSON = function(params){
@@ -45,12 +63,16 @@ var Message = (function(){
 		var components =[] ;
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  components.push(component);});
-		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
+		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, 
+		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
+		ignoreManager:params.ignoreManager,});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
-		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId, serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending});
+		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId,
+		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, ignoreManager:params.ignoreManager,
+		clickMenuUser:params.clickMenuUser});
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';
@@ -61,6 +83,8 @@ var Message = (function(){
 	}
 	return _Message;
 	function UI(params){
+		EventEnabledBuilder(this);
+		var self = this;
 		var content = params.content;
 		var name = params.username;
 		var userImage = params.userImage;
@@ -81,10 +105,15 @@ var Message = (function(){
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
 		innerUsername.innerHTML += name&&name.length>0?name:'&nbsp;';
-		inner.innerHTML +=content;
+		inner.appendChild(document.createTextNode(content))
 		element.appendChild(inner);
 		this.getElement = function(){return element;};
-		this.setViibible=function(value){element.style.display=value?'block':'none';};
+		this.getUsername = function(){return username;};
+		this.setVisible=function(value){element.style.display=value?'inline-block':'none';};
 		this.hidePending = function(){if(pending){element.removeChild(pending);}};
+		username.addEventListener('click', dispatchShowUserMenu);
+		function dispatchShowUserMenu(e){
+			self.dispatchEvent({type:'showusermenu', left:e.clientX, top:e.clientY});
+		}
 	}
 })();
