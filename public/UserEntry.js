@@ -30,6 +30,9 @@ var UserEntry =(function(){
 			ignoreManager.unignoreUser(user);
 		}
 	};
+	_UserEntry.fromIgnored = function(ignored){
+		return new _UserEntry(ignored);
+	};
 	return _UserEntry;
 	function UI(params){
 		var userImage = params.userImage;

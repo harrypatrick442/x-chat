@@ -5,7 +5,7 @@ var Lobby = (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
-		var ignoreManager = new IgnoreManager();
+		var ignoreManager = new IgnoreManager({getUserById:getUserById});
 		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});

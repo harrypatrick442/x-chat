@@ -1,27 +1,12 @@
 var IgnoreManager = new (function(){
+	const IGNORES='ignores';
 	var _IgnoreManager = function(params){
-		var IgnoredInfo=(function(){
-			var _IgnoredInfo = function(params){
-				this.getUsername = function(){return params.username;};
-				this.getId=function(){return params.id;};
-			};
-			_IgnoredInfo.fromUser=function(user){
-				return new _IgnoredInfo({id:user.getId(), username:user.getUsername()});
-			};
-			_IgnoredInfo.fromJSON= function(jObject){
-				return new _IgnoredInfo(jObject);
-			}
-			return _IgnoredInfo;
-		})();
 		EventEnabledBuilder(this);
 		var self = this;
 		var getUserById=params.getUserById;
 		var settings = new Settings('ignore');
-		var list;
-		var ignoreInfos;
+		var collection=new Collection({getEntryId:getEntryId});
 		this.ignoreUser = function(user){
-			var id = user.getId();
-			if(self.userIdIsIgnored(id))return;
 			ignoreUser(user);
 		};
 		this.ignoreUserById = function(id){
@@ -34,10 +19,7 @@ var IgnoreManager = new (function(){
 			self.unignoreUserById(user.getId());
 		};
 		this.unignoreUserById=function(id){
-			var index = list.indexOf(id);
-			if(index<0)_return;
-			delete ignoredInfos[id];
-			list.splice(index, 1);
+			if(!collection.removeById(id))return;
 			save();
 			dispatchUnignored(id);
 		};
@@ -46,10 +28,11 @@ var IgnoreManager = new (function(){
 			return self.userIdIsIgnored(user.getId());
 		};
 		this.userIdIsIgnored=function(id){
-			return list.indexOf(id)>=0;
+			return collection.containsId(id);
 		};
+		load();
 		function save(){
-			settings.set('list', list);
+			settings.set('ignores', collection.getEntries());
 		}
 		function dispatchIgnored(userId){
 			self.dispatchEvent({type:'ignored', userId:userId});
@@ -57,19 +40,21 @@ var IgnoreManager = new (function(){
 		function dispatchUnignored(userId){
 			self.dispatchEvent({type:'unignored', userId:userId});
 		}
+		function getEntryId(ignored){
+			return ignored.getId();
+		}
 		function ignoreUser(user){
-			ignoredInfos[user.getId()]=IgnoredInfo.fromUser(user);
-			list.push(id);
+			console.log('ignore uer');
+			if(!collection.add(Ignored.fromUser(user)))return;
+			console.log('done');
 			save();
-			dispatchIgnored(id);
+			dispatchIgnored(user.getId());
 		}
 		function load(){
-			list =settings.get('list');
-			if(!list)list=[];
-			var ignoreInfoList = settings.get('ignoreInfos');
-			ignoreInfos={};
-			each(ignoredInfoList, function(entry){
-				
+			var list = settings.get(IGNORES);
+			if(!list)return;
+			each(list, function(ignored){
+				collection.add(Ignored.fromJSON(ignored));
 			});
 		}
 		
