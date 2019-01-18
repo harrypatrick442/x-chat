@@ -11,10 +11,10 @@ var Collection = (function(){
 			return true;
 		};
 		this.remove=function(item){
-			if(!self.contains(item)) return false;
+			if(!self.contains(item)) return;
 			list.splice(list.indexOf(item), 1);
 			delete mapIdToItem[getEntryId(item)];
-			return true;
+			return item;
 		};
 		this.removeById=function(id){
 			var item = self.getById(id);

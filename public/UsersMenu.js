@@ -9,7 +9,8 @@ var UsersMenu =(function(){
 		var users = params.users;
 		var ignoreManager = params.ignoreManager;
 		var clickMenu = params.clickMenu;
-		
+		console.log(clickMenu);
+		console.log(new Error().stack);
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		var sortedFilteredEntriesIgnored = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntriesIgnored()});
 		
@@ -17,10 +18,14 @@ var UsersMenu =(function(){
 		this.getId = function(){return id;};
 		users.addEventListener('add', userAdd);
 		users.addEventListener('remove', userRemove);
-		ignoreManager.addEventListener('add', ignoreAdd);
-		ignoreManager.addEventListener('remove', ignoreRemove);
+		ignoreManager.addEventListener('ignored', callbackIgnoreAdd);
+		ignoreManager.addEventListener('unignored', ignoreRemove);
 		this.getVisible = ui.getVisible;
 		this.setVisible = ui.setVisible;
+		this.show = function(){
+			self.dispatchEvent({type:'show', entry:self});
+		};
+		loadIgnores();
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
 			sortedFilteredEntries.addEntry(new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe}));
@@ -28,25 +33,32 @@ var UsersMenu =(function(){
 		function userRemove(e){
 			sortedFilteredEntries.removeEntryById(e.user.getId());
 		}
-		function ignoreAdd(e){
-			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
-			sortedFilteredEntriesIgnored.addEntry(new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe}));
+		function callbackIgnoreAdd(e){
+			ignoreAdd(e.ignored);
 		}
 		function ignoreRemove(e){
-			sortedFilteredEntriesIgnored.removeEntryById(e.user.getId());
+			sortedFilteredEntriesIgnored.removeEntryById(e.ignored.getId());
 		}
 		function compare(userEntryA, userEntryB){
-			console.log(userEntryA.getUsername());
-			console.log(userEntryB.getUsername());
-			console.log(userEntryA.getUsername()>userEntryB.getUsername());
 			return userEntryA.getUsername()>userEntryB.getUsername();
 		}
 		function getEntryId(userEntry){
 			return userEntry.getId();
 		}
-		this.show = function(){
-			self.dispatchEvent({type:'show', entry:self});
-		};
+		function loadIgnores(){
+			try{
+			each(ignoreManager.getIgnores(), function(ignored){
+				 console.log(ignored);
+				ignoreAdd(ignored);
+			});
+			}
+			catch(ex){console.log(ex);
+			ignoreManager.clearSave();}
+		}
+		function ignoreAdd(ignored){
+			if(sortedFilteredEntriesIgnored.getByEntryId(ignored.getId()))return;
+			sortedFilteredEntriesIgnored.addEntry(UserEntry.fromIgnored({user:ignored, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe}));
+		}
 	};
 	return _UsersMenu;
 	function UI(params){

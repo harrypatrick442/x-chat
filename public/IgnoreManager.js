@@ -17,17 +17,19 @@ var IgnoreManager = new (function(){
 			ignoreUser(user);
 		};
 		this.ignoreUserByIdAndUsername=function(params){
-			if(!collection.add(Ignored.fromJSON(params)))return;
+			var ignored = Ignored.fromJSON(params);
+			if(!collection.add(ignored))return;
 			save();
-			dispatchIgnored(params.id);
+			dispatchIgnored(params.id, ignored);
 		};
 		this.unignoreUser=function(user){
 			self.unignoreUserById(user.getId());
 		};
 		this.unignoreUserById=function(id){
-			if(!collection.removeById(id))return;
+			var ignored = collection.removeById(id);
+			if(!ignored)return;
 			save();
-			dispatchUnignored(id);
+			dispatchUnignored(id, ignored);
 		};
 		this.userIsIgnored=function(user){
 			console.log(user);
@@ -37,24 +39,29 @@ var IgnoreManager = new (function(){
 			return collection.containsId(id);
 		};
 		load();
+		this.getIgnores=function(){return collection.getEntries();};
+		this.clearSave=function(){	
+			settings.set('ignores', []);
+		};
 		function save(){
-			settings.set('ignores', collection.getEntries());
+			settings.set('ignores', collection.getEntries().select(x=>x.toJSON()).toList());
 		}
-		function dispatchIgnored(userId){
-			self.dispatchEvent({type:'ignored', userId:userId});
+		function dispatchIgnored(userId, ignored){
+			self.dispatchEvent({type:'ignored', userId:userId, ignored:ignored});
 		}
-		function dispatchUnignored(userId){
-			self.dispatchEvent({type:'unignored', userId:userId});
+		function dispatchUnignored(userId, ignored){
+			self.dispatchEvent({type:'unignored', userId:userId, ignored:ignored});
 		}
 		function getEntryId(ignored){
 			return ignored.getId();
 		}
 		function ignoreUser(user){
 			console.log('ignore uer');
-			if(!collection.add(Ignored.fromUser(user)))return;
+			var ignored = Ignored.fromUser(user);
+			if(!collection.add(ignored))return;
 			console.log('done');
 			save();
-			dispatchIgnored(user.getId());
+			dispatchIgnored(user.getId(), ignored);
 		}
 		function load(){
 			var list = settings.get(IGNORES);
