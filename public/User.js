@@ -18,7 +18,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		EventEnabledBuilder(this);
 		var self = this;
 		this.getId = function(){return params.id;};
-		this.getUsername = function(){return params.username;};
+		this.getUsername = function(){return String(params.username);};
 		this.getEmail = function(){return params.email;};
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};

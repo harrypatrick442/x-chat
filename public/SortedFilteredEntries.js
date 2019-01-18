@@ -48,14 +48,14 @@ var SortedFilteredEntries = new (function () {
             }
             var lastIndex = entries.length - 1;
             var insertAtIndex = _findInsertPosition(0, lastIndex, entry);
-            if (insertAtIndex > lastIndex) {
+            if (insertAtIndex <= lastIndex) {
+				element.insertBefore(entry.getElement(),entries[insertAtIndex].getElement());
                 entries.splice(insertAtIndex, 0, entry);
-                element.appendChild(entry.getElement());
-
+				
                 return;
             }
             entries.push(entry);
-            element.insertBefore(entry.getElement(),entries[insertAtIndex].getElement());
+            element.appendChild(entry.getElement());
         }
         function map(entry) {
             mapIdToEntry[getEntryId(entry)] = entry;
@@ -67,7 +67,7 @@ var SortedFilteredEntries = new (function () {
             }
             var middleIndex = Math.floor(n / 2) + fromIndex;
             var middleEntry = entries[middleIndex];
-            var greaterThanOr = compare(entry, middleEntry);
+            var greaterThan = compare(entry, middleEntry);
             return greaterThan ? _findInsertPosition(middleIndex+1, toIndex, entry) : _findInsertPosition(fromIndex, middleIndex, entry);
         }
         function findInsertPositionByIteration(fromIndex, toIndex, entry) {
@@ -77,7 +77,7 @@ var SortedFilteredEntries = new (function () {
                     return i;
                 }
             }
-            return toIndex + 1;
+            return toIndex+1;
         }
         function containsEntry(entry) { return containsEntryId(getEntryId(entry)); }
         function containsEntryId(entryId) { return mapIdToEntry[entryId] ? true : false; }

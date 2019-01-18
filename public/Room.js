@@ -12,7 +12,7 @@ var Room = new (function(){
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser =params.clickMenuUser;
 		var users = new Users({getUserById:getUserById});
-		var usersMenu = new UsersMenu({users:users, id:id, ignoreManager:ignoreManager, clickMenu:clickMenuUser});
+		var usersMenu = new UsersMenu({users:users, id:id, ignoreManager:ignoreManager, clickMenu:clickMenuUser, getUserMe:getUserMe});
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
@@ -26,22 +26,25 @@ var Room = new (function(){
 		this.isPm=function(){return params.isPm;};
 		this.incomingMessage = function(jObjectMessage){
 			var scroll = ui.feedIsAtBottom();
-			jObjectMessage.emoticonsParser=emoticonsParser;
-			messages.addReceived(Message.fromJSON(jObjectMessage));
+			incomingMessage(jObjectMessage);
 			if(scroll)
 				ui.scrollFeedToBottom();
 		};
 		this.incomingMessages=function(jArrayMessages){
 			var scroll = ui.feedIsAtBottom();
 			each(jArrayMessages, function(jObjectMessage){
-				jObjectMessage.emoticonsParser=emoticonsParser;
-				jObjectMessage.clickMenuUser = clickMenuUser;
-				jObjectMessage.ignoreManager = ignoreManager;
-				messages.addReceived(Message.fromJSON(jObjectMessage));
+				incomingMessage(jObjectMessage);
 			});
 			if(scroll)
 				ui.scrollFeedToBottom();
 		};
+		function incomingMessage(jObjectMessage){
+			jObjectMessage.emoticonsParser=emoticonsParser;
+			jObjectMessage.clickMenuUser = clickMenuUser;
+			jObjectMessage.ignoreManager = ignoreManager;
+			jObjectMessage.getUserMe=getUserMe;
+			messages.addReceived(Message.fromJSON(jObjectMessage));
+		}
 		this.join=function(user){
 			if(users.contains(user))return;
 			users.add(user);
@@ -80,7 +83,7 @@ var Room = new (function(){
 			if(text=='')return;
 			var userMe = getUserMe();
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() 
-			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser});
+			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser, getUserMe:getUserMe});
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);
 			ui.clearText();

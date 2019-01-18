@@ -6,7 +6,7 @@ var Lobby = (function(){
 		const url = '/servlet';
 		var users = new Users({});
 		var ignoreManager = new IgnoreManager({getUserById:getUserById});
-		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager});
+		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
@@ -135,9 +135,8 @@ var Lobby = (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
-				console.log(msg.user);
-				userMe = User.fromJSON(msg.user);
-				users.add(userMe);
+				users.add(User.fromJSON(msg.user));
+				userMe = users.getById(msg.user.id);
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
 				getRooms();

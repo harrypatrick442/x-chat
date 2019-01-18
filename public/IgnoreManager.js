@@ -11,9 +11,15 @@ var IgnoreManager = new (function(){
 		};
 		this.ignoreUserById = function(id){
 			if(self.userIdIsIgnored(id))return;
+			console.log(id);
 			var user = getUserById(id);
 			if(!user)return;
 			ignoreUser(user);
+		};
+		this.ignoreUserByIdAndUsername=function(params){
+			if(!collection.add(Ignored.fromJSON(params)))return;
+			save();
+			dispatchIgnored(params.id);
 		};
 		this.unignoreUser=function(user){
 			self.unignoreUserById(user.getId());

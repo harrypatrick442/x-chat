@@ -8,6 +8,7 @@ var Message = (function(){
 		var clickMenuUser=params.clickMenuUser;
 		var userImage = new UserImage({userId:userId});
 		var ignoreManager = params.ignoreManager;
+		var getUserMe = params.getUserMe;
 		var ignored=false;
 		var ui = new UI({userImage:userImage, content:content, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
@@ -38,6 +39,7 @@ var Message = (function(){
 			ui.setVisible(!ignored);
 		}
 		function showUserMenu(e){
+			if(userId==getUserMe().getId())return;
 			clickMenuUser.setPosition(e);
 			console.log('show');
 			clickMenuUser.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
@@ -46,7 +48,7 @@ var Message = (function(){
 			self.dispatchEvent({type:'pm', userId:userId});
 		}
 		function ignore(){
-			ignoreManager.ignoreUserById(userId);
+			ignoreManager.ignoreUserByIdAndUsername({id:userId, username:username});
 		}
 		function unignore(){
 			ignoreManager.unignoreUserById(userId);
@@ -65,14 +67,14 @@ var Message = (function(){
 		function(component){  components.push(component);});
 		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, 
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
-		ignoreManager:params.ignoreManager,});
+		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe});
 	}
 	_Message.fromComponents=function(params){
 		var components = params.components;
 		var content = generatecontentFromMessageComponents(components);
 		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId,
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, ignoreManager:params.ignoreManager,
-		clickMenuUser:params.clickMenuUser});
+		clickMenuUser:params.clickMenuUser, getUserMe:params.getUserMe});
 	};
 	function generatecontentFromMessageComponents(components){
 		var str='';
