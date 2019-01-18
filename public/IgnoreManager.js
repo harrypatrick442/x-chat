@@ -2,9 +2,10 @@ var IgnoreManager = new (function(){
 	const IGNORES='ignores';
 	var _IgnoreManager = function(params){
 		EventEnabledBuilder(this);
-		var tabPortal = new TabPortal({});
+		var tabPortal = new TabPortal({id:'IgnoreManager'});
 		var self = this;
 		var getUserById=params.getUserById;
+		var getUserMe = params.getUserMe;
 		var settings = new Settings('ignore');
 		var collection=new Collection({getEntryId:getEntryId});
 		this.ignoreUser = function(user){
@@ -19,9 +20,7 @@ var IgnoreManager = new (function(){
 		};
 		this.ignoreUserByIdAndUsername=function(params){
 			var ignored = Ignored.fromJSON(params);
-			if(!collection.add(ignored))return;
-			save();
-			dispatchIgnored(params.id, ignored);
+			ignore(ignored);
 		};
 		this.unignoreUser=function(user){
 			self.unignoreUserById(user.getId());
@@ -29,8 +28,8 @@ var IgnoreManager = new (function(){
 		this.unignoreUserById=function(id){
 			var ignored = collection.removeById(id);
 			if(!ignored)return;
-			save();
-			dispatchUnignored(id, ignored);
+			dispatchUnignored(ignored.getId(), ignored);
+			sendUnignoredToOtherTabs(ignored);
 		};
 		this.userIsIgnored=function(user){
 			console.log(user);
@@ -44,6 +43,7 @@ var IgnoreManager = new (function(){
 		this.clearSave=function(){	
 			settings.set('ignores', []);
 		};
+		tabPortal.addEventListener('message', messageFromAnotherTab);
 		function save(){
 			settings.set('ignores', collection.getEntries().select(x=>x.toJSON()).toList());
 		}
@@ -57,12 +57,14 @@ var IgnoreManager = new (function(){
 			return ignored.getId();
 		}
 		function ignoreUser(user){
-			console.log('ignore uer');
 			var ignored = Ignored.fromUser(user);
+			ignore(ignored);
+		}
+		function ignore(ignored){
 			if(!collection.add(ignored))return;
-			console.log('done');
 			save();
-			dispatchIgnored(user.getId(), ignored);
+			dispatchIgnored(ignored.getId(), ignored);
+			sendIgnoredToOtherTabs(ignored);
 		}
 		function load(){
 			var list = settings.get(IGNORES);
@@ -71,7 +73,36 @@ var IgnoreManager = new (function(){
 				collection.add(Ignored.fromJSON(ignored));
 			});
 		}
-		
+		function messageFromAnotherTab(e){
+			var ignored = Ignored.fromJSON(e.message.ignored);
+			console.log(e);
+			switch(e.message.type){
+				case 'ignore':
+					incomingIgnored(ignored);
+				break;
+				case 'unignore':
+					incomingUnignored(ignored);
+				break;
+			}
+			
+		}
+		function incomingIgnored(ignored){
+			if(ignored.getId()==getUserMe().getId())return ;
+			if(!collection.add(ignored))return;
+			save();
+			dispatchIgnored(ignored.getId(), ignored);
+		}
+		function incomingUnignored(ignored){
+			if(!collection.remove(ignored))return;
+			save();
+			dispatchUnignored(ignored.getId(), ignored);
+		}
+		function sendIgnoredToOtherTabs(ignored){
+			tabPortal.sendMessage({type:'ignore', ignored: ignored.toJSON()});
+		}
+		function sendUnignoredToOtherTabs(ignored){
+			tabPortal.sendMessage({type:'unignore', ignored: ignored.toJSON()});
+		}
 	};
 	return _IgnoreManager;
 })();

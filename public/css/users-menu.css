@@ -16,6 +16,21 @@
 	padding:3px;
 	height:auto;
 }
+.lobby .users-menues .entries .users-menu .heading{
+	position:relative;
+	float:left;
+	width:100%;
+	font-size:14px;
+	font-family:verdana, geneva, sans-serif;
+	background-color:rgb(44, 43, 43);
+    color: #dddddd;
+	padding:4px;
+	padding-left:6px;
+	margin-bottom:3px;
+	box-sizing:border-box;
+	border-left:1px solid #333333;
+	border-right:1px solid #333333;
+}
 .lobby .users-menues .entries .users-menu .entries-ignored{
 	position:relative;
 	float:left;

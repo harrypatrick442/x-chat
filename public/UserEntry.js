@@ -1,5 +1,6 @@
 var UserEntry =(function(){
 	var _UserEntry = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var user = params.user;
 		var getUserMe = params.getUserMe;
@@ -19,7 +20,8 @@ var UserEntry =(function(){
 			clickMenu.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
 		}
 		function pm(){
-			
+			console.log('a');
+			self.dispatchEvent({type:'showpm', user:user});
 		}
 		function isIgnored(){
 			return ignoreManager.userIsIgnored(user);

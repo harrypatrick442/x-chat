@@ -5,14 +5,14 @@ var Lobby = (function(){
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
-		var ignoreManager = new IgnoreManager({getUserById:getUserById});
+		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});
 		var clickMenu = new ClickMenu({});
 		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu});
-		var pms = new Pms({room:rooms});
+		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
@@ -29,6 +29,8 @@ var Lobby = (function(){
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
+		rooms.addEventListener('sendpm', sendPm);
+		usersMenues.addEventListener('showpm', showPm);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -168,13 +170,17 @@ var Lobby = (function(){
 			jObject.sessionId=sessionId;
 			mysocket.send(jObject);
 		}
+		function sendPm(e){
+			var jObject = e.message.toJSON();
+			jObject.toUserId = e.toUserId;
+			jObject.type='pm_send';
+			jObject.sessionId=sessionId;
+			mysocket.send(jObject);
+		}
 		function createdRoom(e){
 			var room = e.room;
 			usersMenues.add(room.getUsersMenu());
 			mysocket.send({type:'room_join', sessionId:sessionId, roomId:room.getId()});
-			if(room.isPm()){
-				pms.addRoom(room);
-			}
 		}
 		function destroyedRoom(e){
 			console.log('removing from user menues');
@@ -189,6 +195,10 @@ var Lobby = (function(){
 			if(!userIds)return;
 			updateUserIdsLobby(userIds);
 		}
+		function showPm(e){
+			pms.showPmWithUser(e.user);
+		}
+		
 	};
 	function UI(params){
 		var rooms = params.rooms;

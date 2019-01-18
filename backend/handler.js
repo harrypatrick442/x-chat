@@ -32,6 +32,11 @@ exports.handler = new (function(){
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
 						room.sendMessage(Message.fromRequest(req, getUser(req)));
 					break;
+					case 'room_pm_send':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						lobby.getPms().sendPm(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
+					break;
 					case 'room_messages_get':
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
@@ -39,12 +44,18 @@ exports.handler = new (function(){
 							callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
 						});	
 					break;
+					case 'pm_messages_get':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						lobby.getPms().getPmMessages(userMe.getId(), req.userToId, function(messages){
+							callback({type:'pm_messages', userToId:req.userToId, messages:messages.toJSON()});
+						});
+					break;
 					case 'room_join':
 						var user = getUser(req);
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-						console.log('room join wa called');
 						room.join(user);
 					break;
 					case 'room_leave':
@@ -52,7 +63,6 @@ exports.handler = new (function(){
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-						console.log('room join wa called');
 						room.leave(user);
 					break;
 					case 'room_users_get':

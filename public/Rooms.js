@@ -75,7 +75,7 @@ var Rooms = new (function(){
 			var isPm = room.isPm();
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
-			room.addEventListener('sendmessage', dispatchSendMessage);
+			room.addEventListener('sendmessage', isPm?dispatchSendPm:dispatchSendMessage);
 			room.addEventListener('getmessages', dispatchGetMessages);
 			//room.addEventListener('getuserids', self.dispatchEvent);
 			dispatchCreatedRoom(room);
@@ -109,6 +109,9 @@ var Rooms = new (function(){
 		}
 		function dispatchSendMessage(e){
 			self.dispatchEvent(e);
+		}
+		function dispatchSendPm(e){
+			self.dispatchEvent({type:'sendpm', message:e.message});
 		}
 		function dispatchGetMessages(e){
 			self.dispatchEvent(e);

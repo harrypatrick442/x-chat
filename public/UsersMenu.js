@@ -5,12 +5,9 @@ var UsersMenu =(function(){
 		var id = params.id;
 		var ui = new UI();
 		var getUserMe = params.getUserMe;
-		console.log(getUserMe);
 		var users = params.users;
 		var ignoreManager = params.ignoreManager;
 		var clickMenu = params.clickMenu;
-		console.log(clickMenu);
-		console.log(new Error().stack);
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		var sortedFilteredEntriesIgnored = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntriesIgnored()});
 		
@@ -28,7 +25,10 @@ var UsersMenu =(function(){
 		loadIgnores();
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
-			sortedFilteredEntries.addEntry(new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe}));
+			var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
+			sortedFilteredEntries.addEntry(userEntry);
+			userEntry.addEventListener('showpm', function(e){
+			console.log('a');self.dispatchEvent(e);});
 		}
 		function userRemove(e){
 			sortedFilteredEntries.removeEntryById(e.user.getId());
@@ -65,9 +65,17 @@ var UsersMenu =(function(){
 		var visible=false;
 		var element = E.DIV();
 		element.classList.add('users-menu');
+		var heading=E.DIV();
+		heading.innerHTML='&nbsp;Users ';
+		heading.classList.add('heading');
+		element.appendChild(heading);
 		var entries = E.DIV();
 		entries.classList.add('entries');
 		element.appendChild(entries);
+		var ignoredHeading=E.DIV();
+		ignoredHeading.innerHTML='&nbsp;Ignored ';
+		ignoredHeading.classList.add('heading');
+		element.appendChild(ignoredHeading);
 		var entriesIgnored = E.DIV();
 		entriesIgnored.classList.add('entries-ignored');
 		element.appendChild(entriesIgnored);
