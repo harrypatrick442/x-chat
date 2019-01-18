@@ -2,20 +2,26 @@ var TabPortal = new (function () {
 	var mappedLists=new MappedLists();
 	var _TabPortal = function(params){
 		var id = params.id;
+		var sendInOwnTab=params.sendInOwnTab;
+		var receiveInOwnTab = params.receiveInOwnTab;
 		EventEnabledBuilder(this);
 		var self = this;
-		this.sendMessage = function(){
-			window.postMessage({});
+		this.sendMessage = function(msg){
+			sendMessage(id, message);
 		};
 		this.dispose = function(){
 			mappedLists.remove(id, self);
+			dispatchClosed();
 		};
 		mappedLists.add(new Instance(self, receivedMessage));
 		function receivedMessage(msg){
-			
+			dipatchMessage(msg);
 		}
-		function dispatchReceivedMessage(){
-			self.dispatchEvent({type:'received', message:message});
+		function dispatchMessage(message){
+			self.dispatchEvent({type:'message', message:message});
+		}
+		function dispatchClosed(){
+			self.dispatchEvent({type:'closed'});
 		}
 	};
 	function Instance(tabPortal, receivedMessage){
@@ -24,23 +30,13 @@ var TabPortal = new (function () {
 	window.addEventListener('message', gotMessage);
 	return _TabPortal;
 	function gotMessage(e){
-		var msg = e.data;
-		if(!msg.id)return;
-		var tabPortals = mappedLists.getList(msg.id);
-		if(!tabPortals)return;
-		each(tabPortals, function(tabPortal){
-			tabPortal
-		});
+		var data = e.data;
+		if(!data.id)return;
+		var instances = mappedLists.getList(data.id);
+		if(!instances)return;
+		instances.each(x=>x.receivedMesage(data.message));
 	}
-	function getInstances(id){
-		
-	}
-	function addInstance(id, instance){
-		var instances = mapIdToInstance[id];
-		if(!instances){
-			mapIdToInstance[id]=[instance];
-			return;
-		}
-		if(
+	function sendMessage(id, message){
+		window.postMessage({id:id, message:message});
 	}
 })();

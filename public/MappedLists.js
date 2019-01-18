@@ -1,5 +1,5 @@
-MappedList=(function (){
-	var _MappedList = function(){
+MappedLists=(function (){
+	var _MappedLists = function(){
 		var map ={};
 		this.add = function(id, item){
 			if(!item)return false;
@@ -19,7 +19,11 @@ MappedList=(function (){
 				delete map[id];
 				return true;
 			}
-			return items.remove(item);
+			var removed = items.remove(item);
+			if(!removed) return false;
+			if(items.count()<1)
+				delete map[id];
+			return true;
 		};
 		this.contains=function(id, item){
 			var items = map[id];
@@ -27,20 +31,22 @@ MappedList=(function (){
 			if(!item)return true;
 			return items.contains(item);
 		};
-		this.getLists = function(id){
+		this.getList = function(id){
 			var items = mapIdToInstance[id];
 			if(!items)return;
 			return items.getList();
 		};
 	};
+	return _MappedLists;
 	function Items(item){
+		var self = this;
 		var list =[];
 		this.add = function(item){
 			if(self.contains(item))return false;
 			list.push(item);
 			return true;
 		};
-		this.remove = function(item){}
+		this.remove = function(item){
 			var index = list.indexOf(item);
 			if(index<0)return false;
 			list.splice(index, 1);
@@ -51,5 +57,6 @@ MappedList=(function (){
 		this.getList=function(){
 			return list;
 		};
+		this.count = function(){ return list.length;};
 	}
 })();

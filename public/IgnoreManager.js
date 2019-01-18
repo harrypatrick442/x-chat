@@ -2,6 +2,7 @@ var IgnoreManager = new (function(){
 	const IGNORES='ignores';
 	var _IgnoreManager = function(params){
 		EventEnabledBuilder(this);
+		var tabPortal = new TabPortal({});
 		var self = this;
 		var getUserById=params.getUserById;
 		var settings = new Settings('ignore');
