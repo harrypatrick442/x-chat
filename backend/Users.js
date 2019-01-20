@@ -3,8 +3,8 @@ exports.Users = (function(){
 	require('./Linq');
 	var _Users = function(){
 		var collection = new Collection({getEntryId:getEntryId});
-		var list=[];
 		this.add = function(user){
+		var list=[];
 			if(collection.contains(user))return;
 			collection.add(user);
 			user.addEventListener('dispose', userDispose);

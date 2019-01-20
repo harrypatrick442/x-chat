@@ -2,6 +2,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_REGISTER='xchat_register';
 	const STORED_PROCEDURE_HASH_GET ='xchat_hash_get';
 	const STORED_PROCEDURE_USERNAME_COUNT = 'xchat_username_count';
+	const STORED_PROCEDURE_USER_ID_GET_FROM_USERNAME_OR_EMAIL='xchat_user_id_get_from_username_or_email';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var User = require('./../User').User;
 	this.getHash = function(userId, callback){
@@ -32,6 +33,16 @@ exports.dalUsers= new (function(){
 			}
 			callback(user);
 		}});
+	};
+	this.getByUsernameOrEmail=function(username, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_ID_GET_FROM_USERNAME_OR_EMAIL, parameters:[username], callbackRead:function(rows){
+			var user;	
+			if(rows.length>0){
+				user = User.fromSqlRow(rows[0]);
+			}
+			callback(user);
+	}});
+		
 	};
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;

@@ -23,7 +23,7 @@ exports.Pms = (function(){
 			dalPms.getMessages(userMeId, userToId, N_MESSAGES_HISTORY, function(messages){
 				var userMe = users.getById(userMeId);
 				if(!userMe)return;
-				userMe.sendMessage({type:'pm_messages', userToId:userToId, messages:messages.select(x=>x.toJSON()).toList()});
+				userMe.sendMessage({type:'pm_messages', userId:userToId, messages:messages.select(x=>x.toJSON()).toList()});
 			});
 		};
 	};

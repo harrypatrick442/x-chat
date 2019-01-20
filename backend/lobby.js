@@ -69,8 +69,10 @@ exports.Lobby = (function(){
 			});
 		}
 		function authenticate(req, mysocket, callback){
-			dalUsers.getByName(req.username, function(user){
+			dalUsers.getByUsernameOrEmail(req.username, function(user){
+				console.log('got user');console.log(user);
 				if(!user){return invalidUsernameOrPassword(AUTHENTICATE); return;}
+				console.log('getting hash');
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
 					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}

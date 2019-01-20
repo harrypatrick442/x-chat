@@ -14,6 +14,11 @@ var Pms=  (function(){
 			if(!room){notify(msg);return;}
 			room.incomingMessage(msg.message);
 		};
+		this.incomingMessages = function(msg){
+			var room = rooms.getById(getRoomId(msg.userId));
+			if(!room){notify(msg);return;}
+			room.incomingMessages(msg.messages);
+		};
 		rooms.addEventListener('sendpm', e=>self.dispatchEvent(e));
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
 		function getRoomId(userId){
