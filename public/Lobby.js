@@ -62,14 +62,17 @@ var Lobby = (function(){
 				case 'message':
 					rooms.incomingMessage(msg);
 					break;
+				case 'pm_message':
+					pms.incomingMessage(msg);
+					break;
 				case 'messages':
 					rooms.incomingMessages(msg);
 					break;
+				case 'pm_messages':
+					pms.incomingMessages(msg);
+					break;
 				case 'userids':
 					updateUserIdsLobby(msg.userIds);//is used for leave.
-					break;
-				case 'pm':
-					pms.incomingMessage(msg);
 					break;
 			}
 		}
@@ -91,7 +94,7 @@ var Lobby = (function(){
 		function roomUserIds_Leave(room, userIds){
 			var usersToRemove = room.getUsers().getEntries().where(x=>userIds.indexOf(x.getId())<0).toList();
 			console.log('n remove: ');
-			console.log(usersToRemove.length);
+			console.log(usersToRemove.length)
 			each(usersToRemove, function(userToRemove){
 				console.log(userToRemove.getId());
 				room.leave(userToRemove);
@@ -145,7 +148,6 @@ var Lobby = (function(){
 				getRooms();
 				return;
 			}
-			console.log(msg);
 			Authenticate.error(msg.error);
 		}
 		function getRooms(){
@@ -153,6 +155,9 @@ var Lobby = (function(){
 		}
 		function getMessages(e){
 			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
+		}
+		function getPms(e){
+			mysocket.send({type:'room_pms_get', userToId:e.userToId, sessionId:sessionId});
 		}
 		function getUserIds(e){
 			mysocket.send({type:'room_userids_get', roomId:e.roomId, sessionId:sessionId});
@@ -172,8 +177,8 @@ var Lobby = (function(){
 		}
 		function sendPm(e){
 			var jObject = e.message.toJSON();
-			jObject.toUserId = e.toUserId;
-			jObject.type='pm_send';
+			jObject.userToId = e.userToId;
+			jObject.type='room_pm_send';
 			jObject.sessionId=sessionId;
 			mysocket.send(jObject);
 		}

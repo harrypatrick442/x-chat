@@ -5,7 +5,6 @@ exports.Users = (function(){
 		var collection = new Collection({getEntryId:getEntryId});
 		var list=[];
 		this.add = function(user){
-			console.log('USERSS');
 			if(collection.contains(user))return;
 			collection.add(user);
 			user.addEventListener('dispose', userDispose);
@@ -24,6 +23,7 @@ exports.Users = (function(){
 				user.sendMessage(msg);
 			});
 		};	
+		this.getById=collection.getById;
 		this.toJSON=function(){
 			return collection.getEntries().select(x=>x.toJSON()).toList();
 		};

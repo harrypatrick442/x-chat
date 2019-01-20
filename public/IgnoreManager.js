@@ -13,7 +13,6 @@ var IgnoreManager = new (function(){
 		};
 		this.ignoreUserById = function(id){
 			if(self.userIdIsIgnored(id))return;
-			console.log(id);
 			var user = getUserById(id);
 			if(!user)return;
 			ignoreUser(user);
@@ -32,7 +31,6 @@ var IgnoreManager = new (function(){
 			sendUnignoredToOtherTabs(ignored);
 		};
 		this.userIsIgnored=function(user){
-			console.log(user);
 			return self.userIdIsIgnored(user.getId());
 		};
 		this.userIdIsIgnored=function(id){
@@ -75,7 +73,6 @@ var IgnoreManager = new (function(){
 		}
 		function messageFromAnotherTab(e){
 			var ignored = Ignored.fromJSON(e.message.ignored);
-			console.log(e);
 			switch(e.message.type){
 				case 'ignore':
 					incomingIgnored(ignored);

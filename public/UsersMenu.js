@@ -48,7 +48,6 @@ var UsersMenu =(function(){
 		function loadIgnores(){
 			try{
 			each(ignoreManager.getIgnores(), function(ignored){
-				 console.log(ignored);
 				ignoreAdd(ignored);
 			});
 			}

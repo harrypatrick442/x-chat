@@ -10,9 +10,7 @@ var MySocket = new (function(){
 		getInterface();
 		this.send = function(obj){
 			var msg = JSON.stringify(obj);
-			console.log(typeof(obj));
 			console.log(obj);
-			console.log(msg);
 			getInterface().send(msg);
 		};
 		function callbackOnMessage(msg){
@@ -87,7 +85,6 @@ var MySocket = new (function(){
 			{
 				var msg = iterator.next();
 				try{
-				console.log(msg);
 					websocket.send(msg);
 					iterator.remove();
 				}

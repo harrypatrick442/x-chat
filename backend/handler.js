@@ -35,7 +35,7 @@ exports.handler = new (function(){
 					case 'room_pm_send':
 						var userMe = getUser(req);
 						if(!userMe)return;
-						lobby.getPms().sendPm(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
+						lobby.getPms().sendMessage(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
 					break;
 					case 'room_messages_get':
 						var room = getRoom(req);

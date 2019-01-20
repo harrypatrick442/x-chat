@@ -8,6 +8,7 @@ exports.Lobby = (function(){
 	const SEND_USER_IDS_MAX_N_DELAYS=5;
 	const SEND_USER_IDS_DELAY=1000;
 	var Rooms = require('./Rooms').Rooms;
+	var Pms = require('./Pms').Pms;
 	var Users = require('./Users').Users;
 	var TemporalCallback=require('./TemporalCallback').TemporalCallback;
 	var Sessions = require('./Sessions').Sessions;
@@ -18,10 +19,12 @@ exports.Lobby = (function(){
 		var self = this;
 		var rooms = new Rooms();
 		var users = new Users();
+		var pms = new Pms({users:users, rooms:rooms});
 		var sessions = new Sessions();
 		var temporalCallbackSendUserIds = new TemporalCallback({maxNDelays:SEND_USER_IDS_MAX_N_DELAYS/*if keeps being reset within delay, will wait up to this total amount of time*/
 																			, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
 		this.getRooms = function(){return rooms;};
+		this.getPms = function(){return pms;};
 		this.getSessions=function(){
 			return sessions;
 		};

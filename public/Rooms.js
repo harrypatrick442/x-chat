@@ -21,7 +21,6 @@ var Rooms = new (function(){
 		this.set = function(roomInfos){
 			roomsMenu.set(roomInfos);
 			var ids=[];
-			console.log(roomInfos);
 			each(roomInfos, function(roomInfo){
 				ids.push(roomInfo.id);
 			});
@@ -69,14 +68,19 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
+			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, userTo:roomInfo.userTo,
 			getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser});
 			collection.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
-			room.addEventListener('sendmessage', isPm?dispatchSendPm:dispatchSendMessage);
-			room.addEventListener('getmessages', dispatchGetMessages);
+			if(!isPm){
+			room.addEventListener('sendmessage', e=>self.dispatchEvent(e));
+			room.addEventListener('getmessages', e=>self.dispatchEvent(e));
+			}else{
+			room.addEventListener('sendpm', e=>self.dispatchEvent(e));
+			room.addEventListener('getpms', e=>self.dispatchEvent(e));
+			}
 			//room.addEventListener('getuserids', self.dispatchEvent);
 			dispatchCreatedRoom(room);
 			room.addEventListener('dispose',callbackRoomDispose);
@@ -91,7 +95,7 @@ var Rooms = new (function(){
 			dispatchRoomsInChanged();
 		}
 		function dispatchRoomsInChanged(){
-			self.dispatchEvent({type:'roomsinchanged', roomIds:collection.getIds()});
+			self.dispatchEvent({type:'roomsinchanged', roomIds:collection.getEntries().where(x=>!x.isPm()).select(x=>x.getId()).toList()});
 		}
 		function dispatchCreatedRoom(room){
 			self.dispatchEvent({type:'createdroom', room:room});
@@ -115,6 +119,8 @@ var Rooms = new (function(){
 		}
 		function dispatchGetMessages(e){
 			self.dispatchEvent(e);
+		}
+		function dispatchGetPms(e){	
 		}
 		function remove(room){
 			collection.remove(room);

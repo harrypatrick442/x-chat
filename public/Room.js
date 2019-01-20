@@ -22,7 +22,7 @@ var Room = new (function(){
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.getUsersMenu = function(){return usersMenu;};
-		this.getPmUser = function(){return params.pmUser;};
+		this.getUserTo = function(){return params.userTo;};
 		this.isPm=function(){return params.isPm;};
 		this.incomingMessage = function(jObjectMessage){
 			var scroll = ui.feedIsAtBottom();
@@ -73,7 +73,7 @@ var Room = new (function(){
 			dispatchDispose();
 		}
 		function dipatchGetMessages(){
-			self.dispatchEvent({type:'getmessages', roomId:id});
+			self.dispatchEvent(!self.isPm()?{type:'getmessages', roomId:id}:{type:'getpms', toUserId:self.getUserTo().getId()});
 		}
 		function dispatchGetUserIds(){
 			self.dispatchEvent({type:'getuserids', roomId:id});
@@ -93,7 +93,8 @@ var Room = new (function(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
 		}
 		function dispatchSendMessage(message){
-			self.dispatchEvent({type:'sendmessage',message:message, roomId:id});
+			console.log(self.getUserTo().getId());
+			self.dispatchEvent(!self.isPm()?{type:'sendmessage',message:message, roomId:id}:{type:'sendpm', userToId:self.getUserTo().getId(), message:message});
 		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', room:self});

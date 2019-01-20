@@ -33,7 +33,6 @@ Enumerable.prototype.take = function (n) {
 };
 Enumerable.prototype.where = function (func) {
 	var self = this;
-	console.log('where');
 	return new Enumerable(function () {
 			do {
 				if (!self.moveNext()) return false;

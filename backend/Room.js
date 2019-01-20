@@ -16,6 +16,7 @@ exports.Room = (function(){
 		};
 		this.getUsers=function(){return users;};
 		this.isPm=function(){return params.isPm;};
+		this.getUserTo= function(){ return params.userTo;};
 		this.join = function(user){
 			if(users.contains(user))return;
 			users.add(user);

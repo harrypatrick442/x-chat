@@ -1,4 +1,4 @@
-exports.dalMessages= new (function(){
+exports.dalPms= new (function(){
 	console.log('DalPms loaded');
 	const STORED_PROCEDURE_PM_MESSAGE_ADD='xchat_pm_message_add';
 	const STORED_PROCEDURE_PM_MESSAGES_GET='xchat_pm_messages_get';
@@ -15,7 +15,8 @@ exports.dalMessages= new (function(){
 			callbackGotMessages(messages);
 		}});
 	};
-	this.addMessage= function(roomId, message){
+	
+	this.addMessage= function(userMeId, userToId, message){
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_PM_MESSAGE_ADD, parameters:[parseInt(userMeId), parseInt(userToId), message.getContent(), message.getServerAssignedNMessage()]});
 	};
 })();

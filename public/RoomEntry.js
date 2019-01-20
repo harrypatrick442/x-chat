@@ -26,7 +26,6 @@ var RoomEntry = new (function(){
 		inner.appendChild(name);
 		this.getElement = function(){return element;};
 		this.parentWidth = function(clientWidth){
-			console.log(clientWidth);
 			if(clientWidth<200){
 				element.style.width='100%';
 				return;
