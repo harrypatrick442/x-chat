@@ -73,7 +73,7 @@ var Room = new (function(){
 			dispatchDispose();
 		}
 		function dipatchGetMessages(){
-			self.dispatchEvent(!self.isPm()?{type:'getmessages', roomId:id}:{type:'getpms', toUserId:self.getUserTo().getId()});
+			self.dispatchEvent(!self.isPm()?{type:'getmessages', roomId:id}:{type:'getpms', userToId:self.getUserTo().getId()});
 		}
 		function dispatchGetUserIds(){
 			self.dispatchEvent({type:'getuserids', roomId:id});

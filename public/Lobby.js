@@ -25,6 +25,7 @@ var Lobby = (function(){
 		buttonUsers.addEventListener('toggled', onToggleButtonUsers);
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
+		rooms.addEventListener('getpms', getPms);
 		rooms.addEventListener('getuserids', getUserIds);
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
@@ -157,7 +158,8 @@ var Lobby = (function(){
 			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
 		}
 		function getPms(e){
-			mysocket.send({type:'room_pms_get', userToId:e.userToId, sessionId:sessionId});
+			console.log('get pms');
+			mysocket.send({type:'pm_messages_get', userToId:e.userToId, sessionId:sessionId});
 		}
 		function getUserIds(e){
 			mysocket.send({type:'room_userids_get', roomId:e.roomId, sessionId:sessionId});

@@ -79,7 +79,8 @@ var Rooms = new (function(){
 			room.addEventListener('getmessages', e=>self.dispatchEvent(e));
 			}else{
 			room.addEventListener('sendpm', e=>self.dispatchEvent(e));
-			room.addEventListener('getpms', e=>self.dispatchEvent(e));
+			room.addEventListener('getpms', function(e){console.log('get pm 2');self.dispatchEvent(e);});
+			
 			}
 			//room.addEventListener('getuserids', self.dispatchEvent);
 			dispatchCreatedRoom(room);
