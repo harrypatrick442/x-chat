@@ -35,9 +35,6 @@ exports.Room = (function(){
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};
 		};
-		this.getSqlParameters= function(){
-		   return {name:params.name, id:params.id};
-		};
 		this.sendMessage = function(message){
 			getMessages(function(messages){messages.add(message);});
 			users.sendMessage({type:'message', roomId:id, message:message.toJSON()});

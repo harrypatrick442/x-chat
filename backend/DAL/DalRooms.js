@@ -7,22 +7,28 @@ exports.dalRooms= new (function(){
 	var Room = require('./../Room').Room;
 	var Message = require('./../Message').Message;
 	var each = require('./../each').each;
+	var sql = require('mssql');
 	this.getRooms = function(callback){
 		var rooms=[];
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOMS, callbackRead:function(rows){
-			console.log(rows);
-			console.log('is rows');
-			var rooms=[];
-			each(rows, function(row){
-				console.log(row);
-				rooms.push(Room.fromSqlRow(row));
-			});
-			console.log(rooms);
-			callback(rooms);
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOMS,
+			callbackRead:function(rows){
+				console.log(rows);
+				console.log('is rows');
+				var rooms=[];
+				each(rows, function(row){
+					console.log(row);
+					rooms.push(Room.fromSqlRow(row));
+				});
+				console.log(rooms);
+				callback(rooms);
 		}});
 	};
 	
 	this.createRoom = function(room){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_CREATE_ROOM, parameters:room.getSqlParameters()});
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_CREATE_ROOM, parameters:[
+			{name:NAME, value:room.getName(), type:sql.VarChar(45)},
+			{name:ID, value:room.getId(), type:sql.Int}
+		]
+		});
 	};
 })();

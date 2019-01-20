@@ -1,25 +1,24 @@
 exports.Dal= (function(){
 	const CALL="CALL ";
-    var mysql = require("mysql");
+    var sql = require("mssql");
+		console.log(sql);
 	var _Dal = function(config){
-		var pool = mysql.createPool(config);
-		console.log(mysql);
 		this.nonQuery = function(params){
 			var storedProcedure = params.storedProcedure;
 			var parameters = params.parameters;
-			var sql = getSql(storedProcedure, parameters);
-			pool.getConnection(function(err, connection) {
-				if(err) throw err;
-				connection.query(sql, parameters, function(err, rows)
-				{
+			var connection = new sql.Connection(config);
+			connection.connect().then(function(connection) {
+				var request = new sql.Request(connection);
+				setInputs(parameters, request);
+				request.execute(storedProcedure).then(function(err, recordsets, returnValue, affected) {
 					if(err){
 						console.log(err.message); 
 						throw err;
 					}
-					connection.release(function(err){
-						if (err) throw err;
-						console.log("Connection closed.");
-					});
+					callback(recordSets);
+				}).catch(function(err) {
+					console.log(err.message); 
+					throw err;
 				});
 			});
 		};
@@ -27,42 +26,26 @@ exports.Dal= (function(){
 			var storedProcedure = params.storedProcedure;
 			var parameters = params.parameters?params.parameters:[];
 			var callbackRead= params.callbackRead;
-			var sql = getSql(storedProcedure, parameters);
-			pool.getConnection(function(err, connection) {
-				if(err) throw err;
-				connection.query(sql, parameters, function(err, result, fields)
-				{
+			var connection = new sql.Connection(config);
+			connection.connect().then(function(connection) {
+				var request = new sql.Request(connection);
+				setInputs(parameters, request);
+				request.execute(storedProcedure).then(function(err, recordSets, returnValue, affected) {
 					if(err){
 						console.log(err.message); 
 						throw err;
 					}
-					var rows = result[0];
-					try{
-						callbackRead(rows);
-					}
-					catch(ex){
-						throw ex;
-					}
-					finally{
-						connection.release(function(err){
-							if (err) throw err;
-							console.log("Connection closed.");
-						});
-					}
+					callbackRead(recordSets);
+				}).catch(function(err) {
+					console.log(err.message); 
+					throw err;
 				});
 			});
 		};
-		function getSql(storedProcedure, parameters){
-			var sql = CALL+storedProcedure+'(';
-			var first = true;
-			if(parameters.length>0){
-				sql+='?';
-				for(var i=1; i<parameters.length; i++){
-					sql+=',?';
-				}
-			}
-			sql+=')';
-			return sql;
+		function setInputs(parameters, request){
+			each(parameters, function(parameter){
+				request.input(parameter.name, parameter.type, parameter.value);
+			});
 		}
 	};
 	return _Dal;
