@@ -19,7 +19,7 @@ exports.dalPms= new (function(){
 				{name:N_MESSAGES, value: nMessages, type:sql.Int}
 			], 
 			callback:function(result){
-				var rows = result.recordset[0];
+				var rows = result.recordsets[0];
 				var messages=[];
 				each(rows, function(row){
 					messages.push(Message.fromSqlRow(row));
