@@ -1,12 +1,10 @@
 exports.dalXChat= new (function(){
 		var Dal = require('./Dal').Dal;
 		var config = {
-			connectionLimit: 100,
-			user: 'xchat',
+			user: 'x-chat',
 			password: 'Afucka9',
 			server: 'localhost', 
-			database: 'xchat' ,
-			charset:'UTF8MB4',
+			database: 'x-chat'/*
 			typeCast: function castField( field, useDefaultTypeCasting ) {
 				// We only want to cast bit fields that have a single-bit in them. If the field
 				// has more than one bit, then we cannot assume it is supposed to be a Boolean.
@@ -20,7 +18,7 @@ exports.dalXChat= new (function(){
 				return( bytes[ 0 ] === 1 );
 				}
 				return( useDefaultTypeCasting() );
-			}
+			}*/
 		};
 		var dal = new Dal(config);
 		this.nonQuery = dal.nonQuery;

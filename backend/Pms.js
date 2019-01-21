@@ -11,13 +11,12 @@ exports.Pms = (function(){
 			var userMe = users.getById(userMeId);
 			console.log(userMeId);
 			console.log(userToId);
-			dalPms.addMessage(userMeId, userToId, message);
 			if(!userTo)return;
-			console.log('replying');
-			console.log(userTo.getId());
-			console.log(userMe.getId());
+			dalPms.addMessage(userMeId, userToId, message, function(){
+				console.log(message.getServerAssignedNMessage);
 			userTo.sendMessage({type:'pm_message', userId:userMeId, message:message});
 			userMe.sendMessage({type:'pm_message', userId:userToId, message:message});
+			});
 		};
 		this.getMessages=function(userMeId, userToId, callback){
 			dalPms.getMessages(userMeId, userToId, N_MESSAGES_HISTORY, function(messages){

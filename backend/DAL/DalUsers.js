@@ -11,13 +11,15 @@ exports.dalUsers= new (function(){
 	const HASH='hash';
 	const EMAIL='email';
     var dalXChat = require('./DalXChat').dalXChat;	
+	var sql = require('mssql');
 	var User = require('./../User').User;
 	this.getHash = function(userId, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_HASH_GET, 
 			parameters:[
 				{name:USER_ID, value:parseInt(userId), type:sql.Int},
 			],
-			callbackRead:function(rows){
+			callback:function(result){
+				var rows = result.recordsets[0];
 				var hash;
 				if(rows.length>0){
 					hash = rows[0].hash;
@@ -30,7 +32,8 @@ exports.dalUsers= new (function(){
 			parameters:[
 				{name:USERNAME, value:username, type:sql.VarChar(200)}
 			],
-			callbackRead:function(rows){
+			callback:function(result){
+				var rows = result.recordsets[0];
 				console.log(rows[0].count);
 				callback(rows[0].count<1);
 		}});
@@ -40,12 +43,13 @@ exports.dalUsers= new (function(){
 		[
 			{name:EMAIL, value:params.email, type:sql.VarChar(200)},
 			{name:USERNAME, value:params.username, type:sql.VarChar(45)},
-			{name:HASH,value: params.hash, type:VarChar(100)},
+			{name:HASH,value: params.hash, type:sql.VarChar(100)},
 			{name:GENDER, value: params.gender, type:sql.Bit},
 			{name:BIRTHDAY, value:formatBirthday(params.birthday), type:sql.DateTime},
 			{name:IS_GUEST, value:params.isGuest, type:sql.Bit}
 		],
-		callbackRead:function(rows){
+		callback:function(result){
+			var rows = result.recordsets[0];
 			var user;	
 			if(rows.length>0){
 				user = User.fromSqlRow(rows[0]);
@@ -58,7 +62,8 @@ exports.dalUsers= new (function(){
 		parameters:[
 			{name:USERNAME, value:username, type:sql.VarChar(45)}
 		], 
-		callbackRead:function(rows){
+		callback:function(result){
+			var rows = result.recordsets[0];
 			var user;	
 			if(rows.length>0){
 				user = User.fromSqlRow(rows[0]);

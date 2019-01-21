@@ -10,15 +10,16 @@ exports.dalMessages= new (function(){
     var dalXChat = require('./DalXChat').dalXChat;	
 	var Message = require('./../Message').Message;
 	var each = require('./../each').each;
-	var sql = require('mssql').each;
+	var sql = require('mssql');
 	
 	this.getMessages = function(roomId, nMessages, callbackGotMessages){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGES_GET, 
 		parameters:[
-			{name:ROOM_ID, value:parseInt(roomId), type:sql.Int,
+			{name:ROOM_ID, value:parseInt(roomId), type:sql.Int},
 			{name:N_MESSAGES, value:nMessages, type:sql.Int}
 			], 
-		callbackRead:function(rows){
+		callback:function(result){
+			var rows = result.recordset[0];
 			var messages=[];
 			each(rows, function(row){
 				messages.push(Message.fromSqlRow(row));
@@ -29,8 +30,8 @@ exports.dalMessages= new (function(){
 	this.addMessage= function(roomId, message){
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_ROOM_MESSAGE_ADD, 
 			parameters:[
-			{name:ROOM_ID,value:parseInt(roomId):sql.Int},
-			{name:USER_ID,value: message.getUserId():sql.Int},
+			{name:ROOM_ID,value:parseInt(roomId), type:sql.Int},
+			{name:USER_ID,value: message.getUserId(),type:sql.Int},
 			{name:CONTENT, value: message.getContent(), type:sql.Text},
 			{name:SERVER_N_ASSIGNED_MESSAGE, value:message.getServerAssignedNMessage(), type:sql.Int}
 			]});

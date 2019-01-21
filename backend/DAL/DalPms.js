@@ -6,7 +6,7 @@ exports.dalPms= new (function(){
 	const USER_ME_ID='userMeId';
 	const USER_TO_ID='userToId';
 	const CONTENT='content';
-	const SERVER_N_ASSIGNED_MESSAGE='serverAssignedNMessage';
+	const SERVER_ASSIGNED_N_MESSAGE='serverAssignedNMessage';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var Message = require('./../Message').Message;
 	var each = require('./../each').each;
@@ -15,10 +15,11 @@ exports.dalPms= new (function(){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGES_GET, 
 			parameters:[
 				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
-				{name:USER_TO_ID, value:parseInt(userToId),:sql.Int},
+				{name:USER_TO_ID, value:parseInt(userToId),type :sql.Int},
 				{name:N_MESSAGES, value: nMessages, type:sql.Int}
 			], 
-			callbackRead:function(rows){
+			callback:function(result){
+				var rows = result.recordset[0];
 				var messages=[];
 				each(rows, function(row){
 					messages.push(Message.fromSqlRow(row));
@@ -27,13 +28,16 @@ exports.dalPms= new (function(){
 		}});
 	};
 	
-	this.addMessage= function(userMeId, userToId, message){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_PM_MESSAGE_ADD, 
+	this.addMessage= function(userMeId, userToId, message, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGE_ADD, 
 			parameters:[
 				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
 				{name:USER_TO_ID, value:parseInt(userToId), type:sql.Int},
 				{name:CONTENT,value: message.getContent(), type:sql.Text},
-				{name:SERVER_ASSIGNBED_N_MESSAGE, value:message.getServerAssignedNMessage(), type:sql.Int}
-				]});
+				{name:SERVER_ASSIGNED_N_MESSAGE, value:message.getServerAssignedNMessage(), type:sql.Int, out:true}
+				], callback:function(result){
+					message.setServerAssignedNMessage(result.output.serverAssignedNMessage);
+					callback();
+				}});
 	};
 })();

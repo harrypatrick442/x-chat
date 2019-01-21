@@ -93,7 +93,6 @@ var Room = new (function(){
 			self.dispatchEvent({type:'showemoticons',picked:callbackPicked});
 		}
 		function dispatchSendMessage(message){
-			console.log(self.getUserTo().getId());
 			self.dispatchEvent(!self.isPm()?{type:'sendmessage',message:message, roomId:id}:{type:'sendpm', userToId:self.getUserTo().getId(), message:message});
 		}
 		function dispatchDispose(){

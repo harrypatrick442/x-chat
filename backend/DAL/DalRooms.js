@@ -11,9 +11,8 @@ exports.dalRooms= new (function(){
 	this.getRooms = function(callback){
 		var rooms=[];
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOMS,
-			callbackRead:function(rows){
-				console.log(rows);
-				console.log('is rows');
+			callback:function(result){
+				var rows = result.recordsets[0];
 				var rooms=[];
 				each(rows, function(row){
 					console.log(row);
