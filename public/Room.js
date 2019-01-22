@@ -68,6 +68,10 @@ var Room = new (function(){
 		function load(){
 			dipatchGetMessages();
 			dispatchGetUserIds();
+			if(self.isPm()){
+				users.add(params.userTo);
+				users.add(getUserMe());
+			}
 		}
 		function exit(){
 			dispatchDispose();

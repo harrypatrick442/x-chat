@@ -2,18 +2,19 @@ body{
 	
 }
 .lobby .rooms-menu .room-entry{
+	display:inline-block;
 	position:relative;
 	float:left;
 	width:25%; 	
 	box-sizing:border-box;
-	padding:3px;
+	padding:0px;
+	height:36px;
+	padding-right:3px;
+	padding-bottom:3px;
 }
 .lobby .rooms-menu .room-entry .inner{
-	position:absolute;
-	float:left;
-	width:100%;
 	box-sizing:border-box;
-	height:30px;
+	height:100%;
 	background-color:#cccccc;
 	border-radius:7px;
 	overflow:hidden;
