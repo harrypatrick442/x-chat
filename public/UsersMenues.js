@@ -9,6 +9,8 @@ var UsersMenues = (function(){
 		this.add=function(usersMenu){
 			overlappingEntries.add(usersMenu);
 			usersMenu.addEventListener('showpm',e=>self.dispatchEvent(e));
+			usersMenu.addEventListener('show',show);
+			usersMenu.addEventListener('hide',hide);
 		};
 		this.remove=function(usersMenu){
 			overlappingEntries.remove(usersMenu);
@@ -16,6 +18,13 @@ var UsersMenues = (function(){
 		this.setUsers = function(usersMenu){
 			overlappingEntries.set(usersMenu);
 		};
+		
+		function hide(e){
+			overlappingEntries.hide(e.entry);
+		}
+		function show(e){
+			overlappingEntries.show(e.entry);
+		}
 	};
 	return _UsersMenues;
 	function UI(params){

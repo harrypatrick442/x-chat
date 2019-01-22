@@ -23,6 +23,7 @@ var RoomsMenu = new (function(){
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
 		this.getVisible = ui.getVisible;
+		WindowResizeManager.addEventListener('resized', resized);
 		function add(roomInfo){
 			var roomEntry = new RoomEntry(roomInfo);
 			entries.push(roomEntry);
@@ -39,8 +40,7 @@ var RoomsMenu = new (function(){
 			entries.splice(entries.indexOf(roomEntry), 1);
 			ui.remove(roomEntry.getElement());
 		}
-		window.addEventListener("resize", resize);
-		function resize(){
+		function resized(){
 			var width= ui.getWidth();
 			each(entries, function(entry){
 				if(entry.parentWidth)entry.parentWidth(width);

@@ -22,6 +22,9 @@ var UsersMenu =(function(){
 		this.show = function(){
 			self.dispatchEvent({type:'show', entry:self});
 		};
+		this.hide = function(){
+			self.dispatchEvent({type:'hide', entry:self});
+		};
 		loadIgnores();
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;

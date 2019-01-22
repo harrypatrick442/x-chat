@@ -16,7 +16,8 @@ var Room = new (function(){
 		var buttonSend = new Button({className:'button-send', text:'Send'});
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit});
+		var buttonClose = new Button({className:'button-close'});
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -62,6 +63,7 @@ var Room = new (function(){
 		this.getVisible = ui.getVisible;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
+		buttonClose.addEventListener('click', close);
 		buttonExit.addEventListener('click', exit);
 		ui.addEventListener('keypress',keyPressed);
 		new Task(load).run();
@@ -74,7 +76,14 @@ var Room = new (function(){
 			}
 		}
 		function exit(){
+			dispatchHide();
+		}
+		function close(){
 			dispatchDispose();
+		}
+		function dispatchHide(){
+			usersMenu.hide();
+			self.dispatchEvent({type:'hide', room:self});
 		}
 		function dipatchGetMessages(){
 			self.dispatchEvent(!self.isPm()?{type:'getmessages', roomId:id}:{type:'getpms', userToId:self.getUserTo().getId()});
@@ -127,6 +136,7 @@ var Room = new (function(){
 		var buttonSend = params.buttonSend;
 		var buttonExit = params.buttonExit;
 		var buttonEmoticons = params.buttonEmoticons;
+		var buttonClose = params.buttonClose;
 		var element = E.DIV();
 		element.classList.add('room');
 		var top = E.DIV();
@@ -147,6 +157,7 @@ var Room = new (function(){
 		menu.appendChild(buttonEmoticons.getElement());
 		menu.appendChild(buttonSend.getElement());
 		menu.appendChild(buttonExit.getElement());
+		menu.appendChild(buttonClose.getElement());
 		text.addEventListener('keypress',dispatchKeyPress);
 		this.getElement = function(){
 			return element;

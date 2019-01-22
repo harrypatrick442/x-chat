@@ -74,6 +74,7 @@ var Rooms = new (function(){
 			var isPm = room.isPm();
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
+			room.addEventListener('hide', hideRoom);
 			if(!isPm){
 			room.addEventListener('sendmessage', e=>self.dispatchEvent(e));
 			room.addEventListener('getmessages', e=>self.dispatchEvent(e));
@@ -94,6 +95,10 @@ var Rooms = new (function(){
 			var room = e.room;
 			remove(room);
 			dispatchRoomsInChanged();
+		}
+		function hideRoom(e){
+			var room = e.room;
+			overlappingEntries.hide(room);
 		}
 		function dispatchRoomsInChanged(){
 			self.dispatchEvent({type:'roomsinchanged', roomIds:collection.getEntries().where(x=>!x.isPm()).select(x=>x.getId()).toList()});

@@ -3,19 +3,29 @@ var PmsMenu = new (function(){
 		var self = this;
 		var ui = new UI();
 		var pms = params.pms;
-		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries()});
+		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
+		WindowResizeManager.addEventListener('resized', resized);
 		function add(e){
-			sortedFilteredEntries.addEntry(new PmsEntry({room:e.room}));
+			sortedFilteredEntries.addEntry(new PmEntry({room:e.room}));
 		}
 		function remove(e){
 			sortedFilteredEntries.removeEntryById(e.room.getUserTo().getId());
 		}
-		function getEntryId(pmsEntry){
-			return pmsEntry.getId();
+		function getEntryId(pmEntry){
+			return pmEntry.getId();
+		}
+		function compare(pmEntryA, pmEntryB){
+			return pmEntryA.getUsername()>pmEntryB.getUsername();
+		}
+		function resized(){
+			each(sortedFilteredEntries.getEntries(), function(pmEntry){
+				var clientWidth = ui.getElement().clientWidth;
+				pmEntry.parentWidth(clientWidth);
+			});
 		}
 	};
 	return _PmsMenu;

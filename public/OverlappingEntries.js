@@ -12,9 +12,10 @@ var OverlappingEntries = new (function(){
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
+			console.log(entryToHide);
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
-			overlappingEntry.setIsSetVisible(false);
+			overlappingEntry.setIsSetShow(false);
 			showNext(overlappingEntry)
 		};
 		this.add = function(entry){

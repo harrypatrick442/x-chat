@@ -105,3 +105,16 @@ body{
 .lobby .rooms .entries .room .bottom .menu .button-exit:hover{
 	background-image:url('/images/room-exit-hover.png');	
 }
+.lobby .rooms .entries .room .bottom .menu .button-close{
+	float:right;
+	width:28px;
+	height:24px;
+	margin-right:6px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/room-close.png');	
+	cursor:pointer;
+}
+.lobby .rooms .entries .room .bottom .menu .button-close:hover{
+	background-image:url('/images/room-close-hover.png');	
+}
