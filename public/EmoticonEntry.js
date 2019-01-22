@@ -2,16 +2,17 @@ var EmoticonEntry = (function(){
 	var _EmoticonEntry = function(params){
 		var self = this;
 		EventEnabledBuilder(this);
+		console.log(params);
 		var element = E.DIV();
 		element.classList.add('emoticon-entry');
 		var emoticonInfo = params.emoticonInfo;
 		if(emoticonInfo.isCharacter())
 		{
 			element.innerHTML = emoticonInfo.getCharacter();
+		}else{
+			var imageComponent = new ImageComponent(emoticonInfo);
+			element.appendChild(imageComponent.getElement());
 		}
-		/*else{
-			new ImageComponent();
-		}*/
 		element.addEventListener('click', dispatchSelected);
 		this.getElement = function(){return element;};
 		function dispatchSelected(){
@@ -19,15 +20,13 @@ var EmoticonEntry = (function(){
 		}
 	};
 	return _EmoticonEntry;
-	/*function ImageComponent(){
+	function ImageComponent(emoticonInfo){
 		var img = E.IMG();
-		img.src=url;
+		img.src= emoticonInfo.getImageSource();
 		img.addEventListener('error', error);
-		element.addEventListener('click', dispatchSelected);
-		this.getElement = function(){return element;};
+		this.getElement = function(){return img;};
 		function error(){
-			element.style.display='none';
+			img.style.display='none';
 		}
-		throw new Error('ImageEmoticon is not supported yet');
-	}*/
+	}
 })();

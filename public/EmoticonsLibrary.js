@@ -1,41 +1,40 @@
-var EmoticonsLibrary = 
+var EmoticonsLibrary = {
 	defaultFolder:'/emoji/',
 	folders:{folderName:'/path'},
 	emoticons:[
 		{
 			strings:[':)','/smile',':smile:'],
 			//folder:'folderName,
-			character:'�'�
 			file:'smile.png'
 		},
 		{
 			strings:[':p',':P','/tongue',':tongue:'],
-			character:'??',
+			//character:'??',
 			file:'stuck_out_tongue.png'
 		},
 		{
 			strings:[':D',':d','/grin',':grin:'],
-			character:'😀'
+			//character:'😀',
 			file:'grinning.png'
 		},
 		{
 			strings:['/kiss',':kiss:',':*',':-*'],
-			character:'😘',
+			//character:'😘',
 			file:'kissing_heart.png'
 		},
 		{
 			strings:[':cry:',':\'',':,('],
-			character:'😢'
+			//character:'😢',
 			file:'cry.png'
 		},
 		{
 			strings:['/speachless', '/shocked', ':speachless:',':shocked:',':O',':o'],
-			character:'😮',
+			//character:'😮',
 			file:'stuck_out_tongue.png'
 		},
 		{
 			strings:['/laugh',':laugh:',':lol:'],
-			character:'😂',
+			//character:'😂',
 			file:'laughing.png'
 		}
 	]

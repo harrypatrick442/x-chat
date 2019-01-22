@@ -5,15 +5,20 @@ var MessageComponents = new (function(){
 		this.getString=function(){
 			return str;
 		};
-		this.getMarkup=function(){
-			return str;
+		this.getElement=function(){
+			return document.createTextNode(str);
 		};
 		this.TYPE=TEXT;
 	};
 	this.Text.TYPE = TEXT;
 	this.Emoticon = function(emoticonInfo){
-		this.getMarkup= function(){
-			return emoticonInfo.getStringRepresentation();
+		this.getElement= function(){
+			if(emoticonInfo.isCharacter())
+			return document.createTextNode(emoticonInfo.getStringRepresentation());
+			var img = E.IMG();
+			img.classList.add('emoticon');
+			img.src=emoticonInfo.getImageSource();
+			return img;
 		};
 		this.TYPE=EMOTICON;
 	};

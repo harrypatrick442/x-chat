@@ -37,6 +37,9 @@ BEGIN
 SET NAMES utf8mb4;
 	select hash from tblAuthenticate where userId = `useId`;
 END ;;
+
+
+
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

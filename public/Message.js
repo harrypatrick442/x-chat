@@ -4,13 +4,14 @@ var Message = (function(){
 		var self = this;
 		var userId = params.userId;
 		var username = params.username;
+		var components = params.components;
 		var content = params.content;
 		var clickMenuUser=params.clickMenuUser;
 		var userImage = new UserImage({userId:userId});
 		var ignoreManager = params.ignoreManager;
 		var getUserMe = params.getUserMe;
 		var ignored=false;
-		var ui = new UI({userImage:userImage, content:content, username:username, pending:params.pending});
+		var ui = new UI({userImage:userImage, components:components, username:username, pending:params.pending});
 		this.getElement = ui.getElement;
 		this.getUniqueId = function(){
 			return params.uniqueId;
@@ -61,33 +62,28 @@ var Message = (function(){
 		return _from(params, params.str);
 	};
 	function _from(params, content){
+		if(!content)content='';
 		var emoticonsParser = params.emoticonsParser;
 		var components =[] ;
+		console.log(content);
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  components.push(component);});
-		return _Message.fromComponents({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, 
+		return new Message({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, content:content,
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
 		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe});
 	}
-	_Message.fromComponents=function(params){
-		var components = params.components;
-		var content = generatecontentFromMessageComponents(components);
-		return new Message({content:content, userId:params.userId, username:params.username, uniqueId:params.uniqueId,
-		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, ignoreManager:params.ignoreManager,
-		clickMenuUser:params.clickMenuUser, getUserMe:params.getUserMe});
-	};
 	function generatecontentFromMessageComponents(components){
-		var str='';
+		var list =[];
 		each(components, function(component){
-			str+=component.getMarkup();
+			list.push(component.getElement());
 		});
-		return str;
+		return list;
 	}
 	return _Message;
 	function UI(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var content = params.content;
+		var components = params.components;
 		var name = params.username;
 		var userImage = params.userImage;
 		var element = E.DIV();
@@ -107,7 +103,9 @@ var Message = (function(){
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
 		innerUsername.innerHTML += name&&name.length>0?name:'&nbsp;';
-		inner.appendChild(document.createTextNode(content))
+		each(components, function(component){
+			inner.appendChild(component.getElement());
+		});
 		element.appendChild(inner);
 		this.getElement = function(){return element;};
 		this.getUsername = function(){return username;};

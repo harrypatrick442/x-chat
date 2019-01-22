@@ -19,11 +19,21 @@ var Emoticons = (function(){
 			popup.hide();
 		}
 		function load(){
+			var folders = emoticonsLibrary.folders;
+			var defaultFolder = emoticonsLibrary.defaultFolder;
 			each(emoticonsLibrary.emoticons, function(emoticon){
+				resolveImageSource(emoticon, folders, defaultFolder);
 				var emoticonEntry = new EmoticonEntry({emoticonInfo:new EmoticonInfo(emoticon)});
 				emoticonEntry.addEventListener('selected', selected);
 				ui.addEntry(emoticonEntry);
 			});
+		}
+		function resolveImageSource(emoticon, folders, defaultFolder){
+			if(emoticon.character)return;
+			var path = emoticon.folder&&folders?folders[emoticon.folder]:defaultFolder;
+			path+=emoticon.file;
+			emoticon.imageSource = path;
+			console.log(path);
 		}
 	};
 	return _Emoticons;
