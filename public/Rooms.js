@@ -9,7 +9,7 @@ var Rooms = new (function(){
 		var clickMenuUser = params.clickMenu;
 		var collection = new Collection({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
-		var roomsMenu = new RoomsMenu();
+		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll});
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
 		var ui = new UI({emoticons:emoticons});
 		var overlappingEntries= new OverlappingEntries({element:ui.getEntries()});

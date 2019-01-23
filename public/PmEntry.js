@@ -4,8 +4,9 @@ var PmEntry= new (function(){
 		var self = this;
 		var room = params.room;
 		var userTo = room.getUserTo();
+		var buttonClose = new Button({className:'button-close'});
 		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername()});
-		var ui = new UI({userImage:userImage, name:userTo.getUsername()});
+		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose});
 		this.getId = function(){
 			return userTo.getId();
 		};
@@ -25,6 +26,7 @@ var PmEntry= new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var userImage = params.userImage;
+		var buttonClose = params.buttonClose;
 		var element = E.DIV();
 		element.classList.add('pm-entry');
 		var inner = E.DIV();
@@ -34,6 +36,7 @@ var PmEntry= new (function(){
 		username.classList.add('username');
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
+		inner.appendChild(buttonClose.getElement());
 		username.innerHTML=params.name;
 		this.getElement=function(){return element;};
 		this.parentWidth = function(clientWidth){

@@ -29,6 +29,7 @@ var RoomsMenu = new (function(){
 				usersMenu.show();
 			else
 				if(visible&&!value)
+					usersMenu.hide();
 			ui.setVisible(value);
 		};
 		this.getVisible = ui.getVisible;
@@ -38,7 +39,7 @@ var RoomsMenu = new (function(){
 			entries.push(roomEntry);
 			mapIdToRoomEntry[roomEntry.getId()]=roomEntry;
 			ui.add(roomEntry.getElement());
-			var width= ui.getWidth();V
+			var width= ui.getWidth();
 			roomEntry.parentWidth(width);
 			roomEntry.addEventListener('selected', selected);
 			return roomEntry;
