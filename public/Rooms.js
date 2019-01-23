@@ -7,7 +7,7 @@ var Rooms = new (function(){
 		var getUserById = params.getUserById;
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser = params.clickMenu;
-		var collection = new Collection({getEntryId:getEntryId});
+		var collection = new Collection({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu();
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});

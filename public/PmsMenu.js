@@ -10,7 +10,10 @@ var PmsMenu = new (function(){
 		pms.addEventListener('remove', remove);
 		WindowResizeManager.addEventListener('resized', resized);
 		function add(e){
-			sortedFilteredEntries.addEntry(new PmEntry({room:e.room}));
+			var pmEntry= new PmEntry({room:e.room});
+			pmEntry.parentWidth(ui.getElement().clientWidth);
+			pmEntry.addEventListener('showpm', showPm);
+			sortedFilteredEntries.addEntry(pmEntry);
 		}
 		function remove(e){
 			sortedFilteredEntries.removeEntryById(e.room.getUserTo().getId());
@@ -26,6 +29,9 @@ var PmsMenu = new (function(){
 				var clientWidth = ui.getElement().clientWidth;
 				pmEntry.parentWidth(clientWidth);
 			});
+		}
+		function showPm(e){
+			pms.showPmWithUser(e.user);
 		}
 	};
 	return _PmsMenu;

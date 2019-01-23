@@ -1,10 +1,11 @@
 var RoomsMenu = new (function(){
-	var _RoomsMenu = function(){
+	var _RoomsMenu = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
 		var ui = new UI();
 		var mapIdToRoomEntry={};
 		var entries =[];
+		var usersMenu = params.usersMenu;
 		this.getId =function(){return 'RoomsMenu';};
 		this.set = function(roomInfos){
 			var ids=[];
@@ -21,7 +22,15 @@ var RoomsMenu = new (function(){
 			}
 		};
 		this.getElement = ui.getElement;
-		this.setVisible = ui.setVisible;
+		this.setVisible = function(value){
+			
+			var visible = ui.getVisible();
+			if(!visible&&value)
+				usersMenu.show();
+			else
+				if(visible&&!value)
+			ui.setVisible(value);
+		};
 		this.getVisible = ui.getVisible;
 		WindowResizeManager.addEventListener('resized', resized);
 		function add(roomInfo){
@@ -29,7 +38,7 @@ var RoomsMenu = new (function(){
 			entries.push(roomEntry);
 			mapIdToRoomEntry[roomEntry.getId()]=roomEntry;
 			ui.add(roomEntry.getElement());
-			var width= ui.getWidth();
+			var width= ui.getWidth();V
 			roomEntry.parentWidth(width);
 			roomEntry.addEventListener('selected', selected);
 			return roomEntry;

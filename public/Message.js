@@ -111,7 +111,7 @@ var Message = (function(){
 		this.getUsername = function(){return username;};
 		this.setVisible=function(value){element.style.display=value?'inline-block':'none';};
 		this.hidePending = function(){if(pending){element.removeChild(pending);}};
-		username.addEventListener('click', dispatchShowUserMenu);
+		innerUsername.addEventListener('click', dispatchShowUserMenu);
 		function dispatchShowUserMenu(e){
 			self.dispatchEvent({type:'showusermenu', left:e.clientX, top:e.clientY});
 		}

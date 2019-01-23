@@ -59,7 +59,15 @@ var Room = new (function(){
 			messages.dispose();
 		};
 		this.getElement = ui.getElement;
-		this.setVisible = ui.setVisible;
+		this.setVisible = function(value){
+			var visible = ui.getVisible();
+			if(!visible&&value)
+				usersMenu.show();
+			else
+				if(visible&&!value)
+					usersMenu.hide();
+			ui.setVisible(value);
+		};
 		this.getVisible = ui.getVisible;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
@@ -82,7 +90,6 @@ var Room = new (function(){
 			dispatchDispose();
 		}
 		function dispatchHide(){
-			usersMenu.hide();
 			self.dispatchEvent({type:'hide', room:self});
 		}
 		function dipatchGetMessages(){

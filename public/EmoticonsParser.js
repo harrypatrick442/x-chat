@@ -15,7 +15,6 @@ var EmoticonsParser = (function(){
 				if(sub){
 					var matchStartIndex =i.value;
 					var emoticonInfo = matching(i, length, str, sub);
-					console.log(emoticonInfo);
 					if(emoticonInfo){
 						if(matchStartIndex>startIndex)
 							callback(new MessageComponents.Text(str.substring(startIndex, matchStartIndex)));
@@ -42,7 +41,6 @@ var EmoticonsParser = (function(){
 		function populateSearchTree(emoticonsLibrary){
 			each(emoticonsLibrary.emoticons, function(emoticon){
 				var emoticonInfo = new EmoticonInfo(emoticon);
-				console.log(emoticon);
 				if(emoticon.strings)
 					each(emoticon.strings, function(str){
 						createBranch(str, emoticonInfo);

@@ -3,9 +3,7 @@ var ClickedOff = new (function () {
     this.register = function (element, callbackHide) {
         new (function (element, callbackHide) {
             setTimeout(function () {
-                console.log('registering');
                 if (!containsEntry(element)) {
-                    console.log('registered');
                     entries.push({ element: element, callbackHide: callbackHide });
                 }
             },0);

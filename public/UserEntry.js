@@ -20,7 +20,6 @@ var UserEntry =(function(){
 			clickMenu.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
 		}
 		function pm(){
-			console.log('ab');
 			self.dispatchEvent({type:'showpm', user:user});
 		}
 		function isIgnored(){

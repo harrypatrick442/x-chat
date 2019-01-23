@@ -1,5 +1,6 @@
 var PmEntry= new (function(){
 	var _PmEntry = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var room = params.room;
 		var userTo = room.getUserTo();
@@ -12,9 +13,17 @@ var PmEntry= new (function(){
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
 		this.parentWidth = ui.parentWidth;
+		ui.addEventListener('click',dispatchShowPm);
+		function dispatchShowPm(){
+			self.dispatchEvent({
+				type:'showpm', user:userTo
+			});
+		}
 	};
 	return _PmEntry;
 	function UI(params){
+		EventEnabledBuilder(this);
+		var self = this;
 		var userImage = params.userImage;
 		var element = E.DIV();
 		element.classList.add('pm-entry');
@@ -43,5 +52,9 @@ var PmEntry= new (function(){
 			}
 			element.style.width = '25%';
 		};
+		inner.addEventListener('click', dispatchClick);
+		function dispatchClick(){
+			self.dispatchEvent({type:'click'});
+		}
 	}
 })();

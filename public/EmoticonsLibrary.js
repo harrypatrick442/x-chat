@@ -24,18 +24,40 @@ var EmoticonsLibrary = {
 		},
 		{
 			strings:[':cry:',':\'',':,('],
-			//character:'😢',
 			file:'cry.png'
 		},
 		{
+			strings:['/shocked',':shocked:','anguished,',':O',':O'],
+			file:'anguished.png'
+		},
+		{
+			strings:['/blush',':blush:'],
+			file:'blush.png'
+		},
+		{
 			strings:['/speachless', '/shocked', ':speachless:',':shocked:',':O',':o'],
-			//character:'😮',
 			file:'stuck_out_tongue.png'
 		},
 		{
-			strings:['/laugh',':laugh:',':lol:'],
-			//character:'😂',
+			strings:['/laugh',':laugh:'],
 			file:'laughing.png'
+		},
+		{
+			strings:[':/','/confused',':confused:'],
+			file:'confused.png'
+		},
+		{
+			strings:['/poop', ':poop:','/hankey',':hankey:'],
+			file:'hankey.png'
+		},
+		{
+			strings:['/heart',':heart:'],
+			file:'heart.png'
+		},
+		{
+			strings:['/broken heart',':broken heart:'],
+			//character:'😂',
+			file:'broken_heart.png'
 		}
 	]
 };
