@@ -4,7 +4,7 @@ var PmEntry= new (function(){
 		var self = this;
 		var room = params.room;
 		var userTo = room.getUserTo();
-		var buttonClose = new Button({className:'button-close'});
+		var buttonClose = new Button({className:'button-close', preventPropagation:true});
 		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername()});
 		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose});
 		this.getId = function(){
@@ -15,9 +15,15 @@ var PmEntry= new (function(){
 		this.setVisible = ui.setVisible;
 		this.parentWidth = ui.parentWidth;
 		ui.addEventListener('click',dispatchShowPm);
+		buttonClose.addEventListener('click', dispatchClosePm);
 		function dispatchShowPm(){
 			self.dispatchEvent({
 				type:'showpm', user:userTo
+			});
+		}
+		function dispatchClosePm(){
+			self.dispatchEvent({
+				type:'closepm', user:userTo
 			});
 		}
 	};

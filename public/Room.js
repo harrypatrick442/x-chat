@@ -39,6 +39,7 @@ var Room = new (function(){
 			if(scroll)
 				ui.scrollFeedToBottom();
 		};
+		messages.addEventListener('showpm', function(e){self.dispatchEvent(e);});
 		function incomingMessage(jObjectMessage){
 			jObjectMessage.emoticonsParser=emoticonsParser;
 			jObjectMessage.clickMenuUser = clickMenuUser;
@@ -54,10 +55,8 @@ var Room = new (function(){
 			if(!users.contains(user))return;
 			users.remove(user);
 		};
+		this.close = close;
 		this.getUsers = function(){return users;};
-		this.dispose = function(){
-			messages.dispose();
-		};
 		this.getElement = ui.getElement;
 		this.setVisible = function(value){
 			var visible = ui.getVisible();
@@ -83,10 +82,14 @@ var Room = new (function(){
 				users.add(getUserMe());
 			}
 		}
+		function dispose(){
+			messages.dispose();
+		}
 		function exit(){
 			dispatchHide();
 		}
 		function close(){
+			dispose();
 			dispatchDispose();
 		}
 		function dispatchHide(){

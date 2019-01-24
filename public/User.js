@@ -33,6 +33,9 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 	_User.fromJSON = function(params){
 		return new _User(params);
 	};
+	_User.fromMessage = function(message){
+		return new _User({id:message.getUserId(), username:message.getUsername()});
+	};
 	_User.TYPE=TYPE;
 	return _User;
 })();

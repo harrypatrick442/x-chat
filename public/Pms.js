@@ -9,6 +9,10 @@ var Pms=  (function(){
 			var roomId = getRoomId(user.getId());
 			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
 		};
+		this.closePmWithUser=function(user){
+			var roomId = getRoomId(user.getId());
+			rooms.getById(roomId).close();
+		};
 		this.incomingMessage = function(msg){
 			var roomId = getRoomId(msg.userId);
 			var room = rooms.getById(roomId);
@@ -20,10 +24,15 @@ var Pms=  (function(){
 			if(!room){notify(msg);return;}
 			room.incomingMessages(msg.messages);
 		};
+		rooms.addEventListener('showpm', showPm);
 		rooms.addEventListener('sendpm', e=>self.dispatchEvent(e));
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
+		function showPm(e){
+			console.log('called');
+			self.showPmWithUser(e.user);
+		}
 		function getRoomId(userId){
 			return 'pm_'+String(userId);
 		}

@@ -2,6 +2,7 @@ var Button = (function(){
 	var _Button = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var preventPropagation = params.preventPropagation;
 		var className = params.className;
 		var classNames = params.classNames;
 		var classNameToggled = params.classNameToggled;
@@ -20,7 +21,11 @@ var Button = (function(){
 		_toggle();
 		element.addEventListener('click', click);
 		this.getElement = function(){return element;};
-		function click(){
+		function click(e){
+			if(preventPropagation){
+				e = e || window.event;
+				e.stopPropagation();
+			}
 			dispatchClick();
 			toggle();
 		}

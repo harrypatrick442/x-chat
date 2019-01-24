@@ -17,7 +17,10 @@ var Rooms = new (function(){
 		emoticons.addEventListener('addemoticon', addEmoticon);
 		overlappingEntries.add(roomsMenu);
 		overlappingEntries.show(roomsMenu);
-		this.getElement = ui.getElement;
+		this.getElement = ui.getElement
+		this.getById = function(id){
+			return collection.getById(id);
+		};
 		this.set = function(roomInfos){
 			roomsMenu.set(roomInfos);
 			var ids=[];
@@ -60,7 +63,6 @@ var Rooms = new (function(){
 		function showRoom(e){
 			self.showRoom(e.roomInfo);
 		}
-		
 		function showEntry(entryToShow){
 			overlappingEntries.show(entryToShow);
 		}
@@ -75,6 +77,7 @@ var Rooms = new (function(){
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('hide', hideRoom);
+			room.addEventListener('showpm', e=>self.dispatchEvent(e));
 			if(!isPm){
 			room.addEventListener('sendmessage', e=>self.dispatchEvent(e));
 			room.addEventListener('getmessages', e=>self.dispatchEvent(e));

@@ -17,6 +17,8 @@ var Message = (function(){
 			return params.uniqueId;
 		};
 		this.getUserId=function(){return params.userId;};
+		this.getUsername=function(){return params.username;};
+	
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
 		};
@@ -46,7 +48,7 @@ var Message = (function(){
 			clickMenuUser.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
 		}
 		function pm(){
-			self.dispatchEvent({type:'pm', userId:userId});
+			self.dispatchEvent({type:'showpm', user:User.fromMessage(self)});
 		}
 		function ignore(){
 			ignoreManager.ignoreUserByIdAndUsername({id:userId, username:username});

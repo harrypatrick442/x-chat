@@ -13,6 +13,7 @@ var PmsMenu = new (function(){
 			var pmEntry= new PmEntry({room:e.room});
 			pmEntry.parentWidth(ui.getElement().clientWidth);
 			pmEntry.addEventListener('showpm', showPm);
+			pmEntry.addEventListener('closepm', closePm);
 			sortedFilteredEntries.addEntry(pmEntry);
 		}
 		function remove(e){
@@ -32,6 +33,9 @@ var PmsMenu = new (function(){
 		}
 		function showPm(e){
 			pms.showPmWithUser(e.user);
+		}
+		function closePm(e){
+			pms.closePmWithUser(e.user);
 		}
 	};
 	return _PmsMenu;

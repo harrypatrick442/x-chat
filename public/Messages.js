@@ -1,6 +1,7 @@
 var Messages = new (function(){
 	var uniqueIdCount=0;
 	var _Messages = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var getUserId = params.getUserId;
 		var ignoreManager = params.ignoreManager;
@@ -21,7 +22,6 @@ var Messages = new (function(){
 			else{
 				mapUniqueIdToMessage[message.getUniqueId()]=message;
 				insertInPlace(message);
-				message.addEventListener('showpm', showPm);
 			}
 			if(ignoreManager.userIdIsIgnored(message.getUserId()))
 				message.setIgnored(true);
@@ -43,6 +43,7 @@ var Messages = new (function(){
 		ignoreManager.addEventListener('ignored', ignored);
 		ignoreManager.addEventListener('unignored', unignored);
 		function insertInPlace(message){
+			addEventListener(message);
 			var serverAssignedNMessage = message.getServerAssignedNMessage();
 			if(messages.length<1)
 			{
@@ -72,9 +73,13 @@ var Messages = new (function(){
 			reverseIterator.insert(message);
 		}
 		function append(message){
+			addEventListener(message);
 			messages.push(message);
 			mapUniqueIdToMessage[message.getUniqueId()]=message;
 			element.appendChild(message.getElement());
+		}
+		function addEventListener(message){
+			message.addEventListener('showpm', function(e){console.log('a');self.dispatchEvent(e);});
 		}
 		function overflow(){
 			overflowManager.trigger();
@@ -93,9 +98,6 @@ var Messages = new (function(){
 		}
 		function unignored(e){
 			messages.where(x=>x.getUserId()==e.userId).each(x=>x.setIgnored(false));
-		}
-		function showPm(){
-			
 		}
 	};
 	return _Messages;

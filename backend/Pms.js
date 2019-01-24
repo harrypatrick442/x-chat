@@ -7,12 +7,13 @@ exports.Pms = (function(){
 			var self = this;
 			var users = params.users;
 			this.sendMessage = function(userMeId, userToId, message){
-				var userTo = users.getById(userToId);
-				var userMe = users.getById(userMeId);
-				if(!userTo)return;
 				dalPms.addMessage(userMeId, userToId, message, function(){
-				userTo.sendMessage({type:'pm_message', userId:userMeId, message:message});
-				userMe.sendMessage({type:'pm_message', userId:userToId, message:message});
+				var userTo = users.getById(userToId);
+				if(userTo)
+					userTo.sendMessage({type:'pm_message', userId:userMeId, message:message});
+				var userMe = users.getById(userMeId);
+				if(userMe)
+					userMe.sendMessage({type:'pm_message', userId:userToId, message:message});
 			});
 		};
 		this.getMessages=function(userMeId, userToId, callback){
