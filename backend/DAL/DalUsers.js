@@ -1,8 +1,9 @@
 exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_REGISTER='xchat_register';
 	const STORED_PROCEDURE_HASH_GET ='xchat_hash_get';
-	const STORED_PROCEDURE_USERNAME_COUNT = 'xchat_username_count';
-	const STORED_PROCEDURE_USER_ID_GET_FROM_USERNAME_OR_EMAIL='xchat_user_id_get_from_username_or_email';
+	const STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN = 'xchat_username_or_email_taken';
+	const STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL='xchat_user_get_from_username_or_email';
+	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
 	const BIRTHDAY='birthday';
@@ -27,15 +28,15 @@ exports.dalUsers= new (function(){
 				callback(hash);
 		}});
 	};
-	this.usernameIsAvailable = function(username, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_USERNAME_COUNT,
+	this.usernameAndEmailAreAvailable = function(username, email, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN,
 			parameters:[
-				{name:USERNAME, value:username, type:sql.VarChar(200)}
+				{name:USERNAME, value:username, type:sql.VarChar(45)},
+				{name:EMAIL, value:email, type:sql.VarChar(200)}
 			],
 			callback:function(result){
-				var rows = result.recordsets[0];
-				console.log(rows[0].count);
-				callback(rows[0].count<1);
+				console.log(result);
+				callback(result.recordset[0].available);
 		}});
 	};
 	this.register = function(params, callback){
@@ -57,10 +58,10 @@ exports.dalUsers= new (function(){
 			callback(user);
 		}});
 	};
-	this.getByUsernameOrEmail=function(username, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_ID_GET_FROM_USERNAME_OR_EMAIL, 
+	this.getByUsernameOrEmail=function(usernameOrEmail, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL, 
 		parameters:[
-			{name:USERNAME, value:username, type:sql.VarChar(45)}
+			{name:USERNAME_OR_EMAIL, value:usernameOrEmail, type:sql.VarChar(45)}
 		], 
 		callback:function(result){
 			var rows = result.recordsets[0];
@@ -74,6 +75,6 @@ exports.dalUsers= new (function(){
 	};
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;
-		return birthday.year+'-'+birthday.month+'-'+birthday.day;
+		return new Date(birthday.year, birthday.month, birthday.day, 0, 0, 0);
 	}
 })();

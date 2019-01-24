@@ -14,8 +14,10 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 //single mesage with all info when uer join lobby. this contains map of all rooms user is in.
 //if us
 	const TYPE = 'user';
-	var _User = function(params){
+	var collection = new Collection({getEntryId:getEntryId});
+	function _User(params){
 		EventEnabledBuilder(this);
+		var referenceCounter = new ReferenceCounter();
 		var self = this;
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return String(params.username);};
@@ -30,12 +32,27 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 			self.dispatchEvent({type:'dispose', user:self});
 		}
 	};
-	_User.fromJSON = function(params){
-		return new _User(params);
+	var ret={};
+	ret.fromJSON = function(params){
+		var user = getExisting(params.id);
+		if(user) return user;
+		user = new _User(params);
+		collection.add(user);
+		return user;
 	};
-	_User.fromMessage = function(message){
-		return new _User({id:message.getUserId(), username:message.getUsername()});
+	ret.fromMessage = function(message){
+		var user = getExisting(message.getUserId());
+		if(user) return user;
+		var user = new _User({id:message.getUserId(), username:message.getUsername()});
+		collection.add(user);
+		return user;
 	};
-	_User.TYPE=TYPE;
-	return _User;
+	ret.TYPE=TYPE;
+	return ret;
+	function getEntryId(user){
+		return user.getId();
+	}
+	function getExisting(id){
+		return collection.getById(id);
+	}
 })();

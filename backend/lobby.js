@@ -2,6 +2,8 @@ exports.Lobby = (function(){
 	const UNKNOWN_EXCEPTION='Unknown Exception';
 	const INVALID_USERNAME_OR_PASSWORD='Invalid Username or Password';
 	const USERNAME_NOT_AVAILABLE='Username Not Available';
+	const EMAIL_NOT_AVAILABLE='Email Not Available';
+	const USERNAME_AND_EMAIL_NOT_AVAILABLE='Username and Email are Available';
 	const PASSWORD_MUST_BE_AT_LEAST_LONG = 'Password must be at least 7 characters long';
 	const AUTHENTICATE= 'authenticate';
 	const REGISTER='register';
@@ -32,8 +34,8 @@ exports.Lobby = (function(){
 			
 		};
 		this.register = function(req, mysocket, callback){
-			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
-				if(!usernameIsAvailable){callback({successful:false, error:USERNAME_NOT_AVAILABLE, type:REGISTER});return;}					
+			dalUsers.usernameAndEmailAreAvailable(req.username, req.email, function(available){
+				if(available!=''){ callback(getUnavailableResponse(available)); return; }					
 				if(req.password.length<7){ callback( {successful:false, error:PASSWORD_MUST_BE_AT_LEAST_LONG, type:REGISTER}); return;}
 				var salt = bcrypt.genSaltSync(10);
 				var hash = bcrypt.hashSync(req.password, salt);
@@ -52,9 +54,25 @@ exports.Lobby = (function(){
 		this.authenticate = function(req, mysocket, callback){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
+		function getUnavailableResponse(available){
+			var error;
+			switch(available)
+			{
+				case 'username':
+					error = USERNAME_NOT_AVAILABLE;
+				break;
+				case 'email':
+					error = EMAIL_NOT_AVAILABLE;
+				break;
+				default:
+					error = USERNAME_AND_EMAIL_NOT_AVAILABLE;
+				break;
+			}
+			return {successful:false, error:error, type:REGISTER}
+		}
 		function authenticateGuest(req, mysocket, callback){
-			dalUsers.usernameIsAvailable(req.username, function(usernameIsAvailable){
-			if(!usernameIsAvailable){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
+			dalUsers.usernameAndEmailAreAvailable(req.username, req.username, function(usernameIsAvailable){
+			if(usernameIsAvailable!=''){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
 					user.setMysocket(mysocket);
 					console.log(user);
