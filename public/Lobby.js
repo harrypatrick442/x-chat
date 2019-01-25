@@ -15,17 +15,22 @@ var Lobby = (function(){
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
-		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
+		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, pmsMenu:pmsMenu, usersMenues:usersMenues});
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
-		buttonPms.addEventListener('toggled', onToggleButtonPms);
 		if(!isMobile)
+		{
+			buttonPms.addEventListener('toggled', onToggleButtonPms);
 			buttonUsers.addEventListener('toggled', onToggleButtonUsers);
+		}
 		else
-	buttonUsers.addEventListener('click', function(){console.log('a');usersMenues.show();});
+		{
+			buttonPms.addEventListener('click', pmsMenu.show);
+			buttonUsers.addEventListener('click', function(){console.log('a');usersMenues.show();});
+		}
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('getpms', getPms);

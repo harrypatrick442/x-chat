@@ -1,0 +1,13 @@
+
+.lobby .pms-menu{
+	position:absolute;
+background-color:rgb(44, 43, 43);
+	display:none;
+	padding-bottom:6px;
+}
+.lobby .pms-menu .entries-wrapper{
+
+}
+.lobby .pms-menu .entries{
+
+}

@@ -1,11 +1,15 @@
 var PmsMenu = new (function(){
 	var _PmsMenu = function(params){
 		var self = this;
-		var ui = new UI();
+		var popup = isMobile?new Popup({}):undefined;
+		var ui = new UI({popupElement:isMobile?popup.getElement():undefined});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
+		this.show= function(){
+			popup.show();
+		};
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
 		WindowResizeManager.addEventListener('resized', resized);
@@ -39,10 +43,14 @@ var PmsMenu = new (function(){
 		}
 	};
 	return _PmsMenu;
-	function UI(){
+	function UI(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var element = E.DIV();
+		var element = params.popupElement;
+		if(!element)
+			element = E.DIV();
+		else
+			document.body.appendChild(params.popupElement);
 		element.classList.add('pms-menu');
 		var entriesWrapper = E.DIV();
 		entriesWrapper.classList.add('entries-wrapper');

@@ -1,11 +1,8 @@
 
 .users-menues .entries .users-menu{
-	position:absolute;
-	height:100%;
 	width:100%;
 	box-sizing:border-box;
 	background-color:rgb(32, 31, 31);
-	height:100%;
 	overflow:auto;
 }
 .users-menues .entries .users-menu .entries{
@@ -14,7 +11,6 @@
 	width:100%;
 	box-sizing:border-box;
 	padding:3px;
-	height:auto;
 }
 .users-menues .entries .users-menu .heading{
 	position:relative;

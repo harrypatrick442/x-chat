@@ -1,0 +1,13 @@
+
+.users-menues .entries .users-menu{
+	height:auto;
+}
+.users-menues .entries .users-menu .entries{
+	min-height:30px;
+}
+.users-menues .entries .users-menu .heading{
+}
+.users-menues .entries .users-menu .entries-ignored{
+	min-height:30px;
+	margin-bottom:6px;
+}
