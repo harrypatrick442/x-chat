@@ -1,4 +1,5 @@
-@@ -4,21 +4,35 @@ var OverlappingEntries = new (function(){
+var OverlappingEntries = new (function(){
+	var _OverlappingEntries = function(params){
 		var self = this;
 		var collection=new Collection({getEntryId:getEntryId});
 		var element = params.element;
@@ -31,19 +32,18 @@
 			console.log(str);
 		};
 		this.add = function(entry){
-			console.log(name+'.add');
 			if(collection.containsId(entry.getId()))return;
 			entry.addEventListener('show', show);
 			entry.addEventListener('show', hide);
-@ -27,6 +41,7 @@ var OverlappingEntries = new (function(){
+			var overlappingEntry = new OverlappingEntry(entry);
+			collection.add(overlappingEntry);
 			element.appendChild(entry.getElement());
 		};
 		this.remove = function(entry){
-			console.log('.remove');
 			var overlappingEntry = collection.getById(entry.getId());
 			if(!overlappingEntry) return;
 			collection.remove(overlappingEntry);
-@ -34,17 +49,22 @@ var OverlappingEntries = new (function(){
+			overlappingEntry.removeElement();
 			showNext(overlappingEntry);
 		};
 		function show(e){
@@ -66,7 +66,6 @@
 			var overlappingEntryToShow = getNextToShow(entryToHide);
 			if(!overlappingEntryToShow)return;
 			overlappingEntryToShow.setVisible(true);
-			var OverlappingEntries = new (function(){
 			return entry.getId();
 		}
 		function getNextToShow(){
@@ -77,15 +76,33 @@
 				str+=oe.getString()+',';
 			});
 			console.log(str);
+			var n = r.where(x=>x.getIsSetShow()).firstOrDefault();
+			if(n)
+				console.log(n.getString());
 			return r.where(x=>x.getIsSetShow()).firstOrDefault();
 		}
-		function OverlappingEntry(entry){
-			var isSetShow = false;
-			var OverlappingEntries = new (function(){
+		function OverlappingEntry(entry){var isSetShow = false;
+			if(entry.getVisible())isSetShow = true;
+			this.getId= function(){return entry.getId();};
+			this.getIsSetShow = function(){return isSetShow;};
+			this.setIsSetShow=function(value){
+				isSetShow = value;
+			};
+			this.setVisible = function(value){
+				entry.setVisible(value);
+			};
+			this.bringElementToFront=function(){
 				var element = entry.getElement();
-				element.parentNode.removeChild(element);
+				var parent = element.parentNode;
+				parent.removeChild(element);
+				parent.appendChild(element);
+			};
+			this.removeElement = function(){
+				var element = entry.getElement();
+				parent.parentNode.removeChild(element);
 			};
 			this.getString = function(){return (entry.getName?entry.getName():'')+isSetShow ;};
 		}
 	};
 	return _OverlappingEntries;
+})();
