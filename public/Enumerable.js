@@ -5,7 +5,6 @@ var Enumerable = (function () {
         this.reset = reset;
     };
     _Enumerable.fromArray = function (arr) {
-		console.log(arr);
         return new (function (arr) {
             var index = -1;
             var length = arr.length;

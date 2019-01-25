@@ -5,31 +5,18 @@ var OverlappingEntries = new (function(){
 		var element = params.element;
 		var name = params.name;
 		this.show= function(entryToShow){
-			console.log(name+'.show');
 			var overlappingEntry = collection.getById(entryToShow.getId());
 			if(!overlappingEntry)return;
 			overlappingEntry.setIsSetShow(true);
 			collection.each(x=>x.setVisible(x==overlappingEntry));
 			bringToFront(overlappingEntry);
-			var str=name+' ';
-			each(collection.getEntries(), function(oe){
-				str+=oe.getString()+',';
-			});
-			console.log(str);
 		};
 		this.hide = function(entryToHide){
-			console.log(name+'.hide');
 			console.log(entryToHide);
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetShow(false);
 			showNext(overlappingEntry)
-			showNext(overlappingEntry);
-			var str=name+' ';
-			each(collection.getEntries(), function(oe){
-				str+=oe.getString()+',';
-			});
-			console.log(str);
 		};
 		this.add = function(entry){
 			if(collection.containsId(entry.getId()))return;
@@ -55,17 +42,16 @@ var OverlappingEntries = new (function(){
 			self.hide(e.entry);
 		}
 		function bringToFront(overlappingEntry){
-			console.log(name+'bringToFront');
-			console.log(overlappingEntry.getString());
 			collection.remove(overlappingEntry);
 			collection.add(overlappingEntry);
 			overlappingEntry.bringElementToFront();
 		}
 		function showNext(entryToHide){
-			console.log(name+'showNext');
 			var overlappingEntryToShow = getNextToShow(entryToHide);
 			if(!overlappingEntryToShow)return;
 			overlappingEntryToShow.setVisible(true);
+		}
+		function getEntryId(entry){
 			return entry.getId();
 		}
 		function getNextToShow(){

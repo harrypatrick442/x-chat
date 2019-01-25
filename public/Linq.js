@@ -49,7 +49,6 @@ Enumerable.prototype.firstOrDefault = function () {
 };
 Enumerable.prototype.reverse=function(){
 	this.reset();
-	console.log(this.toList().reverse());
 	return Enumerable.fromArray(this.toList().reverse());
 };
 Enumerable.prototype.each=function(func){
@@ -59,19 +58,14 @@ Enumerable.prototype.each=function(func){
 	}
 };
 Array.prototype.select = function (func) {
-	var self = this;
-	return Enumerable.fromArray(self).select(func);
+	return Enumerable.fromArray(this).select(func);
 };
 Array.prototype.where = function (func) {
-	var self = this;
-	console.log(this);
-	return Enumerable.fromArray(self).where(func);
+	return Enumerable.fromArray(this).where(func);
 };
 Array.prototype.each=function(func){
-	var self = this;
-	return Enumerable.fromArray(self).each(func);
+	return Enumerable.fromArray(this).each(func);
 };
 Array.prototype.take=function(n){
-	var self = this;
-	return Enumerable.fromArray(self).take(n);
+	return Enumerable.fromArray(this).take(n);
 };
