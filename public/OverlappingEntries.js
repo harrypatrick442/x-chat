@@ -76,7 +76,7 @@ var OverlappingEntries = new (function(){
 			};
 			this.removeElement = function(){
 				var element = entry.getElement();
-				parent.parentNode.removeChild(element);
+				element.parentNode.removeChild(element);
 			};
 			this.getString = function(){return (entry.getName?entry.getName():'')+isSetShow ;};
 		}

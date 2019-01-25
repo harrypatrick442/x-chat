@@ -1,0 +1,15 @@
+
+.users-menues{
+	position:absolute;
+	width:100%;
+	display:none;
+	padding:6px;
+	background-color:rgb(44, 43, 43);
+}
+.users-menues .entries{
+	position:relative;
+	float:left;
+	width:100%;
+	min-height:100px;
+	
+}

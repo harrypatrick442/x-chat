@@ -14,7 +14,7 @@ var Lobby = (function(){
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
-		var buttonUsers = new Button({toggle:true, classNames:['button-users'], classNameToggled:'button-users-hide'});
+		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:true, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, pmsMenu:pmsMenu, usersMenues:usersMenues});
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
@@ -22,7 +22,10 @@ var Lobby = (function(){
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
 		buttonPms.addEventListener('toggled', onToggleButtonPms);
-		buttonUsers.addEventListener('toggled', onToggleButtonUsers);
+		if(!isMobile)
+			buttonUsers.addEventListener('toggled', onToggleButtonUsers);
+		else
+	buttonUsers.addEventListener('click', function(){console.log('a');usersMenues.show();});
 		rooms.addEventListener('sendmessage', sendMessage);
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('getpms', getPms);
@@ -94,8 +97,6 @@ var Lobby = (function(){
 		}
 		function roomUserIds_Leave(room, userIds){
 			var usersToRemove = room.getUsers().getEntries().where(x=>userIds.indexOf(x.getId())<0).toList();
-			console.log('n remove: ');
-			console.log(usersToRemove.length)
 			each(usersToRemove, function(userToRemove){
 				console.log(userToRemove.getId());
 				room.leave(userToRemove);
@@ -214,7 +215,6 @@ var Lobby = (function(){
 		var buttonPms = params.buttonPms;
 		var divButtonShowHideWrapper = E.DIV();
 		
-		
 		var usersMenues = params.usersMenues;
 		var element = E.DIV();
 		var right = E.DIV();
@@ -222,10 +222,13 @@ var Lobby = (function(){
 		element.classList.add('lobby');
 		right.classList.add('right');
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
-		var left = E.DIV();
-		left.classList.add('left');
-		element.appendChild(left);
-		left.appendChild(usersMenues.getElement());
+		if(!isMobile){
+			var left = E.DIV();
+			left.classList.add('left');
+			element.appendChild(left);
+			if(!isMobile)
+				left.appendChild(usersMenues.getElement());
+		}
 		element.appendChild(right);
 		right.appendChild(pmsMenu.getElement());
 		right.appendChild(divButtonShowHideWrapper);

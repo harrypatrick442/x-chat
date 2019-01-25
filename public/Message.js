@@ -67,7 +67,6 @@ var Message = (function(){
 		if(!content)content='';
 		var emoticonsParser = params.emoticonsParser;
 		var components =[] ;
-		console.log(content);
 		emoticonsParser.pipe(new MessageComponents.Text(content),	
 		function(component){  components.push(component);});
 		return new Message({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, content:content,

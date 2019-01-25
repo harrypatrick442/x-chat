@@ -1,5 +1,5 @@
 
-.lobby .users-menues .entries .users-menu{
+.users-menues .entries .users-menu{
 	position:absolute;
 	height:100%;
 	width:100%;
@@ -8,7 +8,7 @@
 	height:100%;
 	overflow:auto;
 }
-.lobby .users-menues .entries .users-menu .entries{
+.users-menues .entries .users-menu .entries{
 	position:relative;
 	float:left;
 	width:100%;
@@ -16,7 +16,7 @@
 	padding:3px;
 	height:auto;
 }
-.lobby .users-menues .entries .users-menu .heading{
+.users-menues .entries .users-menu .heading{
 	position:relative;
 	float:left;
 	width:100%;
@@ -31,7 +31,7 @@
 	border-left:1px solid #333333;
 	border-right:1px solid #333333;
 }
-.lobby .users-menues .entries .users-menu .entries-ignored{
+.users-menues .entries .users-menu .entries-ignored{
 	position:relative;
 	float:left;
 	width:100%;

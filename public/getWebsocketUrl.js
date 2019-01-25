@@ -6,6 +6,6 @@ function getWebsocketUrl(surfix){
 		new_uri = "ws:";
 	}
 	new_uri += "//" + loc.host;
-	new_uri += loc.pathname + surfix;
+	new_uri += /*loc.pathname +*/'/'+ surfix;
 	return new_uri;
 }

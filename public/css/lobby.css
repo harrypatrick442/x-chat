@@ -34,8 +34,7 @@ height:32px;
 .lobby .right .button-show-hide-wrapper .button-pms{
 cursor:pointer;
 background-repeat:no-repeat;
-background-size:contain;
-background-image:url('/images/pms-show.png');	
+background-size:contain;	
 margin:0px;
 position:relative;
 width:60px;
@@ -44,25 +43,20 @@ height:32px;
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
 
-background-image:url('/images/pms-show-hover.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide{
 
-background-image:url('/images/pms-hide.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
 
-background-image:url('/images/pms-hide-hover.png');	
 }
 
 .lobby .right .button-show-hide-wrapper .button-users{
 cursor:pointer;
 background-repeat:no-repeat;
 background-size:contain;
-background-image:url('/images/users-show.png');	
 margin:0px;
 position:relative;
-width:60px;
 display:inline-block;
 height:28px;	
 float:left;
@@ -70,13 +64,10 @@ margin-top:4px;
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
 
-background-image:url('/images/users-show-hover.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide{
 
-background-image:url('/images/users-hide.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
-background-image:url('/images/users-hide-hover.png');	
 }

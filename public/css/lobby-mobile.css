@@ -1,0 +1,29 @@
+
+.lobby{
+	
+}
+.lobby .left{
+}
+.lobby .right{
+}
+.lobby .right .button-show-hide-wrapper{
+}
+.lobby .right .button-show-hide-wrapper .button-pms{
+}
+.lobby .right .button-show-hide-wrapper .button-pms:hover{
+}
+.lobby .right .button-show-hide-wrapper .button-pms-hide{
+}
+.lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
+background-image:url('/images/pms-hide-hover.png');	
+}
+
+.lobby .right .button-show-hide-wrapper .button-users{
+width:43px;
+margin-left:10px;
+float:left;
+background-image:url('/images/users-mobile.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-users:hover{
+
+}
