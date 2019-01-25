@@ -52,7 +52,7 @@ Enumerable.prototype.reverse=function(){
 	return Enumerable.fromArray(this.toList().reverse());
 };
 Enumerable.prototype.each=function(func){
-	this.reset();
+	this.reset();	
 	while (this.moveNext()) {
 		func(this.current());
 	}

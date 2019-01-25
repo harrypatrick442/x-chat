@@ -12,8 +12,6 @@ var OverlappingEntries = new (function(){
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
-			console.log(hide);
-			console.log(entryToHide);
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetShow(false);
@@ -49,9 +47,7 @@ var OverlappingEntries = new (function(){
 		}
 		function showNext(entryToHide){
 			var overlappingEntryToShow = getNextToShow(entryToHide);
-			console.log('a');
 			if(!overlappingEntryToShow)return;
-			console.log('b');
 			overlappingEntryToShow.setVisible(true);
 		}
 		function getEntryId(entry){
@@ -59,15 +55,7 @@ var OverlappingEntries = new (function(){
 		}
 		function getNextToShow(){
 			var str=name+' ';
-			var r = collection.getEntries()..slice().reverse();
-			each(r, function(oe){
-				str+=oe.getString()+',';
-			});
-			console.log(str);
-			var n = r.where(x=>x.getIsSetShow()).firstOrDefault();
-			if(n)
-				console.log(n.getString());
-			return r.where(x=>x.getIsSetShow()).firstOrDefault();
+			return collection.getEntries().slice().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
 		}
 		function OverlappingEntry(entry){
 			var isSetShow = false;
