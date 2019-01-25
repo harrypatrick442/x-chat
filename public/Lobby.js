@@ -136,7 +136,7 @@ var Lobby = (function(){
 		    userIds.where(x=>!users.containsId(x)).each(x=>missingUsersManager.get(x));
 		    var toRemove = users.getIds().where(x=>userIds.indexOf(x)<0).each(function(userId){
 				var user = users.getById(userId);
-				if(user)user.dispose();
+				if(user)user.left();
 			});
 		}
 		function authenticateRegisterResponse(msg){

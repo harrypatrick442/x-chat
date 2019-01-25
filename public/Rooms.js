@@ -12,7 +12,7 @@ var Rooms = new (function(){
 		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll});
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
 		var ui = new UI({emoticons:emoticons});
-		var overlappingEntries= new OverlappingEntries({element:ui.getEntries()});
+		var overlappingEntries= new OverlappingEntries({element:ui.getEntries(), name:'rooms'});
 		roomsMenu.addEventListener('showroom', showRoom);
 		emoticons.addEventListener('addemoticon', addEmoticon);
 		overlappingEntries.add(roomsMenu);

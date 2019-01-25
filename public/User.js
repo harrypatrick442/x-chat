@@ -25,11 +25,11 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};
 		this.getBirthday = function(){return params.birthday;};
-		this.dispose = function(){
-			dispatchDispose();
+		this.left = function(){
+			dispatchLeft();
 		};
-		function dispatchDispose(){
-			self.dispatchEvent({type:'dispose', user:self});
+		function dispatchLeft(){
+			self.dispatchEvent({type:'left', user:self});
 		}
 	};
 	var ret={};

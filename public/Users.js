@@ -6,14 +6,14 @@ var Users = (function(){
 		var collection = new Collection({getEntryId:getEntryId});
 		this.add=function(user){
 			if(!collection.add(user))return;
-			user.addEventListener('dispose', userDispose);
+			user.addEventListener('left', userLeft);
 			dispatchAdd(user);
 		};
 		this.contains = collection.contains;
 		this.containsId = collection.containsId;
 		this.getById=collection.getById;
 		this.remove=function(user){
-			user.removeEventListener('dispose', userDispose);
+			user.removeEventListener('left', userLeft);
 			remove(user);
 		};
 		this.getIds = collection.getIds;
@@ -25,7 +25,7 @@ var Users = (function(){
 		function getEntryId(user){
 			return user.getId();
 		}
-		function userDispose(e){
+		function userLeft(e){
 			remove(e.user);
 		}
 		function dispatchAdd(user){

@@ -21,6 +21,9 @@ var RoomsMenu = new (function(){
 				}
 			}
 		};
+		this.getName = function(){
+			return 'roomsmenu';
+		};
 		this.getElement = ui.getElement;
 		this.setVisible = function(value){
 			

@@ -35,7 +35,6 @@ exports.dalUsers= new (function(){
 				{name:EMAIL, value:email, type:sql.VarChar(200)}
 			],
 			callback:function(result){
-				console.log(result);
 				callback(result.recordset[0].available);
 		}});
 	};
