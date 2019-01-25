@@ -12,6 +12,7 @@ var OverlappingEntries = new (function(){
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
+			console.log(hide);
 			console.log(entryToHide);
 			var overlappingEntry = collection.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
@@ -48,16 +49,17 @@ var OverlappingEntries = new (function(){
 		}
 		function showNext(entryToHide){
 			var overlappingEntryToShow = getNextToShow(entryToHide);
+			console.log('a');
 			if(!overlappingEntryToShow)return;
+			console.log('b');
 			overlappingEntryToShow.setVisible(true);
 		}
 		function getEntryId(entry){
 			return entry.getId();
 		}
 		function getNextToShow(){
-			return collection.getEntries().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
 			var str=name+' ';
-			var r = collection.getEntries().reverse();
+			var r = collection.getEntries()..slice().reverse();
 			each(r, function(oe){
 				str+=oe.getString()+',';
 			});
@@ -67,7 +69,8 @@ var OverlappingEntries = new (function(){
 				console.log(n.getString());
 			return r.where(x=>x.getIsSetShow()).firstOrDefault();
 		}
-		function OverlappingEntry(entry){var isSetShow = false;
+		function OverlappingEntry(entry){
+			var isSetShow = false;
 			if(entry.getVisible())isSetShow = true;
 			this.getId= function(){return entry.getId();};
 			this.getIsSetShow = function(){return isSetShow;};
