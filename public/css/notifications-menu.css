@@ -1,0 +1,32 @@
+.notifications-menu{
+	position:absolute;
+	background-color:orange;
+	display:none;
+	background-color:rgb(44, 43, 43);
+	padding:6px;
+	box-sizing:border-box;
+	width:100%;
+	border:1px solid #000000;
+}
+.notifications-menu .entries{
+	background-color:rgb(32, 31, 31);
+	box-sizing:border-box;
+	width:100%;
+	min-height:65px;
+}
+.notifications-menu .heading{
+	width:100%;
+}
+.notifications-menu .heading .button-close{
+	float:right;
+	width:24px;
+	height:24px;
+	margin-right:5px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/close.png');	
+	cursor:pointer;
+}
+.lobby .rooms .entries .room .bottom .menu .button-close:hover{
+	background-image:url('/images/close-hover.png');	
+}

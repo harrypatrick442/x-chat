@@ -112,9 +112,9 @@ body{
 	margin-right:6px;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/room-close.png');	
+	background-image:url('/images/close.png');	
 	cursor:pointer;
 }
 .lobby .rooms .entries .room .bottom .menu .button-close:hover{
-	background-image:url('/images/room-close-hover.png');	
+	background-image:url('/images/close-hover.png');	
 }

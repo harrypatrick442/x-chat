@@ -3,7 +3,7 @@ var UsersMenu =(function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var id = params.id;
-		var ui = new UI();
+		var ui = new UI({name:params.name});
 		var getUserMe = params.getUserMe;
 		var users = params.users;
 		var ignoreManager = params.ignoreManager;
@@ -68,7 +68,7 @@ var UsersMenu =(function(){
 		var element = E.DIV();
 		element.classList.add('users-menu');
 		var heading=E.DIV();
-		heading.innerHTML='&nbsp;Users ';
+		heading.innerHTML='&nbsp;'+params.name;
 		heading.classList.add('heading');
 		element.appendChild(heading);
 		var entries = E.DIV();

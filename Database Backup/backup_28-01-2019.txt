@@ -1,0 +1,345 @@
+Stored procedure backup 28/01/2019
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_hash_get]    Script Date: 28/01/2019 08:29:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_hash_get] (
+	@userId int
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	select hash from tblAuthenticate where [userId] = @userId;
+END
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_pm_message_add]    Script Date: 28/01/2019 08:29:16 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_pm_message_add] (
+@userMeId int,
+ @userToId int,
+ @content text,
+ @serverAssignedNMessage int output
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	declare @roomId int;
+	 exec xchat_pm_room_id_from_user_get  @userMeId , @userToId, @roomId output, @serverAssignedNMessage output;
+insert into tblRoomMESSAGES ([roomId], [userId], [content], [serverAssignedNMessage]) values(@roomId, @userMeId, @content, @serverAssignedNMessage);
+select @roomId as 'roomId', @serverAssignedNMessage as 'serverAssignedNMessage';
+update tblPmMap set [seen]=0 where [roomId]=@roomId and [userToId]= @userToId;
+END;
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_pm_messages_get]    Script Date: 28/01/2019 08:29:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_pm_messages_get] (
+@userMeId int,
+@userToId int,
+@nMessages int
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+select top( @nMessages) tblRoomMessages.[id], tblRoomMessages.[roomId], [userId], [content], [username], tblRoomMessages.[serverAssignedNMessage] from tblRoomMessages 
+INNER JOIN tblUsers on tblRoomMessages.userId = tblUsers.id
+inner join tblPmMap on tblRoomMessages.roomId = tblPmMap.[roomId] where (tblpmmap.[userMeId] = @userMeId and tblpmmap.[userToId] = @userToId) or (tblpmmap.[userMeId] = @userToId and tblpmmap.[userToId] = @userMeId)  order by tblroommessages.[id] desc;
+END;
+
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_pm_room_id_from_user_get]    Script Date: 28/01/2019 08:30:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_pm_room_id_from_user_get] (
+@userMeId int,
+ @userToId int,
+@roomId int output,
+@serverAssignedNMessage int output
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set @roomId = (select tblpmmap.[roomId] from tblpmmap where (tblpmmap.[userMeId]=@userMeId and tblpmmap.[userToId] = @userToId) or (tblpmmap.[userMeId] = @userToId and tblpmmap.[userToId] = @userMeId));
+	if(@roomId is null)
+		begin
+			insert into tblRooms([Name], [isPm])  values(Concat('pm_',CAST(@userMeId AS Varchar),'_',CAST(@userToId AS varchar)), 1);
+			set @roomId = SCOPE_IDENTITY();
+			insert into tblpmmap ([roomId], [userMeId], [userToId],  [serverAssignedNMessage]) values(@roomId, @userMeId, @userToId, 0);
+			insert into tblpmmap ([roomId], [userMeId], [userToId],  [serverAssignedNMessage]) values(@roomId, @userToId, @userMeId, 0);
+		end;
+	set @serverAssignedNMessage=(select [serverAssignedNMessage] from tblpmmap where [roomId]=@roomId)+1;
+	update tblpmmap set [serverAssignedNMessage]=@serverAssignedNMessage where [roomId] = @roomId;
+	select @roomId, @serverAssignedNMessage;
+	return;
+
+end;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_register]    Script Date: 28/01/2019 08:30:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_register] (
+@email varchar(200),
+@username varchar(100),
+@hash varchar(100),
+@gender int,
+@birthday datetime,
+@isGuest bit
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+insert into tblUsers([email], [username], [gender], [birthday], [isGuest]) values(@email, @username, @gender, @birthday, @isGuest);
+declare @userId int = SCOPE_IDENTITY();
+if(@isGuest=0)
+insert into tblAuthenticate([userId], [hash]) values(@userId, @hash);
+end;
+select * from tblUsers where tblUsers.[id] = @userId;
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_register]    Script Date: 28/01/2019 08:30:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_register] (
+@email varchar(200),
+@username varchar(100),
+@hash varchar(100),
+@gender int,
+@birthday datetime,
+@isGuest bit
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+insert into tblUsers([email], [username], [gender], [birthday], [isGuest]) values(@email, @username, @gender, @birthday, @isGuest);
+declare @userId int = SCOPE_IDENTITY();
+if(@isGuest=0)
+insert into tblAuthenticate([userId], [hash]) values(@userId, @hash);
+end;
+select * from tblUsers where tblUsers.[id] = @userId;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_register]    Script Date: 28/01/2019 08:30:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_register] (
+@email varchar(200),
+@username varchar(100),
+@hash varchar(100),
+@gender int,
+@birthday datetime,
+@isGuest bit
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+insert into tblUsers([email], [username], [gender], [birthday], [isGuest]) values(@email, @username, @gender, @birthday, @isGuest);
+declare @userId int = SCOPE_IDENTITY();
+if(@isGuest=0)
+insert into tblAuthenticate([userId], [hash]) values(@userId, @hash);
+end;
+select * from tblUsers where tblUsers.[id] = @userId;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_rooms_get]    Script Date: 28/01/2019 08:30:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_rooms_get] 
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+	select * from tblRooms where isPm=0;
+END;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_user_get_from_username_or_email]    Script Date: 28/01/2019 08:30:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_user_get_from_username_or_email] (
+	@usernameOrEmail varchar(45)
+	)
+AS
+BEGIN
+
+        select * from tblUsers where tblUsers.[username] =@usernameOrEmail or tblUsers.[email]=@usernameOrEmail;
+		end;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_username_count]    Script Date: 28/01/2019 08:30:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_username_count] (
+	@username varchar(45)
+	)
+AS
+BEGIN
+
+        select count(*) as count from tblUsers where tblUsers.[username] =@username;
+		end;
+
+
+
+
+
+
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_username_or_email_taken]    Script Date: 28/01/2019 08:31:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_username_or_email_taken] (
+	@username varchar(45),
+	@email varchar(200)
+	)
+AS
+BEGIN
+
+        declare @countUsername int = (select count(*) from tblUsers where tblUsers.[username] =@username);
+		declare @countEmail int = (select count(*) from tblUsers where tblUsers.[email]=@email);
+		select case when @countUsername > 0 then (
+		case when  @countEmail>0 then 'both' else 'username' end) else(
+		 case when @countEmail>0 then 'email' else '' end)  end as 'available';
+	end;
+
+
+
+
+

@@ -12,6 +12,7 @@ exports.Lobby = (function(){
 	var Rooms = require('./Rooms').Rooms;
 	var Pms = require('./Pms').Pms;
 	var Users = require('./Users').Users;
+	var Notifications = require('./Notifications').Notifications;
 	var TemporalCallback=require('./TemporalCallback').TemporalCallback;
 	var Sessions = require('./Sessions').Sessions;
 	var Session = require('./Session').Session;
@@ -21,12 +22,14 @@ exports.Lobby = (function(){
 		var self = this;
 		var rooms = new Rooms();
 		var users = new Users();
+		var notifications = new Notifications();
 		var pms = new Pms({users:users, rooms:rooms});
 		var sessions = new Sessions();
 		var temporalCallbackSendUserIds = new TemporalCallback({maxNDelays:SEND_USER_IDS_MAX_N_DELAYS/*if keeps being reset within delay, will wait up to this total amount of time*/
 																			, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
 		this.getRooms = function(){return rooms;};
 		this.getPms = function(){return pms;};
+		this.getNotifications= function(){return notifications;};
 		this.getSessions=function(){
 			return sessions;
 		};
@@ -88,9 +91,7 @@ exports.Lobby = (function(){
 		}
 		function authenticate(req, mysocket, callback){
 			dalUsers.getByUsernameOrEmail(req.username, function(user){
-				console.log('got user');console.log(user);
-				if(!user){return invalidUsernameOrPassword(AUTHENTICATE); return;}
-				console.log('getting hash');
+				if(!user){return invalidUsernameOrPassword(AUTHENTICATE, callback); return;}
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
 					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
@@ -100,8 +101,11 @@ exports.Lobby = (function(){
 					res.users = users.toJSON();
 					users.add(user);
 					sendJoin(user);
-					user.addEventListener('dispose', userDispose);
-					callback(res);	
+					user.addEventListener('dispose', userDispose);	
+					notifications.getPmNotificationsForUser(user, function(pmNotifications){
+						res.pmNotifications = pmNotifications.select(x=>x.toJSON()).toList();
+						callback(res);
+					});
 				});
 		    });
 		}
@@ -124,7 +128,7 @@ exports.Lobby = (function(){
 		function sendJoin(user){
 			users.sendMessage({type:'join', user:user.toJSON(), userIds:users.getIds()});
 		}
-		function invalidUsernameOrPassword(type){return {successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type};}
+		function invalidUsernameOrPassword(type, callback){callback({successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type});}
 	};
 	return _Lobby;
 })();

@@ -48,7 +48,15 @@ exports.handler = new (function(){
 						var userMe = getUser(req);
 						if(!userMe)return;
 						lobby.getPms().getMessages(userMe.getId(), req.userToId, function(messages){
-							callback({type:'pm_messages', userToId:req.userToId, messages:messages.toJSON()});
+							callback({type:'pm_messages', userId:userToId, messages:messages.select(x=>x.toJSON()).toList()});
+						});
+					break;
+					case 'pm_notifications_get':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						lobby.getNotifications().getPmNotificationsForUser(userMe.getId(), req.userToId, function(pmNotifications){
+							callback({type:'pm_notifications_get', pmNotifications:pmNotifications.select(x=>x.toJSON()).toList()});
+							
 						});
 					break;
 					case 'room_join':

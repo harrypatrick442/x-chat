@@ -19,7 +19,6 @@ body{
 .lobby .pms-menu .entries{
 	position:abolute;
 	width:100%;
-	min-height:100px;
 	background-color:rgb(32, 31, 31);
 	padding-left:3px;
 

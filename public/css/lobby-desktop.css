@@ -9,10 +9,13 @@
 .lobby .right .button-show-hide-wrapper{
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
+background-image:url('/images/pms-show.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
+background-image:url('/images/pms-show-hover.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide{
+background-image:url('/images/pms-hide.png');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
 
@@ -34,4 +37,12 @@ background-image:url('/images/users-hide.png');
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
 background-image:url('/images/users-hide-hover.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-notifications{
+width:60px;
+background-image:url('/images/notifications.png');	
+}
+.lobby .right .button-show-hide-wrapper .button-notifications:hover{
+
+background-image:url('/images/notifications-hover.png');	
 }

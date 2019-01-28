@@ -3,5 +3,8 @@ var Notification = (funciton(){
 		EventEnabledBuilder(this);
 		var self = this;
 	};
+	_Notification.fromJSON = function(jObject){
+		return new _Notification(jObject);
+	};
 	return _Notification;
 })();

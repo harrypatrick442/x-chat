@@ -7,20 +7,23 @@ var Lobby = (function(){
 		var users = new Users({});
 		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});
 		var clickMenu = new ClickMenu({});
-		var usersMenu= new UsersMenu({users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
+		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
+		var notificationsMenu = new NotificationsMenu({});
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
-		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, pmsMenu:pmsMenu, usersMenues:usersMenues});
+		var buttonNotifications = new Button({classNames:['button-notifications']});
+		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
+		buttonNotifications.addEventListener('click', showNotifications);
 		if(!isMobile)
 		{
 			buttonPms.addEventListener('toggled', onToggleButtonPms);
@@ -91,6 +94,9 @@ var Lobby = (function(){
 			roomUserIds_Join(room, msg.userIds);
 			roomUserIds_Leave(room, msg.userIds);
 		}
+		function showNotifications(){
+			notificationsMenu.show();
+		}
 		function roomUserIds_Join(room, userIds){
 			each(userIds, function(userId){
 				var user = users.getById(userId);
@@ -134,9 +140,17 @@ var Lobby = (function(){
 		}
 		function authenticateResponse(msg){
 			authenticateRegisterResponse(msg);
+			loadNotifications(msg);
 		}
 		function registerResponse(msg){
 			authenticateRegisterResponse(msg);
+		}
+		function loadNotifications(msg){
+			if(msg.pmNotifications){
+				each(msg.pmNotifications, function(pmNotification){
+					notifications.add(Notification.fromJSON(pmNotification));
+				});
+			}
 		}
 		function updateUserIdsLobby(userIds){
 		    userIds.where(x=>!users.containsId(x)).each(x=>missingUsersManager.get(x));
@@ -218,6 +232,8 @@ var Lobby = (function(){
 		var pmsMenu = params.pmsMenu;
 		var buttonUsers = params.buttonUsers;
 		var buttonPms = params.buttonPms;
+		var buttonNotifications = params.buttonNotifications;
+		var notificationsMenu = params.notificationsMenu;
 		var divButtonShowHideWrapper = E.DIV();
 		
 		var usersMenues = params.usersMenues;
@@ -238,8 +254,15 @@ var Lobby = (function(){
 		right.appendChild(pmsMenu.getElement());
 		right.appendChild(divButtonShowHideWrapper);
 		right.appendChild(rooms.getElement());
+		if(!isMobile){
+			right.appendChild(notificationsMenu.getElement());
+		}
+		else{
+			document.body.appendChild(notificationsMenu.getElement());
+		}
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
+		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
 		this.getElement = function(){return element;};
 	}
 	return _Lobby;

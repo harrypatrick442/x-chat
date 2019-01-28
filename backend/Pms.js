@@ -16,11 +16,9 @@ exports.Pms = (function(){
 					userMe.sendMessage({type:'pm_message', userId:userToId, message:message});
 			});
 		};
-		this.getMessages=function(userMeId, userToId, callback){
+		this.getMessagesForUserAndSend=function(userMeId, userToId, callback){
 			dalPms.getMessages(userMeId, userToId, N_MESSAGES_HISTORY, function(messages){
-				var userMe = users.getById(userMeId);
-				if(!userMe)return;
-				userMe.sendMessage({type:'pm_messages', userId:userToId, messages:messages.select(x=>x.toJSON()).toList()});
+				callback(messages);
 			});
 		};
 	};

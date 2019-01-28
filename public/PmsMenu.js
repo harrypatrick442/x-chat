@@ -2,7 +2,8 @@ var PmsMenu = new (function(){
 	var _PmsMenu = function(params){
 		var self = this;
 		var popup = isMobile?new Popup({}):undefined;
-		var ui = new UI({popupElement:isMobile?popup.getElement():undefined});
+		var buttonClose = isMobile?new Button({className:'button-close'}):undefined;
+		var ui = new UI({popupElement:isMobile?popup.getElement():undefined, buttonClose:buttonClose});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
@@ -13,6 +14,7 @@ var PmsMenu = new (function(){
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
 		WindowResizeManager.addEventListener('resized', resized);
+		if(buttonClose)buttonClose.addEventListener('click',popup.hide);
 		function add(e){
 			var pmEntry= new PmEntry({room:e.room});
 			pmEntry.parentWidth(ui.getElement().clientWidth);
@@ -47,14 +49,22 @@ var PmsMenu = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var element = params.popupElement;
-		if(!element)
+		var buttonClose = params.buttonClose;
+		var entries = E.DIV();
+		if(!isMobile)
 			element = E.DIV();
 		else
+		{
 			document.body.appendChild(params.popupElement);
+			var heading=E.DIV();
+			heading.innerHTML='&nbsp;Pms ';
+			heading.classList.add('heading');
+			heading.appendChild(buttonClose.getElement());
+			element.appendChild(heading);
+		}
 		element.classList.add('pms-menu');
 		var entriesWrapper = E.DIV();
 		entriesWrapper.classList.add('entries-wrapper');
-		var entries = E.DIV();
 		entries.classList.add('entries');
 		element.appendChild(entriesWrapper); 
 		entriesWrapper.appendChild(entries); 
