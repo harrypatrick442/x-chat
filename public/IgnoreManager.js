@@ -7,7 +7,7 @@ var IgnoreManager = new (function(){
 		var getUserById=params.getUserById;
 		var getUserMe = params.getUserMe;
 		var settings = new Settings('ignore');
-		var set=new Set({getEntryId:getEntryId});
+		var collection=new Collection({getEntryId:getEntryId});
 		this.ignoreUser = function(user){
 			ignoreUser(user);
 		};
@@ -25,7 +25,7 @@ var IgnoreManager = new (function(){
 			self.unignoreUserById(user.getId());
 		};
 		this.unignoreUserById=function(id){
-			var ignored = set.removeById(id);
+			var ignored = collection.removeById(id);
 			if(!ignored)return;
 			dispatchUnignored(ignored.getId(), ignored);
 			sendUnignoredToOtherTabs(ignored);
@@ -34,16 +34,16 @@ var IgnoreManager = new (function(){
 			return self.userIdIsIgnored(user.getId());
 		};
 		this.userIdIsIgnored=function(id){
-			return set.containsId(id);
+			return collection.containsId(id);
 		};
 		load();
-		this.getIgnores=function(){return set.getEntries();};
+		this.getIgnores=function(){return collection.getEntries();};
 		this.clearSave=function(){	
 			settings.set('ignores', []);
 		};
 		tabPortal.addEventListener('message', messageFromAnotherTab);
 		function save(){
-			settings.set('ignores', set.getEntries().select(x=>x.toJSON()).toList());
+			settings.set('ignores', collection.getEntries().select(x=>x.toJSON()).toList());
 		}
 		function dispatchIgnored(userId, ignored){
 			self.dispatchEvent({type:'ignored', userId:userId, ignored:ignored});
@@ -59,7 +59,7 @@ var IgnoreManager = new (function(){
 			ignore(ignored);
 		}
 		function ignore(ignored){
-			if(!set.add(ignored))return;
+			if(!collection.add(ignored))return;
 			save();
 			dispatchIgnored(ignored.getId(), ignored);
 			sendIgnoredToOtherTabs(ignored);
@@ -68,7 +68,7 @@ var IgnoreManager = new (function(){
 			var list = settings.get(IGNORES);
 			if(!list)return;
 			each(list, function(ignored){
-				set.add(Ignored.fromJSON(ignored));
+				collection.add(Ignored.fromJSON(ignored));
 			});
 		}
 		function messageFromAnotherTab(e){
@@ -85,12 +85,12 @@ var IgnoreManager = new (function(){
 		}
 		function incomingIgnored(ignored){
 			if(ignored.getId()==getUserMe().getId())return ;
-			if(!set.add(ignored))return;
+			if(!collection.add(ignored))return;
 			save();
 			dispatchIgnored(ignored.getId(), ignored);
 		}
 		function incomingUnignored(ignored){
-			if(!set.remove(ignored))return;
+			if(!collection.remove(ignored))return;
 			save();
 			dispatchUnignored(ignored.getId(), ignored);
 		}

@@ -3,23 +3,23 @@ var Users = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var getUserById=params.getUserById;
-		var set = new Set({getEntryId:getEntryId});
+		var collection = new Collection({getEntryId:getEntryId});
 		this.add=function(user){
-			if(!set.add(user))return;
+			if(!collection.add(user))return;
 			user.addEventListener('left', userLeft);
 			dispatchAdd(user);
 		};
-		this.contains = set.contains;
-		this.containsId = set.containsId;
-		this.getById=set.getById;
+		this.contains = collection.contains;
+		this.containsId = collection.containsId;
+		this.getById=collection.getById;
 		this.remove=function(user){
 			user.removeEventListener('left', userLeft);
 			remove(user);
 		};
-		this.getIds = set.getIds;
-		this.getEntries=set.getEntries;
+		this.getIds = collection.getIds;
+		this.getEntries=collection.getEntries;
 		function remove(user){
-			if(!set.remove(user))return false;
+			if(!collection.remove(user))return false;
 			dispatchRemove(user);
 		}
 		function getEntryId(user){
