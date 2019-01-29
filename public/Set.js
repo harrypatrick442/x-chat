@@ -1,5 +1,5 @@
-var Collection = (function(){
-	var _Collection = function(params){
+var Set = (function(){
+	var _Set = function(params){
 		var self = this;
 		var getEntryId = params.getEntryId;
 		var list =[];
@@ -38,5 +38,5 @@ var Collection = (function(){
 			each(list, func);
 		};	
 	};
-	return _Collection;
+	return _Set;
 })();

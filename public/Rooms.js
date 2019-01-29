@@ -7,7 +7,7 @@ var Rooms = new (function(){
 		var getUserById = params.getUserById;
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser = params.clickMenu;
-		var collection = new Collection({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
+		var set = new Set({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll});
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
@@ -19,7 +19,7 @@ var Rooms = new (function(){
 		overlappingEntries.show(roomsMenu);
 		this.getElement = ui.getElement
 		this.getById = function(id){
-			return collection.getById(id);
+			return set.getById(id);
 		};
 		this.set = function(roomInfos){
 			roomsMenu.set(roomInfos);
@@ -27,20 +27,20 @@ var Rooms = new (function(){
 			each(roomInfos, function(roomInfo){
 				ids.push(roomInfo.id);
 			});
-			each(collection.getIds(), function(id){
+			each(set.getIds(), function(id){
 				if(ids.indexOf(id)>=0)return;
-				var room = collection.getById(id);
+				var room = set.getById(id);
 				room.dispose();
 				remove(room);
 			});
 		};
 		this.incomingMessage = function(msg){
-			var room = collection.getById(msg.roomId);
+			var room = set.getById(msg.roomId);
 			if(!room)return;
 			room.incomingMessage(msg.message);
 		};
 		this.incomingMessages = function(msg){
-			var room = collection.getById(msg.roomId);
+			var room = set.getById(msg.roomId);
 			if(!room)return;
 			room.incomingMessages(msg.messages);
 		};
@@ -49,13 +49,13 @@ var Rooms = new (function(){
 		};
 		this.join = function(msg, user){
 			if(!user)return;
-			var room = collection.getById(msg.roomId);
+			var room = set.getById(msg.roomId);
 			if(!room) return;	
 			room.join(user);
 		};
-		this.getById= collection.getById;
+		this.getById= set.getById;
 		this.showRoom = function(roomInfo){
-			var room = collection.getById(roomInfo.id);
+			var room = set.getById(roomInfo.id);
 			if(!room)
 				room = loadRoom(roomInfo);
 			showEntry(room);
@@ -72,7 +72,7 @@ var Rooms = new (function(){
 		function loadRoom(roomInfo){
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, userTo:roomInfo.userTo,
 			getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser});
-			collection.add(room);
+			set.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
@@ -104,7 +104,7 @@ var Rooms = new (function(){
 			overlappingEntries.hide(room);
 		}
 		function dispatchRoomsInChanged(){
-			self.dispatchEvent({type:'roomsinchanged', roomIds:collection.getEntries().where(x=>!x.isPm()).select(x=>x.getId()).toList()});
+			self.dispatchEvent({type:'roomsinchanged', roomIds:set.getEntries().where(x=>!x.isPm()).select(x=>x.getId()).toList()});
 		}
 		function dispatchCreatedRoom(room){
 			self.dispatchEvent({type:'createdroom', room:room});
@@ -132,7 +132,7 @@ var Rooms = new (function(){
 		function dispatchGetPms(e){	
 		}
 		function remove(room){
-			collection.remove(room);
+			set.remove(room);
 			overlappingEntries.remove(room);
 			dispatchDestroyedRoom(room);
 		}

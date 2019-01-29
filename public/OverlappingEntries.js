@@ -1,34 +1,34 @@
 var OverlappingEntries = new (function(){
 	var _OverlappingEntries = function(params){
 		var self = this;
-		var collection=new Collection({getEntryId:getEntryId});
+		var set=new Set({getEntryId:getEntryId});
 		var element = params.element;
 		var name = params.name;
 		this.show= function(entryToShow){
-			var overlappingEntry = collection.getById(entryToShow.getId());
+			var overlappingEntry = set.getById(entryToShow.getId());
 			if(!overlappingEntry)return;
 			overlappingEntry.setIsSetShow(true);
-			collection.each(x=>x.setVisible(x==overlappingEntry));
+			set.each(x=>x.setVisible(x==overlappingEntry));
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
-			var overlappingEntry = collection.getById(entryToHide.getId());
+			var overlappingEntry = set.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetShow(false);
 			showNext(overlappingEntry)
 		};
 		this.add = function(entry){
-			if(collection.containsId(entry.getId()))return;
+			if(set.containsId(entry.getId()))return;
 			entry.addEventListener('show', show);
 			entry.addEventListener('show', hide);
 			var overlappingEntry = new OverlappingEntry(entry);
-			collection.add(overlappingEntry);
+			set.add(overlappingEntry);
 			element.appendChild(entry.getElement());
 		};
 		this.remove = function(entry){
-			var overlappingEntry = collection.getById(entry.getId());
+			var overlappingEntry = set.getById(entry.getId());
 			if(!overlappingEntry) return;
-			collection.remove(overlappingEntry);
+			set.remove(overlappingEntry);
 			overlappingEntry.removeElement();
 			showNext(overlappingEntry);
 		};
@@ -41,8 +41,8 @@ var OverlappingEntries = new (function(){
 			self.hide(e.entry);
 		}
 		function bringToFront(overlappingEntry){
-			collection.remove(overlappingEntry);
-			collection.add(overlappingEntry);
+			set.remove(overlappingEntry);
+			set.add(overlappingEntry);
 			overlappingEntry.bringElementToFront();
 		}
 		function showNext(entryToHide){
@@ -55,7 +55,7 @@ var OverlappingEntries = new (function(){
 		}
 		function getNextToShow(){
 			var str=name+' ';
-			return collection.getEntries().slice().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
+			return set.getEntries().slice().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
 		}
 		function OverlappingEntry(entry){
 			var isSetShow = false;

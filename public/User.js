@@ -14,7 +14,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 //single mesage with all info when uer join lobby. this contains map of all rooms user is in.
 //if us
 	const TYPE = 'user';
-	var collection = new Collection({getEntryId:getEntryId});
+	var set = new Set({getEntryId:getEntryId});
 	function _User(params){
 		EventEnabledBuilder(this);
 		var referenceCounter = new ReferenceCounter();
@@ -37,21 +37,21 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		var user = getExisting(params.id);
 		if(user) return user;
 		user = new _User(params);
-		collection.add(user);
+		set.add(user);
 		return user;
 	};
 	ret.fromMessage = function(message){
 		var user = getExisting(message.getUserId());
 		if(user) return user;
 		var user = new _User({id:message.getUserId(), username:message.getUsername()});
-		collection.add(user);
+		set.add(user);
 		return user;
 	};
 	ret.fromPmNotification = function(pmNotification){
 		var user = getExisting(pmNotification.getId());
 		if(user) return user;
 		user = new _User({id:pmNotification.getId(), username:pmNotification.getUsername()});
-		collection.add(user);
+		set.add(user);
 		return user;
 	};
 	ret.TYPE=TYPE;
@@ -60,6 +60,6 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		return user.getId();
 	}
 	function getExisting(id){
-		return collection.getById(id);
+		return set.getById(id);
 	}
 })();
