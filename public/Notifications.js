@@ -1,14 +1,14 @@
 var Notifications = (function(){
 	var _Notifications = function(){
 		EventEnabledBuilder(this);
-		var collection = new Collection({getEntryId:getEntryId});
+		var set = new Set({getEntryId:getEntryId});
 		var self = this;
 		this.add = function(notification){
-			if(!collection.add(notification))return;
+			if(!set.add(notification))return;
 			dispatchAdded(notification);
 		};
 		this.remove = function(notification){
-			if(!collection.remove(notification))return;
+			if(!set.remove(notification))return;
 			dispatchRemoved(notification);
 		};
 		function getEntryId(notification){

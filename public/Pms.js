@@ -4,7 +4,7 @@ var Pms=  (function(){
 		var self = this;
 		var rooms = params.rooms;
 		var getUserMe = params.getUserMe;
-		var collectionRoom = new Collection({getEntryId:getEntryId});
+		var setRoom = new Set({getEntryId:getEntryId});
 		this.showPmWithUser = function(user){
 			var roomId = getRoomId(user.getId());
 			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
