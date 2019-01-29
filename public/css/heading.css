@@ -10,3 +10,16 @@
 	border-left:1px solid #333333;
 	border-right:1px solid #333333;
 }
+.heading .button-close{
+	float:right;
+	width:24px;
+	height:24px;
+	margin-right:5px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/close.png');	
+	cursor:pointer;
+}
+.heading .button-close:hover{
+	background-image:url('/images/close-hover.png');	
+}

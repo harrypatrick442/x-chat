@@ -1,10 +1,17 @@
-var Notification = (funciton(){
-	var _Notification = funciton(){
+var Notification = (function(){
+	const PM='pm';
+	var _Notification = function(params){
+		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
+		this.getNotificationType= function(){return params.notificationType;};
+		this.getIsPm= function(){return self.getNotificationType()==PM;};
+		this.getUsername = function(){return params.username;};
+		this.getId = function(){return params.id;};
 	};
-	_Notification.fromJSON = function(jObject){
-		return new _Notification(jObject);
+	_Notification.PM= PM;
+	_Notification.pmNotificationFromJSON = function(jObject){
+		return new _Notification({notificationType : PM, username:jObject.username, id:jObject.userId});
 	};
 	return _Notification;
 })();

@@ -11,10 +11,11 @@ var Lobby = (function(){
 		var missingUsersManager = new MissingUsersManager();
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
-		var notificationsMenu = new NotificationsMenu({});
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
+		var notifications = new Notifications({});
+		var notificationsMenu = new NotificationsMenu({notifications:notifications});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var buttonNotifications = new Button({classNames:['button-notifications']});
@@ -43,6 +44,7 @@ var Lobby = (function(){
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		rooms.addEventListener('sendpm', sendPm);
 		usersMenues.addEventListener('showpm', showPm);
+		notificationsMenu.addEventListener('showpm', showPm);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -148,7 +150,7 @@ var Lobby = (function(){
 		function loadNotifications(msg){
 			if(msg.pmNotifications){
 				each(msg.pmNotifications, function(pmNotification){
-					notifications.add(Notification.fromJSON(pmNotification));
+					notifications.add(Notification.pmNotificationFromJSON(pmNotification));
 				});
 			}
 		}

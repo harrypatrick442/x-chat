@@ -12,21 +12,12 @@
 	background-color:rgb(32, 31, 31);
 	box-sizing:border-box;
 	width:100%;
-	min-height:65px;
+	min-height:40px;
+	padding-left:3px;
+	padding-top:3px;
+	height:auto;
+	float:left;
 }
 .notifications-menu .heading{
 	width:100%;
-}
-.notifications-menu .heading .button-close{
-	float:right;
-	width:24px;
-	height:24px;
-	margin-right:5px;
-	background-repeat:no-repeat;
-	background-size:contain;
-	background-image:url('/images/close.png');	
-	cursor:pointer;
-}
-.lobby .rooms .entries .room .bottom .menu .button-close:hover{
-	background-image:url('/images/close-hover.png');	
 }

@@ -8,6 +8,7 @@ exports.Notifications = (function(){
 		this.getPmNotificationsForUser=function(user, callback){
 			console.log('getPmNotificationsForUser');
 			dalNotifications.getPmNotificationsForUser(user.getId(),  function(pmNotifications){
+			console.log(pmNotifications);
 				callback(pmNotifications);
 			});
 		};

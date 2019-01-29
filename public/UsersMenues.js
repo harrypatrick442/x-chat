@@ -2,7 +2,10 @@ var UsersMenues = (function(){
 	var _UsersMenues = function(){
 		EventEnabledBuilder(this);
 		var self = this;
-		var popup = isMobile?new Popup({}):undefined;
+		var popup;
+		if(isMobile){
+			popup = new Popup({});
+		}
 		var ui = new UI({popupElement:isMobile?popup.getElement():undefined});
 		var overlappingEntries = new OverlappingEntries({element:ui.getEntries()});
 		this.getElement = ui.getElement;
@@ -12,6 +15,8 @@ var UsersMenues = (function(){
 			usersMenu.addEventListener('showpm',e=>self.dispatchEvent(e));
 			usersMenu.addEventListener('show',show);
 			usersMenu.addEventListener('hide',hide);
+			if(isMobile)
+				usersMenu.addEventListener('hidepopup', hidePopup);
 		};
 		this.remove=function(usersMenu){
 			overlappingEntries.remove(usersMenu);
@@ -22,6 +27,9 @@ var UsersMenues = (function(){
 		this.show = function(){
 			popup.show();
 		};
+		function hidePopup(){
+			popup.hide();
+		}
 		function hide(e){
 			overlappingEntries.hide(e.entry);
 		}

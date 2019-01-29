@@ -48,7 +48,7 @@ exports.handler = new (function(){
 						var userMe = getUser(req);
 						if(!userMe)return;
 						lobby.getPms().getMessages(userMe.getId(), req.userToId, function(messages){
-							callback({type:'pm_messages', userId:userToId, messages:messages.select(x=>x.toJSON()).toList()});
+							callback({type:'pm_messages', userId:req.userToId, messages:messages.select(x=>x.toJSON()).toList()});
 						});
 					break;
 					case 'pm_notifications_get':

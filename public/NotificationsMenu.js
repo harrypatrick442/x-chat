@@ -1,13 +1,38 @@
 var NotificationsMenu = (function(){
-	var _NotificationsMenu = function(){
+	var _NotificationsMenu = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var notifications = params.notifications;
 		var popup = new Popup({});
 		var buttonClose = new Button({className:'button-close'});
 		var ui = new UI({popup:popup, buttonClose:buttonClose});
+		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.show = ui.show;
 		this.getElement = ui.getElement
 		buttonClose.addEventListener('click', popup.hide);
+		notifications.addEventListener('added', added);
+		notifications.addEventListener('removed', removed);
+		function added(e){
+			var notification = e.notification;
+			var notificationEntry = new NotificationEntry(notification);
+			notificationEntry.addEventListener('showpm', e=>self.dispatchEvent(e));
+			notificationEntry.addEventListener('dispose', dispose);
+			sortedFilteredEntries.addEntry(notificationEntry);
+		}
+		function removed(e){
+			console.log(e);
+			var notification = e.notification;
+			sortedFilteredEntries.removeEntryById(notification.getId());
+		}
+		function compare(notificationEntryA, notificationEntryB){
+			
+		}
+		function getEntryId(notificationEntry){
+			return notificationEntry.getId();
+		}
+		function dispose(e){
+			notifications.remove(e.notification);
+		}
 	};
 	return _NotificationsMenu;
 	function UI(params){
@@ -26,6 +51,13 @@ var NotificationsMenu = (function(){
 		this.show = function(){
 			popup.show();
 		};
+		this.addEntry = function(entry){
+			entries.appendChild(entry.getElement());
+		};
+		this.removeEntry = function(){
+			entries.removeChild(entry.getElement());
+		};
 		this.getElement = function(){return element;};
+		this.getEntries = function(){return entries;};
 	}
 })();

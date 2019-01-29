@@ -16,7 +16,7 @@ exports.Pms = (function(){
 					userMe.sendMessage({type:'pm_message', userId:userToId, message:message});
 			});
 		};
-		this.getMessagesForUserAndSend=function(userMeId, userToId, callback){
+		this.getMessages=function(userMeId, userToId, callback){
 			dalPms.getMessages(userMeId, userToId, N_MESSAGES_HISTORY, function(messages){
 				callback(messages);
 			});

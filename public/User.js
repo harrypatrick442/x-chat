@@ -47,6 +47,13 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		collection.add(user);
 		return user;
 	};
+	ret.fromPmNotification = function(pmNotification){
+		var user = getExisting(pmNotification.getId());
+		if(user) return user;
+		user = new _User({id:pmNotification.getId(), username:pmNotification.getUsername()});
+		collection.add(user);
+		return user;
+	};
 	ret.TYPE=TYPE;
 	return ret;
 	function getEntryId(user){

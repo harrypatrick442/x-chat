@@ -3,12 +3,18 @@ var UsersMenu =(function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var id = params.id;
-		var ui = new UI({name:params.name});
+		var buttonClose;
+		if(isMobile)
+		{
+			buttonClose = new Button({className:'button-close'});
+			buttonClose.addEventListener('click', dispatchHidePopup);
+		}
+		var ui = new UI({name:params.name, buttonClose:buttonClose});
 		var getUserMe = params.getUserMe;
 		var users = params.users;
 		var ignoreManager = params.ignoreManager;
 		var clickMenu = params.clickMenu;
-		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
+		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries(), buttonClose:buttonClose});
 		var sortedFilteredEntriesIgnored = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntriesIgnored()});
 		
 		this.getElement = ui.getElement;
@@ -26,6 +32,10 @@ var UsersMenu =(function(){
 			self.dispatchEvent({type:'hide', entry:self});
 		};
 		loadIgnores();
+		function dispatchHidePopup(){
+			self.dispatchEvent({type:'hidepopup'});
+		}
+
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
 			var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
@@ -64,12 +74,16 @@ var UsersMenu =(function(){
 	};
 	return _UsersMenu;
 	function UI(params){
+		var buttonClose = params.buttonClose;
 		var visible=false;
 		var element = E.DIV();
 		element.classList.add('users-menu');
 		var heading=E.DIV();
 		heading.innerHTML='&nbsp;'+params.name;
 		heading.classList.add('heading');
+		if(buttonClose){
+			heading.appendChild(buttonClose.getElement());
+		}
 		element.appendChild(heading);
 		var entries = E.DIV();
 		entries.classList.add('entries');
