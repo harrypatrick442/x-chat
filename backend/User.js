@@ -1,11 +1,11 @@
 exports.User = (function(){
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
-	var Collection = require('./Collection').Collection;
+	var Set = require('./Set').Set;
 	var _User = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
 		var mysocket;
-		var roomsCollection = new Collection({getEntryId:getEntryId});
+		var roomsSet = new Set({getEntryId:getEntryId});
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};
 		this.getEmail = function(){return params.email;};
@@ -14,11 +14,11 @@ exports.User = (function(){
 		this.getBirthday = function(){return params.birthday;};
 		this.toJSON = function(){return params;};
 		this.joinedRoom = function(room){
-			roomsCollection.add(room);
+			roomsSet.add(room);
 			room.addEventListener('dispose', roomDisposed);
 		};
 		this.leftRoom = function(room){
-			roomsCollection.remove(room);
+			roomsSet.remove(room);
 			room.removeEventListener('dispose', roomDisposed);
 		};
 		this.dispose = function(){
@@ -32,10 +32,10 @@ exports.User = (function(){
 			mysocket.addEventListener('close', self.dispose);
 		};
 		this.getRoomIdsIsIn= function(){
-			return roomsCollection.getEntryIds();
+			return roomsSet.getEntryIds();
 		};
 		function roomDisposed(){
-			roomsCollection.remove(room);
+			roomsSet.remove(room);
 		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', user:self});

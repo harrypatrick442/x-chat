@@ -1,7 +1,7 @@
-exports.Collection = (function(){
+exports.Set = (function(){
 	var each = require('./each').each;
 	console.log(each);
-	var _Collection = function(params){
+	var _Set = function(params){
 		var self = this;
 		var getEntryId = params.getEntryId;
 		var list =[];
@@ -34,5 +34,5 @@ exports.Collection = (function(){
 			each(list, func);
 		};
 	};
-	return _Collection;
+	return _Set;
 })();
