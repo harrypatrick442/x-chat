@@ -3,6 +3,7 @@ var NotificationsMenu = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var notifications = params.notifications;
+		var seenNotificationsManager = params.seenNotificationsManager;
 		var popup = new Popup({});
 		var buttonClose = new Button({className:'button-close'});
 		var ui = new UI({popup:popup, buttonClose:buttonClose});
@@ -14,10 +15,14 @@ var NotificationsMenu = (function(){
 		notifications.addEventListener('removed', removed);
 		function added(e){
 			var notification = e.notification;
+			notification.addEventListener('seen', seen);
 			var notificationEntry = new NotificationEntry(notification);
 			notificationEntry.addEventListener('showpm', e=>self.dispatchEvent(e));
 			notificationEntry.addEventListener('dispose', dispose);
 			sortedFilteredEntries.addEntry(notificationEntry);
+		}
+		function seen(e){
+			seenNotificationsManager.seen(e.notification);
 		}
 		function removed(e){
 			console.log(e);

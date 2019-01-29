@@ -9,18 +9,19 @@ var Lobby = (function(){
 		var clickMenu = new ClickMenu({});
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
+		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
+		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});
-		var notificationsMenu = new NotificationsMenu({notifications:notifications});
+		var notificationsMenu = new NotificationsMenu({notifications:notifications, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var buttonNotifications = new Button({classNames:['button-notifications']});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
-		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
@@ -191,6 +192,9 @@ var Lobby = (function(){
 		}
 		function getUserMe(){
 			return userMe;
+		}
+		function getSessionId(){
+			return sessionId;
 		}
 		function sendMessage(e){
 			var jObject = e.message.toJSON();

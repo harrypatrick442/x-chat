@@ -11,8 +11,9 @@ var NotificationEntry = (function(){
 		ui.addEventListener('click', dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchDispose);
 		function dispatchShowPm(){
-			console.log('dispatching show pm');
 			self.dispatchEvent({type:'showpm', user:User.fromPmNotification(notification), isNotification:true});
+			notification.seen();
+			dispatchDispose();
 		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', notification:notification});
