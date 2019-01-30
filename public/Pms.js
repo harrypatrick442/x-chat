@@ -36,8 +36,6 @@ var Pms=  (function(){
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		function load(){
 			var userTos = openHistory.getUsers();
-			console.log('LOADING PMS OPEN HISTORY');
-			console.log(userTos);
 			each(userTos, dispatchAddClosed);
 		}
 		function showPm(e){
@@ -48,7 +46,8 @@ var Pms=  (function(){
 			return 'pm_'+String(userId);
 		}
 		function notify(msg){
-			dispatchAddNotification(Notification.pmNotificationFromJSON(msg));
+			console.log(msg);
+			dispatchAddNotification(Notification.pmNotificationFromJSON(msg.message));
 		}
 		function dispatchAddNotification(notification){
 			self.dispatchEvent({type:'addnotification', notification:notification});
