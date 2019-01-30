@@ -2,8 +2,7 @@ var PmEntry= new (function(){
 	var _PmEntry = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var room = params.room;
-		var userTo = room.getUserTo();
+		var userTo = params.userTo;
 		var buttonClose = new Button({className:'button-close', preventPropagation:true});
 		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername()});
 		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose});

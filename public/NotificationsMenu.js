@@ -3,6 +3,7 @@ var NotificationsMenu = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var notifications = params.notifications;
+		var pms = params.pms;
 		var seenNotificationsManager = params.seenNotificationsManager;
 		var popup = new Popup({});
 		var buttonClose = new Button({className:'button-close'});
@@ -13,6 +14,13 @@ var NotificationsMenu = (function(){
 		buttonClose.addEventListener('click', popup.hide);
 		notifications.addEventListener('added', added);
 		notifications.addEventListener('removed', removed);
+		pms.addEventListener('showingpm', showingPm);
+		function showingPm(e){
+			var userId = e.user.getId();
+			var notification = notifications.getById(userId);
+			if(!notification)return;
+			notifications.remove(notification);
+		}
 		function added(e){
 			var notification = e.notification;
 			notification.addEventListener('seen', seen);

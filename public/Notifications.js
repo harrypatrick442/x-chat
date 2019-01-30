@@ -11,6 +11,13 @@ var Notifications = (function(){
 			if(!set.remove(notification))return;
 			dispatchRemoved(notification);
 		};
+		this.removeById = function(id){
+			 var notification = set.getById(id);
+			 if(!notification)return;
+			 set.remove(notification);
+			 dispatchRemoved(notification);
+		}
+		this.getById = set.getById;
 		function getEntryId(notification){
 			return notification.getId();
 		}

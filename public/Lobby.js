@@ -17,7 +17,7 @@ var Lobby = (function(){
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});
-		var notificationsMenu = new NotificationsMenu({notifications:notifications, seenNotificationsManager:seenNotificationsManager});
+		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var buttonNotifications = new Button({classNames:['button-notifications']});
@@ -169,7 +169,8 @@ var Lobby = (function(){
 				userMe = users.getById(msg.user.id);
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
-				getRooms();
+				getRooms();7
+				pms.authenticated();
 				return;
 			}
 			Authenticate.error(msg.error);

@@ -25,6 +25,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};
 		this.getBirthday = function(){return params.birthday;};
+		this.toJSON = function(){return params;};
 		this.left = function(){
 			dispatchLeft();
 		};

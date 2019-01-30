@@ -13,17 +13,25 @@ var PmsMenu = new (function(){
 		};
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
+		pms.addEventListener('addclosed', addClosed);
 		WindowResizeManager.addEventListener('resized', resized);
 		if(buttonClose)buttonClose.addEventListener('click',popup.hide);
 		function add(e){
-			var pmEntry= new PmEntry({room:e.room});
+			_add(e);
+		}
+		function addClosed(e){
+			console.log('add closed');
+			_add(e);
+		}
+		function _add(e){
+			var pmEntry= new PmEntry({userTo:e.userTo});
 			pmEntry.parentWidth(ui.getElement().clientWidth);
 			pmEntry.addEventListener('showpm', showPm);
 			pmEntry.addEventListener('closepm', closePm);
 			sortedFilteredEntries.addEntry(pmEntry);
 		}
 		function remove(e){
-			sortedFilteredEntries.removeEntryById(e.room.getUserTo().getId());
+			sortedFilteredEntries.removeEntryById(e.userTo.getId());
 		}
 		function getEntryId(pmEntry){
 			return pmEntry.getId();
