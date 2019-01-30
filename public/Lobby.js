@@ -46,6 +46,7 @@ var Lobby = (function(){
 		rooms.addEventListener('sendpm', sendPm);
 		usersMenues.addEventListener('showpm', showPm);
 		notificationsMenu.addEventListener('showpm', showPm);
+		pms.addEventListener('addnotification', addNotification);
 		this.getElement = ui.getElement;
 		initialize();
 		function onOpen(){ }
@@ -169,8 +170,8 @@ var Lobby = (function(){
 				userMe = users.getById(msg.user.id);
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
-				getRooms();7
-				pms.authenticated();
+				getRooms();
+				pms.load();
 				return;
 			}
 			Authenticate.error(msg.error);
@@ -210,6 +211,9 @@ var Lobby = (function(){
 			jObject.type='room_pm_send';
 			jObject.sessionId=sessionId;
 			mysocket.send(jObject);
+		}
+		function addNotification(e){
+			notifications.add(e.notification);
 		}
 		function createdRoom(e){
 			var room = e.room;

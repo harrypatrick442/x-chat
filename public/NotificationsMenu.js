@@ -20,6 +20,7 @@ var NotificationsMenu = (function(){
 			var notification = notifications.getById(userId);
 			if(!notification)return;
 			notifications.remove(notification);
+			seenNotificationsManager.seen(notification);
 		}
 		function added(e){
 			var notification = e.notification;

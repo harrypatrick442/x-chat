@@ -76,6 +76,11 @@ exports.handler = new (function(){
 					case 'room_users_get':
 						callback({type:'users', users:getRoom(req).getUsers()});
 					break;
+					case 'seen_notifications':
+						var user = getUser(req);
+						if(!user)return;
+						lobby.getNotifications().setPmNotificationsSeen(user, req.seenPmNotificationUserIds);
+					break;
 				}
 			}
 			catch(ex){console.log(ex);}

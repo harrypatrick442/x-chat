@@ -28,9 +28,7 @@ var Pms=  (function(){
 			if(!room){notify(msg);return;}
 			room.incomingMessages(msg.messages);
 		};
-		this.authenticated = function(){
-			load();
-		};
+		this.load = load;
 		rooms.addEventListener('showpm', showPm);
 		rooms.addEventListener('sendpm', e=>self.dispatchEvent(e));
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
@@ -50,7 +48,10 @@ var Pms=  (function(){
 			return 'pm_'+String(userId);
 		}
 		function notify(msg){
-			
+			dispatchAddNotification(Notification.pmNotificationFromJSON(msg));
+		}
+		function dispatchAddNotification(notification){
+			self.dispatchEvent({type:'addnotification', notification:notification});
 		}
 		function getEntryId(room){
 			return room.getId();

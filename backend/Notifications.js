@@ -12,6 +12,13 @@ exports.Notifications = (function(){
 				callback(pmNotifications);
 			});
 		};
+		this.setPmNotificationsSeen=function(userMe, userToIds){
+			var userMeId = userMe.getId();
+			each(userToIds, function(userToId){
+				dalNotifications.setPmNotificationSeen(userMeId, userToId);
+			});
+		};
+		
 	};
 	return _Notifications;
 })();
