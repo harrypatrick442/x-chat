@@ -83,3 +83,14 @@ height:28px;
 margin-top:5px;
 float:right;
 }
+.lobby .right .button-show-hide-wrapper .button-notifications .count{
+right:26px;
+bottom:2px;
+font-size:10px;
+font-weight:bold;
+font-family:verdana, geneva, sans-serif;
+height:12px;
+width:12px;
+position:absolute;
+color:#ffffff;
+}

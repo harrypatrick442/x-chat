@@ -1,6 +1,8 @@
 var Button = (function(){
 	var _Button = function(params){
 		EventEnabledBuilder(this);
+		console.log(params);
+		console.log
 		var self = this;
 		var preventPropagation = params.preventPropagation;
 		var className = params.className;
@@ -18,7 +20,8 @@ var Button = (function(){
 			each(classNames, function(className){
 				element.classList.add(className);
 			});
-		_toggle();
+		if(isToggle)
+			_toggle();
 		element.addEventListener('click', click);
 		this.getElement = function(){return element;};
 		function click(e){

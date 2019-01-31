@@ -4,14 +4,14 @@ var Pms=  (function(){
 		var self = this;
 		var rooms = params.rooms;
 		var getUserMe = params.getUserMe;
-		var setRoom = new Set({getEntryId:getEntryId});
-		var openHistory = new OpenHistory();
+		var openHistory;
 		this.showPmWithUser = function(user){
 			var roomId = getRoomId(user.getId());
 			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
 			dispatchShowingPm(user);
 		};
 		this.closePmWithUser=function(user){
+			openHistory.remove(user);
 			var roomId = getRoomId(user.getId());
 			var room = rooms.getById(roomId);
 			if(!room) return;
@@ -28,16 +28,17 @@ var Pms=  (function(){
 			if(!room){notify(msg);return;}
 			room.incomingMessages(msg.messages);
 		};
-		this.load = load;
+		this.load = function(userMeId){
+			openHistory = new OpenHistory({userMeId:userMeId});
+			var userTos = openHistory.getUsers();
+			each(userTos, dispatchAddClosed);
+		};
 		rooms.addEventListener('showpm', showPm);
 		rooms.addEventListener('sendpm', e=>self.dispatchEvent(e));
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
-		function load(){
-			var userTos = openHistory.getUsers();
-			each(userTos, dispatchAddClosed);
-		}
+		
 		function showPm(e){
 			console.log('called');
 			self.showPmWithUser(e.user);
@@ -72,7 +73,6 @@ var Pms=  (function(){
 			var userTo = room.getUserTo();
 			if(!userTo)return;
 			dispatchRemove(userTo);
-			openHistory.remove(userTo);
 		}
 		function dispatchAdd(userTo){
 			self.dispatchEvent({type:'add', userTo:userTo});
@@ -85,10 +85,11 @@ var Pms=  (function(){
 		}
 	};
 	return _Pms;
-	function OpenHistory(){
+	function OpenHistory(params){
 		const LIST_USERS = 'listUsers';
-		const PMS_OPEN_HISTORY='PmsOpenHistory';
-		var settings = new Settings(PMS_OPEN_HISTORY);
+		const PMS_OPEN_HISTORY='PmsOpenHistory_';
+		var userMeId = params.userMeId;
+		var settings = new Settings(PMS_OPEN_HISTORY+userMeId);
 		var set = new Set({getEntryId:getEntryId});
 		this.add= function(user){
 			set.add(user);

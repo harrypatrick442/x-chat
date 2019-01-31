@@ -20,7 +20,7 @@ var Lobby = (function(){
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
-		var buttonNotifications = new Button({classNames:['button-notifications']});
+		var buttonNotifications = new NotificationsButton({notifications:notifications});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
@@ -171,7 +171,7 @@ var Lobby = (function(){
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
 				getRooms();
-				pms.load();
+				pms.load(userMe.getId());
 				return;
 			}
 			Authenticate.error(msg.error);

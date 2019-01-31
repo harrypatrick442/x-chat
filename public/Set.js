@@ -23,6 +23,7 @@ var Set = (function(){
 			delete mapIdToItem[id];
 			return item;
 		};
+		this.count = function(){return list.length; };
 		this.contains=function(item){
 			return mapIdToItem[getEntryId(item)]?true:false;
 		};

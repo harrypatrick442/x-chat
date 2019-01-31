@@ -22,7 +22,7 @@ var PmEntry= new (function(){
 		}
 		function dispatchClosePm(){
 			self.dispatchEvent({
-				type:'closepm', user:userTo
+				type:'closepm', user:userTo, pmEntry:self
 			});
 		}
 	};

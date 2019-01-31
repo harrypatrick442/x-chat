@@ -18,6 +18,7 @@ var Notifications = (function(){
 			 dispatchRemoved(notification);
 		}
 		this.getById = set.getById;
+		this.getCount = set.count;
 		function getEntryId(notification){
 			return notification.getId();
 		}
