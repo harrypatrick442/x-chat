@@ -6,18 +6,12 @@ var Pms=  (function(){
 		var getUserMe = params.getUserMe;
 		var openHistory;
 		this.showPmWithUser = function(user){
-			var roomId = getRoomId(user.getId());
-			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
-			dispatchShowingPm(user);
+			showPmWithUser(user);
 			sendAddToOtherTabs(user);
 		};
 		this.closePmWithUser=function(user){
-			openHistory.remove(user);
+			closePmWithUser(user);
 			sendRemoveToOtherTabs(user);
-			var roomId = getRoomId(user.getId());
-			var room = rooms.getById(roomId);
-			if(!room) return;
-			room.close();
 		};
 		this.incomingMessage = function(msg){
 			var roomId = getRoomId(msg.userId);
@@ -42,6 +36,18 @@ var Pms=  (function(){
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
+		function showPmWithUser(user){
+			var roomId = getRoomId(user.getId());
+			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
+			dispatchShowingPm(user);
+		}
+		function closePmWithUser(user){
+			openHistory.remove(user);
+			var roomId = getRoomId(user.getId());
+			var room = rooms.getById(roomId);
+			if(!room) return;
+			room.close();
+		}
 		function messageFromAnotherTab(e){
 			var message = e.message;
 			console.log(e);
@@ -56,10 +62,10 @@ var Pms=  (function(){
 			
 		}
 		function addFromAnotherTab(userTo){
-			dispatchAddClosed(userTo);
+			showPmWithUser(userTo);
 		}
 		function removeFromAnotherTab(userTo){
-			self.closePmWithUser(userTo);
+			closePmWithUser(userTo);
 		}
 		function sendAddToOtherTabs(user){
 			tabPortal.sendMessage({type:'add', userTo: user.toJSON()});
@@ -101,6 +107,8 @@ var Pms=  (function(){
 			var userTo = room.getUserTo();
 			if(!userTo)return;
 			dispatchRemove(userTo);
+			openHistory.remove(userTo);
+			sendRemoveToOtherTabs(userTo);//The other tabs will echo back but this time closePmWithUser will exit when the room is not returned from rooms.getById() call...
 		}
 		function dispatchAdd(userTo){
 			self.dispatchEvent({type:'add', userTo:userTo});
