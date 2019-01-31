@@ -9,9 +9,11 @@ var Pms=  (function(){
 			var roomId = getRoomId(user.getId());
 			rooms.showRoom({id:roomId, name:'PM with '+user.getUsername(), isPm:true, userTo:user});
 			dispatchShowingPm(user);
+			sendAddToOtherTabs(user);
 		};
 		this.closePmWithUser=function(user){
 			openHistory.remove(user);
+			sendRemoveToOtherTabs(user);
 			var roomId = getRoomId(user.getId());
 			var room = rooms.getById(roomId);
 			if(!room) return;
@@ -30,6 +32,8 @@ var Pms=  (function(){
 		};
 		this.load = function(userMeId){
 			openHistory = new PmsOpenHistory({userMeId:userMeId});
+			tabPortal = new TabPortal({id:'PmsMenu'+userMeId});
+			tabPortal.addEventListener('message', messageFromAnotherTab);
 			var userTos = openHistory.getUsers();
 			each(userTos, dispatchAddClosed);
 		};
@@ -38,7 +42,31 @@ var Pms=  (function(){
 		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
-		
+		function messageFromAnotherTab(e){
+			var message = e.message;
+			console.log(e);
+			switch(message.type){
+				case 'add':
+					addFromAnotherTab(User.fromJSON(message.userTo));
+				break;
+				case 'remove':
+					removeFromAnotherTab(User.fromJSON(message.userTo));
+				break;
+			}
+			
+		}
+		function addFromAnotherTab(userTo){
+			dispatchAddClosed(userTo);
+		}
+		function removeFromAnotherTab(userTo){
+			self.closePmWithUser(userTo);
+		}
+		function sendAddToOtherTabs(user){
+			tabPortal.sendMessage({type:'add', userTo: user.toJSON()});
+		}
+		function sendRemoveToOtherTabs(user){
+			tabPortal.sendMessage({type:'remove', userTo: user.toJSON()});
+		}
 		function showPm(e){
 			console.log('called');
 			self.showPmWithUser(e.user);

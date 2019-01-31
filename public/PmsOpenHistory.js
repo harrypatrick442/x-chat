@@ -3,22 +3,23 @@ function PmsOpenHistory(params){
 		const PMS_OPEN_HISTORY='PmsOpenHistory_';
 		var id = PMS_OPEN_HISTORY+userMeId;
 		var userMeId = params.userMeId;
-		var tabPortal = new TabPortal({id:id});
-		var settings = new Settings(getId);
+		var settings = new Settings(id);
 		var set = new Set({getEntryId:getEntryId});
 		var tabPortal = new TabPortal({id:id});
 		this.add= function(user){
 			add(user);
-			sendAddToOtherTabs(user);
 		};
 		this.remove = function(user){
 			remove(user);
-			sendRemoveToOtherTabs(user);
 		};
 		this.getUsers = set.getEntries;
 		load();
 		function add(user){
 			set.add(user);
+			save();
+		}
+		function remove(user){
+			set.remove(user);
 			save();
 		}
 		function getEntryId(user){
@@ -42,14 +43,5 @@ function PmsOpenHistory(params){
 				listUsers.push(user.toJSON());
 			});
 			settings.set(LIST_USERS, listUsers);
-		}
-		function sendAddToOtherTabs(user){
-			tabPortal.sendMessage({type:'add', user: user.toJSON()});
-		}
-		function sendRemoveToOtherTabs(user){
-			tabPortal.sendMessage({type:'remove', user: user.toJSON()});
-		}
-		function sendRemoveToOtherTabs(user){
-			tabPortal.sendMessage({type:'remove', user: user.toJSON()});
 		}
 	}

@@ -11,6 +11,7 @@ var PmsMenu = new (function(){
 		this.show= function(){
 			popup.show();
 		};
+		var tabPortal;
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
 		pms.addEventListener('addclosed', addClosed);
