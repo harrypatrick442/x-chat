@@ -5,6 +5,7 @@ var Pms=  (function(){
 		var rooms = params.rooms;
 		var getUserMe = params.getUserMe;
 		var openHistory;
+		var tabPortal;
 		this.showPmWithUser = function(user){
 			showPmWithUser(user);
 			sendAddToOtherTabs(user);
@@ -26,7 +27,7 @@ var Pms=  (function(){
 		};
 		this.load = function(userMeId){
 			openHistory = new PmsOpenHistory({userMeId:userMeId});
-			tabPortal = new TabPortal({id:'PmsMenu'+userMeId});
+			tabPortal = new TabPortal({id:'PmsMenu_'+userMeId});
 			tabPortal.addEventListener('message', messageFromAnotherTab);
 			var userTos = openHistory.getUsers();
 			each(userTos, dispatchAddClosed);
@@ -68,10 +69,12 @@ var Pms=  (function(){
 			closePmWithUser(userTo);
 		}
 		function sendAddToOtherTabs(user){
-			tabPortal.sendMessage({type:'add', userTo: user.toJSON()});
+			if(tabPortal)
+				tabPortal.sendMessage({type:'add', userTo: user.toJSON()});
 		}
 		function sendRemoveToOtherTabs(user){
-			tabPortal.sendMessage({type:'remove', userTo: user.toJSON()});
+			if(tabPortal)
+				tabPortal.sendMessage({type:'remove', userTo: user.toJSON()});
 		}
 		function showPm(e){
 			console.log('called');
@@ -81,7 +84,6 @@ var Pms=  (function(){
 			return 'pm_'+String(userId);
 		}
 		function notify(msg){
-			console.log(msg);
 			dispatchAddNotification(Notification.pmNotificationFromJSON(msg.message));
 		}
 		function dispatchAddNotification(notification){

@@ -9,15 +9,15 @@
 .lobby .right .button-show-hide-wrapper{
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
-}
-.lobby .right .button-show-hide-wrapper .button-pms:hover{
-}
-.lobby .right .button-show-hide-wrapper .button-pms-hide{
 width:43px;
 margin-left:10px;
 float:left;
 background-image:url('/images/pms-mobile.png');	
 margin-top: 4px;
+}
+.lobby .right .button-show-hide-wrapper .button-pms:hover{
+}
+.lobby .right .button-show-hide-wrapper .button-pms-hide{
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
 }
