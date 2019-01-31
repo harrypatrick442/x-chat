@@ -7,3 +7,6 @@
 .notifications-menu{
 	z-index:100;
 }
+.image-uploader{
+	z-index:200;
+}

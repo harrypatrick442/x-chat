@@ -79,12 +79,13 @@ background-size:contain;
 margin:0px;
 position:relative;
 display:inline-block;
-height:28px;	
+height:28px;
 margin-top:5px;
 float:right;
+width:55px;
 }
 .lobby .right .button-show-hide-wrapper .button-notifications .count{
-right:26px;
+right:21px;
 bottom:2px;
 font-size:10px;
 font-weight:bold;

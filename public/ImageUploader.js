@@ -1,0 +1,32 @@
+var ImageUploader = new (function(){
+	var _ImageUploader = function(params){
+		EventEnabledBuilder(this);
+		var self = this;
+		var buttonClose = new Button({ className:'button-close'});
+		var popup = new Popup({});
+		var ui = new UI({popup:popup, buttonClose:buttonClose});
+	};
+	return _ImageUploader;
+	function UI(params){
+		var buttonClose = params.buttonClose;
+		var element = params.popup.getElement();
+		element.classList.add('image-uploader');
+		document.body.appendChild(element);
+		var inner = E.DIV();
+		inner.classList.add('inner');
+		element.appendChild(inner);
+		var heading = E.DIV();
+		heading.classList.add('heading');
+		inner.appendChild(heading);
+		this.setHeading = function(text){
+			heading.innerHTML = text;
+		};
+		heading.appendChild(buttonClose.getElement());
+		var fixedAspectRatioFrame = E.DIV();
+		fixedAspectRatioFrame.classList.add('fixed-aspect-ratio-frame');
+		inner.appendChild(fixedAspectRatioFrame);
+		var canvas = E.CANVAS();
+		canvas.classList.add('canvas');
+		fixedAspectRatioFrame.appendChild(canvas);
+	}
+})();

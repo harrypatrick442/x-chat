@@ -3,6 +3,7 @@ var E = new (function () {
         return c('div');
     };
 	this.IMG= function(){ return c('img');};
+	this.CANVAS = function(){return c('canvas');};
     this.TABLE = function () {
         return c('table');
     };
