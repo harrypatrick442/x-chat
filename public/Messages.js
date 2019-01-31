@@ -4,6 +4,7 @@ var Messages = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var getUserId = params.getUserId;
+		var getNDevice = params.getNDevice;
 		var ignoreManager = params.ignoreManager;
 		var element = params.element;
 		var maxNMessages = params.maxNMessages;
@@ -31,7 +32,8 @@ var Messages = new (function(){
 			remove(message);
 		};
 		this.nextUniqueId=function(){
-			return getUserId()+'_'+uniqueIdCount++;
+			console.log(getNDevice());
+			return getNDevice()+'_'+uniqueIdCount++;
 		};
 		this.dispose = function(){
 			each(messages, function(message){

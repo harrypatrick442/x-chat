@@ -2,6 +2,7 @@ var Lobby = (function(){
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;
+		var nDevice;
 		var userMe;
 		const url = '/servlet';
 		var users = new Users({});
@@ -13,7 +14,7 @@ var Lobby = (function(){
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
-	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu});
+	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu, getNDevice:getNDevice});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});
@@ -166,12 +167,14 @@ var Lobby = (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
+				nDevice = msg.nDevice;
 				users.add(User.fromJSON(msg.user));
 				userMe = users.getById(msg.user.id);
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
 				Authenticate.hide();
 				getRooms();
 				pms.load(userMe.getId());
+				ignoreManager.load(userMe.getId());
 				return;
 			}
 			Authenticate.error(msg.error);
@@ -235,6 +238,9 @@ var Lobby = (function(){
 		}
 		function showPm(e){
 			pms.showPmWithUser(e.user);
+		}
+		function getNDevice(){
+			return nDevice;
 		}
 		
 	};

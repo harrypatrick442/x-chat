@@ -29,7 +29,7 @@ var Pms=  (function(){
 			room.incomingMessages(msg.messages);
 		};
 		this.load = function(userMeId){
-			openHistory = new OpenHistory({userMeId:userMeId});
+			openHistory = new PmsOpenHistory({userMeId:userMeId});
 			var userTos = openHistory.getUsers();
 			each(userTos, dispatchAddClosed);
 		};
@@ -85,43 +85,4 @@ var Pms=  (function(){
 		}
 	};
 	return _Pms;
-	function OpenHistory(params){
-		const LIST_USERS = 'listUsers';
-		const PMS_OPEN_HISTORY='PmsOpenHistory_';
-		var userMeId = params.userMeId;
-		var settings = new Settings(PMS_OPEN_HISTORY+userMeId);
-		var set = new Set({getEntryId:getEntryId});
-		this.add= function(user){
-			set.add(user);
-			save();
-		};
-		this.remove = function(user){
-			set.remove(user);
-			save();
-		};
-		this.getUsers = set.getEntries;
-		load();
-		function getEntryId(user){
-			return user.getId();
-		}
-		function load(){
-			var listUsers = settings.get(LIST_USERS);
-			if(!listUsers){
-				listUsers=[];
-				return
-			}
-			each(listUsers, function(user){
-				user = User.fromJSON(user);
-				set.add(user);
-			});
-		}
-		function save(){
-			var listUsers =[];
-			each(set.getEntries(), function(user){
-				console.log(user);
-				listUsers.push(user.toJSON());
-			});
-			settings.set(LIST_USERS, listUsers);
-		}
-	}
 })();

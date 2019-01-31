@@ -3,7 +3,7 @@ exports.User = (function(){
 	var Mysockets = require('./Mysockets').Mysockets;
 	var Set = require('./Set').Set;
 	var set = new Set({getEntryId:getEntryId});
-	var _User = function(params){
+	var __User = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
 		var mysockets = new Mysockets();
@@ -37,6 +37,7 @@ exports.User = (function(){
 		this.addMysocket = mysockets.add;
 		this.sendMessage = mysockets.sendMessage;
 		function dispose(){
+			console.log('dispose');
 			dispatchDispose();
 		}
 		function roomDisposed(){
@@ -49,16 +50,25 @@ exports.User = (function(){
 			return room.getId();
 		}
 	};
+	var _User={};
 	_User.fromSqlRow = function(row){
 		row.id = String(row.id);
 		var user = getExisting(row.id);
+		console.log('existing');
+		console.log(user);
 		if(user)return user;
-		return new _User(row);
+		user = new __User(row);
+		set.add(user);
+		return user;
 	};
 	_User.fromJSON= function(jObject){
 		var user = getExiting(jObject.id);
+		console.log('existing');
+		console.log(user);
 		if(user)return user;
-		return new _User(jObject);
+		user = new __User(jObject);
+		set.add(user);
+		return user;
 	};
 	return _User;
 	function getEntryId(user){

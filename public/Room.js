@@ -6,6 +6,7 @@ var Room = new (function(){
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
+		var getNDevice = params.getNDevice;
 		var emoticonsParser = params.emoticonsParser;
 		var name = params.name;
 		var id = params.id;
@@ -18,7 +19,7 @@ var Room = new (function(){
 		var buttonExit = new Button({className:'button-exit'});
 		var buttonClose = new Button({className:'button-close'});
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose});
-		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager});
+		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};

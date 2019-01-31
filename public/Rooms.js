@@ -5,6 +5,7 @@ var Rooms = new (function(){
 		var self = this;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
+		var getNDevice = params.getNDevice;
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser = params.clickMenu;
 		var set = new Set({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
@@ -70,8 +71,8 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser, userTo:roomInfo.userTo,
-			getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser});
+			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
+			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice});
 			set.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);

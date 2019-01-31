@@ -36,10 +36,16 @@ var IgnoreManager = new (function(){
 		this.userIdIsIgnored=function(id){
 			return set.containsId(id);
 		};
-		load();
 		this.getIgnores=function(){return set.getEntries();};
 		this.clearSave=function(){	
 			settings.set('ignores', []);
+		};
+		this.load = function(){
+			var list = settings.get(IGNORES);
+			if(!list)return;
+			each(list, function(ignored){
+				set.add(Ignored.fromJSON(ignored));
+			});
 		};
 		tabPortal.addEventListener('message', messageFromAnotherTab);
 		function save(){
@@ -63,13 +69,6 @@ var IgnoreManager = new (function(){
 			save();
 			dispatchIgnored(ignored.getId(), ignored);
 			sendIgnoredToOtherTabs(ignored);
-		}
-		function load(){
-			var list = settings.get(IGNORES);
-			if(!list)return;
-			each(list, function(ignored){
-				set.add(Ignored.fromJSON(ignored));
-			});
 		}
 		function messageFromAnotherTab(e){
 			var ignored = Ignored.fromJSON(e.message.ignored);

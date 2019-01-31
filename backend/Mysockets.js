@@ -29,6 +29,7 @@ exports.Mysockets = (function(){
 			list=[];
 		};
 		function close(e){
+			self.remove(e.mysocket);
 			if(list.length>0)return;
 			dispatchAllClose();
 		}

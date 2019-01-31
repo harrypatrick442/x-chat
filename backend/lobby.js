@@ -20,6 +20,7 @@ exports.Lobby = (function(){
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
 		var self = this;
+		var nDeviceCount=0;
 		var rooms = new Rooms();
 		var users = new Users();
 		var notifications = new Notifications();
@@ -82,6 +83,7 @@ exports.Lobby = (function(){
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
+					res.nDevice = getNextNDevice();
 					users.add(user);
 					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
@@ -99,6 +101,7 @@ exports.Lobby = (function(){
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
+					res.nDevice = getNextNDevice();
 					users.add(user);
 					sendJoin(user);
 					user.addEventListener('dispose', userDispose);	
@@ -108,6 +111,9 @@ exports.Lobby = (function(){
 					});
 				});
 		    });
+		}
+		function getNextNDevice(){
+			return nDeviceCount++;
 		}
 		function userDispose(e){
 			var user = e.user;
