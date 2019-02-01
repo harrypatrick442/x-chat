@@ -6,6 +6,7 @@ var FileUploader = (function(){
 		var button = new Button({className:'button'});
 		var ui = new UI({accept:accept, button:button});
 		this.getElement = ui.getElement;
+		this.setVisible = ui.setVisible;
 		ui.addEventListener('filechange', fileChange);
 		function fileChange(e){
 			var files = e.files;
@@ -40,6 +41,9 @@ var FileUploader = (function(){
 		element.appendChild(button.getElement());
 		button.addEventListener('click', function(){fileInput.click();});
 		this.getElement = function(){return element;};
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
 		fileInput.addEventListener('change', dispatchFileChange);
 		function dispatchFileChange(e){
 			self.dispatchEvent({type:'filechange', files:fileInput.files});

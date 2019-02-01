@@ -14,9 +14,13 @@ var CroppingFrame = new (function () {
 		this.show = function(){
 			element.style.display='flex';
 		};
+		this.hide = function(){
+			element.style.display='none';
+		};
 		this.load = load;
 		function load(url){
 			clear();
+			self.show();
 			img = E.IMG();
 			img.onload = function() {
 				imageWidthRaw = this.width;
@@ -47,12 +51,12 @@ var CroppingFrame = new (function () {
 			if(croppingFrameAspectRatio>imageAspectRatio) sizeImageConstrainedByHeight();
 			else sizeImageConstrainedByWidth(croppingFrameAspectRatio);
 		}
-		function sizeImageConstrainedByWidth(){
+		function sizeImageConstrainedByHeight(){
 			var height = getCroppingFrameHeight();
 			var width = imageAspectRatio * height;
 			setImageWidthHeight(width, height);	
 		}
-		function sizeImageConstrainedByHeight(){
+		function sizeImageConstrainedByWidth(){
 			var width = getCroppingFrameWidth();
 			var height = width / imageAspectRatio;
 			setImageWidthHeight(width, height);	
@@ -60,10 +64,16 @@ var CroppingFrame = new (function () {
 		function setImageWidthHeight(width, height){
 			img.style.width = String(width)+'px';
 			img.style.height = String(height)+'px';
+			var croppingFrameWidth = getCroppingFrameWidth();
+			var croppingFrameHeight = getCroppingFrameHeight();
+			var verticalMargin = (croppingFrameHeight- height)/2;
+			var horizontalMargin = (croppingFrameWidth-width)/2;
+			img.style.marginTop=String(verticalMargin)+'px';
+			img.style.marginLeft=String(horizontalMargin)+'px';
 		}		
 		function getCroppingFrameAspectRatio(){return element.clientWidth/element.clientHeight;}
 		function getCroppingFrameHeight(){return element.clientHeight;}
-		function getCroppingFrameWidth(){return element.client;}
+		function getCroppingFrameWidth(){return element.clientWidth;}
 	};
 	return _CroppingFrame;
 })();

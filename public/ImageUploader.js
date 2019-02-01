@@ -9,6 +9,7 @@ var ImageUploader = new (function(){
 		var ui = new UI({popup:popup, buttonClose:buttonClose, croppingFrame:croppingFrame, fileUploader:fileUploader});
 		buttonClose.addEventListener('click', hide);
 		fileUploader.addEventListener('file', gotFile);
+		croppingFrame.addEventListener('error', croppingFrameError);
 		this.show = function(){
 			popup.show();
 		};
@@ -17,6 +18,12 @@ var ImageUploader = new (function(){
 		}
 		function gotFile(e){
 			croppingFrame.load(e.dataUrl);
+			fileUploader.setVisible(false);
+		}
+		function croppingFrameError(e){
+			console.log(e.error);
+			croppingFrame.hide();
+			fileUploader.setVisible(false);
 		}
 	};
 	return _ImageUploader;
@@ -38,7 +45,7 @@ var ImageUploader = new (function(){
 		heading.appendChild(buttonClose.getElement());
 		inner.appendChild(croppingFrame.getElement());
 		inner.appendChild(fileUploader.getElement());
-		inner.appendChild(bottom);
+		//inner.appendChild(bottom);
 		this.setHeading = function(text){
 			heading.innerHTML = text;
 		};
