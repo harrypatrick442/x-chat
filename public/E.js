@@ -61,7 +61,9 @@ var E = new (function () {
     this.LABEL = function () {
         return c('label');
     };
-
+	this.FILE = function(){
+		return i('input', 'file');
+	};
     function i(name, type) {
         var i = c(name);
         i.type = type;

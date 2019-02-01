@@ -3,27 +3,29 @@ var ImageUploader = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var buttonClose = new Button({ className:'button-close'});
+		var fileUploader = new FileUploader({accept:'image/*'});
 		var popup = new Popup({});
 		var croppingFrame = new CroppingFrame({});
-		var ui = new UI({popup:popup, buttonClose:buttonClose, croppingFrame:croppingFrame});
-		function openFile(file) {
-			var input = file.target;
-			var fileReader = new FileReader();
-			fileReader.onload = function(){
-				var dataUrl = reader.result;
-				croppingFrame.load(dataUrl);
-			};
-			reader.readAsDataURL(input.files[0]);
+		var ui = new UI({popup:popup, buttonClose:buttonClose, croppingFrame:croppingFrame, fileUploader:fileUploader});
+		buttonClose.addEventListener('click', hide);
+		fileUploader.addEventListener('file', gotFile);
+		this.show = function(){
+			popup.show();
+		};
+		function hide(){
+			popup.hide();
+		}
+		function gotFile(e){
+			croppingFrame.load(e.dataUrl);
 		}
 	};
 	return _ImageUploader;
 	function UI(params){
 		var buttonClose = params.buttonClose;
 		var croppingFrame = params.croppingFrame;
+		var fileUploader = params.fileUploader;
 		var element = params.popup.getElement();
 		element.classList.add('image-uploader');
-		var inputFile = E.FILE();
-		inputFile.accept='';
 		var inner = E.DIV();
 		inner.classList.add('inner');
 		var heading = E.DIV();
@@ -35,6 +37,7 @@ var ImageUploader = new (function(){
 		inner.appendChild(heading);
 		heading.appendChild(buttonClose.getElement());
 		inner.appendChild(croppingFrame.getElement());
+		inner.appendChild(fileUploader.getElement());
 		inner.appendChild(bottom);
 		this.setHeading = function(text){
 			heading.innerHTML = text;

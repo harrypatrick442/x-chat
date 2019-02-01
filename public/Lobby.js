@@ -22,11 +22,13 @@ var Lobby = (function(){
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
+		var buttonProfilePicture = new Button({ classNames:['button-profile-picture']});
 		var buttonNotifications = new NotificationsButton({notifications:notifications});
-		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
+		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
+		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
 		buttonNotifications.addEventListener('click', showNotifications);
 		if(!isMobile)
 		{
@@ -240,6 +242,9 @@ var Lobby = (function(){
 		function showPm(e){
 			pms.showPmWithUser(e.user);
 		}
+		function showImageUploaderForProfilePicture(){
+			imageUploader.show();
+		}
 		function getNDevice(){
 			return nDevice;
 		}
@@ -250,6 +255,7 @@ var Lobby = (function(){
 		var pmsMenu = params.pmsMenu;
 		var buttonUsers = params.buttonUsers;
 		var buttonPms = params.buttonPms;
+		var buttonProfilePicture = params.buttonProfilePicture;
 		var buttonNotifications = params.buttonNotifications;
 		var notificationsMenu = params.notificationsMenu;
 		var divButtonShowHideWrapper = E.DIV();
@@ -281,6 +287,7 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
 		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
+		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
 		this.getElement = function(){return element;};
 	}
 	return _Lobby;

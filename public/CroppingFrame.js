@@ -1,5 +1,5 @@
 var CroppingFrame = new (function () {
-	var _CroppingFrame=(function(){
+	var _CroppingFrame=function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var element = E.DIV();
@@ -11,13 +11,17 @@ var CroppingFrame = new (function () {
 		var imageAspectRatio;
 		var img;
 		this.getElement = function(){return element;};
+		this.show = function(){
+			element.style.display='flex';
+		};
+		this.load = load;
 		function load(url){
 			clear();
 			img = E.IMG();
 			img.onload = function() {
 				imageWidthRaw = this.width;
 				imageHeightRaw = this.height;
-				imageAspectRatio = imageWidth/imageHeight;
+				imageAspectRatio = imageWidthRaw/imageHeightRaw;
 				sizeImage();
 				element.appendChild(img);
 			};
@@ -33,7 +37,10 @@ var CroppingFrame = new (function () {
 			img=undefined;
 		}
 		function error(e){
-			
+			dispatchError(e);
+		}
+		function dispatchError(error){
+			self.dispatchEvent({type:'error', error:error});
 		}
 		function sizeImage(){
 			var croppingFrameAspectRatio = getCroppingFrameAspectRatio();
@@ -53,11 +60,10 @@ var CroppingFrame = new (function () {
 		function setImageWidthHeight(width, height){
 			img.style.width = String(width)+'px';
 			img.style.height = String(height)+'px';
-		}
-		
+		}		
 		function getCroppingFrameAspectRatio(){return element.clientWidth/element.clientHeight;}
 		function getCroppingFrameHeight(){return element.clientHeight;}
 		function getCroppingFrameWidth(){return element.client;}
-	}
+	};
 	return _CroppingFrame;
 })();

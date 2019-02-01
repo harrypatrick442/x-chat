@@ -72,6 +72,20 @@ margin-top:5px;
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
 }
+.lobby .right .button-show-hide-wrapper .button-profile-picture{
+cursor:pointer;
+background-repeat:no-repeat;
+background-size:contain;
+margin:0px;
+position:relative;
+display:inline-block;
+height:28px;
+margin-top:5px;
+float:right;
+width:43px;
+margin-right:10px;
+background-image:url('/images/profile-picture.png');	
+}
 .lobby .right .button-show-hide-wrapper .button-notifications{
 cursor:pointer;
 background-repeat:no-repeat;
