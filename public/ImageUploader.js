@@ -22,11 +22,27 @@ var ImageUploader = new (function(){
 			heading.innerHTML = text;
 		};
 		heading.appendChild(buttonClose.getElement());
-		var fixedAspectRatioFrame = E.DIV();
-		fixedAspectRatioFrame.classList.add('fixed-aspect-ratio-frame');
-		inner.appendChild(fixedAspectRatioFrame);
-		var canvas = E.CANVAS();
-		canvas.classList.add('canvas');
-		fixedAspectRatioFrame.appendChild(canvas);
+		var croppingFrame = E.DIV();
+		croppingFrame.classList.add('cropping-frame');
+		var img = E.IMG();
+img.onload = function() {
+  alert(this.width + 'x' + this.height);
+  var aspectRatio = this.width/this.height;
+  alert(aspectRatio);
+  var width = aspectRatio*100;
+  img.style.width=String(width)+'%';
+  img.style.marginLeft=String((100 - width)/2)+'%';
+		croppingFrame.appendChild(img);
+};
+		img.src='/images/test.jpg';
+		
+		
+		window.img = img;
+		var bottom = E.DIV();
+		bottom.classList.add('bottom');
+		
+		inner.appendChild(croppingFrame);
+		
+		inner.appendChild(bottom);
 	}
 })();
