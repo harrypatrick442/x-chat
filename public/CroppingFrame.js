@@ -3,13 +3,16 @@ var CroppingFrame = new (function () {
 		EventEnabledBuilder(this);
 		var self = this;
 		var element = E.DIV();
-		var cropper = E.DIV();
-		cropper.classList.add('cropper');
 		element.classList.add('cropping-frame');
 		var imageWidthRaw;
 		var imageHeightRaw;
 		var imageAspectRatio;
 		var img;
+		var imgWrapper = E.DIV();
+		imgWrapper.classList.add('img-wrapper');
+		var cropper = new Cropper();
+				imgWrapper.appendChild(cropper.getElement());
+		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
 		this.show = function(){
 			element.style.display='flex';
@@ -27,7 +30,7 @@ var CroppingFrame = new (function () {
 				imageHeightRaw = this.height;
 				imageAspectRatio = imageWidthRaw/imageHeightRaw;
 				sizeImage();
-				element.appendChild(img);
+				imgWrapper.appendChild(img);
 			};
 			img.onerror=error;
 			img.src = url;
@@ -36,7 +39,6 @@ var CroppingFrame = new (function () {
 			if(img)
 			{
 				element.removeChild(img);
-				img.removeChild(cropper);
 			}
 			img=undefined;
 		}
@@ -62,18 +64,39 @@ var CroppingFrame = new (function () {
 			setImageWidthHeight(width, height);	
 		}
 		function setImageWidthHeight(width, height){
-			img.style.width = String(width)+'px';
-			img.style.height = String(height)+'px';
+			imgWrapper.style.width = String(width)+'px';
+			imgWrapper.style.height = String(height)+'px';
 			var croppingFrameWidth = getCroppingFrameWidth();
 			var croppingFrameHeight = getCroppingFrameHeight();
-			var verticalMargin = (croppingFrameHeight- height)/2;
+			var verticalMargin = (croppingFrameHeight-height)/2;
 			var horizontalMargin = (croppingFrameWidth-width)/2;
-			img.style.marginTop=String(verticalMargin)+'px';
-			img.style.marginLeft=String(horizontalMargin)+'px';
-		}		
+			imgWrapper.style.marginTop=String(verticalMargin)+'px';
+			imgWrapper.style.marginLeft=String(horizontalMargin)+'px';
+		}
 		function getCroppingFrameAspectRatio(){return element.clientWidth/element.clientHeight;}
 		function getCroppingFrameHeight(){return element.clientHeight;}
 		function getCroppingFrameWidth(){return element.clientWidth;}
 	};
 	return _CroppingFrame;
+	function Cropper(){
+		var element = E.DIV();
+		element.classList.add('cropper');
+		var cornerTopLeft = new Corner({className:'corner-top-left'});
+		var cornerTopRight = new Corner({className:'corner-top-right'});
+		var cornerBottomLeft = new Corner({className:'corner-bottom-left'});
+		var cornerBottomRight = new Corner({className:'corner-bottom-right'});
+		each([cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight], function(corner){
+			element.appendChild(corner.getElement());
+		});
+		this.positionDefault= function(imageWidth, imageHeight){
+			
+		};
+		this.getElement = function(){return element;};
+		function Corner(params){
+			var element = E.DIV();
+			element.classList.add('corner');
+			element.classList.add(params.className);
+			this.getElement = function(){return element;};
+		}
+	}
 })();
