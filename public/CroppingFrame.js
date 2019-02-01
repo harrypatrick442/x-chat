@@ -10,6 +10,7 @@ var CroppingFrame = new (function () {
 		var imageHeightRaw;
 		var imageAspectRatio;
 		var img;
+		this.getElement = function(){return element;};
 		function load(url){
 			clear();
 			img = E.IMG();
