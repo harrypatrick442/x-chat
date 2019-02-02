@@ -85,7 +85,11 @@ var CroppingFrame = new (function () {
 		var cornerTopRight = new Corner({className:'corner-top-right'});
 		var cornerBottomLeft = new Corner({className:'corner-bottom-left'});
 		var cornerBottomRight = new Corner({className:'corner-bottom-right'});
-		each([cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight], function(corner){
+		var cornerTop = new Corner({className:'corner-top'});
+		var cornerLeft = new Corner({className:'corner-left'});
+		var cornerRight = new Corner({className:'corner-right'});
+		var cornerBottom = new Corner({className:'corner-bottom'});
+		each([cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight, cornerTop, cornerRight, cornerLeft, cornerBottom], function(corner){
 			element.appendChild(corner.getElement());
 		});
 		this.positionDefault= function(imageWidth, imageHeight){
