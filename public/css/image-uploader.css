@@ -9,6 +9,8 @@
   padding:6px;
   box-sizing:border-box;
   border:1px solid #000000;
+  display:none;
+  
 }
 .image-uploader .inner{
 	background-color:rgb(32, 31, 31);

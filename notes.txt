@@ -1,0 +1,2 @@
+If somebody still struggles to connect despite doing all that was proposed.
+In my case I had to manually set TCP Port property to 1433 in SQL Server Network Configuration -> Protocols for ... -> TCP/IP -> IP Addresses -> IPAll.
