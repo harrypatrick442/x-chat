@@ -10,7 +10,7 @@ var CroppingFrame = new (function () {
 		var img;
 		var imgWrapper = E.DIV();
 		imgWrapper.classList.add('img-wrapper');
-		var cropper = new Cropper();
+		var cropper = new Cropper({getConstraints:getConstraints});
 				imgWrapper.appendChild(cropper.getElement());
 		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
@@ -21,6 +21,9 @@ var CroppingFrame = new (function () {
 			element.style.display='none';
 		};
 		this.load = load;
+		function getConstraints(){
+			return {left:0, right:imageWidthRaw, top:0, bottom:imageHeightRaw};
+		}
 		function load(url){
 			clear();
 			self.show();
@@ -78,18 +81,28 @@ var CroppingFrame = new (function () {
 		function getCroppingFrameWidth(){return element.clientWidth;}
 	};
 	return _CroppingFrame;
-	function Cropper(){
+	function Cropper(params){
+		var self = this;
+		var getConstraints = params.geConstraints;
 		var element = E.DIV();
 		element.classList.add('cropper');
-		var cornerTopLeft = new Corner({className:'corner-top-left'});
-		var cornerTopRight = new Corner({className:'corner-top-right'});
-		var cornerBottomLeft = new Corner({className:'corner-bottom-left'});
-		var cornerBottomRight = new Corner({className:'corner-bottom-right'});
-		var cornerTop = new Corner({className:'corner-top'});
-		var cornerLeft = new Corner({className:'corner-left'});
-		var cornerRight = new Corner({className:'corner-right'});
-		var cornerBottom = new Corner({className:'corner-bottom'});
-		each([cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight, cornerTop, cornerRight, cornerLeft, cornerBottom], function(corner){
+		var corners=[];
+		each([true, false], function(topElseBottom){
+			var className = 'corner-'+(topElseBottom?'top':'bottom');
+			var corner = new Corner({className:className});
+			corners.push(corner);
+			element.appendChild(corner.getElement());
+			each([true, false], function(leftElseRight){
+				className = 'corner-'+(topElseBottom?'top':'bottom')+'-'+(leftElseRight?'left':'right');
+				corner = new Corner({className:className});
+				corners.push(corner);
+				element.appendChild(corner.getElement());
+			});
+		});
+		each([true, false], function(leftElseRight){
+			var className = 'corner-'+(leftElseRight?'left':'right');
+			var corner = new Corner({className:className});
+			corners.push(corner);
 			element.appendChild(corner.getElement());
 		});
 		this.positionDefault= function(imageWidth, imageHeight){
@@ -97,6 +110,7 @@ var CroppingFrame = new (function () {
 		};
 		this.getElement = function(){return element;};
 		function Corner(params){
+			var get
 			var element = E.DIV();
 			element.classList.add('corner');
 			element.classList.add(params.className);

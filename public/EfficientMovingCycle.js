@@ -67,7 +67,7 @@ var EfficientMovingCycle = (function(){
 			function touchMove(e) {
 				if (!e)
 					var e = window.event;
-				self.onMove(e);
+				self.onMove&&self.onMove(e);
 				e.preventDefault&&e.preventDefault();
 			}
 			function touchEnd(e) {
