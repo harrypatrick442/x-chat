@@ -125,6 +125,20 @@ var CroppingFrame = new (function () {
 		function getBottom(){
 			return getTop()+element.clientHeight;
 		}
+		function setLeft(x){
+			element.style.left=String(x)+'px';
+			element.style.width = String(element.clientWidth + getLeft() - x)+'px';
+		}
+		function setRight(x){
+			element.style.width = String(x - getLeft())+'px';
+		}
+		function setTop(y){
+			element.style.top=String(x)+'px';
+			element.style.height = String(element.clientHeight + getTop() - y)+'px';
+		}
+		function setBottom(y){
+			element.style.height = String(y - getTop())+'px';
+		}
 		function getConstraints(topElseBottom, leftElseRight){
 			if(leftElseRight){
 				if(topElseBottom)
@@ -137,24 +151,26 @@ var CroppingFrame = new (function () {
 			
 		}
 		function Corner(params){
+			var self = this;
 			var getConstraints = params.getConstraints;
+			var setPosition = params.setPosition;
 			var topElseBottom = params.topElseBottom;
 			var leftElseRight = params.leftElseRight;
 			var element = E.DIV();
 			element.classList.add('corner');
 			element.classList.add(params.className);
-			var efficientMovingCycle = new EfficientMovingCycle(element);
-			efficientMovingCycle.onStart = calculateConstraints;
-			efficientMovingCycle.onMove = function(e){
-				console.log(e);
-			};
-			efficientMovingCycle.onEnd = function(e){
-				console.log(e);
-			};
+			var dragManager = new DragManager({handle:self});
 			this.getElement = function(){return element;};
-			var constraints;
-			function calculateConstraints(){
-				constraints = getConstraints(topElseBottom, leftElseRight);
+			this.getConstraints = function(){
+				return getConstraints(topElseBottom, leftElseRight);
+			};
+			this.getLeft = function(){return element.offsetLeft;};
+			this.getTop = function(){return element.offsetTo;};
+			this.setPosition = function(position){
+				
+			};
+			this.getAbsolute= function(){
+				return getAbsolute(element);
 			}
 			
 		}

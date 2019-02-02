@@ -19,7 +19,7 @@ var DragManager = (function(){
 		function constrainNewLocalPosition(localPosition){
 			if(localPosition.x>localConstraints.maxX)
 				localPosition.x=localConstraints.maxX;
-			else
+			else-
 				if(localPosition.x<localConstraints.minX)
 					localPosition.x = localConstraints.minX;
 			
