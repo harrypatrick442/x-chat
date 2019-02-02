@@ -1,7 +1,8 @@
 var CroppingFrame = new (function () {
-	var _CroppingFrame=function(){
+	var _CroppingFrame=function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var aspectRatio = params.aspectRatio;
 		var element = E.DIV();
 		element.classList.add('cropping-frame');
 		var imageWidthRaw;
@@ -10,7 +11,7 @@ var CroppingFrame = new (function () {
 		var img;
 		var imgWrapper = E.DIV();
 		imgWrapper.classList.add('img-wrapper');
-		var cropper = new Cropper({getImageWidth:getImageWidth, getImageHeight:getImageHeight});
+		var cropper = new Cropper({getImageWidth:getImageWidth, getImageHeight:getImageHeight, aspectRatio:aspectRatio});
 		imgWrapper.appendChild(cropper.getElement());
 		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
@@ -88,24 +89,29 @@ var CroppingFrame = new (function () {
 		var self = this;
 		var getImageWidth= params.getImageWidth;
 		var getImageHeight = params.getImageHeight;
+		var aspectRatio = params.aspectRatio;
 		var element = E.DIV();
 		element.classList.add('cropper');
 		var corners=[];
+		var constraints;
 		each([true, false], function(topElseBottom){
 			var className = 'corner-'+(topElseBottom?'top':'bottom');
-			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, getConstraints:getConstraints, setPosition:getSetPosition(topElseBottom, undefined)});
+			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, starting:starting,
+			getConstraints:getConstraints, setPosition:createSetPosition(topElseBottom, undefined), getX:zero, getY:topElseBottom?getTop:getBottom});
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 			each([true, false], function(leftElseRight){
 				className = 'corner-'+(topElseBottom?'top':'bottom')+'-'+(leftElseRight?'left':'right');
-				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, getConstraints:getConstraints, setPosition:getSetPosition(topElseBottom, leftElseRight)});
+				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, starting:starting,
+				getConstraints:getConstraints, setPosition:createSetPosition(topElseBottom, leftElseRight), getX:leftElseRight?getLeft:getRight, getY:topElseBottom?getTop:getBottom});
 				corners.push(corner);
 				element.appendChild(corner.getElement());
 			});
 		});
 		each([true, false], function(leftElseRight){
 			var className = 'corner-'+(leftElseRight?'left':'right');
-			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, getConstraints:getConstraints, setPosition:getSetPosition(undefined,leftElseRight)});
+			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, starting:starting,
+			getConstraints:getConstraints, setPosition:createSetPosition(undefined,leftElseRight), getX:leftElseRight?getLeft:getRight, getY:zero});
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 		});
@@ -113,7 +119,16 @@ var CroppingFrame = new (function () {
 			
 		};
 		this.getElement = function(){return element;};
-		function getSetPosition(topElseBottom, leftElseRight){
+		var startDimenions
+		var startPosition;
+		function zero(){
+			return 0;
+		}
+		function starting(){
+			startDimensions = {width:element.clientWidth, height:element.clientHeight};
+			startPosition = {left:element.offsetLeft, top:element.offsetTop};
+		}
+		function createSetPosition(topElseBottom, leftElseRight){
 			var vertical;
 			if(topElseBottom!=undefined){
 				vertical = (function(setVertical){ return function(p){setVertical(p.y);};})(topElseBottom?setTop:setBottom);
@@ -122,12 +137,27 @@ var CroppingFrame = new (function () {
 			if(leftElseRight!=undefined){
 				horizontal = (function(setHorizontal){ return function(p){setHorizontal(p.x);};})(leftElseRight?setLeft:setRight);
 			}
+			var setPosition;
 			if(vertical)
 			{
-				if(!horizontal) return vertical;
-				return (function(vertical, horizontal){ return function(p){ vertical(p); horizontal(p);};})(vertical, horizontal);
+				if(!horizontal)
+					setPosition = vertical;
+				else
+					setPosition = (function(vertical, horizontal){ return function(p){ vertical(p); horizontal(p);};})(vertical, horizontal);
 			}
-			return horizontal;
+			else
+				setPosition = horizontal;
+			if(aspectRatio)
+				return createAspectRatioFixer(setPosition);
+			return setPosition;
+		}
+		function createAspectRatioFixer(setPosition){
+			return (function(setPosition){
+				return function(p){
+					var z = ((p.x - startPosition.left)+((p.y-startPosition.top)*aspectRatio))/2;
+					setPosition({x:startPosition.left + z, y:(startPosition.top+z)/aspectRatio});
+				};
+			})(setPosition);
 		}
 		function getLeft(){
 			return element.offsetLeft;
@@ -136,29 +166,25 @@ var CroppingFrame = new (function () {
 			return getLeft()+element.clientWidth;
 		}
 		function getTop(){
-			return element.offestTop;
+			return element.offsetTop;
 		}
 		function getBottom(){
 			return getTop()+element.clientHeight;
 		}
+		
 		function setLeft(x){
-			console.log('set left');
 			element.style.left=String(x)+'px';
-			element.style.width = String(element.clientWidth + getLeft() - x)+'px';
+			element.style.width = String(startDimensions.width + startPosition.left - x)+'px';
 		}
 		function setRight(x){
-			console.log('set right');
-			element.style.width = String(x - getLeft())+'px';
+			element.style.width = String(x - startPosition.left)+'px';
 		}
 		function setTop(y){
-			console.log('set top');
 			element.style.top=String(y)+'px';
-			element.style.height = String(element.clientHeight + getTop() - y)+'px';
+			element.style.height = String(startDimensions.height +  startPosition.top - y)+'px';
 		}
 		function setBottom(y){
-			console.log('set bottom ');
-			console.log(y);
-			element.style.height = String(y - getTop())+'px';
+			element.style.height = String(y - startPosition.top)+'px';
 		}
 		function getConstraints(topElseBottom, leftElseRight){
 			if(leftElseRight){
@@ -174,9 +200,12 @@ var CroppingFrame = new (function () {
 		function Corner(params){
 			var self = this;
 			var getConstraints = params.getConstraints;
+			var starting = params.starting;
 			var setPosition = params.setPosition;
 			var topElseBottom = params.topElseBottom;
 			var leftElseRight = params.leftElseRight;
+			this.getX = params.getX;
+			this.getY = params.getY;
 			var element = E.DIV();
 			element.classList.add('corner');
 			element.classList.add(params.className);
@@ -184,15 +213,13 @@ var CroppingFrame = new (function () {
 			this.getConstraints = function(){
 				return getConstraints(topElseBottom, leftElseRight);
 			};
-			this.getLeft = function(){return element.offsetLeft;};
-			this.getTop = function(){return element.offsetTop;};
 			this.setPosition = setPosition;
 			this.getElement = function(){return element;};
 			this.getAbsolute= function(){
 				return getAbsolute(element);
 			}
 			var dragManager = new DragManager({handle:self});
-			
+			dragManager.onStart = starting;
 		}
 	}
 })();

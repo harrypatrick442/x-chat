@@ -2,10 +2,11 @@ var ImageUploader = new (function(){
 	var _ImageUploader = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var aspectRatio = params.aspectRatio;
 		var buttonClose = new Button({ className:'button-close'});
 		var fileUploader = new FileUploader({accept:'image/*'});
 		var popup = new Popup({});
-		var croppingFrame = new CroppingFrame({});
+		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
 		var ui = new UI({popup:popup, buttonClose:buttonClose, croppingFrame:croppingFrame, fileUploader:fileUploader});
 		buttonClose.addEventListener('click', hide);
 		fileUploader.addEventListener('file', gotFile);
