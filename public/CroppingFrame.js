@@ -11,7 +11,7 @@ var CroppingFrame = new (function () {
 		var imgWrapper = E.DIV();
 		imgWrapper.classList.add('img-wrapper');
 		var cropper = new Cropper({getImageWidth:getImageWidth, getImageHeight:getImageHeight});
-				imgWrapper.appendChild(cropper.getElement());
+		imgWrapper.appendChild(cropper.getElement());
 		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
 		this.show = function(){
@@ -22,10 +22,10 @@ var CroppingFrame = new (function () {
 		};
 		this.load = load;
 		function getImageWidth(){
-			return imageWrapper.clientWidth;
+			return imgWrapper.clientWidth;
 		}
 		function getImageHeight(){
-			return imageWrapper.clientHeight;
+			return imgWrapper.clientHeight;
 		}
 		function load(url){
 			clear();
@@ -93,19 +93,19 @@ var CroppingFrame = new (function () {
 		var corners=[];
 		each([true, false], function(topElseBottom){
 			var className = 'corner-'+(topElseBottom?'top':'bottom');
-			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined});
+			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, getConstraints:getConstraints});
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 			each([true, false], function(leftElseRight){
 				className = 'corner-'+(topElseBottom?'top':'bottom')+'-'+(leftElseRight?'left':'right');
-				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight});
+				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, getConstraints:getConstraints});
 				corners.push(corner);
 				element.appendChild(corner.getElement());
 			});
 		});
 		each([true, false], function(leftElseRight){
 			var className = 'corner-'+(leftElseRight?'left':'right');
-			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight});
+			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, getConstraints:getConstraints});
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 		});
@@ -137,16 +137,24 @@ var CroppingFrame = new (function () {
 			
 		}
 		function Corner(params){
-			var getConstraints = params.getContraints;
+			var getConstraints = params.getConstraints;
 			var topElseBottom = params.topElseBottom;
 			var leftElseRight = params.leftElseRight;
 			var element = E.DIV();
 			element.classList.add('corner');
 			element.classList.add(params.className);
+			var efficientMovingCycle = new EfficientMovingCycle(element);
+			efficientMovingCycle.onStart = calculateConstraints;
+			efficientMovingCycle.onMove = function(e){
+				console.log(e);
+			};
+			efficientMovingCycle.onEnd = function(e){
+				console.log(e);
+			};
 			this.getElement = function(){return element;};
 			var constraints;
 			function calculateConstraints(){
-				constraints = getConstraints(topElseBottom, leftElseRight});
+				constraints = getConstraints(topElseBottom, leftElseRight);
 			}
 			
 		}

@@ -9,16 +9,16 @@ var EfficientMovingCycle = (function(){
 	var currentMouseUp;
 	var currentTouchMove;
 	var currentTouchEnd;
+	var documentElement = document.documentElement;
 	var _EfficientMovingCycle = function(element)
 	{
 		var self = this;
 		this.onStart = undefined;
 		this.onMove = undefined;
 		this.onEnd = undefined;
-		var documentElement = document.documentElement;
 		if (!isMobile)
 		{
-			element.addEventListener(MOUSE_MOVE, mouseDown);
+			element.addEventListener(MOUSE_DOWN, mouseDown);
 			function mouseDown(e){
 				if (!e)
 					e = window.event;
