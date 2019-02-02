@@ -93,19 +93,19 @@ var CroppingFrame = new (function () {
 		var corners=[];
 		each([true, false], function(topElseBottom){
 			var className = 'corner-'+(topElseBottom?'top':'bottom');
-			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, getConstraints:getConstraints});
+			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, getConstraints:getConstraints, setPosition:getSetPosition(topElseBottom, undefined));
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 			each([true, false], function(leftElseRight){
 				className = 'corner-'+(topElseBottom?'top':'bottom')+'-'+(leftElseRight?'left':'right');
-				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, getConstraints:getConstraints});
+				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, getConstraints:getConstraints, setPosition:getSetPosition(topElseBottom, leftElseRight)});
 				corners.push(corner);
 				element.appendChild(corner.getElement());
 			});
 		});
 		each([true, false], function(leftElseRight){
 			var className = 'corner-'+(leftElseRight?'left':'right');
-			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, getConstraints:getConstraints});
+			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, getConstraints:getConstraints, setPosition:getSetPosition(undefined,leftElseRight)});
 			corners.push(corner);
 			element.appendChild(corner.getElement());
 		});
@@ -113,6 +113,21 @@ var CroppingFrame = new (function () {
 			
 		};
 		this.getElement = function(){return element;};
+		function getSetPosition(topElseBottom, leftElseRight){
+			var vertical;
+			if(topElseBottom!=undefined){
+				vertical = (function(setVertical){ return function(p){setVertical(p.y);};})(topElseBottom?setTop:setBottom);
+			}
+			if(leftElseRight!=undefined){
+				horizontal = (function(setHorizontal){ return function(p){setHorizontal(p.x);};})(topElseBottom?setLeft:setRight);
+			}
+			if(vertical)
+			{
+				if(!horizontal) return vertical;
+				return (function(vertical, horizontal){ return function(p){ vertical(p); horizontal(p);};})(vertical, horizontal);
+			}
+			return horizontal;
+		}
 		function getLeft(){
 			return element.offsetLeft;
 		}
