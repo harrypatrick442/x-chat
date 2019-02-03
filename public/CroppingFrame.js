@@ -205,6 +205,112 @@ var CroppingFrame = new (function () {
 		}
 		function getConstraints(topElseBottom, leftElseRight){
 			if(aspectRatio){
+					var maxDistanceX;
+					var maxDistanceY;
+					var maxNegativeDistanceX;
+					var maxNegativeDistanceY;
+					var maxX;
+					var maxY;
+					var minX;
+					var minY;
+				if(leftElseRight){
+					if(topElseBottom){
+						console.log('doing it that way');
+						maxDistanceX = getRight()-getLeft();
+						console.log('maxDistanceX: '+maxDistanceX);
+						maxDistanceY = getBottom()-getTop();
+						console.log('maxDistanceY: '+maxDistanceY);
+						maxNegativeDistanceX = getLeft();
+						console.log('maxNegativeDistanceX: '+maxNegativeDistanceX);
+						maxNegativeDistanceY = getTop();
+						console.log('maxNegativeDistanceY: '+maxNegativeDistanceY);
+						var maxDistanceYTimesAspectRatio=(maxDistanceY*aspectRatio);
+						var maxNegativeDistanceYTimesAspectRatio= maxNegativeDistanceY*aspectRatio;
+						if(maxDistanceX>maxDistanceYTimesAspectRatio)
+							maxDistanceX = maxDistanceYTimesAspectRatio;
+						else{
+							maxDistanceY = maxDistanceX/aspectRatio;
+						}
+						if(maxNegativeDistanceX>maxNegativeDistanceYTimesAspectRatio)
+							maxNegativeDistanceX = maxNegativeDistanceYTimesAspectRatio 	;
+						else{
+							maxNegativeDistanceY = maxNegativeDistanceX/aspectRatio;
+						}
+						maxX = maxDistanceX+ getLeft();
+						maxY = maxDistanceY + getTop();
+						minX = getLeft() - maxNegativeDistanceX;
+						minY = getTop() - maxNegativeDistanceY;
+					}
+					else{
+						maxDistanceX = getRight()-getLeft();
+						maxDistanceY = getImageHeight()-getBottom();
+						maxNegativeDistanceX = getLeft();
+						maxNegativeDistanceY = getBottom() - getTop();
+						var maxDistanceYTimesAspectRatio=maxDistanceY*aspectRatio;
+						var maxNegativeDistanceYTimesAspectRatio= maxNegativeDistanceY*aspectRatio;
+						if(maxDistanceX>maxNegativeDistanceYTimesAspectRatio)
+							maxDistanceX = maxNegativeDistanceYTimesAspectRatio;
+						else{
+							maxNegativeDistanceY = maxDistanceX/aspectRatio;
+						}
+						if(maxNegativeDistanceX>maxDistanceYTimesAspectRatio)
+							maxNegativeDistanceX = maxDistanceYTimesAspectRatio 	;
+						else{
+							maxDistanceY = maxNegativeDistanceX/aspectRatio;
+						}
+						maxX = maxDistanceX+ getLeft();
+						maxY = maxDistanceY + getBottom();
+						minX = getLeft() - maxNegativeDistanceX;
+						minY = getBottom() - maxNegativeDistanceY;
+						
+					}
+				}
+				else{
+					if(topElseBottom){
+						maxDistanceX = getImageWidth()-getRight();
+						maxDistanceY = getBottom()-getTop();
+						maxNegativeDistanceX = getRight() - getLeft();
+						maxNegativeDistanceY = getTop();
+						var maxDistanceYTimesAspectRatio=(maxDistanceY*aspectRatio);
+						var maxNegativeDistanceYTimesAspectRatio= maxNegativeDistanceY*aspectRatio;
+						if(maxDistanceX>maxNegativeDistanceYTimesAspectRatio)
+							maxDistanceX = maxNegativeDistanceYTimesAspectRatio;
+						else{
+							maxNegativeDistanceY = maxDistanceX/aspectRatio;
+						}
+						if(maxNegativeDistanceX>maxDistanceYTimesAspectRatio)
+							maxNegativeDistanceX = maxDistanceYTimesAspectRatio 	;
+						else{
+							maxDistanceY = maxNegativeDistanceX/aspectRatio;
+						}
+						maxX = maxDistanceX+ getRight();
+						maxY = maxDistanceY + getTop();
+						minX = getRight() - maxNegativeDistanceX;
+						minY = getTop() - maxNegativeDistanceY;
+					}else{
+						maxDistanceX = getImageWidth()-getRight();
+						maxDistanceY = getImageHeight()-getBottom();
+						maxNegativeDistanceX = getRight() - getLeft();
+						maxNegativeDistanceY = getBottom() - getTop();
+						var maxDistanceYTimesAspectRatio=(maxDistanceY*aspectRatio);
+						var maxNegativeDistanceYTimesAspectRatio= maxNegativeDistanceY*aspectRatio;
+						if(maxDistanceX>maxDistanceYTimesAspectRatio)
+							maxDistanceX = maxDistanceYTimesAspectRatio;
+						else{
+							maxDistanceY = maxDistanceX/aspectRatio;
+						}
+						if(maxNegativeDistanceX>maxNegativeDistanceYTimesAspectRatio)
+							maxNegativeDistanceX = maxNegativeDistanceYTimesAspectRatio 	;
+						else{
+							maxNegativeDistanceY = maxNegativeDistanceX/aspectRatio;
+						}
+						maxX = maxDistanceX+ getRight();
+						maxY = maxDistanceY + getBottom();
+						minX = getRight() - maxNegativeDistanceX;
+						minY = getBottom() - maxNegativeDistanceY;
+					}
+				}
+				return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
 				console.log('doing it that way');
 				var maxDistanceX = leftElseRight?getRight()-getLeft():getImageWidth()-getRight();
 				console.log('maxDistanceX: '+maxDistanceX);
@@ -220,13 +326,11 @@ var CroppingFrame = new (function () {
 				else{
 						maxDistanceY = ((topElseBottom^leftElseRight)?maxNegativeDistanceX:maxDistanceX)/aspectRatio;
 				}
-				var maxNegativeDistanceYTimesAspectRatio= ((topElseBottom^leftElseRight)?maxDistanceY:maxNegativeDistanceY)*aspectRatio;
-				if(maxNegativeDistanceX>maxNegativeDistanceYTimesAspectRatio)
-				{console.log('A');
-					maxNegativeDistanceX = maxNegativeDistanceYTimesAspectRatio;
-				}
-				else{console.log('B');
-					maxNegativeDistanceY = ((topElseBottom^leftElseRight)?maxDistanceX:maxNegativeDistanceX)/aspectRatio;
+				var maxDistanceYTimesAspectRatio= (topElseBottom^leftElseRight?maxDistanceY:maxNegativeDistanceY)*aspectRatio;
+				if(maxDistanceYTimesAspectRatio)
+					maxNegativeDistanceX = maxDistanceYTimesAspectRatio 	;
+				else{
+					maxNegativeDistanceY = ((topElseBottom^leftElseRight)?maxNegativeDistanceX:maxDistanceX)/aspectRatio;
 				}
 				console.log('maxDistanceX: '+maxDistanceX);
 				console.log('maxDistanceY: '+maxDistanceY);
