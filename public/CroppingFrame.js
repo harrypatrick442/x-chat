@@ -214,17 +214,19 @@ var CroppingFrame = new (function () {
 				console.log('maxNegativeDistanceX: '+maxNegativeDistanceX);
 				var maxNegativeDistanceY = topElseBottom?getTop():getBottom() - getTop();
 				console.log('maxNegativeDistanceY: '+maxNegativeDistanceY);
-				var maxDistanceXTimesAspectRatio=(maxDistanceY*aspectRatio);
-				if(maxDistanceX>maxDistanceXTimesAspectRatio)
-					maxDistanceX = maxDistanceXTimesAspectRatio;
+				var distanceYTimesAspectRatio=(topElseBottom^leftElseRight?maxNegativeDistanceY:maxDistanceY)*aspectRatio;
+				if(maxDistanceX>distanceYTimesAspectRatio)
+					maxDistanceX = distanceYTimesAspectRatio;
 				else{
-					maxDistanceY = maxDistanceX/aspectRatio;
+						maxDistanceY = ((topElseBottom^leftElseRight)?maxNegativeDistanceX:maxDistanceX)/aspectRatio;
 				}
-				var maxNegativeDistanceXTimesAspectRatio= maxNegativeDistanceX*aspectRatio;
-				if(maxNegativeDistanceX>maxNegativeDistanceXTimesAspectRatio)
-					maxNegativeDistanceX = maxNegativeDistanceXTimesAspectRatio 	;
-				else{
-					maxNegativeDistanceY = maxNegativeDistanceX/aspectRatio;
+				var maxNegativeDistanceYTimesAspectRatio= ((topElseBottom^leftElseRight)?maxDistanceY:maxNegativeDistanceY)*aspectRatio;
+				if(maxNegativeDistanceX>maxNegativeDistanceYTimesAspectRatio)
+				{console.log('A');
+					maxNegativeDistanceX = maxNegativeDistanceYTimesAspectRatio;
+				}
+				else{console.log('B');
+					maxNegativeDistanceY = ((topElseBottom^leftElseRight)?maxDistanceX:maxNegativeDistanceX)/aspectRatio;
 				}
 				console.log('maxDistanceX: '+maxDistanceX);
 				console.log('maxDistanceY: '+maxDistanceY);
@@ -232,9 +234,10 @@ var CroppingFrame = new (function () {
 				console.log('maxNegativeDistanceY: '+maxNegativeDistanceY);
 				var maxX = leftElseRight?maxDistanceX+ getLeft():maxDistanceX+getRight();
 				var maxY = topElseBottom?maxDistanceY + getTop():maxDistanceY+getBottom();
-				var minX = leftElseRight? maxNegativeDistanceX:maxNegativeDistanceX+getLeft();
-				var minY = topElseBottom?maxNegativeDistanceY:maxNegativeDistanceY+getTop();
-				return {mimX:minX, minY:minY, maxX:maxX, maxY:maxY};
+				var minX = leftElseRight? getLeft() - maxNegativeDistanceX:getRight() - maxNegativeDistanceX;
+				var minY = topElseBottom?getTop() - maxNegativeDistanceY:getBottom() - maxNegativeDistanceY;
+				console.log({mimX:minX, minY:minY, maxX:maxX, maxY:maxY});
+				return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
 			}
 			if(leftElseRight){
 				if(topElseBottom)

@@ -67,8 +67,6 @@
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper{
 	position:absolute;
-	min-width:20px;
-	min-height:20px;
 	border-style:dashed;
 	border-width:1px;
 	border-color:#888888;

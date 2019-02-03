@@ -6,9 +6,9 @@ var DragManager = (function(){
 		var localConstraints;
 		var offsets;
 		efficientMovingCycle.onStart = function(){
+			self.onStart&&self.onStart();
 			offsets = getOffsets();
 			localConstraints = handle.getConstraints();
-			self.onStart&&self.onStart();
 		};
 		efficientMovingCycle.onMove = function(e){
 			var newLocalPosition = getNewLocalPosition(e);
@@ -19,17 +19,19 @@ var DragManager = (function(){
 			handle.endDrag&&handle.endDrag();
 		};
 		function constrainNewLocalPosition(localPosition){
+			console.log(localConstraints);
+			console.log(localPosition);
 			if(localPosition.x>localConstraints.maxX)
 				localPosition.x=localConstraints.maxX;
 			else
 				if(localPosition.x<localConstraints.minX)
 					localPosition.x = localConstraints.minX;
-			
 			if(localPosition.y>localConstraints.maxY)
 				localPosition.y=localConstraints.maxY;
 			else
 				if(localPosition.y<localConstraints.minY)
 					localPosition.y = localConstraints.minY;
+			console.log(localPosition);
 				
 		}
 		function getOffsets(){
