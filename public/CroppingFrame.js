@@ -93,7 +93,6 @@ var CroppingFrame = new (function () {
 		var element = E.DIV();
 		element.classList.add('cropper');
 		var corners=[];
-		var constraints;
 		each([true, false], function(topElseBottom){
 			var className = 'corner-'+(topElseBottom?'top':'bottom');
 			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, starting:starting,
@@ -148,11 +147,21 @@ var CroppingFrame = new (function () {
 			else
 				setPosition = horizontal;
 			if(aspectRatio)
-				return createAspectRatioFixer(setPosition);
+				return createAspectRatioFixer(setPosition, leftElseRight,topElseBottom);
 			return setPosition;
 		}
 		function createAspectRatioFixer(setPosition){
 			return (function(setPosition){
+				if(leftElseRight&&!topElseBottom)
+					return function(p){
+						var z = ((startPosition.left-p.x)+((p.y-startPosition.top)*aspectRatio))/2;
+						setPosition({x:z - startPosition.left, y:(startPosition.top+z)/aspectRatio});
+					};
+				if(!leftElseRight&&topElseBottom)
+					return function(p){
+						var z = ((p.x - startPosition.left)+((startPosition.top-p.y)*aspectRatio))/2;
+						setPosition({x:startPosition.left + z, y:(z-startPosition.top)/aspectRatio});
+					};
 				return function(p){
 					var z = ((p.x - startPosition.left)+((p.y-startPosition.top)*aspectRatio))/2;
 					setPosition({x:startPosition.left + z, y:(startPosition.top+z)/aspectRatio});
@@ -187,6 +196,38 @@ var CroppingFrame = new (function () {
 			element.style.height = String(y - startPosition.top)+'px';
 		}
 		function getConstraints(topElseBottom, leftElseRight){
+			if(aspectRatio&&false){
+				console.log('doing it that way');
+				var maxDistanceX = leftElseRight?getRight()-getLeft():getImageWidth()-getRight();
+				console.log('maxDistanceX: '+maxDistanceX);
+				var maxDistanceY = topElseBottom? getBottom()-getTop(): getImageHeight()-getBottom();
+				console.log('maxDistanceY: '+maxDistanceY);
+				var maxNegativeDistanceX = leftElseRight?getLeft():getRight() - getLeft();
+				console.log('maxNegativeDistanceX: '+maxNegativeDistanceX);
+				var maxNegativeDistanceY = topElseBottom?getTop():getBottom() - getTop();
+				console.log('maxNegativeDistanceY: '+maxNegativeDistanceY);
+				var maxDistanceXTimesAspectRatio=(maxDistanceY*aspectRatio);
+				if(maxDistanceX>maxDistanceXTimesAspectRatio)
+					maxDistanceX = maxDistanceXTimesAspectRatio;
+				else{
+					maxDistanceY = maxDistanceX/aspectRatio;
+				}
+				var maxNegativeDistanceXTimesAspectRatio= maxNegativeDistanceX*aspectRatio;
+				if(maxNegativeDistanceX>maxNegativeDistanceXTimesAspectRatio)
+					maxNegativeDistanceX = maxNegativeDistanceXTimesAspectRatio 	;
+				else{
+					maxNegativeDistanceY = maxNegativeDistanceX/aspectRatio;
+				}
+				console.log('maxDistanceX: '+maxDistanceX);
+				console.log('maxDistanceY: '+maxDistanceY);
+				console.log('maxNegativeDistanceX: '+maxNegativeDistanceX);
+				console.log('maxNegativeDistanceY: '+maxNegativeDistanceY);
+				var maxX = leftElseRight?maxDistanceX+ getLeft():maxDistanceX+getRight();
+				var maxY = topElseBottom?maxDistanceY + getTop():maxDistanceY+getBottom();
+				var minX = leftElseRight? maxNegativeDistanceX:maxNegativeDistanceX+getLeft();
+				var minY = topElseBottom?maxNegativeDistanceY:maxNegativeDistanceY+getTop();
+				return {mimX:minX, minY:minY, maxX:maxX, maxY:maxY};
+			}
 			if(leftElseRight){
 				if(topElseBottom)
 					return {minX:0, maxX:getRight(), minY:0, maxY:getBottom()};
