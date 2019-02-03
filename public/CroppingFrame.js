@@ -150,19 +150,22 @@ var CroppingFrame = new (function () {
 				return createAspectRatioFixer(setPosition, leftElseRight,topElseBottom);
 			return setPosition;
 		}
-		function createAspectRatioFixer(setPosition){
+		function createAspectRatioFixer(setPosition, leftElseRight, topElseBottom){
 			return (function(setPosition){
 				if(leftElseRight&&!topElseBottom)
 					return function(p){
-						var z = ((startPosition.left-p.x)+((p.y-startPosition.top)*aspectRatio))/2;
-						setPosition({x:z - startPosition.left, y:(startPosition.top+z)/aspectRatio});
-					};
+						console.log(startPosition.
+						var averageDistanceFromStart = ((p.x-startPosition.left)+((startPosition.bottom-p.y)*aspectRatio))/2;
+						setPosition({x:z +startPosition.left, y:(startPosition.top+(z/aspectRatio))});
+					};/*
 				if(!leftElseRight&&topElseBottom)
 					return function(p){
 						var z = ((p.x - startPosition.left)+((startPosition.top-p.y)*aspectRatio))/2;
-						setPosition({x:startPosition.left + z, y:(z-startPosition.top)/aspectRatio});
-					};
+						setPosition({x:startPosition.left + z, y:(z-p.y)/aspectRatio});
+					};*/
 				return function(p){
+					console.log(p.x - startPosition.left);
+					console.log(p.y-startPosition.top);
 					var z = ((p.x - startPosition.left)+((p.y-startPosition.top)*aspectRatio))/2;
 					setPosition({x:startPosition.left + z, y:(startPosition.top+z)/aspectRatio});
 				};
