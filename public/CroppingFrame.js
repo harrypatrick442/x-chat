@@ -124,8 +124,12 @@ var CroppingFrame = new (function () {
 			return 0;
 		}
 		function starting(){
-			startDimensions = {width:element.clientWidth, height:element.clientHeight};
-			startPosition = {left:element.offsetLeft, top:element.offsetTop};
+			var width = element.clientWidth;
+			var height = element.clientHeight;
+			startDimensions = {width:width, height:height};
+			var left = element.offsetLeft;
+			var top = element.offsetTop;
+			startPosition = {left:left, top:top, right:left+width, bottom:top+height};
 		}
 		function createSetPosition(topElseBottom, leftElseRight){
 			var vertical;
@@ -154,18 +158,19 @@ var CroppingFrame = new (function () {
 			return (function(setPosition){
 				if(leftElseRight&&!topElseBottom)
 					return function(p){
-						console.log(startPosition.
 						var averageDistanceFromStart = ((p.x-startPosition.left)+((startPosition.bottom-p.y)*aspectRatio))/2;
-						setPosition({x:z +startPosition.left, y:(startPosition.top+(z/aspectRatio))});
-					};/*
+						var newWidth = startDimensions.width - averageDistanceFromStart;
+						var newHeight = newWidth / aspectRatio;
+						setPosition({x:averageDistanceFromStart +startPosition.left, y:(newHeight +startPosition.top)});
+					};
 				if(!leftElseRight&&topElseBottom)
 					return function(p){
-						var z = ((p.x - startPosition.left)+((startPosition.top-p.y)*aspectRatio))/2;
-						setPosition({x:startPosition.left + z, y:(z-p.y)/aspectRatio});
-					};*/
+						var averageDistanceFromStart = ((startPosition.right-p.x)+((p.y-startPosition.top)*aspectRatio))/2;
+						var newHeight = startDimensions.height - averageDistanceFromStart;
+						var newWidth = newHeight * aspectRatio;
+						setPosition({x:startPosition.left + newWidth, y:averageDistanceFromStart + startPosition.top });
+					};
 				return function(p){
-					console.log(p.x - startPosition.left);
-					console.log(p.y-startPosition.top);
 					var z = ((p.x - startPosition.left)+((p.y-startPosition.top)*aspectRatio))/2;
 					setPosition({x:startPosition.left + z, y:(startPosition.top+z)/aspectRatio});
 				};
@@ -199,7 +204,7 @@ var CroppingFrame = new (function () {
 			element.style.height = String(y - startPosition.top)+'px';
 		}
 		function getConstraints(topElseBottom, leftElseRight){
-			if(aspectRatio&&false){
+			if(aspectRatio){
 				console.log('doing it that way');
 				var maxDistanceX = leftElseRight?getRight()-getLeft():getImageWidth()-getRight();
 				console.log('maxDistanceX: '+maxDistanceX);
