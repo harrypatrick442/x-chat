@@ -15,7 +15,7 @@ var CroppingFrame = new (function () {
 		imgWrapper.appendChild(cropper.getElement());
 		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
-		this.show = function(){
+		function show(){
 			element.style.display='flex';
 			cropper.onShow();
 		};
@@ -31,14 +31,15 @@ var CroppingFrame = new (function () {
 		}
 		function load(url){
 			clear();
-			self.show();
 			img = E.IMG();
 			img.onload = function() {
 				imageWidthRaw = this.width;
 				imageHeightRaw = this.height;
 				imageAspectRatio = imageWidthRaw/imageHeightRaw;
+				show();
 				sizeImage();
 				imgWrapper.appendChild(img);
+				cropper.positionDefault(img.clientWidth, img.clientHeight);
 			};
 			img.onerror=error;
 			img.src = url;
@@ -123,6 +124,20 @@ var CroppingFrame = new (function () {
 			element.appendChild(corner.getElement());
 		});
 		this.positionDefault= function(imageWidth, imageHeight){
+			var width = imageWidth;
+			var height = imageHeight;
+			if(aspectRatio){
+				if(imageHeight*aspectRatio>imageWidth){
+					height = width/aspectRatio;
+				}
+				else{
+					width = height * aspectRatio;
+				}
+			}
+			element.style.left = '0px';
+			element.style.top='0px';
+			element.style.width=String(width)+'px';
+			element.style.height=String(height)+'px';
 			
 		};
 		this.onShow = function(){
