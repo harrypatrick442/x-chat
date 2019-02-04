@@ -160,6 +160,8 @@ var CroppingFrame = new (function () {
 			element.style.top=String(p.y - (getHeight()/ 2))+'px';
 		};
 		var dragManager = new DragManager({handle:self});
+		var twoFingerTouch = isMobile?new TwoFingerTouch({element:self.getElement()}):undefined;
+		
 		dragManager.onStart = function(){
 			
 		};

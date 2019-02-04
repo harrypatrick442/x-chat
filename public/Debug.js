@@ -1,11 +1,18 @@
 var debug = new(function(){
+	var self = this;
 	var mysocket;
+	var oldConsole = console;
 	this.setMysocket = function(value){
 		mysocket = value;
 	};
-	this.log=function(obj){
+	this.log=function(msg){
+		oldConsole.log(msg);
 		if(mysocket)
-		mysocket.send({type:'debug', str:String(obj)});
+		mysocket.send({type:'debug', str:isObject(msg)?JSON.stringify(msg):msg});
 	};
-	console.log = this.log;
+	console = {log:self.log};
+	function isObject(val) {
+    if (val === null) { return false;}
+    return ( (typeof val === 'function') || (typeof val === 'object') );
+}
 })();

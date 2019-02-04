@@ -1,6 +1,7 @@
 var TwoFingerTouch=(function(){
-	var _TwoFingerTouch=function(){
-		var efficientMoveCycle = new EfficientMoveCycle();
+	var _TwoFingerTouch=function(params){
+		var element = params.element;
+		var efficientMovingCycle = new EfficientMovingCycle({element:element});
 		var finger2Active=false;
 		var finger1Active = false;
 		//onStartFinger1-2
@@ -8,48 +9,49 @@ var TwoFingerTouch=(function(){
 		//onEndFinger1-2
 		//onStart when both fingers are down
 		//onEnd when both fingers are up.
-		efficnetMoveCycle.onStart = function(e){
-			console.log(JSON.stringify(e));
+		efficientMovingCycle.onStart = function(e){
+			console.log(e.touches);
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
+			console.log('identifier: '+changedTouch.identifier);
 				if(changedTouch.identifier ==0){
 					finger1Active=true;
-					self.onStartFinger1(changedTouch,  e);
+					self.onStartFinger1&&self.onStartFinger1(changedTouch,  e);
 				}
 				if(changedTouch.identifier==1){
 					finger2Active=true;
-					self.onStartFinger2(changedTouch, e);
+					self.onStartFinger2&&self.onStartFinger2(changedTouch, e);
 				}
 			}
 			if(finger1Active&&finger2Active)
 				self.onStart&&self.onStart(e);
 		};
-		efficientMoveCycle.onMove = function(e){
+		efficientMovingCycle.onMove = function(e){
 			console.log(JSON.stringify(e));
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
-					self.onMoveFinger1(changedTouch,  e);
+					self.onMoveFinger1&&self.onMoveFinger1(changedTouch,  e);
 				}
 				if(changedTouch.identifier==1){
-					self.onMoveFinger2(changedTouch, e);
+					self.onMoveFinger2&&self.onMoveFinger2(changedTouch, e);
 				}
 			}
 		};
-		efficientMoveCycle.onEnd= function(e){
+		efficientMovingCycle.onEnd= function(e){
 			console.log(JSON.stringify(e));
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
 					finger1Active=false;
-					self.onEndFinger1(changedTouch,  e);
+					self.onEndFinger1&&self.onEndFinger1(changedTouch,  e);
 				}
 				if(changedTouch.identifier==1){
 					finger2Active=false;
-					self.onEndFinger2(changedTouch, e);
+					self.onEndFinger2&&self.onEndFinger2(changedTouch, e);
 				}
 			}
 			if(!finger1Active||finger2Active)
