@@ -58,7 +58,7 @@ var TwoFingerTouch=(function(){
 			}
 			var active = finger1Active||finger2Active;
 			if(active)return true;
-			console.log('onEnd');
+			console.log('onEnd finally');
 			self.onEnd&&self.onEnd(e);
 		};
 	};
