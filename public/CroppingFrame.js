@@ -145,9 +145,9 @@ var CroppingFrame = new (function () {
 		};
 		this.getElement = function(){return element;};
 		this.getConstraints= getMoveConstraints;
-		this.getAbsolute = function(){
-			var absolute = getAbsolute(element);
-			return {left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
+		this.getAbsolute = function(e){
+			//var absolute = getAbsolute(element);
+			return {left:e.pageX, top:e.pageY};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
 		this.getX = function(){
 			return getLeft()+(getWidth()/2);
