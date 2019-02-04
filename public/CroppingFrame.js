@@ -145,7 +145,7 @@ var CroppingFrame = new (function () {
 		};
 		this.getElement = function(){return element;};
 		this.getConstraints= getMoveConstraints;
-		this.getAbsolute = function(e){
+		this.getPosition = function(e){
 			//var absolute = getAbsolute(element);
 			return {left:e.pageX, top:e.pageY};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
@@ -401,7 +401,7 @@ var CroppingFrame = new (function () {
 				element.style.display=value?'block':'none';
 			};
 			this.getElement = function(){return element;};
-			this.getAbsolute= function(){
+			this.getPosition= function(){
 				return getAbsolute(element);
 			}
 			var dragManager = new DragManager({handle:self, stopPropagation:true});

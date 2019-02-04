@@ -32,7 +32,7 @@ var DragManager = (function(){
 					localPosition.y = localConstraints.minY;
 		}
 		function getOffsets(e){
-			var absolute = handle.getAbsolute(e);
+			var absolute = handle.getPosition(e);
 			return {x:handle.getX() - absolute.left, 
 					y:handle.getY() - absolute.top};
 		}
