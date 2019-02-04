@@ -17,6 +17,7 @@ var CroppingFrame = new (function () {
 		this.getElement = function(){return element;};
 		this.show = function(){
 			element.style.display='flex';
+			cropper.onShow();
 		};
 		this.hide = function(){
 			element.style.display='none';
@@ -89,22 +90,26 @@ var CroppingFrame = new (function () {
 		var self = this;
 		var getImageWidth= params.getImageWidth;
 		var getImageHeight = params.getImageHeight;
+		var aspectRatio = params.aspectRatio;
+		var corners=[];
+		var startDimenions
+		var startPosition;
 		var minWidth = 50;
 		var minHeight = 50;
-		var aspectRatio = params.aspectRatio;
 		var element = E.DIV();
 		element.classList.add('cropper');
-		var corners=[];
+		var middleCorners=[]
 		each([true, false], function(topElseBottom){
 			var className = 'corner-'+(topElseBottom?'top':'bottom');
 			var corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:undefined, starting:starting,
-			getConstraints:getConstraints, setPosition:createSetPosition(topElseBottom, undefined), getX:zero, getY:topElseBottom?getTop:getBottom});
+			getConstraints:getResizeConstraints, setPosition:createSetPosition(topElseBottom, undefined), getX:zero, getY:topElseBottom?getTop:getBottom});
 			corners.push(corner);
+			middleCorners.push(corner);
 			element.appendChild(corner.getElement());
 			each([true, false], function(leftElseRight){
 				className = 'corner-'+(topElseBottom?'top':'bottom')+'-'+(leftElseRight?'left':'right');
 				corner = new Corner({className:className, topElseBottom:topElseBottom, leftElseRight:leftElseRight, starting:starting,
-				getConstraints:getConstraints, setPosition:createSetPosition(topElseBottom, leftElseRight), getX:leftElseRight?getLeft:getRight, getY:topElseBottom?getTop:getBottom});
+				getConstraints:getResizeConstraints, setPosition:createSetPosition(topElseBottom, leftElseRight), getX:leftElseRight?getLeft:getRight, getY:topElseBottom?getTop:getBottom});
 				corners.push(corner);
 				element.appendChild(corner.getElement());
 			});
@@ -112,16 +117,56 @@ var CroppingFrame = new (function () {
 		each([true, false], function(leftElseRight){
 			var className = 'corner-'+(leftElseRight?'left':'right');
 			var corner = new Corner({className:className, topElseBottom:undefined, leftElseRight:leftElseRight, starting:starting,
-			getConstraints:getConstraints, setPosition:createSetPosition(undefined,leftElseRight), getX:leftElseRight?getLeft:getRight, getY:zero});
+			getConstraints:getResizeConstraints, setPosition:createSetPosition(undefined,leftElseRight), getX:leftElseRight?getLeft:getRight, getY:zero});
 			corners.push(corner);
+			middleCorners.push(corner);
 			element.appendChild(corner.getElement());
 		});
 		this.positionDefault= function(imageWidth, imageHeight){
 			
 		};
+		this.onShow = function(){
+			setMiddleCornersVisible(aspectRatio?false:true);
+		};
 		this.getElement = function(){return element;};
-		var startDimenions
-		var startPosition;
+		this.getConstraints= getMoveConstraints;
+		this.getAbsolute = function(){
+			var absolute = getAbsolute(element);
+			return {left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
+		};
+		this.getX = function(){
+			return getLeft()+(getWidth()/2);
+		};
+		this.getY = function(){
+			return getTop()+(getHeight()/2);
+		};
+		this.setPosition = function(p){
+			element.style.left=String(p.x - (getWidth()/2))+'px';
+			element.style.top=String(p.y - (getHeight()/ 2))+'px';
+		};
+		var dragManager = new DragManager({handle:self});
+		dragManager.onStart = function(){
+			
+		};
+		dragManager.onMove= function(){
+			
+		};
+		function setMiddleCornersVisible(value){
+			each(middleCorners, function(middleCorner){
+				middleCorner.setVisible(value);
+			});
+		}
+		function getMoveConstraints(){
+			var cropperWidth = getWidth();
+			var cropperHeight = getHeight();
+			var halfWidth = cropperWidth/2;
+			var halfHeight = cropperHeight/2;
+			var minX = halfWidth;
+			var minY = halfHeight;
+			var maxX = getImageWidth()- halfWidth;
+			var maxY = getImageHeight() - halfHeight;
+			return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
+		}
 		function zero(){
 			return 0;
 		}
@@ -182,15 +227,20 @@ var CroppingFrame = new (function () {
 			return element.offsetLeft;
 		}
 		function getRight(){
-			return getLeft()+element.clientWidth;
+			return getLeft()+getWidth();
 		}
 		function getTop(){
 			return element.offsetTop;
 		}
 		function getBottom(){
-			return getTop()+element.clientHeight;
+			return getTop()+getHeight();
 		}
-		
+		function getWidth(){
+			return element.clientWidth;
+		}
+		function getHeight(){
+			return element.clientHeight;
+		}
 		function setLeft(x){
 			element.style.left=String(x)+'px';
 			element.style.width = String(startDimensions.width + startPosition.left - x)+'px';
@@ -205,7 +255,7 @@ var CroppingFrame = new (function () {
 		function setBottom(y){
 			element.style.height = String(y - startPosition.top)+'px';
 		}
-		function getConstraints(topElseBottom, leftElseRight){
+		function getResizeConstraints(topElseBottom, leftElseRight){
 			if(!aspectRatio){
 				if(leftElseRight){
 					if(topElseBottom)
@@ -329,15 +379,17 @@ var CroppingFrame = new (function () {
 			this.getElement = function(){return element;};
 			this.getConstraints = function(){
 				var constraints = getConstraints(topElseBottom, leftElseRight);
-				console.log(constraints);
 				return constraints;
 			};
 			this.setPosition = setPosition;
+			this.setVisible = function(value){
+				element.style.display=value?'block':'none';
+			};
 			this.getElement = function(){return element;};
 			this.getAbsolute= function(){
 				return getAbsolute(element);
 			}
-			var dragManager = new DragManager({handle:self});
+			var dragManager = new DragManager({handle:self, stopPropagation:true});
 			dragManager.onStart = starting;
 		}
 	}

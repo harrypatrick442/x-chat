@@ -72,6 +72,7 @@
 	border-color:#888888;
 	width:100px;
 	height:100px;
+	cursor:move;
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner{
 	position:absolute;
@@ -82,18 +83,22 @@
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top-left{
 	top:-6px;
 	left:-6px;
+	cursor:nw-resize;
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top-right{
 	top:-6px;
 	right:-6px;
+	cursor:ne-resize;
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-bottom-left{
 	bottom:-6px;
 	left:-6px;
+	cursor:sw-resize;
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-bottom-right{
 	bottom:-6px;
 	right:-6px;
+	cursor:se-resize;
 }
 .image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top{
 	top:-6px;

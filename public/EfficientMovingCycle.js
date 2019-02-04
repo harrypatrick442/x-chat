@@ -10,9 +10,11 @@ var EfficientMovingCycle = (function(){
 	var currentTouchMove;
 	var currentTouchEnd;
 	var documentElement = document.documentElement;
-	var _EfficientMovingCycle = function(element)
+	var _EfficientMovingCycle = function(params)
 	{
 		var self = this;
+		var element = params.element;
+		var stopPropagation = params.stopPropagation;
 		this.onStart = undefined;
 		this.onMove = undefined;
 		this.onEnd = undefined;
@@ -22,16 +24,18 @@ var EfficientMovingCycle = (function(){
 			function mouseDown(e){
 				if (!e)
 					e = window.event;
-				if(self.onStart&&self.onStart()==false)return;
+				if(self.onStart&&self.onStart(e)==false)return;
 				clearCurrentMouseMove();
 				clearCurrentMouseUp()
 				addMouseMoveEvent();
 				addMouseUpEvent();
+				stopPropagationIfRequired(e);
 			}
 			function mouseMove(e) {
 				if (!e)
 					e = window.event;
 				self.onMove(e);
+				stopPropagationIfRequired(e);
 			}
 			function mouseUp(e) {
 				if (!e)
@@ -40,6 +44,14 @@ var EfficientMovingCycle = (function(){
 					self.onEnd(e);
 				clearCurrentMouseUp();
 				clearCurrentMouseMove();
+				stopPropagationIfRequired(e);
+			}
+			function stopPropagationIfRequired(e){
+				if(stopPropagation)
+				{
+					e.stopPropagation&&e.stopPropagation();
+					e.preventDefault&&e.preventDefault();
+				}	
 			}
 			function addMouseMoveEvent(){
 				documentElement.addEventListener(MOUSE_MOVE, mouseMove);
@@ -56,7 +68,7 @@ var EfficientMovingCycle = (function(){
 			element.addEventListener(TOUCH_START, touchStart);
 			function touchStart(e) {
 				if (!e)
-					var e = window.event;
+					e = window.event;
 				if(self.onStart && self.onStart(e)==false)return;
 				clearCurrentTouchMove();
 				clearCurrentTouchEnd();
