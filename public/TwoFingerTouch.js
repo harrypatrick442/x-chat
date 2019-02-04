@@ -9,6 +9,7 @@ var TwoFingerTouch=(function(){
 		//onStart when both fingers are down
 		//onEnd when both fingers are up.
 		efficnetMoveCycle.onStart = function(e){
+			console.log(JSON.stringify(e));
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
@@ -25,6 +26,7 @@ var TwoFingerTouch=(function(){
 				self.onStart&&self.onStart(e);
 		};
 		efficientMoveCycle.onMove = function(e){
+			console.log(JSON.stringify(e));
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
@@ -37,6 +39,7 @@ var TwoFingerTouch=(function(){
 			}
 		};
 		efficientMoveCycle.onEnd= function(e){
+			console.log(JSON.stringify(e));
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];

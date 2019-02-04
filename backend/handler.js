@@ -81,6 +81,9 @@ exports.handler = new (function(){
 						if(!user)return;
 						lobby.getNotifications().setPmNotificationsSeen(user, req.seenPmNotificationUserIds);
 					break;
+					case 'debug':
+						console.log(req.str);
+					break;
 				}
 			}
 			catch(ex){console.log(ex);}

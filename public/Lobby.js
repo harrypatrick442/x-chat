@@ -11,6 +11,8 @@ var Lobby = (function(){
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
+		debug.setMysocket(mysocket);
+		new Task(function(){console.log('ye it works');}).run();
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);

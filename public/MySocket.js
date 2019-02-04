@@ -2,7 +2,6 @@ var MySocket = new (function(){
 	var _MySocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;
-		console.log(urlWebsocket);
 		EventEnabledBuilder(this);
 		var self = this;
 		var websocket;
@@ -10,7 +9,6 @@ var MySocket = new (function(){
 		getInterface();
 		this.send = function(obj){
 			var msg = JSON.stringify(obj);
-			console.log(obj);
 			getInterface().send(msg);
 		};
 		function callbackOnMessage(msg){
