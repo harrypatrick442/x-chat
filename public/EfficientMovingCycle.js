@@ -77,7 +77,6 @@ var EfficientMovingCycle = (function(){
 			}
 		  
 			function touchMove(e) {
-				console.log('touch move');
 				if (!e)
 					var e = window.event;
 				self.onMove&&self.onMove(e);
