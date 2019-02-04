@@ -11,8 +11,9 @@ var debug = new(function(){
 		mysocket.send({type:'debug', str:isObject(msg)?JSON.stringify(msg):msg});
 	};
 	console = {log:self.log};7
-	window.onerror = function myErrorHandler(errorMsg, url, lineNumber){self.log(errorMsg);
-}
+	window.onerror = function myErrorHandler(errorMsg, url, lineNumber){
+		self.log(errorMsg);
+	}
 	function isObject(val) {
     if (val === null) { return false;}
     return ( (typeof val === 'function') || (typeof val === 'object') );
