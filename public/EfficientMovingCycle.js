@@ -77,6 +77,7 @@ var EfficientMovingCycle = (function(){
 			}
 		  
 			function touchMove(e) {
+				console.log('touch move');
 				if (!e)
 					var e = window.event;
 				self.onMove&&self.onMove(e);
@@ -85,7 +86,8 @@ var EfficientMovingCycle = (function(){
 			function touchEnd(e) {
 				if (!e)
 					e = window.event;
-				self.onEnd&&self.onEnd(e);
+				var keep = self.onEnd&&self.onEnd(e);
+				if(keep)return;
 				clearCurrentTouchEnd();
 				clearCurrentTouchMove();
 			}
@@ -96,8 +98,6 @@ var EfficientMovingCycle = (function(){
 			function addTouchEnd(){
 				documentElement.addEventListener(TOUCH_END, touchEnd);
 				currentTouchEnd = touchEnd;
-				clearCurrentTouchMove();
-				clearCurrentTouchEnd;
 			}
 		}
     };
