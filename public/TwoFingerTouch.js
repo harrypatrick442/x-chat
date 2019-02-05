@@ -4,6 +4,8 @@ var TwoFingerTouch=(function(){
 		var efficientMovingCycle = new EfficientMovingCycle({element:element});
 		var finger2Active=false;
 		var finger1Active = false;
+		var touch1;
+		var touch2;
 		//onStartFinger1-2
 		//onMoveFinger1-2
 		//onEndFinger1-2
@@ -17,15 +19,17 @@ var TwoFingerTouch=(function(){
 			console.log('identifier: '+changedTouch.identifier);
 				if(changedTouch.identifier ==0){
 					finger1Active=true;
+					touch1 = changedTouch;
 					self.onStartFinger1&&self.onStartFinger1(changedTouch,  e);
 				}
 				if(changedTouch.identifier==1){
 					finger2Active=true;
+					touch2 = changedTouch;
 					self.onStartFinger2&&self.onStartFinger2(changedTouch, e);
 				}
 			}
 			if(finger1Active&&finger2Active)
-				self.onStart&&self.onStart(e);
+				self.onStart&&self.onStart({touch1:touch1, touch2:touch2, e:e});
 		};
 		efficientMovingCycle.onMove = function(e){
 			console.log('onMove');
