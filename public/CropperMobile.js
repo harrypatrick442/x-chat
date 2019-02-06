@@ -44,7 +44,9 @@ var Cropper = (function(){
 		var bottomDistanceFromMiddle;
 		var imageWidth;
 		var imageHeight;
-		twoFingerTouch.onStart= function(e){console.log('start');
+		var isResizing=false;
+		twoFingerTouch.onStart= function(e){
+			isResizing=true;
 			imageWidth = getImageWidth();
 			imageHeight = getImageHeight();
 			var touch1 = e.touch1;
@@ -85,10 +87,15 @@ var Cropper = (function(){
 		};
 		
 		twoFingerTouch.onMoveFinger1 = function(touch){
+			if(!isResizing)return;
 			movedFinger1(touch, startDistanceFromMiddleToFinger1);
 		};
 		twoFingerTouch.onMoveFinger2= function(touch){
+			if(!isResizing)return;
 			movedFinger2(touch, startDistanceFromMiddleToFinger2);
+		};
+		twoFingerTouch.onEnd = function(touch){
+			isResizing=false;
 		};
 		function movedLeftHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
