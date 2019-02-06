@@ -45,9 +45,7 @@ var Cropper = (function(){
 		var bottomDistanceFromMiddle;
 		var imageWidth;
 		var imageHeight;
-		var isResizing=false;
 		twoFingerTouch.onStart= function(e){
-			isResizing=true;
 			imageWidth = getImageWidth();
 			imageHeight = getImageHeight();
 			var touch1 = e.touch1;
@@ -57,8 +55,6 @@ var Cropper = (function(){
 			startPositionMiddle = getCropperPosition();
 			startDistanceFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
 			startDistanceFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
-			
-			
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
 			var finger1IsLowFinger = touch1.pageY>touch2.pageY; 
 			var isRightFingerHigh = (finger1IsRightFinger^finger1IsLowFinger);
@@ -67,8 +63,12 @@ var Cropper = (function(){
 			console.log('isRightFingerHigh: '+isRightFingerHigh);
 			var hasHorizontalResize = (finger1IsRightFinger?(touch1.pageX-touch2.pageX):(touch2.pageX-touch1.pageX))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
 			var hasVerticalResize = (finger1ILowFinger?(touch1.pageY-touch2.pageY):(touch2.pageY- touch1.pageY))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
+			console.log('hasHorizontalResize: '+hasHorizontalResize);
+			console.log('hasVerticalResize: '+hasVerticalResize);
 			if(!hasHorizontalResize){
 				if(!hasVerticalResize){
+					movedFinger1 = doNothing;
+					movedFinger2 = doNothing;
 					return;
 				}
 				if(finger1ILowFinger){
@@ -116,16 +116,16 @@ var Cropper = (function(){
 		};
 		
 		twoFingerTouch.onMoveFinger1 = function(touch){
-			if(!isResizing)return;
 			movedFinger1(touch, startDistanceFromMiddleToFinger1);
 		};
 		twoFingerTouch.onMoveFinger2= function(touch){
-			if(!isResizing)return;
 			movedFinger2(touch, startDistanceFromMiddleToFinger2);
 		};
 		twoFingerTouch.onEnd = function(touch){
-			isResizing=false;
+			movedFinger1 = doNothing;
+			movedFinger2 = doNothing;
 		};
+		function doNothing(){}
 		function movedLeftHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			leftDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
