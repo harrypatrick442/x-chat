@@ -1,4 +1,5 @@
 var Cropper = (function(){
+	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 30;
 	var _Cropper=function(params){
 		var self = this;
 		var getImageWidth= params.getImageWidth;
@@ -56,12 +57,41 @@ var Cropper = (function(){
 			startPositionMiddle = getCropperPosition();
 			startDistanceFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
 			startDistanceFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
+			
+			
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
 			var finger1IsLowFinger = touch1.pageY>touch2.pageY; 
 			var isRightFingerHigh = (finger1IsRightFinger^finger1IsLowFinger);
 			console.log('finger1IsRightFinger: '+finger1IsRightFinger);
 			console.log('finger1IsLowFinger: '+finger1IsLowFinger);
 			console.log('isRightFingerHigh: '+isRightFingerHigh);
+			var hasHorizontalResize = (finger1IsRightFinger?(touch1.pageX-touch2.pageX):(touch2.pageX-touch1.pageX))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
+			var hasVerticalResize = (finger1ILowFinger?(touch1.pageY-touch2.pageY):(touch2.pageY- touch1.pageY))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
+			if(!hasHorizontalResize){
+				if(!hasVerticalResize){
+					return;
+				}
+				if(finger1ILowFinger){
+					movedFinger1 = movedBottomFingerVerticalResize;
+					movedFinger2 = movedTopFingerVerticalResize;
+				}
+				else{
+					movedFinger1 = movedTopFingerVerticalResize;
+					movedFinger2 = movedBottomFingerVerticalResize;
+				}
+				return;
+			}
+			if(!hasVerticalResize){
+				if(finger1IsRightFinger){
+					movedFinger1 = movedRightFingerVerticalResize;
+					movedFinger2 = movedLeftFingerVerticalResize;
+				}
+				else{
+					movedFinger1 = movedLeftFingerVerticalResize;
+					movedFinger2 = movedRightFingerVerticalResize;
+				}
+				return;
+			}
 			if(isRightFingerHigh){
 				if(finger1IsRightFinger){
 					movedFinger1 = movedRightHighFinger;
@@ -83,7 +113,6 @@ var Cropper = (function(){
 					movedFinger2 = movedRightLowFinger;
 				}
 			}
-			
 		};
 		
 		twoFingerTouch.onMoveFinger1 = function(touch){
@@ -121,29 +150,60 @@ var Cropper = (function(){
 			bottomDistanceFromMiddle= (proportionChange.x*startDimensions.halfHeight);
 			resize();
 		}
+		function movedRightFingerHorizontalResize (touch, startDistanceFromMiddleToFinger){
+			rightDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			*startDimensions.halfWidth);
+			resizeHorizontal();
+		}
+		function movedLeftFingerHorizontalResize(touch, startDistanceFromMiddleToFinger){
+			leftDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			*startDimensions.halfWidth);
+			resizeHorizontal();
+		}
+		function movedTopFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
+			topDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			*startDimensions.halfHeight);
+			resizeVertical();
+		}
+		function movedBottomFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
+			bottomDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			*startDimensions.halfHeight);
+			resizeVertical();
+		}
 		function resize(){
-			var left = (startPositionMiddle.x - leftDistanceFromMiddle);
-			if(left<0)left=0;
-			var top = startPositionMiddle.y - topDistanceFromMiddle;
-			if(top<0)top = 0;
-			var right = rightDistanceFromMiddle + startPositionMiddle.x;
-			if(right>imageWidth)right = imageWidth;
-			
-			var bottom = bottomDistanceFromMiddle + startPositionMiddle.y;
-			if(bottom>imageHeight)bottom=imageHeight;
-			
-			element.style.left = String(left)+'px';
-			element.style.top=String(top)+'px';
-			element.style.height = String(bottom - top)+'px';
-			element.style.width = String(right -left)+'px';
+			resizeHorizontal();
+			resizeVertical();
 			
 				
+		}
+		function resizeHorizontal(){
+			var left = (startPositionMiddle.x - leftDistanceFromMiddle);
+			if(left<0)left=0;
+			var right = rightDistanceFromMiddle + startPositionMiddle.x;
+			if(right>imageWidth)right = imageWidth;
+			element.style.left = String(left)+'px';
+			element.style.width = String(right -left)+'px';
+		}
+		function resizeVertical(){
+			var top = startPositionMiddle.y - topDistanceFromMiddle;
+			if(top<0)top = 0;
+			var bottom = bottomDistanceFromMiddle + startPositionMiddle.y;
+			if(bottom>imageHeight)bottom=imageHeight;
+			element.style.top=String(top)+'px';
+			element.style.height = String(bottom - top)+'px';
 		}
 		function getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers){
 			var x = (touch.pageX - startMiddleFingers.x)/
 			startDistanceFromMiddleToFinger.x;
 			var y = (touch.pageY - startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
 			return {x:x, y:y};
+		}
+		function getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFinger){
+			return (touch.pageX - startMiddleFingers.x)/
+			startDistanceFromMiddleToFinger.x;
+		}
+		function getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFinger){
+			return (touch.pageY - startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
 		}
 		function getCropperDimensions(){
 			return {halfWidth:element.clientWidth/2, halfHeight:element.clientHeight/2};
