@@ -62,7 +62,7 @@ var Cropper = (function(){
 			console.log('finger1IsLowFinger: '+finger1IsLowFinger);
 			console.log('isRightFingerHigh: '+isRightFingerHigh);
 			var hasHorizontalResize = (finger1IsRightFinger?(touch1.pageX-touch2.pageX):(touch2.pageX-touch1.pageX))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
-			var hasVerticalResize = (finger1ILowFinger?(touch1.pageY-touch2.pageY):(touch2.pageY- touch1.pageY))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
+			var hasVerticalResize = (finger1IsLowFinger?(touch1.pageY-touch2.pageY):(touch2.pageY- touch1.pageY))>MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT;
 			console.log('hasHorizontalResize: '+hasHorizontalResize);
 			console.log('hasVerticalResize: '+hasVerticalResize);
 			if(!hasHorizontalResize){
