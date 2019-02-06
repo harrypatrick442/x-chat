@@ -55,7 +55,7 @@ var Cropper = (function(){
 			startDistanceFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
 			startDistanceFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
-			var finger1IsLowFinger = touch1.pageY<touch2.pageY; 
+			var finger1IsLowFinger = touch1.pageY>touch2.pageY; 
 			var isRightFingerHigh = (finger1IsRightFinger^finger1IsLowFinger);
 			console.log('finger1IsRightFinger: '+finger1IsRightFinger);
 			console.log('finger1IsLowFinger: '+finger1IsLowFinger);
