@@ -10,9 +10,9 @@ var debug = new(function(){
 		if(mysocket)
 		mysocket.send({type:'debug', str:isObject(msg)?JSON.stringify(msg):msg});
 	};
-	console = {log:self.log};7
+	console = {log:self.log};
 	window.onerror = function myErrorHandler(errorMsg, url, lineNumber){
-		self.log(errorMsg);
+		self.log(errorMsg+lineNumber);
 	}
 	function isObject(val) {
     if (val === null) { return false;}
