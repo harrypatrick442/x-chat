@@ -99,26 +99,26 @@ var Cropper = (function(){
 		};
 		function movedLeftHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
-			leftDistanceFromMiddle = (proportionChange.x*startDimensions.width/2);
-			topDistanceFromMiddle = (proportionChange.x*startDimensions.height/2);
+			leftDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			topDistanceFromMiddle = (proportionChange.x*startDimensions.halfHeight);
 			resize();
 		}
 		function movedLeftLowFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
-			leftDistanceFromMiddle = (proportionChange.x*startDimensions.width/2);
-			bottomDistanceFromMiddle = (proportionChange.x*startDimensions.height/2);
+			leftDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			bottomDistanceFromMiddle = (proportionChange.x*startDimensions.halfHeight);
 			resize();
 		}
 		function movedRightHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
-			rightDistanceFromMiddle = (proportionChange.x*startDimensions.width/2);
-			topDistanceFromMiddle = (proportionChange.x*startDimensions.height/2);
+			rightDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			topDistanceFromMiddle = (proportionChange.x*startDimensions.halfHeight);
 			resize();
 		}
 		function movedRightLowFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
-			rightDistanceFromMiddle = (proportionChange.x*startDimensions.width/2);
-			bottomDistanceFromMiddle= (proportionChange.x*startDimensions.height/2);
+			rightDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			bottomDistanceFromMiddle= (proportionChange.x*startDimensions.halfHeight);
 			resize();
 		}
 		function resize(){
@@ -146,7 +146,7 @@ var Cropper = (function(){
 			return {x:x, y:y};
 		}
 		function getCropperDimensions(){
-			return {width:element.clientWidth, height:element.clientHeight};
+			return {halfWidth:element.clientWidth/2, halfHeight:element.clientHeight/2};
 		}
 		function getCropperPosition(){
 			return {x:element.offsetLeft+(element.clientWidth/2), y:element.offsetTop+(element.clientHeight/2)};
