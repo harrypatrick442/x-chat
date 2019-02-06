@@ -57,6 +57,8 @@ var Cropper = (function(){
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
 			var finger1IsLowFinger = touch1.pageY<touch2.pageY;
 			var isRightFingerHigh = (finger1IsRightFinger^finger1IsLowFinger);
+			console.log('finger1IsRightFinger: '+finger1IsRightFinger);
+			console.log('finger1IsLowFinger: '+finger1IsLowFinger);
 			console.log('isRightFingerHigh: '+isRightFingerHigh);
 			if(isRightFingerHigh){
 				if(finger1IsRightFinger){
