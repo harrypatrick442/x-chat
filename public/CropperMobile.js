@@ -123,7 +123,8 @@ var Cropper = (function(){
 				
 		}
 		function getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers){
-			var x = (touch.pageX - startMiddleFingers.x)/startDistanceFromMiddleToFinger.x;
+			var x = (touch.pageX - startMiddleFingers.x)/
+			startDistanceFromMiddleToFinger.x;
 			var y = (touch.pageY - startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
 			return {x:x, y:y};
 		}

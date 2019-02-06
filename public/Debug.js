@@ -12,7 +12,7 @@ var debug = new(function(){
 	};
 	console = {log:self.log};
 	window.onerror = function myErrorHandler(errorMsg, url, lineNumber){
-		self.log(errorMsg+lineNumber);
+		self.log(errorMsg+' '+url+' '+lineNumber);
 	}
 	function isObject(val) {
     if (val === null) { return false;}
