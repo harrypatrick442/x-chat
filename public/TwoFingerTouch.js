@@ -1,5 +1,6 @@
 var TwoFingerTouch=(function(){
 	var _TwoFingerTouch=function(params){
+		var self = this;
 		var element = params.element;
 		var efficientMovingCycle = new EfficientMovingCycle({element:element});
 		var finger2Active=false;
