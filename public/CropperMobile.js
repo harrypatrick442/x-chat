@@ -105,7 +105,7 @@ var Cropper = (function(){
 			resize();
 		}
 		function resize(){
-			var left = (startPoitionMiddle.x - leftDistanceFromMiddle);
+			var left = (startPositionMiddle.x - leftDistanceFromMiddle);
 			if(left<0)left=0;
 			var top = startPositionMiddle.y - topDistanceFromMiddle;
 			if(top<0)top = 0;
