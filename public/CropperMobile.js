@@ -33,9 +33,8 @@ var Cropper = (function(){
 		var twoFingerTouch = new TwoFingerTouch({element:element});
 		var startMiddleFingers;
 		var startDimensions;
-		var startDistancesFromCropperMiddle;
-		var startDistancesFromMiddleToFinger1;
-		var startDistancesFromMiddleToFinger2;
+		var startDistanceFromMiddleToFinger1;
+		var startDistanceFromMiddleToFinger2;
 		var movedFinger1;
 		var movedFinger2;
 		twoFingerTouch.onStart= function(e){
@@ -44,8 +43,8 @@ var Cropper = (function(){
 			startMiddleFingers = {x:(touch1.pageX+touch2.pageX)/2, y:(touch1.pageY+touch2.pageY)/2};
 			startDimensions = getCropperDimensions();
 			startPosition = getCropperPosition();
-			var startDistancesFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
-			var startDistancesFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
+			var startDistanceFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
+			var startDistanceFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
 			var finger1IsLowFinger = touch1.pageY<touch2.pageY;
 			var isRightFingerHigh = (finger1IsRightFinger^finger1IsLowFinger);
@@ -124,7 +123,7 @@ var Cropper = (function(){
 		}
 		function getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers){
 			var x = (touch.pageX - startMiddleFingers.x)/startDistanceFromMiddleToFinger.x;
-			var y = (touch.pageY 0- startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
+			var y = (touch.pageY - startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
 			return {x:x, y:y};
 		}
 		function getCropperDimensions(){
@@ -132,18 +131,6 @@ var Cropper = (function(){
 		}
 		function getCropperPosition(){
 			return {x:element.offsetLeft+(element.clientWidth/2), y:element.offsetTop+(element.clientHeight/2)};
-		}
-		function setLeft(x){
-			element.style.
-		}
-		function setRight(x){
-			
-		}
-		function setTop(y){
-			
-		}
-		function setBottom(y){
-			
 		}
 	};
 	return _Cropper;
