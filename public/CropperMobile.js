@@ -71,7 +71,7 @@ var Cropper = (function(){
 					movedFinger2 = doNothing;
 					return;
 				}
-				if(finger1ILowFinger){
+				if(finger1IsLowFinger){
 					movedFinger1 = movedBottomFingerVerticalResize;
 					movedFinger2 = movedTopFingerVerticalResize;
 				}
