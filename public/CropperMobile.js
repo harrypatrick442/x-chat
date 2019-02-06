@@ -38,6 +38,10 @@ var Cropper = (function(){
 		var startDistanceFromMiddleToFinger2;
 		var movedFinger1;
 		var movedFinger2;
+		var leftDistanceFromMiddle;
+		var topDistanceFromMiddle;
+		var rightDistanceFromMiddle;
+		var bottomDistanceFromMiddle;
 		twoFingerTouch.onStart= function(e){console.log('start');
 			
 			var touch1 = e.touch1;
@@ -101,7 +105,7 @@ var Cropper = (function(){
 		}
 		function movedRightLowFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
-			rightDistanceFromStartingMiddle = (proportionChange.x*startDimensions.width/2);
+			rightDistanceFromMiddle = (proportionChange.x*startDimensions.width/2);
 			bottomDistanceFromMiddle= (proportionChange.x*startDimensions.height/2);
 			resize();
 		}
