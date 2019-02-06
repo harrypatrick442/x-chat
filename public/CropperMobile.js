@@ -32,6 +32,7 @@ var Cropper = (function(){
 		this.getElement = function(){return element;};
 		var twoFingerTouch = new TwoFingerTouch({element:element});
 		var startMiddleFingers;
+		var startPositionMiddle;
 		var startDimensions;
 		var startDistanceFromMiddleToFinger1;
 		var startDistanceFromMiddleToFinger2;
@@ -43,7 +44,7 @@ var Cropper = (function(){
 			var touch2 = e.touch2;
 			startMiddleFingers = {x:(touch1.pageX+touch2.pageX)/2, y:(touch1.pageY+touch2.pageY)/2};
 			startDimensions = getCropperDimensions();
-			startPosition = getCropperPosition();
+			startPositionMiddle = getCropperPosition();
 			startDistanceFromMiddleToFinger1= {x:touch1.pageX - startMiddleFingers.x, y:touch1.pageY-startMiddleFingers.y};
 			startDistanceFromMiddleToFinger2= {x:touch2.pageX - startMiddleFingers.x, y:touch2.pageY-startMiddleFingers.y};
 			var finger1IsRightFinger=touch1.pageX>touch2.pageX;
