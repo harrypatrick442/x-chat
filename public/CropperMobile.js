@@ -151,22 +151,22 @@ var Cropper = (function(){
 			resize();
 		}
 		function movedRightFingerHorizontalResize (touch, startDistanceFromMiddleToFinger){
-			rightDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			rightDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
 			*startDimensions.halfWidth);
 			resizeHorizontal();
 		}
 		function movedLeftFingerHorizontalResize(touch, startDistanceFromMiddleToFinger){
-			leftDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			leftDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
 			*startDimensions.halfWidth);
 			resizeHorizontal();
 		}
 		function movedTopFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
-			topDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			topDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
 			*startDimensions.halfHeight);
 			resizeVertical();
 		}
 		function movedBottomFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
-			bottomDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFinger)
+			bottomDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
 			*startDimensions.halfHeight);
 			resizeVertical();
 		}
