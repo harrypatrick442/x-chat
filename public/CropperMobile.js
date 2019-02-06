@@ -83,12 +83,12 @@ var Cropper = (function(){
 			}
 			if(!hasVerticalResize){
 				if(finger1IsRightFinger){
-					movedFinger1 = movedRightFingerVerticalResize;
-					movedFinger2 = movedLeftFingerVerticalResize;
+					movedFinger1 = movedRightFingerHorizontalResize;
+					movedFinger2 = movedLeftFingerHorizontalResize;
 				}
 				else{
-					movedFinger1 = movedLeftFingerVerticalResize;
-					movedFinger2 = movedRightFingerVerticalResize;
+					movedFinger1 = movedLeftFingerHorizontalResize;
+					movedFinger2 = movedRightFingerHorizontalResize;
 				}
 				return;
 			}
