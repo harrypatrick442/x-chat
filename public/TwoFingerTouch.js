@@ -16,7 +16,6 @@ var TwoFingerTouch=(function(){
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
-			console.log('identifier: '+changedTouch.identifier);
 				if(changedTouch.identifier ==0){
 					finger1Active=true;
 					touch1 = changedTouch;
@@ -32,11 +31,9 @@ var TwoFingerTouch=(function(){
 				self.onStart&&self.onStart({touch1:touch1, touch2:touch2, e:e});
 		};
 		efficientMovingCycle.onMove = function(e){
-			console.log('onMove');
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
-				console.log('identifier: '+changedTouch.identifier);
 				if(changedTouch.identifier ==0){
 					self.onMoveFinger1&&self.onMoveFinger1(changedTouch,  e);
 				}
@@ -46,11 +43,9 @@ var TwoFingerTouch=(function(){
 			}
 		};
 		efficientMovingCycle.onEnd= function(e){
-				console.log('onEnd');
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
-				console.log('identifier: '+changedTouch.identifier);
 				if(changedTouch.identifier ==0){
 					finger1Active=false;
 					self.onEndFinger1&&self.onEndFinger1(changedTouch,  e);

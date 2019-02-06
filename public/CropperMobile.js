@@ -37,7 +37,8 @@ var Cropper = (function(){
 		var startDistanceFromMiddleToFinger2;
 		var movedFinger1;
 		var movedFinger2;
-		twoFingerTouch.onStart= function(e){
+		twoFingerTouch.onStart= function(e){console.log('start');
+			
 			var touch1 = e.touch1;
 			var touch2 = e.touch2;
 			startMiddleFingers = {x:(touch1.pageX+touch2.pageX)/2, y:(touch1.pageY+touch2.pageY)/2};
