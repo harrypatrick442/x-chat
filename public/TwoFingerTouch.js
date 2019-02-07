@@ -40,6 +40,7 @@ var TwoFingerTouch=(function(){
 		}
 		function startAnywhere(e){
 			var changedTouch = e.changedTouches[0];
+			console.log('startAnywhere identifier');
 			console.log(changedTouch.identifier);
 			if(changedTouch.identifier==1){
 				finger2Active=true;
