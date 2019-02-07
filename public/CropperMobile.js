@@ -37,8 +37,8 @@ var Cropper = (function(){
 		var startDimensions;
 		var startDistanceFromMiddleToFinger1;
 		var startDistanceFromMiddleToFinger2;
-		var movedFinger1;
-		var movedFinger2;
+		var movedFinger1 = doNothing;
+		var movedFinger2 = doNothing;
 		var leftDistanceFromMiddle;
 		var topDistanceFromMiddle;
 		var rightDistanceFromMiddle;
