@@ -15,16 +15,16 @@ var EfficientMovingCycle = (function(){
 		var self = this;
 		var element = params.element;
 		var stopPropagation = params.stopPropagation;
-		this.onStart = undefined;
-		this.onMove = undefined;
-		this.onEnd = undefined;
+		this.onStart = doNothing;
+		this.onMove = doNothing;
+		this.onEnd = doNothing;
 		if (!isMobile)
 		{
 			element.addEventListener(MOUSE_DOWN, mouseDown);
 			function mouseDown(e){
 				if (!e)
 					e = window.event;
-				if(self.onStart&&self.onStart(e)==false)return;
+				if(self.onStart(e)==false)return;
 				clearCurrentMouseMove();
 				clearCurrentMouseUp()
 				addMouseMoveEvent();
@@ -40,8 +40,7 @@ var EfficientMovingCycle = (function(){
 			function mouseUp(e) {
 				if (!e)
 					e = window.event;
-				if(self.onEnd)
-					self.onEnd(e);
+				self.onEnd(e);
 				clearCurrentMouseUp();
 				clearCurrentMouseMove();
 				stopPropagationIfRequired(e);
@@ -69,7 +68,7 @@ var EfficientMovingCycle = (function(){
 			function touchStart(e) {
 				if (!e)
 					e = window.event;
-				if(self.onStart && self.onStart(e)==false)return;
+				if(self.onStart(e)==false)return;
 				clearCurrentTouchMove();
 				clearCurrentTouchEnd();
 				addTouchMove();
@@ -79,13 +78,13 @@ var EfficientMovingCycle = (function(){
 			function touchMove(e) {
 				if (!e)
 					var e = window.event;
-				self.onMove&&self.onMove(e);
+				self.onMove(e);
 				e.preventDefault&&e.preventDefault();
 			}
 			function touchEnd(e) {
 				if (!e)
 					e = window.event;
-				var keep = self.onEnd&&self.onEnd(e);
+				var keep = self.onEnd(e);
 				if(keep)return;
 				clearCurrentTouchEnd();
 				clearCurrentTouchMove();
@@ -101,6 +100,9 @@ var EfficientMovingCycle = (function(){
 		}
     };
 	return _EfficientMovingCycle;	
+	function doNothing(){
+		
+	}
 	function clearCurrentTouchEnd(){
 		if(!currentTouchEnd)return;
 		documentElement.removeEventListener(TOUCH_END, currentTouchEnd);
