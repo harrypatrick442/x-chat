@@ -1,5 +1,6 @@
 var Cropper = (function(){
-	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 70;
+	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 30;
+	const MIN_WIDTH_HEIGHT=70;
 	var _Cropper=function(params){
 		var self = this;
 		var getImageWidth= params.getImageWidth;
@@ -170,25 +171,33 @@ var Cropper = (function(){
 		function movedLeftHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			leftDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			if(leftDistanceFromMiddle <MIN_WIDTH_HEIGHT)leftDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			topDistanceFromMiddle = (proportionChange.y*startDimensions.halfHeight);
+			if(topDistanceFromMiddle <MIN_WIDTH_HEIGHT)topDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resize();
 		}
 		function movedLeftLowFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			leftDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			if(leftDistanceFromMiddle <MIN_WIDTH_HEIGHT)leftDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			bottomDistanceFromMiddle = (proportionChange.y*startDimensions.halfHeight);
+			if(bottomDistanceFromMiddle <MIN_WIDTH_HEIGHT)bottomDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resize();
 		}
 		function movedRightHighFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			rightDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			if(rightDistanceFromMiddle <MIN_WIDTH_HEIGHT)rightDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			topDistanceFromMiddle = (proportionChange.y*startDimensions.halfHeight);
+			if(topDistanceFromMiddle <MIN_WIDTH_HEIGHT)topDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resize();
 		}
 		function movedRightLowFinger(touch, startDistanceFromMiddleToFinger){
 			var proportionChange = getProportionChangeDistanceFromMiddle(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			rightDistanceFromMiddle = (proportionChange.x*startDimensions.halfWidth);
+			if(rightDistanceFromMiddle <MIN_WIDTH_HEIGHT)rightDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			bottomDistanceFromMiddle= (proportionChange.y*startDimensions.halfHeight);
+			if(bottomDistanceFromMiddle <MIN_WIDTH_HEIGHT)bottomDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resize();
 		}
 		function movedRightFingerHorizontalResize (touch, startDistanceFromMiddleToFinger){
