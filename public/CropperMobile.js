@@ -180,7 +180,7 @@ var Cropper = (function(){
 			}
 		};
 		function getFingerDistance(touch1, touch2){
-			return Math.sqrt(Math.pow(touch1.x-touch2.x, 2)+Math.pow(touch1.y-touch2.y, 2));
+			return Math.sqrt(Math.pow(touch1.pageX-touch2.pageX, 2)+Math.pow(touch1.pageY-touch2.pageY, 2));
 		}
 		function getMaxTimesFingerDistance(){
 			var left = startPosition.x;
