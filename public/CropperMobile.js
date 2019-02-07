@@ -102,8 +102,14 @@ var Cropper = (function(){
 			touch2 = e.touch2;
 			startFingerDistance= getFingerDistance(touch1, touch2);
 			maxTimesFingerDistance= getMaxTimesFingerDistance();
-			if(startFingerDistance<MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT)movedFinger1 = move;
-			
+			if(startFingerDistance<MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT)
+			{
+				movedFinger1 = move;
+				movedFinger2 = doNothing;
+				calculateMoveBounds();
+			}
+			movedFinger1 = movedFixedAspectRatio;
+			movedFinger2 = movedFixedAspectRatio;
 		}
 		function onStartAspectRatioNotFixed(e){
 			onStart(e);
@@ -121,6 +127,7 @@ var Cropper = (function(){
 				if(!hasVerticalResize){
 					movedFinger1 = move;
 					movedFinger2 = doNothing;
+					calculateMoveBounds();
 					return;
 				}
 				if(finger1IsLowFinger){
@@ -153,17 +160,17 @@ var Cropper = (function(){
 					movedFinger1 = movedLeftLowFinger;
 					movedFinger2 = movedRightHighFinger;
 				}
+				return;
+			}
+			
+			var finger1IsLeftHigh = touch1.pageX>touch2.pageX;
+			if(finger1IsRightFinger){
+				movedFinger1 = movedRightLowFinger
+				movedFinger2 = movedLeftHighFinger;
 			}
 			else{
-				var finger1IsLeftHigh = touch1.pageX>touch2.pageX;
-				if(finger1IsRightFinger){
-					movedFinger1 = movedRightLowFinger
-					movedFinger2 = movedLeftHighFinger;
-				}
-				else{
-					movedFinger1 = movedLeftHighFinger;
-					movedFinger2 = movedRightLowFinger;
-				}
+				movedFinger1 = movedLeftHighFinger;
+				movedFinger2 = movedRightLowFinger;
 			}
 		};
 		function getFingerDistance(touch1, touch2){
