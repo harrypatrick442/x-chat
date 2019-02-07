@@ -273,12 +273,13 @@ var Cropper = (function(){
 		}
 		function movedFixedAspectRatio(){
 			var distance = getFingerDistance();
-			console.log(distance);
 			var timesFingerDistance = distance/startFingerDistance;
+			console.log(timesFingerDistance);
 			if(timesFingerDistance>maxTimesFingerDistance);
 				timesFingerDistance=maxTimesFingerDistance;
 			var newZ = startDimensions.width*timesFingerDistance;
 			var dZ = newZ - startDimensions.width;
+			console.log(dZ);
 			var left = startPosition.left-dZ;
 			var top = startPosition.top - dZ;
 			var newZStr = String(newZ)+'px';
