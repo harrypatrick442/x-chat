@@ -59,9 +59,13 @@ var Cropper = (function(){
 		};
 		twoFingerTouch.onEndFinger1= function(touch){
 			calculateMoveBounds();
-			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch2);
+			if(touch2){
+				movedFinger2 = move;
+				startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch2);
+			}
+			else
+				movedFinger2 = doNothing;
 			movedFinger1 = doNothing;
-			movedFinger2 = move;
 		};
 		twoFingerTouch.onEndFinger2= function(touch){
 			calculateMoveBounds();
@@ -69,9 +73,11 @@ var Cropper = (function(){
 			movedFinger1 = move;
 			movedFinger2 = doNothing;
 		};
-		twoFingerTouch.onMoveFinger1 = asepctRatio?onMoveFinger1AspectRatioFixed:onMoveFinger1AspectRatioNotFixed;
-		twoFingerTouch.onMoveFinger2= asepctRatio?onMoveFinger2AspectRatioFixed:onMoveFinger2AspectRatioNotFixed;
+		twoFingerTouch.onMoveFinger1 = aspectRatio?onMoveFinger1AspectRatioFixed:onMoveFinger1AspectRatioNotFixed;
+		twoFingerTouch.onMoveFinger2= aspectRatio?onMoveFinger2AspectRatioFixed:onMoveFinger2AspectRatioNotFixed;
 		twoFingerTouch.onEnd = function(touch){
+			touch1 = undefined;
+			touch2 = undefined;
 			//calculateMoveBounds();
 		};
 		function onMoveFinger1AspectRatioNotFixed(touch){
@@ -84,11 +90,11 @@ var Cropper = (function(){
 		};
 		function onMoveFinger1AspectRatioFixed(touch){
 			touch1 = touch;
-			movedFixedAspectRatio();
+			movedFinger1(touch);
 		}
 		function onMoveFinger2AspectRatioFixed(touch){
 			touch2 = touch;
-			movedFixedAspectRatio();
+			movedFinger2(touch);
 		}
 		function onStart(e){
 			imageWidth = getImageWidth();
@@ -182,7 +188,7 @@ var Cropper = (function(){
 			var right = imageWidth- startPosition.x;
 			var bottom = imageHeight - startPosition.y;
 			var horizontal = left>right?left:right;
-			var vertical = top?bottom?top:bottom;
+			var vertical = top>bottom?top:bottom;
 			var max = horizontal>vertical?horizontal:vertical;
 			return max / startDimensions.width;
 		}
@@ -316,7 +322,7 @@ var Cropper = (function(){
 			return (touch.pageY - startMiddleFingers.y)/startDistanceFromMiddleToFinger.y;
 		}
 		function getCropperDimensions(){
-			return {width:halfWidth:element.clientWidth, halfWidth:element.clientWidth/2, height:element.clientHeight, halfHeight:element.clientHeight/2};
+			return {width:element.clientWidth, halfWidth:element.clientWidth/2, height:element.clientHeight, halfHeight:element.clientHeight/2};
 		}
 		function getCropperPosition(){
 			return {left:element.offsetLeft, x:element.offsetLeft+(element.clientWidth/2), top:element.offsetTop, y:element.offsetTop+(element.clientHeight/2)};
