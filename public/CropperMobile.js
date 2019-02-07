@@ -189,8 +189,8 @@ var Cropper = (function(){
 			var bottom = imageHeight - (startPosition.top+startDimensions.height);
 			var horizontal = left<right?left:right;
 			var vertical = top<bottom?top:bottom;
-			var max = horizontal>vertical?horizontal:vertical;
-			return max / startDimensions.width;
+			var max = horizontal<vertical?horizontal:vertical; console.log(max);
+			return (max+startDimensions.width) / startDimensions.width;
 		}
 		function getStartPositionWithOffsetForMove(touch){
 			return {x:element.offsetLeft - touch.pageX, y:element.offsetTop - touch.pageY};
