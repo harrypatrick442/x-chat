@@ -27,6 +27,7 @@ var TwoFingerTouch=(function(){
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
+					console.log('finger 1');
 					finger1Active=true;
 					new Task(function(){
 						documentElement.addEventListener('touchstart', startAnywhere);
@@ -35,22 +36,26 @@ var TwoFingerTouch=(function(){
 					documentElement.addEventListener('touchend', end);
 					touch1 = changedTouch;
 					self.onStartFinger1(changedTouch,  e);
-				}
+				}else
+				startFinger2(changedTouch);
 			}
 			if(finger1Active&&finger2Active)
 				self.onStart({touch1:touch1, touch2:touch2, e:e});
 		}
 		function startAnywhere(e){
+			console.log('start anywhere');
 			var changedTouch = e.changedTouches[0];
 			console.log('startAnywhere identifier');
 			console.log(changedTouch.identifier);
+			startFinger2(changedTouch);
+		}
+		function startFinger2(changedTouch){
 			if(changedTouch.identifier==1){
+				console.log('finger 2');
 				finger2Active=true;
 				touch2 = changedTouch;
 				self.onStartFinger2(changedTouch, e);
 			}
-		}
-		function startFinger2(changedTouch){
 		}
 		function startSecondFinger(){
 			
