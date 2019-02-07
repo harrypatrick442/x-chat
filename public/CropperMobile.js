@@ -273,6 +273,7 @@ var Cropper = (function(){
 		}
 		function movedFixedAspectRatio(){
 			var distance = getFingerDistance();
+			console.log(distance);
 			var timesFingerDistance = distance/startFingerDistance;
 			if(timesFingerDistance>maxTimesFingerDistance);
 				timesFingerDistance=maxTimesFingerDistance;
