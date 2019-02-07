@@ -183,17 +183,9 @@ var Cropper = (function(){
 			return Math.sqrt(Math.pow(touch1.pageX-touch2.pageX, 2)+Math.pow(touch1.pageY-touch2.pageY, 2));
 		}
 		function getMaxTimesFingerDistance(){
-			/*var left = startPosition.left;
-			var top = startPosition.top;
-			var right = imageWidth- (startPosition.left+startDimensions.width);
-			var bottom = imageHeight - (startPosition.top+startDimensions.height);
-			var horizontal = leftright?left:right;
-			var vertical = top<bottom?top:bottom;*/
 			if(imageWidth>imageHeight*aspectRatio)
 				return imageHeight*aspectRatio/startDimensions.width;
 			return imageHeight/startDimensions.width;
-			//var max = horizontal<vertical?horizontal:vertical; console.log(max);
-			//return (max+startDimensions.width) / startDimensions.width;
 		}
 		function getStartPositionWithOffsetForMove(touch){
 			return {x:element.offsetLeft - touch.pageX, y:element.offsetTop - touch.pageY};
@@ -281,18 +273,20 @@ var Cropper = (function(){
 			console.log(maxTimesFingerDistance);
 			if(timesFingerDistance>maxTimesFingerDistance)
 				timesFingerDistance=maxTimesFingerDistance;
-			var newZ = startDimensions.width*timesFingerDistance;
-			var dZOverTwo = (newZ - startDimensions.width)/2;
-			var left = startPosition.left-dZOverTwo;
-			var top = startPosition.top - dZOverTwo;
+			var newWidth = startDimensions.width*timesFingerDistance;
+			var newHeight = newWidth/aspectRatio;
+			var dWidthOverTwo = (newWidth - startDimensions.width)/2;
+			var dHeightOverTwo = dWidthOverTwo/aspectRatio;
+			var left = startPosition.left-dWidthOverTwo;
+			var top = startPosition.top - dHeightOverTwo;
 			if(left<0)
 				left=0;
-			else if(left+newZ>imageWidth)
-				left = imageWidth-newZ;
+			else if(left+newWidth>imageWidth)
+				left = imageWidth-newWidth;
 			if(top<0)
 				top=0;
-			else if(top + newZ>imageHeight)
-				top = imageHeight - newZ;
+			else if(top + newHeight>imageHeight)
+				top = imageHeight - newHeight;
 			var newZStr = String(newZ)+'px';
 			element.style.width = newZStr;
 			element.style.height = newZStr;
