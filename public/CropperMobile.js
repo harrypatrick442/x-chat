@@ -183,12 +183,12 @@ var Cropper = (function(){
 			return Math.sqrt(Math.pow(touch1.pageX-touch2.pageX, 2)+Math.pow(touch1.pageY-touch2.pageY, 2));
 		}
 		function getMaxTimesFingerDistance(){
-			var left = startPosition.x;
-			var top = startPosition.y;
-			var right = imageWidth- startPosition.x;
-			var bottom = imageHeight - startPosition.y;
-			var horizontal = left>right?left:right;
-			var vertical = top>bottom?top:bottom;
+			var left = startPosition.left;
+			var top = startPosition.top;
+			var right = imageWidth- (startPosition.left+startDimensions.width);
+			var bottom = imageHeight - (startPosition.top+startDimensions.height);
+			var horizontal = left<right?left:right;
+			var vertical = top<bottom?top:bottom;
 			var max = horizontal>vertical?horizontal:vertical;
 			return max / startDimensions.width;
 		}
