@@ -288,8 +288,8 @@ var Cropper = (function(){
 			var left = startPosition.left-dZ;
 			var top = startPosition.top - dZ;
 			var newZStr = String(newZ)+'px';
-			element.style.width = newZ;
-			element.style.height = newZ;
+			element.style.width = newZStr;
+			element.style.height = newZStr;
 			element.style.left = String(left)+'px';
 			element.style.top=String(top)+'px';
 		}
