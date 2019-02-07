@@ -119,6 +119,7 @@ var Cropper = (function(){
 		twoFingerTouch.onStartFinger1= function(touch){
 			calculateMoveBounds();
 			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch);
+			movedFinger1 = move;
 		};
 		twoFingerTouch.onEndFinger1= function(touch){
 			calculateMoveBounds();
@@ -144,14 +145,14 @@ var Cropper = (function(){
 			//calculateMoveBounds();
 		};
 		function getStartPositionWithOffsetForMove(touch){
-			return {x:element.clientLeft - touch.pageX, y:element.clientTop - touch.pageY};
+			return {x:element.offsetLeft - touch.pageX, y:element.offsetTop - touch.pageY};
 		}
 		function calculateMoveBounds(){
 			moveBounds = {left:0, top:0, right:getImageWidth() - element.clientWidth, bottom:getImageHeight() - element.clientHeight};
 		}
 		function move(touch, startDistanceFromMiddleToFinger){
-			var x = touch.pageX - startPositionFingerWithOffset.x;
-			var y = touch.pageY - startPositionFingerWithOffset.y;
+			var x = touch.pageX + startPositionFingerWithOffset.x;
+			var y = touch.pageY + startPositionFingerWithOffset.y;
 			if(x>moveBounds.right)
 				x=moveBounds.right;
 			else
@@ -159,9 +160,11 @@ var Cropper = (function(){
 					x = moveBounds.left;
 				
 			if(y>moveBounds.bottom)
-				y=moveBound.bottom;
+				y=moveBounds.bottom;
 			else if (y<moveBounds.left)
 				y=moveBounds.left;
+			element.style.left=String(x)+'px';
+			element.style.top=String(y)+'px';
 		}
 		function doNothing(){}
 		function movedLeftHighFinger(touch, startDistanceFromMiddleToFinger){
