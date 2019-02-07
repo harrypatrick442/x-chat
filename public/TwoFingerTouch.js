@@ -39,8 +39,8 @@ var TwoFingerTouch=(function(){
 				self.onStart({touch1:touch1, touch2:touch2, e:e});
 		}
 		function startAnywhere(e){
-			console.log(e);
 			var changedTouch = e.changedTouches[0];
+			console.log(changedTouch.identifier);
 			if(changedTouch.identifier==1){
 				finger2Active=true;
 				touch2 = changedTouch;
