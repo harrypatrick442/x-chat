@@ -275,6 +275,7 @@ var Cropper = (function(){
 			var distance = getFingerDistance();
 			var timesFingerDistance = distance/startFingerDistance;
 			console.log(timesFingerDistance);
+			console.log(maxTimesFingerDistance);
 			if(timesFingerDistance>maxTimesFingerDistance);
 				timesFingerDistance=maxTimesFingerDistance;
 			var newZ = startDimensions.width*timesFingerDistance;
