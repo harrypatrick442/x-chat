@@ -54,7 +54,7 @@ var TwoFingerTouch=(function(){
 				console.log('finger 2');
 				finger2Active=true;
 				touch2 = changedTouch;
-				self.onStartFinger2(changedTouch);
+				self.onStartFinger2(changedTouch, e);
 			}
 		}
 		function startSecondFinger(){
