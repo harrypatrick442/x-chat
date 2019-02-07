@@ -148,8 +148,6 @@ var Cropper = (function(){
 			movedFinger2(touch, startDistanceFromMiddleToFinger2);
 		};
 		twoFingerTouch.onEnd = function(touch){
-			movedFinger1 = doNothing;
-			movedFinger2 = doNothing;
 			//calculateMoveBounds();
 		};
 		function getStartPositionWithOffsetForMove(touch){
