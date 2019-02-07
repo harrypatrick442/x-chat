@@ -1,5 +1,5 @@
 var Cropper = (function(){
-	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 30;
+	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 70;
 	var _Cropper=function(params){
 		var self = this;
 		var getImageWidth= params.getImageWidth;
