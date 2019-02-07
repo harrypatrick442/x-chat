@@ -53,9 +53,9 @@ var TwoFingerTouch=(function(){
 				finger2Active=true;
 				touch2 = changedTouch;
 				self.onStartFinger2(changedTouch, e);
+				if(finger1Active&&finger2Active)
+					self.onStart({touch1:touch1, touch2:touch2, e:e});
 			}
-			if(finger1Active&&finger2Active)
-				self.onStart({touch1:touch1, touch2:touch2, e:e});
 		}
 		function startSecondFinger(){
 			
