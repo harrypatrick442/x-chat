@@ -179,7 +179,7 @@ var Cropper = (function(){
 				movedFinger2 = movedRightLowFinger;
 			}
 		};
-		function getFingerDistance(touch1, touch2){
+		function getFingerDistance(){
 			return Math.sqrt(Math.pow(touch1.pageX-touch2.pageX, 2)+Math.pow(touch1.pageY-touch2.pageY, 2));
 		}
 		function getMaxTimesFingerDistance(){
