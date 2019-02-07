@@ -48,11 +48,13 @@ var Cropper = (function(){
 		var imageHeight;
 		var startPositionFingerWithOffset;
 		var moveBounds;
+		var touch1;
+		var touch2;
 		twoFingerTouch.onStart= function(e){
 			imageWidth = getImageWidth();
 			imageHeight = getImageHeight();
-			var touch1 = e.touch1;
-			var touch2 = e.touch2;
+			touch1 = e.touch1;
+			touch2 = e.touch2;
 			startMiddleFingers = {x:(touch1.pageX+touch2.pageX)/2, y:(touch1.pageY+touch2.pageY)/2};
 			startDimensions = getCropperDimensions();
 			startPositionMiddle = getCropperPosition();
@@ -119,25 +121,30 @@ var Cropper = (function(){
 		};
 		twoFingerTouch.onStartFinger1= function(touch){
 			calculateMoveBounds();
+			touch1 = touch;
 			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch);
 			movedFinger1 = move;
 		};
 		twoFingerTouch.onEndFinger1= function(touch){
 			calculateMoveBounds();
-			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch);
+			touch1 = touch;
+			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch2);
 			movedFinger1 = doNothing;
 			movedFinger2 = move;
 		};
 		twoFingerTouch.onEndFinger2= function(touch){
 			calculateMoveBounds();
-			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch);
+			touch2 = touch;
+			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch1);
 			movedFinger1 = move;
 			movedFinger2 = doNothing;
 		};
 		twoFingerTouch.onMoveFinger1 = function(touch){
+			touch1 = touch;
 			movedFinger1(touch, startDistanceFromMiddleToFinger1);
 		};
 		twoFingerTouch.onMoveFinger2= function(touch){
+			touch2 = touch;
 			movedFinger2(touch, startDistanceFromMiddleToFinger2);
 		};
 		twoFingerTouch.onEnd = function(touch){
