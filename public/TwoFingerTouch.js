@@ -39,8 +39,6 @@ var TwoFingerTouch=(function(){
 				}else
 				startFinger2(changedTouch, e);
 			}
-			if(finger1Active&&finger2Active)
-				self.onStart({touch1:touch1, touch2:touch2, e:e});
 		}
 		function startAnywhere(e){
 			console.log('start anywhere');
@@ -56,6 +54,8 @@ var TwoFingerTouch=(function(){
 				touch2 = changedTouch;
 				self.onStartFinger2(changedTouch, e);
 			}
+			if(finger1Active&&finger2Active)
+				self.onStart({touch1:touch1, touch2:touch2, e:e});
 		}
 		function startSecondFinger(){
 			
