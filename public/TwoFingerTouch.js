@@ -37,7 +37,7 @@ var TwoFingerTouch=(function(){
 					touch1 = changedTouch;
 					self.onStartFinger1(changedTouch,  e);
 				}else
-				startFinger2(changedTouch);
+				startFinger2(changedTouch, e);
 			}
 			if(finger1Active&&finger2Active)
 				self.onStart({touch1:touch1, touch2:touch2, e:e});
@@ -47,14 +47,14 @@ var TwoFingerTouch=(function(){
 			var changedTouch = e.changedTouches[0];
 			console.log('startAnywhere identifier');
 			console.log(changedTouch.identifier);
-			startFinger2(changedTouch);
+			startFinger2(changedTouch, e);
 		}
-		function startFinger2(changedTouch){
+		function startFinger2(changedTouch, e){
 			if(changedTouch.identifier==1){
 				console.log('finger 2');
 				finger2Active=true;
 				touch2 = changedTouch;
-				self.onStartFinger2(changedTouch, e);
+				self.onStartFinger2(changedTouch);
 			}
 		}
 		function startSecondFinger(){
