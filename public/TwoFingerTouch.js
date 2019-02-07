@@ -28,7 +28,9 @@ var TwoFingerTouch=(function(){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
 					finger1Active=true;
-					documentElement.addEventListener('touchstart', startAnywhere);
+					new Task(function(){
+						documentElement.addEventListener('touchstart', startAnywhere);
+					}).run();
 					documentElement.addEventListener('touchmove', move);
 					documentElement.addEventListener('touchend', end);
 					touch1 = changedTouch;
