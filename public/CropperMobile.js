@@ -283,10 +283,9 @@ var Cropper = (function(){
 			if(timesFingerDistance>maxTimesFingerDistance)
 				timesFingerDistance=maxTimesFingerDistance;
 			var newZ = startDimensions.width*timesFingerDistance;
-			var dZ = newZ - startDimensions.width;
-			console.log(dZ);
-			var left = startPosition.left-dZ;
-			var top = startPosition.top - dZ;
+			var dZOverTwo = (newZ - startDimensions.width)/2;
+			var left = startPosition.left-dZOverTwo;
+			var top = startPosition.top - dZOverTwo;
 			var newZStr = String(newZ)+'px';
 			element.style.width = newZStr;
 			element.style.height = newZStr;
