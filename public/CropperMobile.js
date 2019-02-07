@@ -201,23 +201,27 @@ var Cropper = (function(){
 			resize();
 		}
 		function movedRightFingerHorizontalResize (touch, startDistanceFromMiddleToFinger){
-			rightDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
+			rightDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			*startDimensions.halfWidth);
+			if(rightDistanceFromMiddle <MIN_WIDTH_HEIGHT)rightDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resizeHorizontal();
 		}
 		function movedLeftFingerHorizontalResize(touch, startDistanceFromMiddleToFinger){
-			leftDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
+			leftDistanceFromMiddle = (getProportionChangeDistanceFromMiddleHorizontal(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			*startDimensions.halfWidth);
+			if(leftDistanceFromMiddle <MIN_WIDTH_HEIGHT)leftDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resizeHorizontal();
 		}
 		function movedTopFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
-			topDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
+			topDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			*startDimensions.halfHeight);
+			if(topDistanceFromMiddle <MIN_WIDTH_HEIGHT)topDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resizeVertical();
 		}
 		function movedBottomFingerVerticalResize(touch, startDistanceFromMiddleToFinger){
-			bottomDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers)
+			bottomDistanceFromMiddle = (getProportionChangeDistanceFromMiddleVertical(touch, startDistanceFromMiddleToFinger, startMiddleFingers);
 			*startDimensions.halfHeight);
+			if(bottomDistanceFromMiddle <MIN_WIDTH_HEIGHT)bottomDistanceFromMiddle= MIN_WIDTH_HEIGHT;
 			resizeVertical();
 		}
 		function resize(){
