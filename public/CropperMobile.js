@@ -1,5 +1,5 @@
 var Cropper = (function(){
-	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 30;
+	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 45;
 	const MIN_WIDTH_HEIGHT=70;
 	var _Cropper=function(params){
 		var self = this;
@@ -127,14 +127,12 @@ var Cropper = (function(){
 		};
 		twoFingerTouch.onEndFinger1= function(touch){
 			calculateMoveBounds();
-			touch1 = touch;
 			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch2);
 			movedFinger1 = doNothing;
 			movedFinger2 = move;
 		};
 		twoFingerTouch.onEndFinger2= function(touch){
 			calculateMoveBounds();
-			touch2 = touch;
 			startPositionFingerWithOffset = getStartPositionWithOffsetForMove(touch1);
 			movedFinger1 = move;
 			movedFinger2 = doNothing;
