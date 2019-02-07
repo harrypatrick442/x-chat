@@ -287,9 +287,8 @@ var Cropper = (function(){
 				top=0;
 			else if(top + newHeight>imageHeight)
 				top = imageHeight - newHeight;
-			var newZStr = String(newZ)+'px';
-			element.style.width = newZStr;
-			element.style.height = newZStr;
+			element.style.width = String(newWidth)+'px';
+			element.style.height=String(newHeight)+'px';
 			element.style.left = String(left)+'px';
 			element.style.top=String(top)+'px';
 		}
