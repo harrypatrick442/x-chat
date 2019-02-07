@@ -190,7 +190,7 @@ var Cropper = (function(){
 			var horizontal = leftright?left:right;
 			var vertical = top<bottom?top:bottom;*/
 			if(imageWidth>imageHeight*aspectRatio)
-				return imageHeight*aspectRatio;
+				return imageHeight*aspectRatio/startDimensions.width;
 			return imageHeight/startDimensions.width;
 			//var max = horizontal<vertical?horizontal:vertical; console.log(max);
 			//return (max+startDimensions.width) / startDimensions.width;
