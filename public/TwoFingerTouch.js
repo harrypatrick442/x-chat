@@ -2,11 +2,11 @@ var TwoFingerTouch=(function(){
 	var _TwoFingerTouch=function(params){
 		var self = this;
 		var element = params.element;
-		var efficientMovingCycle = new EfficientMovingCycle({element:element});
 		var finger2Active=false;
 		var finger1Active = false;
 		var touch1;
 		var touch2;
+		var documentElement = document.documentElement;
 		this.onStart=doNothing;
 		this.onStartFinger1 = doNothing;
 		this.onStartFinger2=doNothing;
@@ -20,26 +20,38 @@ var TwoFingerTouch=(function(){
 		//onEndFinger1-2
 		//onStart when both fingers are down
 		//onEnd when both fingers are up.
-		efficientMovingCycle.onStart = function(e){
+		element.addEventListener('touchstart', start);
+		function start(e){
 			
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
 					finger1Active=true;
+					documentElement.addEventListener('touchstart', startAnywhere);
+					documentElement.addEventListener('touchmove', move);
+					documentElement.addEventListener('touchend', end);
 					touch1 = changedTouch;
 					self.onStartFinger1(changedTouch,  e);
-				}
-				if(changedTouch.identifier==1){
-					finger2Active=true;
-					touch2 = changedTouch;
-					self.onStartFinger2(changedTouch, e);
 				}
 			}
 			if(finger1Active&&finger2Active)
 				self.onStart({touch1:touch1, touch2:touch2, e:e});
-		};
-		efficientMovingCycle.onMove = function(e){
+		}
+		function startAnywhere(e){
+			var changedTouch = e.changedTouches[0];
+			if(changedTouch.identifier==1){
+				finger2Active=true;
+				touch2 = changedTouch;
+				self.onStartFinger2(changedTouch, e);
+			}
+		}
+		function startFinger2(changedTouch){
+		}
+		function startSecondFinger(){
+			
+		}
+		function move(e){
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
@@ -51,12 +63,13 @@ var TwoFingerTouch=(function(){
 				}
 			}
 		};
-		efficientMovingCycle.onEnd= function(e){
+		function end(e){
 			var changedTouches = e.changedTouches;
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
 					finger1Active=false;
+					documentElement.removeEventListener('touchstart', startAnywhere);
 					self.onEndFinger1(changedTouch,  e);
 				}
 				if(changedTouch.identifier==1){
@@ -66,7 +79,8 @@ var TwoFingerTouch=(function(){
 			}
 			var active = finger1Active||finger2Active;
 			if(active)return true;
-			console.log('onEnd finally');
+			documentElement.removeEventListener('touchmove', move);
+			documentElement.removeEventListener('touchend', end);
 			self.onEnd(e);
 		};
 		function doNothing(){}
