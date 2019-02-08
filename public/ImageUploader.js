@@ -16,19 +16,24 @@ var ImageUploader = new (function(){
 		this.show = function(){
 			popup.show();
 		};
+		buttonAccept.addEventListener('click', showUploading);
+		buttonReject.addEventListener('click', showFileUploader);
 		function hide(){
 			popup.hide();
 		}
 		function gotFile(e){
-			croppingFrame.load(e.dataUrl);
-			ui.setCroppingMenuVisible(true);
-			fileUploader.setVisible(false);
+			console.log(e);
+			console.log(e);
+			showCroppingFrame(e.dataUrl);
 		}
 		function croppingFrameError(e){
 			console.log(e.error);
 			croppingFrame.hide();
 			fileUploader.setVisible(false);
 		}
+		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);}
+		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true);}
+		function showUploading(){fileUploader.setVisible(false); croppingFrame.hide(); ui.setCroppingMenuVisible(false);}
 	};
 	return _ImageUploader;
 	function UI(params){

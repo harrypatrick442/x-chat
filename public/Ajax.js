@@ -1,13 +1,21 @@
 var Ajax = (function(){
+	
+	const DEFAULT_CONTENT_TYPE='application/json';
 	var _Ajax= function(url){
-		this.post = function(obj, callbackSuccessful, callbackFailed){
-			_Ajax.post(url, obj, callbackSuccessful, callbackFailed);
+		this.post = function(params){
+			params.url = url?url:params.url;
+			_Ajax.post(params);
 		};
 	};
-	_Ajax.post= function(url, obj, callbackSuccessful, callbackFailed){
+	_Ajax.post= function(params){
+		var url = params.url;
+		var body = params.body;
+		var callbackSuccessful = params.callbackSuccessful;
+		var callbackFailed= params.callbackFailed;
+		var contentType = params.contentType?params.contentType:DEFAULT_CONTENT_TYPE;
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', url, true);
-		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Content-Type', contentType);
 		xhr.onload = function() {
 			if (xhr.readyState === 4)
 			{
@@ -18,10 +26,11 @@ var Ajax = (function(){
 					return;
 				}
 				console.log('Request failed.  Returned status of ' + xhr.status);
-				if(callbackFailed)callbackFailed();
+				callbackFailed&&callbackFailed();
 			}
 		};
-		xhr.send(JSON.stringify(obj));
+		xhr.send(body);
+		return xhr;
 	};
 	return _Ajax;
 })();

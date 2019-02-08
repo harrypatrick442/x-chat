@@ -9,6 +9,7 @@ var FileUploader = (function(){
 		this.setVisible = ui.setVisible;
 		ui.addEventListener('filechange', fileChange);
 		function fileChange(e){
+			console.log(e);
 			var files = e.files;
 			if(files.length<1)return;
 			openFile(files[0]);
@@ -21,6 +22,7 @@ var FileUploader = (function(){
 				dispatchFile(dataUrl);
 			};
 			fileReader.readAsDataURL(file);
+			ui.clearFile();
 		}
 		function dispatchFile(dataUrl){
 			self.dispatchEvent({type:'file', dataUrl:dataUrl});
@@ -45,6 +47,9 @@ var FileUploader = (function(){
 			element.style.display=value?'block':'none';
 		};
 		fileInput.addEventListener('change', dispatchFileChange);
+		this.clearFile=function(){
+			fileInput.value='';
+		};
 		function dispatchFileChange(e){
 			self.dispatchEvent({type:'filechange', files:fileInput.files});
 		}

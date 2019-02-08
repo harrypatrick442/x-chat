@@ -47,7 +47,7 @@ var CroppingFrame = new (function () {
 		function clear(){
 			if(img)
 			{
-				element.removeChild(img);
+				imgWrapper.removeChild(img);
 			}
 			img=undefined;
 		}
