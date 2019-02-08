@@ -4,10 +4,12 @@ var ImageUploader = new (function(){
 		var self = this;
 		var aspectRatio = params.aspectRatio;
 		var buttonClose = new Button({ className:'button-close'});
+		var buttonAccept = new Button({className:'button-accept'});
+		var buttonReject = new Button({className:'button-reject'});
 		var fileUploader = new FileUploader({accept:'image/*'});
 		var popup = new Popup({});
 		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
-		var ui = new UI({popup:popup, buttonClose:buttonClose, croppingFrame:croppingFrame, fileUploader:fileUploader});
+		var ui = new UI({popup:popup, buttonClose:buttonClose, buttonAccept:buttonAccept, buttonReject:buttonReject, croppingFrame:croppingFrame, fileUploader:fileUploader});
 		buttonClose.addEventListener('click', hide);
 		fileUploader.addEventListener('file', gotFile);
 		croppingFrame.addEventListener('error', croppingFrameError);
@@ -30,6 +32,8 @@ var ImageUploader = new (function(){
 	return _ImageUploader;
 	function UI(params){
 		var buttonClose = params.buttonClose;
+		var buttonAccept = params.buttonAccept;
+		var buttonReject = params.buttonReject;
 		var croppingFrame = params.croppingFrame;
 		var fileUploader = params.fileUploader;
 		var element = params.popup.getElement();
@@ -38,15 +42,17 @@ var ImageUploader = new (function(){
 		inner.classList.add('inner');
 		var heading = E.DIV();
 		heading.classList.add('heading');
-		var bottom = E.DIV();
-		bottom.classList.add('bottom');
+		var croppingMenu = E.DIV();
+		croppingMenu.classList.add('cropping-menu');
 		document.body.appendChild(element);
 		element.appendChild(inner);
 		inner.appendChild(heading);
 		heading.appendChild(buttonClose.getElement());
+		croppingMenu.appendChild(buttonAccept.getElement());
+		croppingMenu.appendChild(buttonReject.getElement());
 		inner.appendChild(croppingFrame.getElement());
 		inner.appendChild(fileUploader.getElement());
-		//inner.appendChild(bottom);
+		inner.appendChild(croppingMenu);
 		this.setHeading = function(text){
 			heading.innerHTML = text;
 		};
