@@ -36,33 +36,42 @@
 	cursor:pointer;
 	margin-top:30px;
 }
-.image-uploader .inner .cropping-menu{
-	width:100%;
+.image-uploader .inner .cropping-menu .button-wrapper{
+	width:50%;
 	height:auto;
-	padding:3px;
+	text-align:center;
+	box-sizing:border-box;
+	display:inline-block;
 }
 .image-uploader .inner .cropping-menu .button-accept{
-	width:45px;
-	height:25px;
+	width:50px;
+	height:50px;
+	display:inline-block;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/accept.png');	
+	background-image:url('/images/tick.png');	
 	cursor:pointer;
+	box-sizing:border-box;
 }
 .image-uploader .inner .cropping-menu .button-accept:hover{
-	background-image:url('/images/accept-hover.png');	
+	background-image:url('/images/tick-hover.png');	
+}
+.image-uploader .inner .cropping-menu{
+	display:none;
 }
 .image-uploader .inner .cropping-menu .button-reject{
-	width:45px;
-	height:25px;
+	width:50px;
+	height:50px;
+	display:inline-block;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/reject.png');	
+	background-image:url('/images/cross.png');	
 	cursor:pointer;
+	box-sizing:border-box;
 	
 }
-.image-uploader .inner .cropping-menu .button-accept:hover{
-	background-image:url('/images/reject-hover.png');	
+.image-uploader .inner .cropping-menu .button-reject:hover{
+	background-image:url('/images/cross-hover.png');	
 }
 .image-uploader .inner .cropping-frame{
 	display:none;
@@ -72,7 +81,7 @@
 	position:relative;
 	flex-grow:1;
 	position:relative;
-	margin-bottom:10px;
+	margin-bottom:3px;
 }
 .image-uploader .inner .cropping-frame .img-wrapper{
 	display:block;

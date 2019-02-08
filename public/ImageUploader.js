@@ -21,6 +21,7 @@ var ImageUploader = new (function(){
 		}
 		function gotFile(e){
 			croppingFrame.load(e.dataUrl);
+			ui.setCroppingMenuVisible(true);
 			fileUploader.setVisible(false);
 		}
 		function croppingFrameError(e){
@@ -42,19 +43,31 @@ var ImageUploader = new (function(){
 		inner.classList.add('inner');
 		var heading = E.DIV();
 		heading.classList.add('heading');
+		var buttonWrapperAccept = buttonWrapper();
+		var buttonWrapperReject = buttonWrapper();
 		var croppingMenu = E.DIV();
 		croppingMenu.classList.add('cropping-menu');
 		document.body.appendChild(element);
 		element.appendChild(inner);
 		inner.appendChild(heading);
 		heading.appendChild(buttonClose.getElement());
-		croppingMenu.appendChild(buttonAccept.getElement());
-		croppingMenu.appendChild(buttonReject.getElement());
+		buttonWrapperAccept.appendChild(buttonAccept.getElement());
+		buttonWrapperReject.appendChild(buttonReject.getElement());
+		croppingMenu.appendChild(buttonWrapperReject);
+		croppingMenu.appendChild(buttonWrapperAccept);
 		inner.appendChild(croppingFrame.getElement());
 		inner.appendChild(fileUploader.getElement());
 		inner.appendChild(croppingMenu);
 		this.setHeading = function(text){
 			heading.innerHTML = text;
 		};
+		this.setCroppingMenuVisible = function(value){
+			croppingMenu.style.display=value?'flex':'none';
+		};
+		function buttonWrapper(){
+			var element = E.DIV();
+			element.classList.add('button-wrapper');
+			return element;
+		}
 	}
 })();
