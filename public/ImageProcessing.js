@@ -1,5 +1,5 @@
 var ImageProcessing= new (function(){
-	this.getImagePortion = function(img, newWidth, newHeight, startX, startY, ratio){
+	this.getImagePortion = function(img, newWidth, newHeight, startX, startY, ratio, format){
 		console.log(newWidth);
 		console.log(newHeight);
 		console.log(startX);
@@ -15,6 +15,6 @@ var ImageProcessing= new (function(){
 		bufferCanvas.height = img.height;
 		bufferCanvasContext.drawImage(img, 0, 0);
 		portionCanvasContext.drawImage(bufferCanvas, startX, startY, newWidth*ratio, newHeight*ratio, 0, 0, newWidth, newHeight);
-		return portionCanvas.toDataURL();
+		return portionCanvas.toDataURL(format);
 	};
 })();

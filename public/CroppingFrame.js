@@ -28,8 +28,9 @@ var CroppingFrame = new (function () {
 			if(aspectRatio){
 				var position = cropper.getPosition();
 			    var dimensions = cropper.getDimensions();
+				var format = params.format?params.format:"image/jpeg";
 				var ratio = params.desiredWidth?params.desiredWidth/dimensions.width:(params.desiredHeight?params.desiredHeight*aspectRatio/dimensions.width:1); 
-				dataUrl = ImageProcessing.getImagePortion(img, dimensions.width, dimensions.height, position.left, position.top, ratio);
+				dataUrl = ImageProcessing.getImagePortion(img, dimensions.width, dimensions.height, position.left, position.top, ratio, format);
 			}
 			return dataUrl;
 		};

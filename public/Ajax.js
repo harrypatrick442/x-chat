@@ -42,7 +42,7 @@ var Ajax = (function(){
 					
 					successful = true;
 					done();
-					callbackSuccessful(xhr.responseText);
+					callbackSuccessful&&callbackSuccessful(xhr.responseText);
 					return;
 				}
 				successful= false;
