@@ -6,12 +6,12 @@ var FileSender = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var url = params.url;
-		var sequentially = parmas.sequentially;
+		var sequentially = params.sequentially;
 		var ajax = new Ajax({url:url});
 		var queue = [];
-		this.queueFile = function(data){
+		this.queue = function(data){
 			var sender = new Sender({data:data, ajax:ajax});
-			var Handle = new Handle(sender);
+			var handle = new Handle(sender);
 			if(sequentially){
 				queue.push(sender);
 				if(queue.length<2){

@@ -3,10 +3,13 @@ var ImageUploader = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var aspectRatio = params.aspectRatio;
+		var profiles = params.profiles;
+		var desiredSizes = params.desiredSizes;
 		var buttonClose = new Button({ className:'button-close'});
 		var buttonAccept = new Button({className:'button-accept'});
 		var buttonReject = new Button({className:'button-reject'});
 		var fileUploader = new FileUploader({accept:'image/*'});
+		var fileSender = new FileSender({});
 		var popup = new Popup({});
 		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
 		var ui = new UI({popup:popup, buttonClose:buttonClose, buttonAccept:buttonAccept, buttonReject:buttonReject, croppingFrame:croppingFrame, fileUploader:fileUploader});
@@ -32,6 +35,11 @@ var ImageUploader = new (function(){
 			fileUploader.setVisible(false);
 		}
 		function cropAndUpload(){
+			each(profiles, function(profile){
+				var dataUrl = croppingFrame.getCroppedImage({desiredWidth:profile.desiredWidth});
+				console.log(dataUrl);
+				fileSender.queue({dataUrl:dataUrl, profile:profile});
+			});
 		}
 		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);}
 		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true);}

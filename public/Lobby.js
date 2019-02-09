@@ -1,4 +1,8 @@
 var Lobby = (function(){
+	const SMALL='small';
+	const LARGE='large';
+	const IMAGE_WIDTH_SMALL=64;
+	const IMAGE_WIDTH_LARGE=256;
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;
@@ -17,7 +21,7 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu, getNDevice:getNDevice});
-		var imageUploader = new ImageUploader({aspectRatio:1});
+		var imageUploader = new ImageUploader({aspectRatio:1, profiles:[{desiredWidth:IMAGE_WIDTH_SMALL, name:SMALL}, {desiredWidth:IMAGE_WIDTH_LARGE, name:LARGE}]});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});
