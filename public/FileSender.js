@@ -56,15 +56,15 @@ var FileSender = (function(){
 		function sending(ajaxHandle){
 			ajaxHandle.onDone=dispatchDone;
 			ajaxHandle.onProgress=onProgress;
-			dispatchSending();
+			onSending();
 		}
 		function dispatchDone(){
 			self.dispatchEvent({type:DONE, sender:sender});
 		}
-		function onProgress(){
-			self.onProgress&&self.onProgress();
+		function onProgress(proportion){
+			self.onProgress&&self.onProgress(proportion);
 		}
-		function dispatchSending(){
+		function onSending(){
 			self.onSending&&self.onSending();
 		}
 	}
@@ -75,8 +75,8 @@ var FileSender = (function(){
 		sender.addEventListener(DONE, dispatchDone);
 		sender.onProgress = dispatchProgress;
 		sender.onSending = dispatchSending;
-		function dispatchProgress(progress){
-			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, progress:progress});
+		function dispatchProgress(proportion){
+			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, percent:proportion*100, proportion:proportion});
 		}
 		function dispatchDone(){
 			self.dispatchEvent({type:DONE, sendingHandle:self, success:sender.getSuccess()});
