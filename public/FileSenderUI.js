@@ -20,6 +20,7 @@ var FileSenderUI=(function(){
 		var element = E.DIV();
 		element.classList.add('sending');
 		var progressBar = new ProgressBar({});
+		element.appendChild(progressBar.getElement());
 		this.getElement = function(){
 			return element;
 		};
