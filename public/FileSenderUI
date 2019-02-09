@@ -1,0 +1,155 @@
+.image-uploader{
+	height:400px;
+	max-height:100%;
+	background-color:rgb(44, 43, 43);
+	overflow: auto;
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+	padding:6px;
+	box-sizing:border-box;
+	border:1px solid #000000;
+	display:none;
+}
+.image-uploader .inner{
+	background-color:rgb(32, 31, 31);
+	width:100%;
+	height:100%;
+	flex-flow:column;
+	display:flex;
+	overflow:hidden;
+}
+.image-uploader .inner .file-uploader{
+	width:100%;
+	height:100px;
+	max-height:100%;
+	text-align:center;
+}
+.image-uploader .inner .file-uploader .button{
+	width:100px;
+	height:100px;
+	max-width:100%;
+	display:inline-block;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/upload-file.png');	
+	cursor:pointer;
+	margin-top:30px;
+}
+.image-uploader .inner .cropping-menu .button-wrapper{
+	width:50%;
+	height:auto;
+	text-align:center;
+	box-sizing:border-box;
+	display:inline-block;
+}
+.image-uploader .inner .cropping-menu .button-accept{
+	width:50px;
+	height:50px;
+	display:inline-block;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/tick.png');	
+	cursor:pointer;
+	box-sizing:border-box;
+}
+.image-uploader .inner .cropping-menu .button-accept:hover{
+	background-image:url('/images/tick-hover.png');	
+}
+.image-uploader .inner .cropping-menu{
+	display:none;
+}
+.image-uploader .inner .cropping-menu .button-reject{
+	width:50px;
+	height:50px;
+	display:inline-block;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/cross.png');	
+	cursor:pointer;
+	box-sizing:border-box;
+	
+}
+.image-uploader .inner .cropping-menu .button-reject:hover{
+	background-image:url('/images/cross-hover.png');	
+}
+.image-uploader .inner .cropping-frame{
+	display:none;
+	width: 100%;
+	box-sizing:border-box;
+	background-color:#000000;
+	position:relative;
+	flex-grow:1;
+	position:relative;
+	margin-bottom:3px;
+}
+.image-uploader .inner .cropping-frame .img-wrapper{
+	display:block;
+	max-width: 100%;
+	height:auto;
+	position:relative;
+}
+.image-uploader .inner .cropping-frame .img-wrapper img{
+	width:100%;
+	height:100%;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper{
+	position:absolute;
+	border-style:dashed;
+	border-width:1px;
+	border-color:#888888;
+	width:100px;
+	height:100px;
+	cursor:move;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner{
+	position:absolute;
+	width:6px;
+	height:6px;
+	border:1px solid #777777;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top-left{
+	top:-6px;
+	left:-6px;
+	cursor:nw-resize;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top-right{
+	top:-6px;
+	right:-6px;
+	cursor:ne-resize;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-bottom-left{
+	bottom:-6px;
+	left:-6px;
+	cursor:sw-resize;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-bottom-right{
+	bottom:-6px;
+	right:-6px;
+	cursor:se-resize;
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-top{
+	top:-6px;
+	left:50%;
+	left:calc(50% - 3px);
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-left{
+	left:-6px;
+	top:50%;
+	top:calc(50% - 3px);
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-right{
+	right:-6px;
+	top:50%;
+	top:calc(50% - 3px);
+}
+.image-uploader .inner .cropping-frame .img-wrapper .cropper .corner-bottom{
+	bottom:-6px;
+	left:50%;
+	left:calc(50% - 3px);
+}
+.image-uploader .inner .heading{
+	width:100%;
+	height:32px;
+	margin-bottom:10px;
+}

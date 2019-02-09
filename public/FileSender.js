@@ -1,4 +1,7 @@
 var FileSender = (function(){
+	const DONE='done';
+	const SENDING='sending';
+	const PROGRESS='progress';
 	var _FileSender = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
@@ -8,7 +11,7 @@ var FileSender = (function(){
 		var queue = [];
 		this.queueFile = function(data){
 			var sender = new Sender({data:data, ajax:ajax});
-			var sendingHandle = new SendingHandle(sender);
+			var Handle = new Handle(sender);
 			if(sequentially){
 				queue.push(sender);
 				if(queue.length<2){
@@ -17,20 +20,20 @@ var FileSender = (function(){
 			}
 			else
 				new Task(function(){sender.send();}).run();
-			return sendingHandle;
+			return handle;
 		};
 		function sendNext(){
 			if(queue.length<1)return false;
 			var nextSender = queue.splice(0, 1)[0];
-			nextSender.addEventListener('done', doneSend);
+			nextSender.addEventListener(DONE, doneSend);
 			return true;
 		}
 		function doneSend(e){
-			e.sender.removeEventListener('done');
+			e.sender.removeEventListener(DONE);
 			sendNext()&&dispatchDone();
 		}
 		function dispatchDone(){
-			self.dispatchEvent({type:'done'});
+			self.dispatchEvent({type:DONE});
 		}
 	};
 	return _FileSender;
@@ -46,32 +49,40 @@ var FileSender = (function(){
 		};
 		this.abort = function(){
 			ajaxHandle&&ajaxHandle.abort();
-		}:
+		};
 		this.getSuccess = function(){
 			return ajaxHandler.getSuccess();
 		};
 		function sending(ajaxHandle){
 			ajaxHandle.onDone=dispatchDone;
 			ajaxHandle.onProgress=onProgress;
+			dispatchSending();
 		}
 		function dispatchDone(){
-			self.dispatchEvent({type:'done', sender:sender});
+			self.dispatchEvent({type:DONE, sender:sender});
 		}
 		function onProgress(){
 			self.onProgress&&self.onProgress();
 		}
+		function dispatchSending(){
+			self.onSending&&self.onSending();
+		}
 	}
-	function SendingHandle(sender){
+	function Handle(sender){
 		EventEnabledBuilder(this);
 		var self = this;
 		this.abort = sender.abort;
-		sender.addEventListener('done', dispatchDone);
+		sender.addEventListener(DONE, dispatchDone);
 		sender.onProgress = dispatchProgress;
+		sender.onSending = dispatchSending;
 		function dispatchProgress(progress){
-			self.dispatchEvent({type:'progress',  sendingHandle:self, progress:progress});
+			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, progress:progress});
 		}
 		function dispatchDone(){
-			self.dispatchEvent({type:'done', sendingHandle:self, success:sender.getSuccess()});
+			self.dispatchEvent({type:DONE, sendingHandle:self, success:sender.getSuccess()});
+		}
+		function dispatchSending(){
+			self.dispatchEvent({type:SENDING, handle:self});
 		}
 	}
 })();

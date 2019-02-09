@@ -1,0 +1,11 @@
+.progress-bar{
+	width:100%;
+	height:30px;
+	box-sizing:border-box;
+}
+.progress-bar{
+	background-color:#232323;
+	float:left;
+	height:100%;
+	position:relative;
+}
