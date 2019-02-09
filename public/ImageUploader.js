@@ -9,7 +9,7 @@ var ImageUploader = new (function(){
 		var buttonAccept = new Button({className:'button-accept'});
 		var buttonReject = new Button({className:'button-reject'});
 		var fileUploader = new FileUploader({accept:'image/*'});
-		var fileSender = new FileSender({});
+		var fileSender = new FileSender({url:params.url});
 		var popup = new Popup({});
 		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
 		var ui = new UI({popup:popup, buttonClose:buttonClose, buttonAccept:buttonAccept, buttonReject:buttonReject, croppingFrame:croppingFrame, fileUploader:fileUploader});
@@ -38,7 +38,7 @@ var ImageUploader = new (function(){
 			each(profiles, function(profile){
 				var dataUrl = croppingFrame.getCroppedImage({desiredWidth:profile.desiredWidth});
 				console.log(dataUrl);
-				fileSender.queue({dataUrl:dataUrl, profile:profile});
+				fileSender.queue(JSON.stringify({dataUrl:dataUrl, profile:profile}));
 			});
 		}
 		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);}

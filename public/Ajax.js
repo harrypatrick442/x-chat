@@ -61,7 +61,7 @@ var Ajax = (function(){
 			return successful;
 		};
 		function done(){
-			self.onDone&&onDone(self);
+			self.onDone&&self.onDone(self);
 		}
 		function onProgress(e){
 			self.onProgress&&self.onProgress(e.total?(e.loaded/e.total):1);

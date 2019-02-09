@@ -41,7 +41,7 @@ var FileSender = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var ajax = params.ajax;
-		var dataUrl = dataUrl;
+		var data = params.data;
 		var ajaxHandle;
 		this.send= function(){
 			ajaxHandle = ajax.post({data:data});
@@ -50,8 +50,8 @@ var FileSender = (function(){
 		this.abort = function(){
 			ajaxHandle&&ajaxHandle.abort();
 		};
-		this.getSuccess = function(){
-			return ajaxHandler.getSuccess();
+		this.getSuccessful = function(){
+			return ajaxHandle.getSuccessful();
 		};
 		function sending(ajaxHandle){
 			ajaxHandle.onDone=dispatchDone;
@@ -59,7 +59,7 @@ var FileSender = (function(){
 			onSending();
 		}
 		function dispatchDone(){
-			self.dispatchEvent({type:DONE, sender:sender});
+			self.dispatchEvent({type:DONE, sender:self});
 		}
 		function onProgress(proportion){
 			self.onProgress&&self.onProgress(proportion);
@@ -79,7 +79,7 @@ var FileSender = (function(){
 			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, percent:proportion*100, proportion:proportion});
 		}
 		function dispatchDone(){
-			self.dispatchEvent({type:DONE, sendingHandle:self, success:sender.getSuccess()});
+			self.dispatchEvent({type:DONE, sendingHandle:self, successful:sender.getSuccessful()});
 		}
 		function dispatchSending(){
 			self.dispatchEvent({type:SENDING, handle:self});
