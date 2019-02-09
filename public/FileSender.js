@@ -20,13 +20,17 @@ var FileSender = (function(){
 			return sendingHandle;
 		};
 		function sendNext(){
-			if(queue.length<1)return;
+			if(queue.length<1)return false;
 			var nextSender = queue.splice(0, 1)[0];
 			nextSender.addEventListener('done', doneSend);
+			return true;
 		}
 		function doneSend(e){
 			e.sender.removeEventListener('done');
-			sendNext();
+			sendNext()&&dispatchDone();
+		}
+		function dispatchDone(){
+			self.dispatchEvent({type:'done'});
 		}
 	};
 	return _FileSender;
@@ -40,9 +44,9 @@ var FileSender = (function(){
 			ajaxHandle = ajax.post({data:data});
 			sending(ajaxHandle);
 		};
-		this.cancel = function(){
-			
-		};	
+		this.abort = function(){
+			ajaxHandle&&ajaxHandle.abort();
+		}:
 		this.getSuccess = function(){
 			return ajaxHandler.getSuccess();
 		};
@@ -60,11 +64,11 @@ var FileSender = (function(){
 	function SendingHandle(sender){
 		EventEnabledBuilder(this);
 		var self = this;
-		this.cancel = sender.cancel;
+		this.abort = sender.abort;
 		sender.addEventListener('done', dispatchDone);
 		sender.onProgress = dispatchProgress;
 		function dispatchProgress(progress){
-			self.dispatchEvent({type:'progress', progress:progress});
+			self.dispatchEvent({type:'progress',  sendingHandle:self, progress:progress});
 		}
 		function dispatchDone(){
 			self.dispatchEvent({type:'done', sendingHandle:self, success:sender.getSuccess()});

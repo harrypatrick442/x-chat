@@ -56,6 +56,7 @@ var Ajax = (function(){
 		this.getXhr = function(){
 			return xhr;
 		};
+		this.abort = xhr.abort;
 		this.getSuccessful = function(){
 			return successful;
 		};
