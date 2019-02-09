@@ -12,8 +12,6 @@ var FileSenderUI=(function(){
 			var sending = new Sending(handle);
 			sendings.push(sending);
 			entries.appendChild(sending.getElement());
-			handle.addEventListener('sending', 
-			
 		}
 	};
 	function Sending(handle){

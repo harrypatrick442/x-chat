@@ -61,6 +61,9 @@ var Cropper = (function(){
 			//var absolute = getAbsolute(element);
 			return {left:e.pageX, top:e.pageY};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
+		this.getDimensions = funciton(){
+			return {width:element.clientWidth, height:element.clientHeight};
+		};
 		this.getX = function(){
 			return getLeft()+(getWidth()/2);
 		};

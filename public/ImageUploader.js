@@ -16,7 +16,7 @@ var ImageUploader = new (function(){
 		this.show = function(){
 			popup.show();
 		};
-		buttonAccept.addEventListener('click', showUploading);
+		buttonAccept.addEventListener('click', cropAndUpload);
 		buttonReject.addEventListener('click', showFileUploader);
 		function hide(){
 			popup.hide();
@@ -30,6 +30,8 @@ var ImageUploader = new (function(){
 			console.log(e.error);
 			croppingFrame.hide();
 			fileUploader.setVisible(false);
+		}
+		function cropAndUpload(){
 		}
 		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);}
 		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true);}

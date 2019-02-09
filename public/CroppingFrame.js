@@ -23,6 +23,16 @@ var CroppingFrame = new (function () {
 			element.style.display='none';
 		};
 		this.load = load;
+		this.getCroppedImage = function(params){
+			var dataUrl;
+			if(aspectRatio){
+				var position = cropper.getPosition();
+			    var dimensions = cropper.getDimensions();
+				var ratio = params.desiredWidth?params.desiredWidth/dimensions.width:(params.desiredHeight?params.desiredHeight*aspectRatio/dimensions.width:1); 
+				dataUrl = ImageProcessing.getImagePortion(img, dimensions.width, dimensions.height, position.left, position.top, ratio);
+			}
+			return dataUrl;
+		};
 		function getImageWidth(){
 			return imgWrapper.clientWidth;
 		}
