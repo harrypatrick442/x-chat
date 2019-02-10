@@ -15,10 +15,11 @@ var ImageProcessing= new (function(){
 		portionCanvasContext.drawImage(bufferCanvas, cropperLeft, cropperTop, cropperWidth, cropperHeight, 0, 0,
 		finalCroppedWidth,
 		finalCroppedHeight);
+		/*
 		document.documentElement.appendChild(bufferCanvas);
 	bufferCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
 		document.documentElement.appendChild(portionCanvas);
-	portionCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
+	portionCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000*/
 		return portionCanvas.toDataURL(format);
 	};
 })();
