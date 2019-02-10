@@ -31,8 +31,7 @@ var CroppingFrame = new (function () {
 			    var dimensions = cropper.getDimensions();
 				console.log(dimensions);
 				var format = params.format?params.format:"image/jpeg";
-				var ratio = 1/(params.desiredWidth?params.desiredWidth/dimensions.width:(params.desiredHeight?params.desiredHeight*aspectRatio/dimensions.width:1)); 
-				dataUrl = ImageProcessing.crop(img, imageWidthRaw, imageHeightRaw, dimensions.width, dimensions.height, position.left, position.top, ratio, format);
+				dataUrl = ImageProcessing.crop(img, imageWidthRaw, imageHeightRaw, dimensions.width, dimensions.height, position.left, position.top, format, 100, 100);
 			}
 			return dataUrl;
 		};
