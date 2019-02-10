@@ -36,7 +36,7 @@ var ImageUploader = new (function(){
 		}
 		function cropAndUpload(){
 			each(profiles, function(profile){
-				var dataUrl = croppingFrame.getCroppedImage({desiredWidth:profile.desiredWidth});
+				var dataUrl = croppingFrame.getCroppedImage({ profile:profile});
 				console.log(dataUrl);
 				fileSender.queue(JSON.stringify({dataUrl:dataUrl, profile:profile}));
 			});

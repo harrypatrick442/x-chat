@@ -24,15 +24,13 @@ var CroppingFrame = new (function () {
 		};
 		this.load = load;
 		this.getCroppedImage = function(params){
-			var dataUrl;
-			if(aspectRatio){
-				var position = cropper.getPosition();
-				console.log(position);
-			    var dimensions = cropper.getDimensions();
-				console.log(dimensions);
-				var format = params.format?params.format:"image/jpeg";
-				dataUrl = ImageProcessing.crop(img, imageWidthRaw, imageHeightRaw, dimensions.width, dimensions.height, position.left, position.top, format, params.desiredWidth, params.desiredHeight);
-			}
+			console.log(params);
+			var position = cropper.getPosition();
+			var dimensions = cropper.getDimensions();
+			var format = params.format?params.format:"image/jpeg";
+			var dataUrl = ImageProcessing.crop({
+				img:img, imgWidthRaw:imageWidthRaw, imgHeightRaw:imageHeightRaw, cropperWidth:dimensions.width, cropperHeight:dimensions.height, 
+			cropperLeft:position.left, cropperTop:position.top, format:format, profile:params.profile});
 			return dataUrl;
 		};
 		function getImageWidth(){
