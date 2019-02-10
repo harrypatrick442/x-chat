@@ -58,7 +58,7 @@ var Cropper = (function(){
 		this.getElement = function(){return element;};
 		this.getConstraints= getMoveConstraints;
 		this.getPosition = function(e){
-			return {left:element.offsetLeft, top:element.offsetLeft};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
+			return {left:element.offsetLeft, top:element.offsetTop};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
 		this.getDimensions = function(){
 			return {width:element.clientWidth, height:element.clientHeight};

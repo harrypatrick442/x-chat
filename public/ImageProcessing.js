@@ -1,20 +1,25 @@
 var ImageProcessing= new (function(){
-	this.getImagePortion = function(img, newWidth, newHeight, startX, startY, ratio, format){
-		console.log(newWidth);
-		console.log(newHeight);
-		console.log(startX);
-		console.log(startY);
-		console.log(ratio);
-		var portionCanvas = E.CANVAS();
+	this.crop = function(img, imgWidthRaw, imgHeightRaw, cropperWidth, cropperHeight, cropperLeft, cropperTop, ratio, format, 
+	croppedImageWidth, croppedImageHeight){
+		var portionCanvas = E.CANVAS();	
 		var portionCanvasContext = portionCanvas.getContext('2d');
-		portionCanvas.width = newWidth;
-		portionCanvas.height = newHeight;
+		portionCanvas.width = cropperWidth;
+		portionCanvas.height = cropperHeight;
 		var bufferCanvas = E.CANVAS();
 		var bufferCanvasContext = bufferCanvas.getContext('2d');
 		bufferCanvas.width = img.width;
 		bufferCanvas.height = img.height;
-		bufferCanvasContext.drawImage(img, 0, 0);
-		portionCanvasContext.drawImage(bufferCanvas, startX, startY, newWidth*ratio, newHeight*ratio, 0, 0, newWidth, newHeight);
+		bufferCanvasContext.drawImage(img, 0, 0,imgWidthRaw, imgHeightRaw,0,0, img.width, img.height);
+		
+		console.log(cropperWidth);
+		console.log(cropperHeight);
+		console.log(cropperLeft);
+		console.log(cropperTop);
+		portionCanvasContext.drawImage(bufferCanvas, cropperLeft, cropperTop, cropperWidth, cropperHeight, 0, 0, cropperWidth, cropperHeight);
+		document.documentElement.appendChild(bufferCanvas);
+	bufferCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
+		document.documentElement.appendChild(portionCanvas);
+	portionCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
 		return portionCanvas.toDataURL(format);
 	};
 })();

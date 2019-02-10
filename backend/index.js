@@ -17,7 +17,5 @@ var server = app.listen(80, function () {
 });
 app.post('/image_uploader', function(req, res){
 	console.log(req);
-	
 	res.send(imageUploader.process(req));
 });
-
