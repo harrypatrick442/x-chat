@@ -15,7 +15,8 @@ var ImageProcessing= new (function(){
 		console.log(cropperHeight);
 		console.log(cropperLeft);
 		console.log(cropperTop);
-		portionCanvasContext.drawImage(bufferCanvas, cropperLeft, cropperTop, cropperWidth, cropperHeight, 0, 0, cropperWidth, cropperHeight);
+		ratio = 0.5;
+		portionCanvasContext.drawImage(bufferCanvas, cropperLeft, cropperTop, cropperWidth*ratio, cropperHeight*ratio, 0, 0, cropperWidth, cropperHeight);
 		document.documentElement.appendChild(bufferCanvas);
 	bufferCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
 		document.documentElement.appendChild(portionCanvas);
