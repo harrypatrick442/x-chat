@@ -153,3 +153,18 @@
 	height:32px;
 	margin-bottom:10px;
 }
+.image-uploader .inner .file-sender{
+	
+}
+.image-uploader .inner .file-sender .entries{
+	
+}
+.image-uploader .inner .file-sender .entries .sending{
+	text-align:center;	
+	box-sizing:border-box;
+}
+.image-uploader .inner .file-sender .entries .sending .progress-bar{
+	width:80%;
+	position:relative;
+	left:10%;
+}

@@ -64,6 +64,7 @@ exports.handler = new (function(){
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
+
 						room.join(user);
 					break;
 					case 'room_leave':

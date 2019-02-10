@@ -2,9 +2,10 @@ var ProgressBar = (function(){
 	var _ProgressBar = function(){
 		var self = this;
 		var element = E.DIV();
-		element.classsLit.add('progress-bar');
+		element.classList.add('progress-bar');
 		var progress = E.DIV();
 		progress.classList.add('progress');
+		element.appendChild(progress);
 		this.setPercent = function(percent){
 			progress.style.width=String(percent)+'%';
 		};

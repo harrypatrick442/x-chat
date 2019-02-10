@@ -19,7 +19,8 @@ var FileSender = (function(){
 				}
 			}
 			else
-				new Task(function(){sender.send();}).run();
+				new Task(function(){sender.send();}).run();7
+			dispatchQueued(handle);
 			return handle;
 		};
 		function sendNext(){
@@ -27,6 +28,9 @@ var FileSender = (function(){
 			var nextSender = queue.splice(0, 1)[0];
 			nextSender.addEventListener(DONE, doneSend);
 			return true;
+		}
+		function dispatchQueued(handle){
+			self.dispatchEvent({type:'queued', handle:handle});
 		}
 		function doneSend(e){
 			e.sender.removeEventListener(DONE);

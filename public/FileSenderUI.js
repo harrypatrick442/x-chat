@@ -2,9 +2,12 @@ var FileSenderUI=(function(){
 	var _FileSenderUI = function(params){
 		var self = this;
 		var fileSender = params.fileSender;
-		var sendingHandles=[];
+		var sendings=[];
 		var element = E.DIV();
 		element.classList.add('file-sender');
+		var entries = E.DIV();
+		entries.classList.add('entries');
+		element.appendChild(entries);
 		this.getElement = function(){return element;};
 		fileSender.addEventListener('queued', queued);
 		function queued(e){
