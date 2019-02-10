@@ -11,6 +11,7 @@ var ImageUploader = new (function(){
 		var fileUploader = new FileUploader({accept:'image/*'});
 		var fileSender = new FileSender({url:params.url});
 		var popup = new Popup({});
+		var fileName;
 		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
 		var ui = new UI({popup:popup, buttonClose:buttonClose, buttonAccept:buttonAccept, buttonReject:buttonReject, croppingFrame:croppingFrame, fileUploader:fileUploader, fileSender:fileSender});
 		buttonClose.addEventListener('click', hide);
@@ -25,8 +26,7 @@ var ImageUploader = new (function(){
 			popup.hide();
 		}
 		function gotFile(e){
-			console.log(e);
-			console.log(e);
+			fileName = e.file.name;
 			showCroppingFrame(e.dataUrl);
 		}
 		function croppingFrameError(e){
@@ -37,13 +37,14 @@ var ImageUploader = new (function(){
 		function cropAndUpload(){
 			each(profiles, function(profile){
 				var dataUrl = croppingFrame.getCroppedImage({ profile:profile});
-				fileSender.queue(JSON.stringify({dataUrl:dataUrl, profile:profile}));
+				console.log(fileName);
+				fileSender.queue({data:JSON.stringify({dataUrl:dataUrl, profile:profile}), fileName:fileName});
 				showUploading();
 			});
 		}
-		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);}
-		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true);}
-		function showUploading(){fileUploader.setVisible(false); croppingFrame.hide(); ui.setCroppingMenuVisible(false);}
+		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);fileSender.setVisible(false);}
+		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true); ui.setFileSenderVisible(false);}
+		function showUploading(){fileUploader.setVisible(false); croppingFrame.hide(); ui.setCroppingMenuVisible(false); ui.setFileSenderVisible(true);}
 	};
 	return _ImageUploader;
 	function UI(params){
@@ -82,6 +83,7 @@ var ImageUploader = new (function(){
 		this.setCroppingMenuVisible = function(value){
 			croppingMenu.style.display=value?'flex':'none';
 		};
+		this.setFileSenderVisible = fileSenderUI.setVisible;
 		function buttonWrapper(){
 			var element = E.DIV();
 			element.classList.add('button-wrapper');

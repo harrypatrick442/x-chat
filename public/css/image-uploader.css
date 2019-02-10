@@ -154,17 +154,23 @@
 	margin-bottom:10px;
 }
 .image-uploader .inner .file-sender{
-	
+	display:none;
+	height:100%;
 }
 .image-uploader .inner .file-sender .entries{
-	
+	height:100%;
+	width:100%;
 }
 .image-uploader .inner .file-sender .entries .sending{
+	margin-top:30px;
 	text-align:center;	
 	box-sizing:border-box;
+	width:100%;
+	
 }
 .image-uploader .inner .file-sender .entries .sending .progress-bar{
 	width:80%;
 	position:relative;
 	left:10%;
+	
 }

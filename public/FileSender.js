@@ -9,8 +9,8 @@ var FileSender = (function(){
 		var sequentially = params.sequentially;
 		var ajax = new Ajax({url:url});
 		var queue = [];
-		this.queue = function(data){
-			var sender = new Sender({data:data, ajax:ajax});
+		this.queue = function(params){
+			var sender = new Sender({data:params.data, fileName:params.fileName, ajax:ajax});
 			var handle = new Handle(sender);
 			if(sequentially){
 				queue.push(sender);
@@ -46,6 +46,7 @@ var FileSender = (function(){
 		var self = this;
 		var ajax = params.ajax;
 		var data = params.data;
+		var fileName = params.fileName;
 		var ajaxHandle;
 		this.send= function(){
 			ajaxHandle = ajax.post({data:data});
@@ -56,6 +57,9 @@ var FileSender = (function(){
 		};
 		this.getSuccessful = function(){
 			return ajaxHandle.getSuccessful();
+		};
+		this.getFileName = function(){
+			return fileName;
 		};
 		function sending(ajaxHandle){
 			ajaxHandle.onDone=dispatchDone;
@@ -79,6 +83,7 @@ var FileSender = (function(){
 		sender.addEventListener(DONE, dispatchDone);
 		sender.onProgress = dispatchProgress;
 		sender.onSending = dispatchSending;
+		this.getFileName = sender.getFileName;
 		function dispatchProgress(proportion){
 			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, percent:proportion*100, proportion:proportion});
 		}

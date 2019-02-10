@@ -9,6 +9,15 @@ var FileSenderUI=(function(){
 		entries.classList.add('entries');
 		element.appendChild(entries);
 		this.getElement = function(){return element;};
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
+		this.clear = function(){
+			each(sendings, function(sending){
+				entries.removeChild(sending.getElement());
+			});
+			sendings=[];
+		};
 		fileSender.addEventListener('queued', queued);
 		function queued(e){
 			var handle = e.handle;
@@ -20,7 +29,7 @@ var FileSenderUI=(function(){
 	function Sending(handle){
 		var element = E.DIV();
 		element.classList.add('sending');
-		var progressBar = new ProgressBar({});
+		var progressBar = new ProgressBar({showText:true, text:handle.getFileName()});
 		element.appendChild(progressBar.getElement());
 		this.getElement = function(){
 			return element;

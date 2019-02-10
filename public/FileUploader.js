@@ -18,14 +18,13 @@ var FileUploader = (function(){
 			var input = file.target;
 			var fileReader = new FileReader();
 			fileReader.onload = function(){
-				var dataUrl = fileReader.result;
-				dispatchFile(dataUrl);
+				dispatchFile(fileReader.result, file);
 			};
 			fileReader.readAsDataURL(file);
 			ui.clearFile();
 		}
-		function dispatchFile(dataUrl){
-			self.dispatchEvent({type:'file', dataUrl:dataUrl});
+		function dispatchFile(dataUrl, file){
+			self.dispatchEvent({type:'file', dataUrl:dataUrl, file:file});
 		}
 	};
 	return _FileUploader;

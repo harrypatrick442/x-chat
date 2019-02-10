@@ -3,15 +3,30 @@
 	
     background-color: #1a1a1a;
     height: 25px;
-    padding: 5px;
-    margin: 50px 0;         
+    padding: 5px;        
     border-radius: 5px;
     box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;    
 }
 .progress-bar .progress{
-    display: inline-block;
+	float:left;
+	display:inline-block;
     height: 100%;
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     transition: width .4s ease-in-out; 
+	background-color:#777777;
+}
+.progress-bar .text{
+	position:absolute;
+	width:100%;
+    height: 100%;
+	top:5px;
+	font-size:12px;
+	font-family:verdana, geneva, sans-serif;
+	padding-top:4px;
+    color: #dddddd;
+	z-index:10;
+}
+.progress-bar-done .progress {
+	background-color:#85CB34;
 }
