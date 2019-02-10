@@ -13,6 +13,8 @@ var DragManager = (function(){
 		};
 		efficientMovingCycle.onMove = function(e){
 			var newLocalPosition = getNewLocalPosition(e);
+			console.log(offsets);
+			console.log(newLocalPosition);
 			constrainNewLocalPosition(newLocalPosition);
 			handle.setPosition(newLocalPosition);
 		};
@@ -32,7 +34,7 @@ var DragManager = (function(){
 					localPosition.y = localConstraints.minY;
 		}
 		function getOffsets(e){
-			var absolute = handle.getPosition(e);
+			var absolute = handle.getAbsolutePosition(e);
 			return {x:handle.getX() - absolute.left, 
 					y:handle.getY() - absolute.top};
 		}

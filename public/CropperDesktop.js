@@ -60,6 +60,9 @@ var Cropper = (function(){
 		this.getPosition = function(e){
 			return {left:element.offsetLeft, top:element.offsetTop};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
+		this.getAbsolutePosition=function(e){
+			return {left:e.pageX, top:e.pageY};
+		};
 		this.getDimensions = function(){
 			return {width:element.clientWidth, height:element.clientHeight};
 		};
@@ -94,6 +97,7 @@ var Cropper = (function(){
 			var minY = halfHeight;
 			var maxX = getImageWidth()- halfWidth;
 			var maxY = getImageHeight() - halfHeight;
+			console.log({minX:minX, minY:minY, maxX:maxX, maxY:maxY});
 			return {minX:minX, minY:minY, maxX:maxX, maxY:maxY};
 		}
 		function zero(){
@@ -317,7 +321,7 @@ var Cropper = (function(){
 			element.style.display=value?'block':'none';
 		};
 		this.getElement = function(){return element;};
-		this.getPosition= function(){
+		this.getAbsolutePosition= function(){
 			return getAbsolute(element);
 		}
 		var dragManager = new DragManager({handle:self, stopPropagation:true});
