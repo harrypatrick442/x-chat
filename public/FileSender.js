@@ -19,25 +19,41 @@ var FileSender = (function(){
 				}
 			}
 			else
-				new Task(function(){sender.send();}).run();7
+				new Task(function(){
+					sender.addEventListener(DONE, doneSendParallel);
+					sender.send();
+			}).run();
 			dispatchQueued(handle);
 			return handle;
 		};
 		function sendNext(){
+			console.log('send next');
 			if(queue.length<1)return false;
 			var nextSender = queue.splice(0, 1)[0];
-			nextSender.addEventListener(DONE, doneSend);
+			nextSender.addEventListener(DONE, doneSendSequentially);
 			return true;
 		}
 		function dispatchQueued(handle){
 			self.dispatchEvent({type:'queued', handle:handle});
 		}
-		function doneSend(e){
+		function doneSendParallel(e){
 			e.sender.removeEventListener(DONE);
+			removeFromQueue(e.sender);
+			if(queue.length<1)dispatchDone();
+		}
+		function doneSendSequentially(e){
+			e.sender.removeEventListener(DONE);
+			removeFromQueue(e.sender);
 			sendNext()&&dispatchDone();
 		}
 		function dispatchDone(){
+			console.log('dispatching done');
 			self.dispatchEvent({type:DONE});
+		}
+		function removeFromQueue(sender){
+			var index = queue.indexOf(sender);
+			if(index<0)return;
+			queue.splice(index, 1);
 		}
 	};
 	return _FileSender;
