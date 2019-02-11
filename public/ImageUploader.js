@@ -26,6 +26,7 @@ var ImageUploader = new (function(){
 		function hide(){
 			popup.hide();
 			showFileUploader();
+			console.log('hide');
 		}
 		function gotFile(e){
 			fileName = e.file.name;
@@ -37,18 +38,23 @@ var ImageUploader = new (function(){
 			fileUploader.setVisible(false);
 		}
 		function cropAndUpload(){
+			var list =[];
 			each(profiles, function(profile){
 				var dataUrl = croppingFrame.getCroppedImage({ profile:profile});
-				console.log(fileName);
-				fileSender.queue({data:JSON.stringify({dataUrl:dataUrl, profile:profile}), fileName:fileName});
-				showUploading();
+				list.push({dataUrl:dataUrl, profile:profile});
 			});
+			fileSender.queue({data:JSON.stringify({images:list}), fileName:fileName});
+			showUploading();
 		}
 		function fileSenderDone(){
 			console.log('fileSenderDone');
-			new Timer({callback:hide, delay:1000, nTick:1}).start();
+			new Timer({callback:function(){
+				ui.clearFileSender();
+				hide();
+				}
+			, delay:1000, nTicks:1}).start();
 		}
-		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);fileSender.setVisible(false);}
+		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);ui.setFileSenderVisible(false);}
 		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true); ui.setFileSenderVisible(false);}
 		function showUploading(){fileUploader.setVisible(false); croppingFrame.hide(); ui.setCroppingMenuVisible(false); ui.setFileSenderVisible(true);}
 	};
@@ -90,6 +96,7 @@ var ImageUploader = new (function(){
 			croppingMenu.style.display=value?'flex':'none';
 		};
 		this.setFileSenderVisible = fileSenderUI.setVisible;
+		this.clearFileSender= fileSenderUI.clear;
 		function buttonWrapper(){
 			var element = E.DIV();
 			element.classList.add('button-wrapper');

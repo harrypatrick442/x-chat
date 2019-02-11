@@ -20,6 +20,7 @@ var FileSender = (function(){
 			}
 			else
 				new Task(function(){
+					queue.push(sender);
 					sender.addEventListener(DONE, doneSendParallel);
 					sender.send();
 			}).run();
@@ -27,7 +28,6 @@ var FileSender = (function(){
 			return handle;
 		};
 		function sendNext(){
-			console.log('send next');
 			if(queue.length<1)return false;
 			var nextSender = queue.splice(0, 1)[0];
 			nextSender.addEventListener(DONE, doneSendSequentially);
@@ -47,7 +47,6 @@ var FileSender = (function(){
 			sendNext()&&dispatchDone();
 		}
 		function dispatchDone(){
-			console.log('dispatching done');
 			self.dispatchEvent({type:DONE});
 		}
 		function removeFromQueue(sender){

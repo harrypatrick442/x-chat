@@ -1,7 +1,7 @@
 var Lobby = (function(){
 	const SMALL='small';
 	const LARGE='large';
-	const IMAGE_WIDTH_SMALL=64;
+	const IMAGE_WIDTH_SMALL=32;
 	const IMAGE_WIDTH_LARGE=256;
 	const IMAGE_UPLOADER_URL='/image_uploader';
 	var _Lobby = function(){

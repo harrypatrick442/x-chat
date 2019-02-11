@@ -34,10 +34,10 @@ var CroppingFrame = new (function () {
 			return dataUrl;
 		};
 		function getImageWidth(){
-			return imgWrapper.clientWidth;
+			return imgWrapper.getBoundingClientRect().width;
 		}
 		function getImageHeight(){
-			return imgWrapper.clientHeight;
+			return imgWrapper.getBoundingClientRect().height;
 		}
 		function load(url){
 			clear();
