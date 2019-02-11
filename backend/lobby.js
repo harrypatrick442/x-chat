@@ -58,6 +58,11 @@ exports.Lobby = (function(){
 		this.authenticate = function(req, mysocket, callback){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
+		this.setImageForUser = function(sessionId, fileName){
+			var user = getUser(sessionId);
+			if(!user)return;
+			dalUsers.setImage(uster.getId(), fileName);
+		};
 		function getUnavailableResponse(available){
 			var error;
 			switch(available)

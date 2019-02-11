@@ -6,7 +6,9 @@ exports.ImageUploader = (function(){
 	console.log(imageDataURI);
 	var _ImageUploader = function(){
 		this.process=function(req, res){
-			var images = req.body.images;
+			var params = req.body;
+			var images = params.images;
+			var sessionId = params.sessionId;
 			var fileName = getNextFileName();
 			each(images, function(image){
 				var filePath = path.join(__dirname, '..', 'public/images/uploaded/',fileName+image.profile.name);
@@ -14,6 +16,7 @@ exports.ImageUploader = (function(){
 				imageDataURI.outputFile(image.dataUrl, filePath)
 				.then(res => console.log(res));
 			});
+			lobby.setImageForUser(sessionId, fileName);
 			return {};
 		};
 	};
