@@ -4,6 +4,7 @@ var ImageUploader = new (function(){
 		var self = this;
 		var aspectRatio = params.aspectRatio;
 		var profiles = params.profiles;
+		var getSessionId = params.getSessionId;
 		var desiredSizes = params.desiredSizes;
 		var buttonClose = new Button({ className:'button-close'});
 		var buttonAccept = new Button({className:'button-accept'});
@@ -43,7 +44,7 @@ var ImageUploader = new (function(){
 				var dataUrl = croppingFrame.getCroppedImage({ profile:profile});
 				list.push({dataUrl:dataUrl, profile:profile});
 			});
-			fileSender.queue({data:JSON.stringify({images:list}), fileName:fileName});
+			fileSender.queue({data:JSON.stringify({images:list, sessionId:getSessionId()}), fileName:fileName});
 			showUploading();
 		}
 		function fileSenderDone(){

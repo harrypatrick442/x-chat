@@ -1,4 +1,4 @@
-exports.Lobby = (function(){
+exports.lobby = (function(){
 	const UNKNOWN_EXCEPTION='Unknown Exception';
 	const INVALID_USERNAME_OR_PASSWORD='Invalid Username or Password';
 	const USERNAME_NOT_AVAILABLE='Username Not Available';
@@ -8,6 +8,7 @@ exports.Lobby = (function(){
 	const AUTHENTICATE= 'authenticate';
 	const REGISTER='register';
 	const SEND_USER_IDS_MAX_N_DELAYS=5;
+	console.log('created lobby');
 	const SEND_USER_IDS_DELAY=1000;
 	var Rooms = require('./Rooms').Rooms;
 	var Pms = require('./Pms').Pms;
@@ -19,6 +20,7 @@ exports.Lobby = (function(){
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
+		var lobbyId = new Date().getTime();
 		var self = this;
 		var nDeviceCount=0;
 		var rooms = new Rooms();
@@ -59,8 +61,12 @@ exports.Lobby = (function(){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
 		this.setImageForUser = function(sessionId, fileName){
+			console.log('id i: '+lobbyId);
+			console.log(sessionId);
 			var user = getUserFromSessionId(sessionId);
+			console.log('a');
 			if(!user)return;
+			console.log('a');
 			dalUsers.setImage(user.getId(), fileName);
 		};
 		function getUnavailableResponse(available){
@@ -144,11 +150,13 @@ exports.Lobby = (function(){
 			users.sendMessage({type:'join', user:user.toJSON(), userIds:users.getIds()});
 		}
 		function getUserFromSessionId(sessionId){
-			var session = sessions.getById(req.sessionId;
+			var session = sessions.getById(sessionId);
+			console.log(session);
 			if(!session) return;
 			return session.getUser();
 		}
 		function invalidUsernameOrPassword(type, callback){callback({successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type});}
 	};
-	return _Lobby;
+	var lobby = new _Lobby();
+	return lobby;
 })();

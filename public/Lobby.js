@@ -22,7 +22,7 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu, getNDevice:getNDevice});
-		var imageUploader = new ImageUploader({aspectRatio:1, profiles:[{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:SMALL}, {desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:LARGE}], url:IMAGE_UPLOADER_URL});
+		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:SMALL}, {desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:LARGE}], url:IMAGE_UPLOADER_URL});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});

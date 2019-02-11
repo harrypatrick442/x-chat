@@ -13,6 +13,7 @@ exports.dalUsers= new (function(){
 	const HASH='hash';
 	const EMAIL='email';
 	const IMAGE='image';
+	const ID ='id';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var sql = require('mssql');
 	var User = require('./../User').User;
@@ -74,19 +75,12 @@ exports.dalUsers= new (function(){
 		}});
 	};
 	this.setImage = function(id, image){
+		console.log('b');
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_USER_IMAGE_SET, 
-		parameters:[,
-		
-			{name:ID, value:id, type:sql.Int}
+		parameters:[
+			{name:ID, value:id, type:sql.Int},
 			{name:IMAGE, value:image, type:sql.VarChar}
 		]});
-			var rows = result.recordsets[0];
-			var user;	
-			if(rows.length>0){
-				user = User.fromSqlRow(rows[0]);
-			}
-			callback(user);
-		}});
 	};
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;

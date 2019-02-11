@@ -1,5 +1,5 @@
 exports.handler = new (function(){
-		var lobby = new (require('./Lobby').Lobby)();
+		var lobby =require('./lobby').lobby;
 		var Message = require('./Message').Message;
 		var sessions = lobby.getSessions();
 		this.process = function(req, mysocket, callback){
@@ -90,6 +90,7 @@ exports.handler = new (function(){
 			catch(ex){console.log(ex);}
 			return JSON.stringify(res);
 		};
+		this.setImageForUser = lobby.setImageForUser;
 		function getUser(req){return sessions.getById(req.sessionId).getUser();}
 		function getRoom(req){return lobby.getRooms().getRoom(req.roomId);}
 		function test(jObject){ return {type:'response',received:jObject};}
