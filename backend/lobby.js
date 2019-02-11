@@ -59,9 +59,9 @@ exports.Lobby = (function(){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
 		this.setImageForUser = function(sessionId, fileName){
-			var user = getUser(sessionId);
+			var user = getUserFromSessionId(sessionId);
 			if(!user)return;
-			dalUsers.setImage(uster.getId(), fileName);
+			dalUsers.setImage(user.getId(), fileName);
 		};
 		function getUnavailableResponse(available){
 			var error;
@@ -142,6 +142,11 @@ exports.Lobby = (function(){
 		}
 		function sendJoin(user){
 			users.sendMessage({type:'join', user:user.toJSON(), userIds:users.getIds()});
+		}
+		function getUserFromSessionId(sessionId){
+			var session = sessions.getById(req.sessionId;
+			if(!session) return;
+			return session.getUser();
 		}
 		function invalidUsernameOrPassword(type, callback){callback({successful:false, error:INVALID_USERNAME_OR_PASSWORD, type:type});}
 	};
