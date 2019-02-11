@@ -3,6 +3,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_HASH_GET ='xchat_hash_get';
 	const STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN = 'xchat_username_or_email_taken';
 	const STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL='xchat_user_get_from_username_or_email';
+	const STORED_PROCEDURE_USER_IMAGE_SET='xchat_user_image_set'
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -11,6 +12,7 @@ exports.dalUsers= new (function(){
 	const GENDER='gender';
 	const HASH='hash';
 	const EMAIL='email';
+	const IMAGE='image';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var sql = require('mssql');
 	var User = require('./../User').User;
@@ -69,8 +71,22 @@ exports.dalUsers= new (function(){
 				user = User.fromSqlRow(rows[0]);
 			}
 			callback(user);
-	}});
+		}});
+	};
+	this.setImage = function(id, image){
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_USER_IMAGE_SET, 
+		parameters:[,
 		
+			{name:ID, value:id, type:sql.Int}
+			{name:IMAGE, value:image, type:sql.VarChar}
+		]});
+			var rows = result.recordsets[0];
+			var user;	
+			if(rows.length>0){
+				user = User.fromSqlRow(rows[0]);
+			}
+			callback(user);
+		}});
 	};
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;
