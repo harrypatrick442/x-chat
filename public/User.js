@@ -25,6 +25,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};
 		this.getBirthday = function(){return params.birthday;};
+		this.getImage= function(){return params.image;};
 		this.toJSON = function(){return params;};
 		this.left = function(){
 			dispatchLeft();
@@ -44,14 +45,14 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 	ret.fromMessage = function(message){
 		var user = getExisting(message.getUserId());
 		if(user) return user;
-		var user = new _User({id:message.getUserId(), username:message.getUsername()});
+		var user = new _User({id:message.getUserId(), username:message.getUsername(), image:message.getImage()});
 		set.add(user);
 		return user;
 	};
 	ret.fromPmNotification = function(pmNotification){
 		var user = getExisting(pmNotification.getId());
 		if(user) return user;
-		user = new _User({id:pmNotification.getId(), username:pmNotification.getUsername()});
+		user = new _User({id:pmNotification.getId(), username:pmNotification.getUsername(), image:pmNotification.getImage()});
 		set.add(user);
 		return user;
 	};
