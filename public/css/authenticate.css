@@ -1,5 +1,7 @@
 .authenticate{
 	
+	font-family:verdana, geneva, sans-serif;
+    color: #dddddd;
 		position:fixed;
 		height:auto;
 		width:244px;
@@ -9,15 +11,44 @@
 		border:3px solid rgb(0, 135, 226);
 		z-index:3000000;
 		border-radius:5px;
-		padding:6px;
+		padding:3px;
+		box-sizing:border-box;
 }
 .authenticate .div-inner{
 		height:auto;
 		width:calc(100% - 8px);
 		position:relative;
 		float:left;
+		box-sizing:border-box;
+}
+.authenticate .tickbox{
+margin-top:4px;
+position:relative;	
+float:right;
+		margin-right:10px;
+}
+.authenticate .tickbox .text{
+	font-size:14px;
+	font-family:verdana, geneva, sans-serif;
+    color: #dddddd;
+	padding-left:4px;
+	padding-right:4px;
+	padding-top:3px;
+	height:20px;
+	float:left;
+	box-sizing:border-box;
+}
+.authenticate .tickbox .box{
+	width:24px;
+	height:24px;
+	float:left;
 }
 .authenticate .tab-panel .panel{
+		border-radius:4px;	
+	top:0px;
+	width:100%;
+	box-sizing:border-box;
+	padding:4px;
 		background-color:rgb(32, 31, 30);
 }
 .authenticate .tab-panel .tabs{
@@ -26,7 +57,6 @@
 		background-color:rgb(32, 31, 30);
 }
 .authenticate .tab-panel	{
-		background-color:rgb(32, 31, 30);
 }
 .authenticate .div-inputs-sign-in{
 	float:left;
@@ -36,10 +66,18 @@
 			margin-top:4px;
 			box-sizing:border-box;
 			margin-bottom:3px;
+			border:2px solid  rgb(0, 135, 226);
+			border-radius:4px;
+			float:left;
+			text-align:center;
+			padding:3px;
+			cursor:pointer;
+}
+.authenticate .button-register:hover{
+	background-color:rgb(44, 43, 43);
 }
 .authenticate .inputs-register{
 	position :relative;
-	width :244px;
 	height:auto;
 	float:left;
 }
@@ -57,7 +95,7 @@
 	float :left;
 	width :100%;
 	background-color :#eeeeee;
-	font-family :Arial;
+	font-family:verdana, geneva, sans-serif;
 	font-size :14px;
 	display :none;
 	margin-top :3px;

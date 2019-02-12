@@ -1,0 +1,17 @@
+.tickbox .box{
+cursor:pointer;
+background-repeat:no-repeat;
+background-size:contain;
+position:relative;
+display:inline-block;
+background-image:url('/images/tickbox-unticked.png');
+}
+.tickbox .box:hover{
+background-image:url('/images/tickbox-unticked-hover.png');
+}
+.tickbox .box.ticked{
+background-image:url('/images/tickbox-ticked.png');
+}
+.tickbox .box.ticked:hover{
+background-image:url('/images/tickbox-ticked-hover.png');
+}

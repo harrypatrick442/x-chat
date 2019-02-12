@@ -1,0 +1,27 @@
+USE [x-chat]
+GO
+/****** Object:  StoredProcedure [dbo].[xchat_automatic_authenticate]    Script Date: 12/02/2019 08:13:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE  [dbo].[xchat_automatic_authenticate] (
+	@token varchar(100)
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	declare @user table (id int, username varchar(45), email varchar(200), gender bit, birthday datetime, image varchar(15));
+	insert into @user select tblUsers.[id], [username], [email], [gender], [birthday], [image]  from tblUsers
+	inner join  tblAuthenticate on tblUsers.id=tblAuthenticate.userId where tblAuthenticate.[token]=token;
+	if((select count(*) from @user)>0)
+	begin
+	declare @newToken varchar(100) = exec new_token_get;
+		update tblAuthenticate set [token]=@newToken where [userId]=(select userId from @user);
+	end
+END

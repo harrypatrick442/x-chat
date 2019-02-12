@@ -41,10 +41,31 @@ exports.dalUsers= new (function(){
 				var rows = result.recordsets[0];
 				var token;
 				if(rows.length>0){
-					hash = rows[0].token;
+					token= rows[0].token;
 				}
 				callback(token);
 		}});
+	};
+	this.automaticAuthenticate= function(token, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE,
+			parameters:[
+				{name:TOKEN, value:token, type:sql.VarChar},
+			],
+			callback:function(result){
+				var rows = result.recordsets[0];
+				var token;
+				if(rows.length>0){
+					token = rows[0].token;
+				}
+				callback(token);
+		}});
+	};
+	this.authenticationTokensDelete = function(userId){
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET, 
+			parameters:[
+				{name:USER_ID, value:parseInt(userId), type:sql.Int}
+			]});
+			
 	};
 	this.usernameAndEmailAreAvailable = function(username, email, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN,

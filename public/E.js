@@ -25,6 +25,9 @@ var E = new (function () {
     this.H1 = function () {
         return c('h1');
     };
+	this.CHECKBOX = function(){
+		return i('input', 'checkbox');
+	};
     this.TEXT = function () {
         return i('input', 'text');
     };
