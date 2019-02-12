@@ -114,8 +114,14 @@ float:right;
 		color:#ff3344;
 
 		}
-.authenticate .entry ,.authenticate select{
+.authenticate .entry ,.authenticate .gender{
 	width:100%;
+	margin-bottom:4px;
+}
+.authenticate .entry{
+    padding: 14px 10px;
+}
+.authenticate .entry ,.authenticate .gender,.authenticate .birthday select{
 	position:relative;
 	float:left;
 	box-sizing:border-box;
@@ -128,7 +134,21 @@ float:right;
     border: 0;
     outline: 0;
 	border-radius:2px;
-	margin-bottom:2px;
-    padding: 14px 10px;
 	height:28px;
+}
+.authenticate .birthday{
+	width:100%;
+	box-sizing:border-box;
+	margin-bottom:4px;
+}
+.authenticate .birthday select{
+	width:32%;
+	box-sizing:border-box;
+	height:100%;	
+}
+.authenticate .birthday .not-right{
+	width:32%;
+	box-sizing:border-box;
+	height:100%;
+	margin-right:2%;
 }

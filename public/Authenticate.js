@@ -46,7 +46,6 @@ var Authenticate = (function(){
 		textUsername.className='form-control';
 		var birthday = new Birthday();
 		var genderPicker = new GenderPicker();
-		setLayoutStyle(genderPicker.getElement());
 		var buttonRegister = new Button({classNames:['button-register'], text:'Done'});
 		styleTextInputRegister(textEmailRegister, 'Email');
 		styleTextInputRegister(textUsernameRegister, 'Username');

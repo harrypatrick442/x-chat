@@ -4,6 +4,7 @@ function Genders(){
 function GenderPicker()
 {
     var element = document.createElement('select');
+	element.classList.add('gender');
     for(var i=0; i<Genders.values.length; i++)
     {
         var values = Genders.values[i];

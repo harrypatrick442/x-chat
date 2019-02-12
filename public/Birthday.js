@@ -8,6 +8,8 @@ function Birthday()
     element.appendChild(selectDay);
     element.appendChild(selectMonth);
     element.appendChild(selectYear);
+	selectDay.classList.add('not-right');
+	selectMonth.classList.add('not-right');
     var now = new Date();
     var year = 1900 + now.getYear();
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
