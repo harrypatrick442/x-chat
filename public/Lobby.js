@@ -17,7 +17,8 @@ var Lobby = (function(){
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		if(window.debug)debug.setMysocket(mysocket);
-		new Task(function(){console.log('ye it works');}).run();
+		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
+		new Task(automaticAuthentication.authenticate).run();
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
@@ -177,6 +178,7 @@ var Lobby = (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
+				if(msg.token)automaticAuthentication.setToken(mg.token);
 				nDevice = msg.nDevice;
 				users.add(User.fromJSON(msg.user));
 				userMe = users.getById(msg.user.id);

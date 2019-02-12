@@ -17,6 +17,9 @@ exports.handler = new (function(){
 					case 'authenticate':
 						lobby.authenticate(req, mysocket, callback);
 					break;
+					case 'automatic_authenticate':
+						lobby.automaticAuthenticate(req, mysocket, callback);
+					break;
 					case 'rooms_get':
 						lobby.getRooms().getInfos(function(infos){
 							callback({type:'rooms', rooms:infos});

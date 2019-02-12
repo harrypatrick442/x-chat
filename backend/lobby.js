@@ -60,6 +60,14 @@ exports.lobby = (function(){
 		this.authenticate = function(req, mysocket, callback){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
+		this.automaticAuthenticate= function(req, mysocket, callback){
+			var token = req.token;
+			if(!token)return;
+			console.log(token);
+			dalUsers.automaticAuthenticate({token:token, callback:function(user){
+				
+			}});
+		};
 		this.setImageForUser = function(sessionId, fileName){
 			console.log('id i: '+lobbyId);
 			console.log(sessionId);

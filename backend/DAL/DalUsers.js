@@ -4,6 +4,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN = 'xchat_username_or_email_taken';
 	const STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL='xchat_user_get_from_username_or_email';
 	const STORED_PROCEDURE_USER_IMAGE_SET='xchat_user_image_set'
+	const STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET = 'authentication_token_get';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -29,6 +30,20 @@ exports.dalUsers= new (function(){
 					hash = rows[0].hash;
 				}
 				callback(hash);
+		}});
+	};
+	this.getAuthenticationToken = function(userId, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET, 
+			parameters:[
+				{name:USER_ID, value:parseInt(userId), type:sql.Int},
+			],
+			callback:function(result){
+				var rows = result.recordsets[0];
+				var token;
+				if(rows.length>0){
+					hash = rows[0].token;
+				}
+				callback(token);
 		}});
 	};
 	this.usernameAndEmailAreAvailable = function(username, email, callback){
