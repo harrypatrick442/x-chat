@@ -46,8 +46,7 @@ var Authenticate = (function(){
 		textUsername.className='form-control';
 		var birthday = new Birthday();
 		var genderPicker = new GenderPicker();
-		setLayoutStyle(genderPicker.div);
-		setLayoutStyle(birthday.div);
+		setLayoutStyle(genderPicker.getElement());
 		var buttonRegister = new Button({classNames:['button-register'], text:'Done'});
 		styleTextInputRegister(textEmailRegister, 'Email');
 		styleTextInputRegister(textUsernameRegister, 'Username');
@@ -59,8 +58,8 @@ var Authenticate = (function(){
 		textUsernameRegister.onkeydown = detectEnterKey;
 		textPasswordRegister.onkeydown = detectEnterKey;
 		textPasswordReenterRegister.onkeydown = detectEnterKey;
-		divInputsRegister.appendChild(genderPicker.div);
-		divInputsRegister.appendChild(birthday.div);
+		divInputsRegister.appendChild(genderPicker.getElement());
+		divInputsRegister.appendChild(birthday.getElement());
 		divInputsRegister.appendChild(tickboxStaySignedInRegister.getElement());
 		divInputsRegister.appendChild(buttonRegister.getElement());
 		divInputsRegister.classList.add('inputs-register');
@@ -153,7 +152,7 @@ var Authenticate = (function(){
 		tabPanel.panels[0].div.appendChild(divInputsGuest);
 		tabPanel.panels[1].div.appendChild(divInputsSignIn);
 		tabPanel.panels[2].div.appendChild(divInputsRegister);
-		tabPanel.panels[2].div.className='dsfdsfdsf';
+		tabPanel.panels[2].div.className='panel';
 
 		
 		tabPanel.div.style.height = 'auto';

@@ -3,26 +3,19 @@ function Genders(){
 }
 function GenderPicker()
 {
-    this.div = document.createElement('div');
-    this.div.style.width='100%';
-    this.div.style.height='25px';
-    this.div.style.float='left';
-    this.div.style.position='relative';
-    var select = document.createElement('select');
-    select.style.height='100%';
-    select.style.width='100%';
+    var element = document.createElement('select');
     for(var i=0; i<Genders.values.length; i++)
     {
         var values = Genders.values[i];
         var option = document.createElement('option');
         option.innerHTML = values.txt;
         option.value=values.value;
-        select.appendChild(option);
+        element.appendChild(option);
     }
-    this.div.appendChild(select);
     this.getValue=function(){
-        return select.options[select.selectedIndex].value;
+        return element.options[element.selectedIndex].value;
     };
+	this.getElement = function(){return element;};
 }
 Genders.values =[{value: 0, txt: 'a man'},
         {value: 1, txt: 'a woman'},

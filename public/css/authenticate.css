@@ -43,6 +43,7 @@ float:right;
 	height:24px;
 	float:left;
 }
+.authenticate input[type="text"], .authenticate input[type="password"], .authenticate select{}
 .authenticate .tab-panel .panel{
 		border-radius:4px;	
 	top:0px;
@@ -53,6 +54,7 @@ float:right;
 }
 .authenticate .tab-panel .tabs{
 		background-color:rgb(0, 135, 226);
+		border-top-right-radius:6px;
 }.authenticate .tab-panel .tab{
 		background-color:rgb(32, 31, 30);
 }
@@ -77,7 +79,7 @@ float:right;
 	background-color:rgb(44, 43, 43);
 }
 .authenticate .inputs-register{
-	position :relative;
+	position :relative;	
 	height:auto;
 	float:left;
 }
@@ -112,11 +114,21 @@ float:right;
 		color:#ff3344;
 
 		}
-.authenticate .entry{
+.authenticate .entry ,.authenticate select{
 	width:100%;
 	position:relative;
 	float:left;
-	margin-top:3px;
 	box-sizing:border-box;
-	height:25px;
+	
+	
+    background: #fff;
+    color: #323232;
+    font: inherit;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+    border: 0;
+    outline: 0;
+	border-radius:2px;
+	margin-bottom:2px;
+    padding: 14px 10px;
+	height:28px;
 }

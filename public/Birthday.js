@@ -1,12 +1,13 @@
 function Birthday()
 {
-    this.div = E.DIV();
+    var element = E.DIV();
     var selectDay = E.SELECT();
     var selectMonth = E.SELECT();
     var selectYear = E.SELECT();
-	this.div.classList.add('birthday');
-    selectMonth.style.marginLeft = '2px';
-    selectYear.style.marginLeft = '2px';
+	element.classList.add('birthday');
+    element.appendChild(selectDay);
+    element.appendChild(selectMonth);
+    element.appendChild(selectYear);
     var now = new Date();
     var year = 1900 + now.getYear();
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -29,6 +30,7 @@ function Birthday()
         var option = createOption(i, String(i));
         selectYear.appendChild(option);
     }
+	this.getElement = function(){return element;};
     function createOption(value, txt)
     {
         var option = document.createElement('option');
@@ -36,9 +38,6 @@ function Birthday()
         option.innerHTML = txt;
         return option;
     }
-    this.div.appendChild(selectDay);
-    this.div.appendChild(selectMonth);
-    this.div.appendChild(selectYear);
     this.getValue = function()
     {
         var day =selectDay.options[selectDay.selectedIndex].value;
