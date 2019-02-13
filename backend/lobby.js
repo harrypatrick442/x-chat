@@ -53,7 +53,11 @@ exports.lobby = (function(){
 					users.add(user);
 					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
-					callback(res);
+					if(!req.staySignedIn){ callback(res);return;}
+					dalUsers.getAuthenticationToken(user.getId(), function(token){
+						res.token = token;
+						callback(res);
+					});
 				});
 			});
 		};
@@ -106,7 +110,11 @@ exports.lobby = (function(){
 					users.add(user);
 					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
-					callback(res);
+					if(!req.staySignedIn){ callback(res);return;}
+					dalUsers.getAuthenticationToken(user.getId(), function(token){
+						res.token = token;
+						callback(res);
+					});
 				});
 			});
 		}
@@ -126,7 +134,11 @@ exports.lobby = (function(){
 					user.addEventListener('dispose', userDispose);	
 					notifications.getPmNotificationsForUser(user, function(pmNotifications){
 						res.pmNotifications = pmNotifications.select(x=>x.toJSON()).toList();
-						callback(res);
+						if(!req.staySignedIn){ callback(res);return;}
+						dalUsers.getAuthenticationToken(user.getId(), function(token){
+							res.token = token;
+							callback(res);
+						});
 					});
 				});
 		    });
