@@ -28,7 +28,7 @@ function Spinner(params) {
 		window.addEventListener('resize', resize);
 	}
     function preventEventPropagation(name) {
-        getDiv().addEventListener(name, function (e) {
+        element.addEventListener(name, function (e) {
             if (!e) e = window.event;
             e.stopPropagation();
             return false;

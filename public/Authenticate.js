@@ -6,6 +6,7 @@ var Authenticate = (function(){
 		var callbackGuest = params.callbackGuest;
 		var enablePassword = (callbackRegister != undefined);
 		var self = this;
+		var spinner = new Spinner({preventInterraction:true});
 		var settings = new Settings("#username", function () {
 			this.set("username");
 			//this is a reset function for this particualr instance of this particular class.
@@ -31,7 +32,7 @@ var Authenticate = (function(){
 		var divError = E.DIV();
 		var textError = E.TEXTAREA();
 		var spinner = new Spinner(1);
-		spinner.hide();
+		//spinner.hide();
 		this.div.classList.add('authenticate');
 		divInner.classList.add('div-inner');
 		divInputsSignIn.classList.add('div-inputs-sign-in');
@@ -115,7 +116,6 @@ var Authenticate = (function(){
 		divInputsSignIn.appendChild(button.getElement());
 		this.div.appendChild(divError);
 		divError.appendChild(textError);
-		this.div.appendChild(spinner.div);
 		var flashing = false;
 		var flashingCount = 0;
 		var initialBackgroundColor = self.div.style.backgroundColor;
@@ -141,7 +141,7 @@ var Authenticate = (function(){
 		{
 			spinner.hide();
 		}
-		function    sendRegister() {
+		function sendRegister() {
 			if (textEmailRegister.value.length < 1)
 			{
 				setError("You must enter an email address!");
