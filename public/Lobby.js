@@ -78,6 +78,9 @@ var Lobby = (function(){
 				case 'authenticate':
 					authenticateResponse(msg);
 					break;
+				case 'automatic_authenticate':
+					automaticAuthenticateResponse(msg);
+					break;
 				case 'register':
 					registerResponse(msg);
 					break;
@@ -158,6 +161,10 @@ var Lobby = (function(){
 			authenticateRegisterResponse(msg);
 			loadNotifications(msg);
 		}
+		function automaticAuthenticateResponse(msg){
+			authenticateRegisterResponse(msg);
+			loadNotifications(msg);
+		}
 		function registerResponse(msg){
 			authenticateRegisterResponse(msg);
 		}
@@ -178,7 +185,7 @@ var Lobby = (function(){
 		function authenticateRegisterResponse(msg){
 			if(msg.successful){
 				sessionId = msg.sessionId;
-				if(msg.token)automaticAuthentication.setToken(mg.token);
+				if(msg.token)automaticAuthentication.setToken(msg.token);
 				nDevice = msg.nDevice;
 				users.add(User.fromJSON(msg.user));
 				userMe = users.getById(msg.user.id);

@@ -68,9 +68,17 @@ exports.lobby = (function(){
 			var token = req.token;
 			if(!token)return;
 			console.log(token);
-			dalUsers.automaticAuthenticate({token:token, callback:function(user){
-				
-			}});
+			dalUsers.automaticAuthenticate(token, function(user){
+				if(!user)return;
+				user.addMysocket(mysocket);
+				var res = createSession(user);
+				res.type='automatic_authenticate';
+				res.users = users.toJSON();
+				users.add(user);
+				sendJoin(user);
+				user.addEventListener('dispose', userDispose);
+				callback(res);
+			});
 		};
 		this.setImageForUser = function(sessionId, fileName){
 			console.log('id i: '+lobbyId);
@@ -112,6 +120,7 @@ exports.lobby = (function(){
 					user.addEventListener('dispose', userDispose);
 					if(!req.staySignedIn){ callback(res);return;}
 					dalUsers.getAuthenticationToken(user.getId(), function(token){
+						console.log('got token');
 						res.token = token;
 						callback(res);
 					});

@@ -4,7 +4,8 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN = 'xchat_username_or_email_taken';
 	const STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL='xchat_user_get_from_username_or_email';
 	const STORED_PROCEDURE_USER_IMAGE_SET='xchat_user_image_set'
-	const STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET = 'authentication_token_get';
+	const STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET = 'xchat_authentication_token_get';
+	const STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE='xchat_automatic_authenticate';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -14,6 +15,7 @@ exports.dalUsers= new (function(){
 	const HASH='hash';
 	const EMAIL='email';
 	const IMAGE='image';
+	const TOKEN='token';
 	const ID ='id';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var sql = require('mssql');
@@ -38,6 +40,7 @@ exports.dalUsers= new (function(){
 				{name:USER_ID, value:parseInt(userId), type:sql.Int},
 			],
 			callback:function(result){
+				console.log(result);
 				var rows = result.recordsets[0];
 				var token;
 				if(rows.length>0){
@@ -53,11 +56,11 @@ exports.dalUsers= new (function(){
 			],
 			callback:function(result){
 				var rows = result.recordsets[0];
-				var token;
+				var user;	
 				if(rows.length>0){
-					token = rows[0].token;
+					user = User.fromSqlRow(rows[0]);
 				}
-				callback(token);
+				callback(user);
 		}});
 	};
 	this.authenticationTokensDelete = function(userId){
