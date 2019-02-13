@@ -67,6 +67,8 @@ var Room = new (function(){
 				if(visible&&!value)
 					usersMenu.hide();
 			ui.setVisible(value);
+			if(value)
+				new Task(ui.scrollFeedToBottom).run();
 		};
 		this.getVisible = ui.getVisible;
 		buttonSend.addEventListener('click', sendMessage);

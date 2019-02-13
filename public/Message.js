@@ -16,6 +16,7 @@ var Message = (function(){
 		this.getUniqueId = function(){
 			return params.uniqueId;
 		};
+		this.getImage = function(){return params.image;};
 		this.getUserId=function(){return params.userId;};
 		this.getUsername=function(){return params.username;};
 	
