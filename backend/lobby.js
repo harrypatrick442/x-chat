@@ -6,6 +6,7 @@ exports.lobby = (function(){
 	const USERNAME_AND_EMAIL_NOT_AVAILABLE='Username and Email are Available';
 	const PASSWORD_MUST_BE_AT_LEAST_LONG = 'Password must be at least 7 characters long';
 	const AUTHENTICATE= 'authenticate';
+	const AUTOMATIC_AUTHENTICATE='automatic_authenticate';
 	const REGISTER='register';
 	const SEND_USER_IDS_MAX_N_DELAYS=5;
 	console.log('created lobby');
@@ -66,10 +67,10 @@ exports.lobby = (function(){
 		};
 		this.automaticAuthenticate= function(req, mysocket, callback){
 			var token = req.token;
-			if(!token)return;
+			if(!token){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
 			console.log(token);
 			dalUsers.automaticAuthenticate(token, function(user){
-				if(!user)return;
+				if(!user){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
 				user.addMysocket(mysocket);
 				var res = createSession(user);
 				res.type='automatic_authenticate';
@@ -81,12 +82,8 @@ exports.lobby = (function(){
 			});
 		};
 		this.setImageForUser = function(sessionId, fileName){
-			console.log('id i: '+lobbyId);
-			console.log(sessionId);
 			var user = getUserFromSessionId(sessionId);
-			console.log('a');
 			if(!user)return;
-			console.log('a');
 			dalUsers.setImage(user.getId(), fileName);
 		};
 		function getUnavailableResponse(available){

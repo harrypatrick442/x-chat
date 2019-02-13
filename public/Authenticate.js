@@ -31,7 +31,6 @@ var Authenticate = (function(){
 		var buttonEnterGuest = new Button({classNames:['button-register'], text:'Done'});
 		var divError = E.DIV();
 		var textError = E.TEXTAREA();
-		//spinner.hide();
 		this.div.classList.add('authenticate');
 		divInner.classList.add('div-inner');
 		divInputsSignIn.classList.add('div-inputs-sign-in');
@@ -123,9 +122,9 @@ var Authenticate = (function(){
 		{
 			textUsername.value = username;
 		}
-		spinner.show();
 		this.hide = function ()
 		{
+			spinner.setVisible(false);	
 			self.div.style.display = 'none';
 			settings.set("username", textUsername.value);
 		};
@@ -135,7 +134,6 @@ var Authenticate = (function(){
 		}function showSpinner()
 		{
 			spinner.show();
-			spinner.center();
 		}
 		function hideSpinner()
 		{

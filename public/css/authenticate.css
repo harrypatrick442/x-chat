@@ -9,7 +9,6 @@
 		left:calc(50% - 128px);
 		background-color:rgb(44, 43, 43);
 		border:3px solid rgb(0, 135, 226);
-		z-index:3000000;
 		border-radius:5px;
 		padding:3px;
 		box-sizing:border-box;

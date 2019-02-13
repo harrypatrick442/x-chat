@@ -16,18 +16,23 @@ function Spinner(params) {
 	else{
 		element = spinner;
 	}
+	element.style.display='none';
 	document.documentElement.appendChild(element);
     this.show = function () {
-        element.style.display = 'inline';
-		if(!preventInterraction)return;
+		self.setVisible(true);
+    };
+    this.hide = function () {
+		self.setVisible(false);
+    };
+	this.setVisible = function(value){
+		console.log(value);
+        element.style.display = value?'inline-block':'none';
+		if(!value||!preventInterraction)return;
         setTimeout(function () {
             if(document.activeElement&&document.activeElement.blur)
                 document.activeElement.blur();
         }, 0);
-    };
-    this.hide = function () {
-        element.style.display = 'none';
-    };
+	};
 	if(preventInterraction){
 		preventEventPropagation('click');
 		preventEventPropagation('mousedown');

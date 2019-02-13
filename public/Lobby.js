@@ -18,7 +18,7 @@ var Lobby = (function(){
 		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		if(window.debug)debug.setMysocket(mysocket);
 		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
-		new Task(automaticAuthentication.authenticate).run();
+		new Task(authenticateAutomatically).run();
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
@@ -48,7 +48,7 @@ var Lobby = (function(){
 			buttonPms.addEventListener('click', pmsMenu.show);
 			buttonUsers.addEventListener('click', function(){console.log('a');usersMenues.show();});
 		}
-		rooms.addEventListener('sendmessage', sendMessage);
+		rooms.addEventListener('sendmessage', sendMessage);	
 		rooms.addEventListener('getmessages', getMessages);
 		rooms.addEventListener('getpms', getPms);
 		rooms.addEventListener('getuserids', getUserIds);
@@ -60,7 +60,6 @@ var Lobby = (function(){
 		notificationsMenu.addEventListener('showpm', showPm);
 		pms.addEventListener('addnotification', addNotification);
 		this.getElement = ui.getElement;
-		initialize();
 		function onOpen(){ }
 		function onMessage(e){
 			var msg = e.msg;
@@ -113,6 +112,13 @@ var Lobby = (function(){
 			roomUserIds_Join(room, msg.userIds);
 			roomUserIds_Leave(room, msg.userIds);
 		}
+		function authenticateAutomatically(){
+			if(!automaticAuthentication.authenticate()){showAuthentication();return;}
+			ui.setSpinnerAutomaticAuthenticationVisible(true);
+		}
+		function showAuthentication(){
+			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
+		}
 		function showNotifications(){
 			notificationsMenu.show();
 		}
@@ -138,9 +144,6 @@ var Lobby = (function(){
 		function onToggleButtonPms(e){
 			pmsMenu.setVisible(e.toggled);
 		}
-		function initialize(){
-			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
-		}
 		function callbackRegister(obj){
 			obj.type='register';
 			mysocket.send(obj);
@@ -162,6 +165,8 @@ var Lobby = (function(){
 			loadNotifications(msg);
 		}
 		function automaticAuthenticateResponse(msg){
+			ui.setSpinnerAutomaticAuthenticationVisible(false);
+			if(!msg.successful){showAuthentication();return;}
 			authenticateRegisterResponse(msg);
 			loadNotifications(msg);
 		}
@@ -183,6 +188,7 @@ var Lobby = (function(){
 			});
 		}
 		function authenticateRegisterResponse(msg){
+			console.log('response');
 			if(msg.successful){
 				sessionId = msg.sessionId;
 				if(msg.token)automaticAuthentication.setToken(msg.token);
@@ -274,6 +280,7 @@ var Lobby = (function(){
 		var buttonProfilePicture = params.buttonProfilePicture;
 		var buttonNotifications = params.buttonNotifications;
 		var notificationsMenu = params.notificationsMenu;
+		var spinnerAutomaticAuthentication = new Spinner({preventInterraction:true});
 		var divButtonShowHideWrapper = E.DIV();
 		
 		var usersMenues = params.usersMenues;
@@ -305,6 +312,7 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
 		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
 		this.getElement = function(){return element;};
+		this.setSpinnerAutomaticAuthenticationVisible=spinnerAutomaticAuthentication.setVisible;
 	}
 	return _Lobby;
 })();

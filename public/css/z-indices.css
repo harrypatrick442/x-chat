@@ -10,3 +10,12 @@
 .image-uploader{
 	z-index:200;
 }
+.authenticate{
+	z-index:300;
+}
+.prevent-interraction{
+	z-index:500;
+}
+.spinner{
+	z-index:600;
+}
