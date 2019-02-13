@@ -131,7 +131,7 @@ float:right;
     color: #323232;
     font: inherit;
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
-    border: 0;
+    border: 2px solid #dddddd;
     outline: 0;
 	border-radius:2px;
 	height:28px;

@@ -63,7 +63,7 @@ var Authenticate = (function(){
 		divInputsRegister.appendChild(buttonRegister.getElement());
 		divInputsRegister.classList.add('inputs-register');
 		divInputsGuest.appendChild(textUsernameGuest);
-		buttonRegister.onclick = sendRegister;
+		buttonRegister.addEventListener('click',  sendRegister);
 		styleTextInputGuest(textUsernameGuest, 'Username');
 		styleTextInputSignIn(textUsername, 'Username');
 		styleTextInputSignIn(textPasswordSignIn, 'Password');
@@ -72,57 +72,10 @@ var Authenticate = (function(){
 		textError.classList.add('error-text');
 		textError.readOnly = true;
 		button.innerHTML = "Enter";
-					function    sendRegister() {this.blur();
-				if (textEmailRegister.value.length < 1)
-				{
-					setError("You must enter an email address!");
-					return;
-				}
-				if (textUsernameRegister.value.length < 1)
-				{
-					setError("You must enter a username!");
-					return;
-				}
-				if (textPasswordRegister.value.length < 1)
-				{
-					setError("You must enter a password!");
-					return;
-				}
-				if (textPasswordReenterRegister.value.length < 1)
-				{
-					setError("You must re-enter your password!");
-					return;
-				}
-				if (textPasswordRegister.value != textPasswordReenterRegister.value)
-				{
-					setError("The passwords entered do not match!");
-					return;
-				}
-				showSpinner();
-				var bd= birthday.getValue();
-				if( !bd.year)
-				{
-					setError("You must enter a birth year!");
-					return;
-				}
-				if(bd.month==undefined)
-				{
-					setError("You must enter a birth month!");
-					return;
-				}
-				if(!bd.day)
-				{
-					setError("You must enter a birth day!");
-					return;
-				}
-				var jObject = {email: textEmailRegister.value, username: textUsernameRegister.value, password: textPasswordRegister.value, gender:genderPicker.getValue(), birthday:bd};
-				console.log('registering');
-				callbackRegister(jObject);
-			};
 
 		this.setError = setError;
-		buttonEnterGuest.onclick=sendGuest;
-		button.onclick = sendSignIn;
+		buttonEnterGuest.addEventListener('click', sendGuest);
+		button.addEventListener('click', sendSignIn);
 		
 		textUsername.onkeydown = detectEnterKey;
 		textUsername.addEventListener('click', function ()
@@ -203,15 +156,62 @@ var Authenticate = (function(){
 		{
 			spinner.hide();
 		}
-		function sendSignIn() {
-			this.blur();
+		function    sendRegister() {
+			if (textEmailRegister.value.length < 1)
+			{
+				setError("You must enter an email address!");
+				return;
+			}
+			if (textUsernameRegister.value.length < 1)
+			{
+				setError("You must enter a username!");
+				return;
+			}
+			if (textPasswordRegister.value.length < 1)
+			{
+				setError("You must enter a password!");
+				return;
+			}
+			if (textPasswordReenterRegister.value.length < 1)
+			{
+				setError("You must re-enter your password!");
+				return;
+			}
+			if (textPasswordRegister.value != textPasswordReenterRegister.value)
+			{
+				setError("The passwords entered do not match!");
+				return;
+			}
 			showSpinner();
-			callbackSignIn({password : textPasswordSignIn.value,username :textUsername.value});
+			var bd= birthday.getValue();
+			if( !bd.year)
+			{
+				setError("You must enter a birth year!");
+				return;
+			}
+			if(bd.month==undefined)
+			{
+				setError("You must enter a birth month!");
+				return;
+			}
+			if(!bd.day)
+			{
+				setError("You must enter a birth day!");
+				return;
+			}
+			var jObject = {email: textEmailRegister.value, username: textUsernameRegister.value,
+			password: textPasswordRegister.value, gender:genderPicker.getValue(), birthday:bd,
+			staySignedIn:tickboxStaySignedInRegister.getTicked()};
+			callbackRegister(jObject);
+		}
+		function sendSignIn() {
+			showSpinner();
+			callbackSignIn({password : textPasswordSignIn.value,username :textUsername.value,
+				staySignedIn:tickboxStaySignedIn.getTicked()});
 		}
 		function sendGuest(){
-			this.blur();
 			showSpinner();
-			callbackGuest({username :textUsernameGuest.value});
+			callbackGuest({username :textUsernameGuest.value, staySignedIn:tickboxStaySignedInGuest.getTicked()});
 		}
 		function detectEnterKey(evt) {
 			evt = evt || window.event;
