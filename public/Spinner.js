@@ -1,32 +1,46 @@
-function Spinner(name) {
+function Spinner(params) {
+	var preventInterraction=params.preventInterraction;
     var self = this;
-    if(!name)
-        name=2;
-    var design = Spinner.designs[name];
-    this.div = document.createElement('div');
-    this.div.id = design.id;
-    this.div.style.position = 'absolute';
-    this.div.style.margin = 'auto';
-    for (var i = 1; i < 9; i++)
-    {
-        var div = document.createElement('div');
-        div.id = design.childIdPrefix + String(i);
-        div.className = design.childClassName;
-        this.div.appendChild(div);
+	var element = E.DIV();
+	element.classList.add('spinner');
+	element.classList.add('prevent-interraction');
+	var animation=E.DIV();
+	animation.classList.add('animation');
+	element.appendChild(animation); 
+    document.documentElement.appendChild(element);
+    this.show = function () {
+        element.style.display = 'inline';
+        resize();
+		if(!preventInterraction)return;
+        setTimeout(function () {
+            if(document.activeElement&&document.activeElement.blur)
+                document.activeElement.blur();
+        }, 0);
+    };
+    this.hide = function () {
+        element.style.display = 'none';
+    };
+    this.hide();
+	if(preventInterraction){
+		preventEventPropagation('click');
+		preventEventPropagation('mousedown');
+		preventEventPropagation('mouseup');
+		window.addEventListener('resize', resize);
+	}
+    function preventEventPropagation(name) {
+        getDiv().addEventListener(name, function (e) {
+            if (!e) e = window.event;
+            e.stopPropagation();
+            return false;
+        });
     }
-    this.show=function()
-    {
-      self.div.style.display='block';  
-    };
-    this.hide = function()
-    {
-      self.div.style.display='none';  
-    };
-    this.center = function()
-    {
-    self.div.style.top = 'calc(50% - '+String(self.div.offsetWidth/2)+'px)';
-    self.div.style.left = 'calc(50% - '+String(self.div.offsetHeight/2)+'px)';  
-    };
+    function getScreenSize() {
+        var width = window.innerWidth|| document.documentElement.clientWidth || document.body.clientWidth|| 0;
+        var height = window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight|| 0;
+        return { width: width, height: height };
+    }
+    function resize() {
+        var size = getScreenSize();
+        element.style.width = String(size.width) + 'px'
+    }
 }
-Spinner.designs = {1: {id: 'floatingCirclesG', childIdPrefix: 'frotateG_', nChildren: 8, childClassName: 'f_circleG'}, 2: {id: 'circularG', childIdPrefix: 'circularG_', nChildren: 8, childClassName: 'circularG'}};
-    
