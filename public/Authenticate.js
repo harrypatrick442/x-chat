@@ -10,7 +10,6 @@ var Authenticate = (function(){
 			this.set("username");
 			//this is a reset function for this particualr instance of this particular class.
 		});
-		var timer;
 		this.div = E.DIV();
 		var divInner = E.DIV();
 		var divInputsSignIn = E.DIV();
@@ -120,30 +119,16 @@ var Authenticate = (function(){
 		var flashing = false;
 		var flashingCount = 0;
 		var initialBackgroundColor = self.div.style.backgroundColor;
-		timer = new Timer(function () {
-			flashingCount++;
-			if (flashing) {
-				self.div.style.backgroundColor = initialBackgroundColor;
-				flashing = false;
-				if (flashingCount > 6)
-				{
-					timer.stop();
-				}
-			} else {
-				self.div.style.backgroundColor = '#ccff00';
-				flashing = true;
-			}
-		}, 60, -1);
-		this.hide = function ()
-		{
-			self.div.style.display = 'none';
-			settings.set("username", textUsername.value);
-		};
 		var username = settings.get("username");
 		if (username)
 		{
 			textUsername.value = username;
 		}
+		this.hide = function ()
+		{
+			self.div.style.display = 'none';
+			settings.set("username", textUsername.value);
+		};
 		function setLayoutStyle(element)
 		{
 			element.classList.add('entry');

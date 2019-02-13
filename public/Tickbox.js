@@ -23,8 +23,8 @@ var Tickbox = (function(){
 		};
 		box.addEventListener('click', toggle);
 		function toggle(){
-		ticked=!ticked;
-		tickedChanged();
+			ticked=!ticked;
+			tickedChanged();
 		}
 		function tickedChanged(){
 			if(ticked){
