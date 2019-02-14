@@ -110,6 +110,7 @@ var Room = new (function(){
 			var userMe = getUserMe();
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() 
 			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser, getUserMe:getUserMe});
+			console.log(messageSending);
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);
 			ui.clearText();

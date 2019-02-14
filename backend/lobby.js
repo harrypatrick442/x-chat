@@ -51,6 +51,7 @@ exports.lobby = (function(){
 					var res = createSession(user);
 					res.type='register';
 					res.users = users.toJSON();
+					res.nDevice = getNextNDevice();
 					users.add(user);
 					sendJoin(user);
 					user.addEventListener('dispose', userDispose);
@@ -75,6 +76,7 @@ exports.lobby = (function(){
 				var res = createSession(user);
 				res.type='automatic_authenticate';
 				res.users = users.toJSON();
+				res.nDevice = getNextNDevice();
 				users.add(user);
 				sendJoin(user);
 				user.addEventListener('dispose', userDispose);
