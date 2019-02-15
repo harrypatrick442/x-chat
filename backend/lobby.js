@@ -83,10 +83,12 @@ exports.lobby = (function(){
 				callback(res);
 			});
 		};
-		this.setImageForUser = function(sessionId, fileName){
+		this.setImageForUser = function(sessionId, image){//image is the first part of the file name (without _32-32.jpeg).
 			var user = getUserFromSessionId(sessionId);
 			if(!user)return;
-			dalUsers.setImage(user.getId(), fileName);
+			user.setImage(image);
+			dalUsers.setImage(user.getId(), image);
+			
 		};
 		function getUnavailableResponse(available){
 			var error;

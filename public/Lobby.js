@@ -1,6 +1,6 @@
 var Lobby = (function(){
-	const SMALL='small';
-	const LARGE='large';
+	const SMALL='32_32';
+	const LARGE='128_128';
 	const IMAGE_WIDTH_SMALL=32;
 	const IMAGE_WIDTH_LARGE=256;
 	const IMAGE_UPLOADER_URL='/image_uploader';

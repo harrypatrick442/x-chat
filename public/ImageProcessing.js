@@ -8,6 +8,7 @@ var ImageProcessing= new (function(){
 		var cropperLeft= params.cropperLeft;
 		var cropperTop = params.cropperTop;
 		var format = params.format;
+		var quality = params.quality;
 		var profile = params.profile;
 		var portionCanvas = E.CANVAS();	
 		var portionCanvasContext = portionCanvas.getContext('2d');
@@ -29,7 +30,7 @@ var ImageProcessing= new (function(){
 	bufferCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000;';
 		document.documentElement.appendChild(portionCanvas);
 	portionCanvas.style='poition:absolute; width:100px; height:100px; z-index:1000*/
-		return portionCanvas.toDataURL(format);
+		return portionCanvas.toDataURL(format, quality);
 	};
 	function getFinalCroppedDimensions(profile, canvasWidth, canvaHeight){
 		var finalCroppedWidth;

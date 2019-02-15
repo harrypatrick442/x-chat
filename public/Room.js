@@ -109,7 +109,7 @@ var Room = new (function(){
 			if(text=='')return;
 			var userMe = getUserMe();
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() 
-			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser, getUserMe:getUserMe});
+			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser, getUserMe:getUserMe, image:userMe.getImage()});
 			console.log(messageSending);
 			dispatchSendMessage(messageSending);
 			messages.addSending(messageSending);

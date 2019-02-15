@@ -28,6 +28,7 @@ var CroppingFrame = new (function () {
 			var position = cropper.getPosition();
 			var dimensions = cropper.getDimensions();
 			var format = params.format?params.format:"image/jpeg";
+			var quality = params.quality?params.quality:1;
 			var dataUrl = ImageProcessing.crop({
 				img:img, imgWidthRaw:imageWidthRaw, imgHeightRaw:imageHeightRaw, cropperWidth:dimensions.width, cropperHeight:dimensions.height, 
 			cropperLeft:position.left, cropperTop:position.top, format:format, profile:params.profile});

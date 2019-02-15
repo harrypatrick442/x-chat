@@ -16,6 +16,7 @@ exports.Message = (function(){
 		console.log(req);
 		req.userId = user.getId();
 		req.username = user.getUsername();
+		req.image= user.getImage();
 		return new _Message(req);
 	};
 	return _Message;

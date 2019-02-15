@@ -7,12 +7,15 @@ var Message = (function(){
 		var components = params.components;
 		var content = params.content;
 		var clickMenuUser=params.clickMenuUser;
-		var userImage = new UserImage({userId:userId});
+		console.log(params.image);
+		var userImage = new UserImage({userId:userId, image:params.image});
 		var ignoreManager = params.ignoreManager;
 		var getUserMe = params.getUserMe;
 		var ignored=false;
-		var ui = new UI({userImage:userImage, components:components, username:username, pending:params.pending});
-		this.getElement = ui.getElement;
+		var ui;
+		this.getElement = function(){
+			return self.getUI().getElement();
+		};
 		this.getUniqueId = function(){
 			return params.uniqueId;
 		};
@@ -25,7 +28,7 @@ var Message = (function(){
 		};
 		this.confirm = function(receivedMessage){
 			params.serverAssignedNMessage = receivedMessage.getServerAssignedNMessage();
-			ui.hidePending();
+			getUI().hidePending();
 		};
 		this.toJSON = function(){
 			return {content:content, userId:userId, uniqueId:params.uniqueId};
@@ -38,9 +41,14 @@ var Message = (function(){
 			updateVisibility();
 		};
 		this.getIgnored = function(){return ignored;};
-		ui.addEventListener('showusermenu', showUserMenu);
+		getUI().addEventListener('showusermenu', showUserMenu);
+		function getUI(){
+			if(!ui)
+				ui = new UI({userImage:userImage, components:components, username:username, pending:params.pending});
+			return ui;
+		}
 		function updateVisibility(){
-			ui.setVisible(!ignored);
+			getUI().setVisible(!ignored);
 		}
 		function showUserMenu(e){
 			if(userId==getUserMe().getId())return;
@@ -72,7 +80,7 @@ var Message = (function(){
 		function(component){  components.push(component);});
 		return new Message({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, content:content,
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
-		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe});
+		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe,image:params.image});
 	}
 	function generatecontentFromMessageComponents(components){
 		var list =[];
@@ -82,42 +90,4 @@ var Message = (function(){
 		return list;
 	}
 	return _Message;
-	function UI(params){
-		EventEnabledBuilder(this);
-		var self = this;
-		var components = params.components;
-		var name = params.username;
-		var userImage = params.userImage;
-		var element = E.DIV();
-		element.classList.add('message');
-		var inner = E.DIV();
-		inner.classList.add('inner');
-	    var username = E.DIV();
-		username.classList.add('username');
-		var innerUsername = E.DIV();
-		var pending;
-		if(params.pending){
-			pending = E.DIV();
-			pending.classList.add('pending');
-			element.appendChild(pending);
-		}
-		username.appendChild(innerUsername);
-		inner.appendChild(userImage.getElement());
-		inner.appendChild(username);
-		innerUsername.innerHTML += name&&name.length>0?name:'&nbsp;';
-		each(components, function(component){
-			inner.appendChild(component.getElement());
-		});
-		element.appendChild(inner);
-		this.getElement = function(){return element;};
-		this.getUsername = function(){return username;};
-		this.setVisible=function(value){element.style.display=value?'inline-block':'none';};
-		this.hidePending = function(){
-			if(pending){element.removeChild(pending);}
-		};
-		innerUsername.addEventListener('click', dispatchShowUserMenu);
-		function dispatchShowUserMenu(e){
-			self.dispatchEvent({type:'showusermenu', left:e.clientX, top:e.clientY});
-		}
-	}
 })();

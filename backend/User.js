@@ -11,6 +11,7 @@ exports.User = (function(){
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};
 		this.getImage = function(){return params.image;};
+		this.setImage = function(value){params.image=value;};
 		this.getEmail = function(){return params.email;};
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};

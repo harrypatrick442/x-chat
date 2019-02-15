@@ -2,27 +2,34 @@ var ConnectedImage = (function(){
 	var mapTypeToMapIdToInstances={};
 	var _ConnectedImage = function(params)
 	{
+		console.log(params); console.log(new Error().stack);
 		var self = this;
 		var id = params.id;
 		var type = params.type;
 		var instance = {connectedImage:this, set:set};
 		var def=params.def;	
+		var url = params.url;
 		var element = E.DIV();
 		element.classList.add('connected-image');
 		var img = E.IMG();
 		element.appendChild(img);
-		img.src=def;
 		var errorCount=0;
-		img.onerror = function () {
-			if(errorCount++<2)
-				img.src = def;
-		};
+		img.onerror = function (e) {
+			console.log(e);
+			console.log('error');
+			//if(errorCount++<2)
+			//	img.src = def;
+		};	
+		img.src=params.url;
 		this.getElement = function(){return element;};
 		this.dispose = function(){
 			removeInstance(type, id, instance);
 		};
+			console.log(url);
 		map(type, id, instance);
 		function set(url){
+			console.log('set');
+			console.log(url);
 			img.src=url;
 		}
 	};
