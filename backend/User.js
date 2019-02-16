@@ -8,7 +8,7 @@ exports.User = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var devices = new Devices();
-		var roomsSet = new Set({getEntryId:getEntryId});
+		//var roomsSet = new Set({getEntryId:getEntryId});
 		this.getDevices = function(){ return devices;};
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};
@@ -22,21 +22,21 @@ exports.User = (function(){
 		var session;
 		this.getSession = function(){return session;};
 		this.setSession=function(value){session = value;};
-		this.joinedRoom = function(room){
+		/*this.joinedRoom = function(room){
 			roomsSet.add(room);
 			room.addEventListener(DISPOSE, roomDisposed);
 		};
 		this.leftRoom = function(room){
 			roomsSet.remove(room);
 			room.removeEventListener(DISPOSE, roomDisposed);
-		};
+		};*/
 		this.dispose = function(){
 			devices.closeAll();
 			dispose();
 		};
-		this.getRoomIdsIsIn= function(){
+		/*this.getRoomIdsIsIn= function(){
 			return roomsSet.getEntryIds();
-		};
+		};*/
 		devices.addEventListener('allclosed', dispose);
 		this.addDevice = devices.add;
 		this.sendMessage = devices.sendMessage;
@@ -44,8 +44,8 @@ exports.User = (function(){
 			console.log(DISPOSE);
 			dispatchDispose();
 		}
-		function roomDisposed(){
-			roomsSet.remove(room);
+		function roomDisposed(e){
+			roomsSet.remove(e.room);
 		}
 		function dispatchDispose(){
 			self.dispatchEvent({type:DISPOSE, user:self});

@@ -1,5 +1,4 @@
 exports.dalMessages= new (function(){
-	console.log('DalRooms loaded');
 	const STORED_PROCEDURE_ROOM_MESSAGE_ADD='xchat_room_message_add';
 	const STORED_PROCEDURE_ROOM_MESSAGES_GET='xchat_room_messages_get';
 	const ROOM_ID='roomId';
@@ -19,7 +18,6 @@ exports.dalMessages= new (function(){
 			{name:N_MESSAGES, value:nMessages, type:sql.Int}
 			], 
 		callback:function(result){
-			console.log(result);
 			var rows = result.recordsets[0];
 			var messages=[];
 			each(rows, function(row){

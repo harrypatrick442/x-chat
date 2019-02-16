@@ -19,13 +19,18 @@ exports.Room = (function(){
 		this.isPm=function(){return params.isPm;};
 		this.getUserTo= function(){ return params.userTo;};
 		this.join = function(device){
+			console.log('JOIN ROOM');
 			if(!devices.add(device))return;
-			device.getUser().joinedRoom(self);
+			console.log('JOINING ROOM');
+			console.log(device);
+			device.joinedRoom(self);
 			self.sendUserIds();
 		};
 		this.leave = function(device){
+			console.log('LEAVE ROOM');
 			if(!devices.remove(device))return;
-			device.getUser().leftRoom(self);
+			console.log('LEFT ROOM');
+			device.leftRoom(self);
 			self.sendUserIds();
 		};
 		this.sendUserIds=function(){

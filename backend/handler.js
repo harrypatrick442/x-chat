@@ -28,7 +28,9 @@ exports.handler = new (function(){
 					case 'rooms_in_changed':
 						var user = getUser(req);
 						if(!user)return;
-						lobby.getRooms().setRoomsUserIsIn(user, req.roomIds);
+						var device = user.getDevices().getById(mysocket.getId());
+						if(!device)return;
+						lobby.getRooms().setRoomsDeviceIsIn(device, req.roomIds);
 						break;
 					case 'room_message_send':
 						var room = getRoom(req);
@@ -69,6 +71,7 @@ exports.handler = new (function(){
 						if(!room)return;
 						var device = user.getDevices().getById(mysocket.getId());
 						if(!device)return;
+						console.log('about to call join');
 						room.join(device);
 					break;
 					case 'room_leave':
