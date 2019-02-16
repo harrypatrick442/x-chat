@@ -10,11 +10,16 @@ module.exports = new (function(){
 		this.sendMessage=function(msg){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
+		ws.on('open', onOpen);
 		ws.on('message', function(msg) {
 			self.onMessage&&self.onMessage(msg);
 		});
 		ws.on('close', function(){
-			//self.onClose&&self.onClose();
+			self.onClose&&self.onClose();
 		});
+		this.close = ws.close;
+		function onOpen(){
+			self.onOpen&&self.onOpen();
+		}
 	}
 })();

@@ -1,20 +1,20 @@
-var Mysocket = new (function(){
+var Mysocket = (function(){
 	var _Mysocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;
 		EventEnabledBuilder(this);
 		var self = this;
-		var websocket;
-		var ajax;
+		var channel;
 		var id=1;
-		getInterface();
-		this.send = function(obj){
-			var msg = JSON.stringify(obj);
-			getInterface().send(msg);
+		var toSend=[];
+		getChannel();
+		this.send = function(msg){
+			if(channel&&channel.isOpen()){
+				channel.send(msg);
+				return;
+			}
+			toSend.push(msg);
 		};
-		function callbackOnMessage(msg){
-			dispatchOnMessage(msg);
-		}
 		function callbackOnOpen(){
 			dispatchOnOpen();
 		}
@@ -25,58 +25,29 @@ var Mysocket = new (function(){
 			self.dispatchEvent({type:'onmessage', msg:msg});
 		}
 		function dispatchOnOpen(){
+			console.log('onopen dispatched');
 			self.dispatchEvent({type:'onopen'});
 		}
 		function dispatchOnClose(){
 			self.dispatchEvent({type:'onclose'});
 		}
-		function getInterface(){
-			return getWebsocket();
+		function getChannel(){
+			if(channel)return channel;
+			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket});
+			channel.onClose = onClose;
+			channel.onOpen = onOpen;
+			channel.onMessage = onMessage;
 		}
-		function getWebsocket(){
-			if(!websocket) websocket = new _Websocket(id, urlWebsocket, callbackOnMessage, callbackOnOpen, callbackOnClose);
-			return websocket;
+		function onMessage(msg){
+			dispatchOnMessage(msg);
 		}
-	};
-	function getTypeToUse(){
-		
-	}
-	function _Websocket(id, url, callbackOnMessage, callbackOnOpen, callbackOnClose){
-		var websocket;
-		var toSend=[];
-		this.send = function(msg){
-			if(needToInitialize()){
-				initialize();
-				return;
-			}
-			if(isOpen()){
-				if(toSend.length>0)
-					sendPending();
-				websocket.send(msg);
-				return;
-			}
-			toSend.push(msg);
-		};
-		initialize();
-		function initialize(){
-			websocket = new WebSocket(url+(id?'?mysocket='+id:''));
-			websocket.onmessage = onMessage;
-			websocket.onopen = onOpen;
-			websocket.onclose=callbackOnClose;
-		}
-		function onMessage(e){
-			var msg = JSON.parse(e.data);
-			callbackOnMessage(msg);
+		function onClose(){
+			channel = null;
 		}
 		function onOpen(){
-			callbackOnOpen();
-			sendPending();
-		}
-		function needToInitialize(){
-			return !websocket||websocket.readyState === websocket.CLOSED||websocket.readyState === websocket.CLOSING;
-		}
-		function isOpen(){ 
-			return websocket && websocket.readyState==websocket.OPEN;
+			if(toSend.length>0)
+				sendPending();
+			dispatchOnOpen();
 		}
 		function sendPending(){
 			var iterator = new Iterator(toSend);
@@ -84,7 +55,7 @@ var Mysocket = new (function(){
 			{
 				var msg = iterator.next();
 				try{
-					websocket.send(msg);
+					channel&&channel.isOpen()&&channel.send(msg);
 					iterator.remove();
 				}
 				catch(ex){
@@ -92,6 +63,6 @@ var Mysocket = new (function(){
 				}
 			}
 		}
-	}
+	};
 	return _Mysocket;
 })();
