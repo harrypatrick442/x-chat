@@ -1,5 +1,7 @@
 exports.Device = (function(){
+	const DISPOSE='dispose';
 	var EventEnabledBuilder=require('./EventEnabledBuilder').EventEnabledBuilder;
+	var Set = require('./Set').Set;
 	var _Device = function(params){
 		EventEnabledBuilder(this);
 		var roomsSet = new Set({getEntryId:getEntryId});
@@ -19,15 +21,17 @@ exports.Device = (function(){
 			dispatchClose();
 		};
 		this.getUser = function(){
-			return user;
+			return params.user;
 		};
 		this.getRoomIdsIsIn = function(){
 			return roomsSet.getEntryIds();
 		};
+		mysocket.addEventListener('close', dispatchClose);
 		function roomDisposed(e){
 			roomsSet.remove(e.room);
 		}
 		function dispatchClose(){
+			console.log('dispatching close');
 			self.dispatchEvent({type:'close', device:self});
 		}
 		function getEntryId(room){

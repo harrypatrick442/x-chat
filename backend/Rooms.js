@@ -23,7 +23,7 @@ exports.Rooms = (function(){
 			}
 			callback(_getInfos());
 		};
-		this.setRoomsUserIsIn=function (device, roomIds){
+		this.setRoomsDeviceIsIn=function (device, roomIds){
 			var roomIdsUserIsIn = device.getRoomIdsIsIn();
 			var roomsToJoin = roomIds.where(x=>roomIdsUserIsIn.indexOf(x)<0).select(x=>self.getRoom(x)).where(x=>!x.isPm()||x.userAllowed(device.getUser()));
 			console.log(roomIdsUserIsIn);

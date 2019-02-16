@@ -34,7 +34,7 @@ exports.Room = (function(){
 			self.sendUserIds();
 		};
 		this.sendUserIds=function(){
-			devices.sendMessage({type:'room_userids', roomId:self.getId(), userIds:devices.getUsers().getIds()});
+			devices.sendMessage({type:'room_userids', roomId:self.getId(), userIds:devices.getUserIds()});
 		};
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};

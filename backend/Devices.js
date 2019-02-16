@@ -12,7 +12,7 @@ exports.Devices = (function(){
 			return true;
 		};
 		this.remove = function(device){
-			if(!set.contains(device))return false;
+			if(!set.remove(device))return false;
 			device.removeEventListener('close', close);
 			return true;
 		};
@@ -30,8 +30,19 @@ exports.Devices = (function(){
 			set.clear();
 		};
 		this.getById= set.getById;
+		this.getUserIds = function(){
+			var list=[];
+			set.each(function(device){
+				var id = device.getUser().getId();
+				if(list.indexOf(id)<0)list.push(id);
+			});
+			return list;
+		};
 		function close(e){
 			self.remove(e.device);
+			console.log(e.device.getId());
+			console.log('close called in devices');
+			console.log(e);
 			if(set.count()>0)return;
 			dispatchAllClose();
 		}
