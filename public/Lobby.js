@@ -19,7 +19,7 @@ var Lobby = (function(){
 		var clickMenu = new ClickMenu({});
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
-		var mysocket = new MySocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
+		var mysocket = new Mysocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
 		if(window.debug)debug.setMysocket(mysocket);
 		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
 		new Task(authenticateAutomatically).run();

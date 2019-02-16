@@ -1,11 +1,12 @@
-var MySocket = new (function(){
-	var _MySocket= function(params){
+var Mysocket = new (function(){
+	var _Mysocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;
 		EventEnabledBuilder(this);
 		var self = this;
 		var websocket;
 		var ajax;
+		var id=1;
 		getInterface();
 		this.send = function(obj){
 			var msg = JSON.stringify(obj);
@@ -33,14 +34,14 @@ var MySocket = new (function(){
 			return getWebsocket();
 		}
 		function getWebsocket(){
-			if(!websocket) websocket = new _Websocket(urlWebsocket, callbackOnMessage, callbackOnOpen, callbackOnClose);
+			if(!websocket) websocket = new _Websocket(id, urlWebsocket, callbackOnMessage, callbackOnOpen, callbackOnClose);
 			return websocket;
 		}
 	};
 	function getTypeToUse(){
 		
 	}
-	function _Websocket(url, callbackOnMessage, callbackOnOpen, callbackOnClose){
+	function _Websocket(id, url, callbackOnMessage, callbackOnOpen, callbackOnClose){
 		var websocket;
 		var toSend=[];
 		this.send = function(msg){
@@ -58,7 +59,7 @@ var MySocket = new (function(){
 		};
 		initialize();
 		function initialize(){
-			websocket = new WebSocket(url);
+			websocket = new WebSocket(url+(id?'?mysocket='+id:''));
 			websocket.onmessage = onMessage;
 			websocket.onopen = onOpen;
 			websocket.onclose=callbackOnClose;
@@ -92,5 +93,5 @@ var MySocket = new (function(){
 			}
 		}
 	}
-	return _MySocket;
+	return _Mysocket;
 })();

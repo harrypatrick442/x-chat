@@ -1,28 +1,35 @@
-exports.Mysocket = (function(){
+module.exports = (function(){
+	var handler = require('./handler').handler;
+	var channelFactory = require('./MysocketChannelFactory');
 	var idCount=0;
 	var EventEnabledBuilder=require('./EventEnabledBuilder').EventEnabledBuilder;
 	var _Mysocket = function(params){
 		var self = this;
-		var id = idCount++;
+		var channel;
+		updateChannel(params);
 		EventEnabledBuilder(this);
-		this.sendMessage = params.sendMessage;
+		this.sendMessage = channel.sendMessage;
+		channel.onClose=this.close;
+		channel.onMessage=onMessage;
 		this.close=function(){
 			dispatchClose();
 		};
+		this.setWebsocket = updateChannel;
+		function updateChannel(params){
+			channel = channelFactory.create(params);
+		};
 		this.getId = function(){
-			return id;
+			return params.id;
 		};
 		function dispatchClose(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}
+		function onMessage(msg){
+			handler.process(JSON.parse(msg), self, function(res){channel.sendMessage(res);});
+		}
 	};
-	_Mysocket.fromWebsocket = function(websocket){
-		return new _Mysocket(new Websocket(websocket));
+	_Mysocket.fromWebsocket = function(params){
+		return new _Mysocket(params);
 	};
-	function Websocket(websocket){
-		this.sendMessage=function(msg){
-			try{websocket.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
-		};
-	}
 	return _Mysocket;
 })();
