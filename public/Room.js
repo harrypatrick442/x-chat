@@ -18,7 +18,9 @@ var Room = new (function(){
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
 		var buttonClose = new Button({className:'button-close'});
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose});
+		var spinner = new Spinner({});
+		spinner.show();
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose, spinner:spinner});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -39,6 +41,7 @@ var Room = new (function(){
 			});
 			if(scroll)
 				ui.scrollFeedToBottom();
+			spinner.hide();
 		};
 		messages.addEventListener('showpm', function(e){self.dispatchEvent(e);});
 		function incomingMessage(jObjectMessage){
@@ -151,6 +154,7 @@ var Room = new (function(){
 		var buttonExit = params.buttonExit;
 		var buttonEmoticons = params.buttonEmoticons;
 		var buttonClose = params.buttonClose;
+		var spinner = params.spinner;
 		var element = E.DIV();
 		element.classList.add('room');
 		var top = E.DIV();
@@ -165,6 +169,7 @@ var Room = new (function(){
 		text.classList.add('text');
 		element.appendChild(top);
 		element.appendChild(bottom);
+		element.appendChild(spinner.getElement());
 	    top.appendChild(feed);
 		bottom.appendChild(text);
 		bottom.appendChild(menu);

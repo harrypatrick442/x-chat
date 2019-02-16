@@ -308,6 +308,7 @@ var Lobby = (function(){
 				left.appendChild(usersMenues.getElement());
 		}
 		element.appendChild(right);
+		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
 		right.appendChild(pmsMenu.getElement());
 		right.appendChild(divButtonShowHideWrapper);
 		right.appendChild(rooms.getElement());

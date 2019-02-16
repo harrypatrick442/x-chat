@@ -17,7 +17,9 @@ function Spinner(params) {
 		element = spinner;
 	}
 	element.style.display='none';
-	document.documentElement.appendChild(element);
+	this.getElement = function(){
+		return element;
+	};
     this.show = function () {
 		self.setVisible(true);
     };

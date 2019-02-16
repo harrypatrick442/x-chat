@@ -7,6 +7,7 @@ var Authenticate = (function(){
 		var enablePassword = (callbackRegister != undefined);
 		var self = this;
 		var spinner = new Spinner({preventInterraction:true});
+		document.documentElement.appendChild(spinner.getElement());
 		var settings = new Settings("#username", function () {
 			this.set("username");
 			//this is a reset function for this particualr instance of this particular class.
