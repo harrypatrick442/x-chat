@@ -31,6 +31,9 @@ var Cropper = (function(){
 		this.onShow = function(){
 		};
 		this.getElement = function(){return element;};
+		this.getPosition = function(e){
+			return {left:element.offsetLeft, top:element.offsetTop};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
+		};
 		var twoFingerTouch = new TwoFingerTouch({element:element});
 		var startMiddleFingers;
 		var startPosition;
