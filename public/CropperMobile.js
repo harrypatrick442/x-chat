@@ -34,6 +34,12 @@ var Cropper = (function(){
 		this.getPosition = function(e){
 			return {left:element.offsetLeft, top:element.offsetTop};//{left:absolute.left+(getWidth()/2), top:absolute.top+(getHeight()/2)};
 		};
+		this.getAbsolutePosition=function(e){
+			return {left:e.pageX, top:e.pageY};
+		};
+		this.getDimensions = function(){
+			return {width:element.clientWidth, height:element.clientHeight};
+		};
 		var twoFingerTouch = new TwoFingerTouch({element:element});
 		var startMiddleFingers;
 		var startPosition;
