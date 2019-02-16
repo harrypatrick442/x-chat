@@ -20,15 +20,15 @@ var ImagePreloader = new (function(){
 		delete mapUrlToPreloaderPreloading[url];
 		preloaded[url]=true;
 	}
-	function crceatePreloader(url){
-		var preloader = new Preloader(url);
+	function createPreloader(url){
+		var preloader = new Preloader({url:url});
 		mapUrlToPreloaderPreloading[url]=preloader;
 		return preloader;
 	}
 	function RangePreloader(params){
 		var callback = params.callback;
 		var preloaders =[];
-		this.addPreloader = function(){
+		this.addPreloader = function(preloader){
 			preloader.addEventListener('done', done);
 			preloaders.push(preloader);
 		};
@@ -50,11 +50,11 @@ var ImagePreloader = new (function(){
 		var url = params.url;
 		var img = E.IMG();
 		var successful = false;
-		img.onload = function(){
+		img.onload = function(e){
 			successful = true;
 			dispatchDone();
 		};
-		img.onerror=function(){
+		img.onerror=function(e){
 			dispatchDone();
 		};
 		img.src=url;

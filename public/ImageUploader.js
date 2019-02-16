@@ -68,6 +68,13 @@ var ImageUploader = new (function(){
 		var fileUploader = params.fileUploader;
 		var fileSender = params.fileSender;
 		var fileSenderUI = new FileSenderUI({fileSender:fileSender});
+		ImagePreloader.preloadRange([
+		'/images/upload-file.jpg', 
+		'/images/tick.jpg',
+		'/images/cross.jpg',
+		'/images/tick-hover.jpg',
+		'/images/cross-hover.jpg'
+		]);
 		var element = params.popup.getElement();
 		element.classList.add('image-uploader');
 		var inner = E.DIV();

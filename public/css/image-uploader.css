@@ -32,7 +32,7 @@
 	display:inline-block;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/upload-file.png');	
+	background-image:url('/images/upload-file.jpg');	
 	cursor:pointer;
 	margin-top:30px;
 }
@@ -49,12 +49,12 @@
 	display:inline-block;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/tick.png');	
+	background-image:url('/images/tick.jpg');	
 	cursor:pointer;
 	box-sizing:border-box;
 }
 .image-uploader .inner .cropping-menu .button-accept:hover{
-	background-image:url('/images/tick-hover.png');	
+	background-image:url('/images/tick-hover.jpg');	
 }
 .image-uploader .inner .cropping-menu{
 	display:none;
@@ -65,13 +65,13 @@
 	display:inline-block;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/cross.png');	
+	background-image:url('/images/cross.jpg');	
 	cursor:pointer;
 	box-sizing:border-box;
 	
 }
 .image-uploader .inner .cropping-menu .button-reject:hover{
-	background-image:url('/images/cross-hover.png');	
+	background-image:url('/images/cross-hover.jpg');	
 }
 .image-uploader .inner .cropping-frame{
 	display:none;
