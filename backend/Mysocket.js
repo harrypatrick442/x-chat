@@ -1,11 +1,16 @@
 exports.Mysocket = (function(){
+	var idCount=0;
 	var EventEnabledBuilder=require('./EventEnabledBuilder').EventEnabledBuilder;
 	var _Mysocket = function(params){
 		var self = this;
+		var id = idCount++;
 		EventEnabledBuilder(this);
 		this.sendMessage = params.sendMessage;
 		this.close=function(){
 			dispatchClose();
+		};
+		this.getId = function(){
+			return id;
 		};
 		function dispatchClose(){
 			self.dispatchEvent({type:'close', mysocket:self});

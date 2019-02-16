@@ -1,13 +1,13 @@
 exports.User = (function(){
 	const DISPOSE='dispose';
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
-	var Mysockets = require('./Mysockets').Mysockets;
+	var Devices = require('./Devices').Devices;
 	var Set = require('./Set').Set;
 	var set = new Set({getEntryId:getEntryId});
 	var __User = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var mysockets = new Mysockets();
+		var devices = new Devices();
 		var roomsSet = new Set({getEntryId:getEntryId});
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};
@@ -30,15 +30,15 @@ exports.User = (function(){
 			room.removeEventListener(DISPOSE, roomDisposed);
 		};
 		this.dispose = function(){
-			mysockets.closeAll();
+			devices.closeAll();
 			dispose();
 		};
 		this.getRoomIdsIsIn= function(){
 			return roomsSet.getEntryIds();
 		};
-		mysockets.addEventListener('allclosed', dispose);
-		this.addMysocket = mysockets.add;
-		this.sendMessage = mysockets.sendMessage;
+		devices.addEventListener('allclosed', dispose);
+		this.addDevice = devices.add;
+		this.sendMessage = devices.sendMessage;
 		function dispose(){
 			console.log(DISPOSE);
 			dispatchDispose();

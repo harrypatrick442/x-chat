@@ -7,38 +7,35 @@ exports.Room = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var messages;
-		var users = new Users();
+		var devices = new Devices();
 		var id = params.id;
 		this.getId= function(){return params.id;};
 		this.getName = function(){ return params.name;};
 		this.getMessages = function(callback){
 			getMessages(callback);
 		};
-		this.getUsers=function(){return users;};
+		this.getUsers=function(){return devices.getUsers();};
 		this.isPm=function(){return params.isPm;};
 		this.getUserTo= function(){ return params.userTo;};
-		this.join = function(user){
-			if(users.contains(user))return;
-			users.add(user);
-			user.joinedRoom(self);
-			console.log('sending user ids');
+		this.join = function(device){
+			if(!devices.add(device))return;
+			device.getUser().joinedRoom(self);
 			self.sendUserIds();
 		};
-		this.leave = function(user){
-			if(!users.contains(user))return;
-			users.remove(user);
-			user.leftRoom(self);
+		this.leave = function(device){
+			if(!devices.remove(device))return;
+			device.getUser().leftRoom(self);
 			self.sendUserIds();
 		};
 		this.sendUserIds=function(){
-			users.sendMessage({type:'room_userids', roomId:self.getId(), userIds:users.getIds()});
+			devices.sendMessage({type:'room_userids', roomId:self.getId(), userIds:devices.getUsers().getIds()});
 		};
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};
 		};
 		this.sendMessage = function(message){
 			getMessages(function(messages){messages.add(message);});
-			users.sendMessage({type:'message', roomId:id, message:message.toJSON()});
+			devices.sendMessage({type:'message', roomId:id, message:message.toJSON()});
 		};
 		initialize();
 		function initialize(){

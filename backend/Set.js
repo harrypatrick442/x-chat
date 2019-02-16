@@ -31,8 +31,15 @@ exports.Set = (function(){
 		this.getEntryIds = function(){
 			return Object.keys(mapIdToItem);
 		};
+		this.count = function(){
+			return list.length;
+		};
 		this.each = function(func){
 			each(list, func);
+		};
+		this.clear = function(){
+			list =[];
+			mapIdToItem={};
 		};
 	};
 	return _Set;

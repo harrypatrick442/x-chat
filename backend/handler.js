@@ -67,15 +67,18 @@ exports.handler = new (function(){
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-
-						room.join(user);
+						var device = user.getDevices().getDeviceById(mysocket.getId());
+						if(!device)return;
+						room.join(device);
 					break;
 					case 'room_leave':
 						var user = getUser(req);
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-						room.leave(user);
+						var device = user.getDevices().getDeviceById(mysocket.getId());
+						if(!device)return;
+						room.leave(device);
 					break;
 					case 'room_users_get':
 						callback({type:'users', users:getRoom(req).getUsers()});

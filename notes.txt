@@ -4,3 +4,4 @@ In my case I had to manually set TCP Port property to 1433 in SQL Server Network
 problem when user enters a room on two devices and one leaves the room. it removes the user from the room on the backend meaning they get no further messages
 
 
+add in check to see if user contains mysocket already indicating device already authenticated.
