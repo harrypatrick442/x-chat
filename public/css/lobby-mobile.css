@@ -12,8 +12,9 @@
 width:43px;
 margin-left:10px;
 float:left;
+height:28px;
 background-image:url('/images/pms-mobile.gif');	
-margin-top: 4px;
+margin-top: 5px;
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
 }
