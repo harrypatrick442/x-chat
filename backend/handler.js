@@ -67,7 +67,7 @@ exports.handler = new (function(){
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-						var device = user.getDevices().getDeviceById(mysocket.getId());
+						var device = user.getDevices().getById(mysocket.getId());
 						if(!device)return;
 						room.join(device);
 					break;
@@ -76,7 +76,7 @@ exports.handler = new (function(){
 						if(!user)return;
 						var room = getRoom(req);
 						if(!room)return;
-						var device = user.getDevices().getDeviceById(mysocket.getId());
+						var device = user.getDevices().getById(mysocket.getId());
 						if(!device)return;
 						room.leave(device);
 					break;

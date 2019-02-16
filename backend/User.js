@@ -9,6 +9,7 @@ exports.User = (function(){
 		var self = this;
 		var devices = new Devices();
 		var roomsSet = new Set({getEntryId:getEntryId});
+		this.getDevices = function(){ return devices;};
 		this.getId = function(){return params.id;};
 		this.getUsername = function(){return params.username;};
 		this.getImage = function(){return params.image;};

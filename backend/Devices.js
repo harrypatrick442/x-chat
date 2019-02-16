@@ -1,6 +1,7 @@
 exports.Devices = (function(){
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
 	var each = require('./each').each;
+	var Set = require('./Set').Set;
 	var _Devices = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
@@ -17,12 +18,12 @@ exports.Devices = (function(){
 		};
 		this.contains = set.contains;
 		this.sendMessage = function(msg){
-			each(set.getEntries(), function(device){
+			set.each(function(device){
 				device.sendMessage(msg);
 			});
 		};
 		this.closeAll = function(){
-			each(set.getEntries(), function(device){
+			set.each(function(device){
 				device.removeEventListener('close', close);
 				device.close();
 			});

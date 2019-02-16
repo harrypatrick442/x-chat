@@ -2,6 +2,7 @@ exports.Room = (function(){
 	var dalRooms = require('./DAL/DalRooms').dalRooms;
 	var Messages = 	require('./Messages').Messages;
 	var Users = require('./Users').Users;
+	var Devices = require('./Devices').Devices;
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
 	var _Room = function(params){
 		EventEnabledBuilder(this);
