@@ -70,11 +70,11 @@
 	height:24px;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/smiley.png');	
+	background-image:url('/images/smiley.gif');	
 	cursor:pointer;
 }
 .lobby .rooms .entries .room .bottom .menu .button-emoticons:hover{
-	background-image:url('/images/smiley-hover.png');	
+	background-image:url('/images/smiley-hover.gif');	
 }
 .lobby .rooms .entries .room .bottom .menu .button-send{
 	float:right;
@@ -100,11 +100,11 @@
 	margin-right:6px;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/room-exit.png');	
+	background-image:url('/images/room-exit.gif');	
 	cursor:pointer;
 }
 .lobby .rooms .entries .room .bottom .menu .button-exit:hover{
-	background-image:url('/images/room-exit-hover.png');	
+	background-image:url('/images/room-exit-hover.gif');	
 }
 .lobby .rooms .entries .room .bottom .menu .button-close{
 	float:right;
