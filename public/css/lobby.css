@@ -9,6 +9,7 @@ html, body{
 height:100%;
 margin:0px;
 padding:0px;
+overscroll-behavior-y: none;
 }
 .lobby{
 border:1px solid black;
