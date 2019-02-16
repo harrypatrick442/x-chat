@@ -130,7 +130,7 @@ background-color:red;
   text-align: center;
   
 }
-.lobby .right .button-show-hide-wrapper .button-notifications .count.text{
+.lobby .right .button-show-hide-wrapper .button-notifications .count .text{
 position:relative;
 background-color:green;
 }
