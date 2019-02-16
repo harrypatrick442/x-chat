@@ -10,6 +10,7 @@ var PmsMenu = new (function(){
 		this.setVisible = ui.setVisible;
 		this.show= function(){
 			popup.show();
+			resized();
 		};
 		var tabPortal;
 		pms.addEventListener('add', add);
@@ -30,7 +31,6 @@ var PmsMenu = new (function(){
 			pmEntry.addEventListener('showpm', showPm);
 			pmEntry.addEventListener('closepm', closePm);
 			sortedFilteredEntries.addEntry(pmEntry);
-			pmEntry.parentWidth(ui.getElement().clientWidth);
 		}
 		function remove(e){
 			sortedFilteredEntries.removeEntryById(e.userTo.getId());
