@@ -40,13 +40,11 @@ exports.Devices = (function(){
 		};
 		function close(e){
 			self.remove(e.device);
-			console.log(e.device.getId());
-			console.log('close called in devices');
-			console.log(e);
 			if(set.count()>0)return;
 			dispatchAllClose();
 		}
 		function dispatchAllClose(){
+			console.log('dispatchAllClosed');
 			self.dispatchEvent({type:'allclosed'});
 		}
 		function contains(device){

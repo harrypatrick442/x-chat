@@ -41,7 +41,6 @@ exports.User = (function(){
 		this.addDevice = devices.add;
 		this.sendMessage = devices.sendMessage;
 		function dispose(){
-			console.log(DISPOSE);
 			dispatchDispose();
 		}
 		function roomDisposed(e){
@@ -58,8 +57,6 @@ exports.User = (function(){
 	_User.fromSqlRow = function(row){
 		row.id = String(row.id);
 		var user = getExisting(row.id);
-		console.log('existing');
-		console.log(user);
 		if(user)return user;
 		user = new __User(row);
 		set.add(user);
@@ -67,8 +64,6 @@ exports.User = (function(){
 	};
 	_User.fromJSON= function(jObject){
 		var user = getExiting(jObject.id);
-		console.log('existing');
-		console.log(user);
 		if(user)return user;
 		user = new __User(jObject);
 		set.add(user);
