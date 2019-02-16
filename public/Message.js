@@ -14,7 +14,7 @@ var Message = (function(){
 		var ignored=false;
 		var ui;
 		this.getElement = function(){
-			return self.getUI().getElement();
+			return getUI().getElement();
 		};
 		this.getUniqueId = function(){
 			return params.uniqueId;
@@ -29,6 +29,7 @@ var Message = (function(){
 		this.confirm = function(receivedMessage){
 			params.serverAssignedNMessage = receivedMessage.getServerAssignedNMessage();
 			getUI().hidePending();
+			
 		};
 		this.toJSON = function(){
 			return {content:content, userId:userId, uniqueId:params.uniqueId};
@@ -41,10 +42,11 @@ var Message = (function(){
 			updateVisibility();
 		};
 		this.getIgnored = function(){return ignored;};
-		getUI().addEventListener('showusermenu', showUserMenu);
 		function getUI(){
-			if(!ui)
-				ui = new UI({userImage:userImage, components:components, username:username, pending:params.pending});
+			if(!ui){
+				ui = new MessageUI({userImage:userImage, components:components, username:username, pending:params.pending});
+				ui.addEventListener('showusermenu', showUserMenu);
+			}
 			return ui;
 		}
 		function updateVisibility(){

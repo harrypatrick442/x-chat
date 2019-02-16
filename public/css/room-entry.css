@@ -36,10 +36,10 @@ body{
 	box-sizing:border-box;
 	height:100%;
 	width:100%;
-	background-image:url('/images/room-default.png');
+	/*background-image:url('/images/room-default.png');
     background-repeat: no-repeat;
     background-position: center; 
-	background-size:contain;
+	background-size:contain;*/
 }
 .lobby .rooms-menu .room-entry .name{
 	float:left;

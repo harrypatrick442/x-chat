@@ -48,6 +48,7 @@ var PmsMenu = new (function(){
 		}
 		function showPm(e){
 			pms.showPmWithUser(e.user);
+			if(popup)popup.hide();
 		}
 		function closePm(e){
 			sortedFilteredEntries.removeEntry(e.pmEntry);

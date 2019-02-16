@@ -1,6 +1,4 @@
 var Lobby = (function(){
-	const SMALL='32_32';
-	const LARGE='128_128';
 	const IMAGE_WIDTH_SMALL=32;
 	const IMAGE_WIDTH_LARGE=256;
 	const IMAGE_UPLOADER_URL='/image_uploader';
@@ -23,7 +21,10 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu, getNDevice:getNDevice});
-		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:SMALL}, {desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:LARGE}], url:IMAGE_UPLOADER_URL});
+		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
+		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
+		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
+		], url:IMAGE_UPLOADER_URL});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
 		var notifications = new Notifications({});
@@ -104,6 +105,15 @@ var Lobby = (function(){
 				case 'userids':
 					updateUserIdsLobby(msg.userIds);//is used for leave.
 					break;
+					
+					
+				case 'user_image_set':
+					console.log(msg);
+					UserImage.update(msg.userId, msg.image);
+					var user = users.getById(msg.userId);
+					if(user)
+						user.setImage(msg.image);
+				break;
 			}
 		}
 		function roomUserIds(msg){

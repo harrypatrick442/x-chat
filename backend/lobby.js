@@ -88,7 +88,7 @@ exports.lobby = (function(){
 			if(!user)return;
 			user.setImage(image);
 			dalUsers.setImage(user.getId(), image);
-			
+			users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
 		};
 		function getUnavailableResponse(available){
 			var error;

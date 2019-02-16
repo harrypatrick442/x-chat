@@ -26,9 +26,13 @@ var NotificationsMenu = (function(){
 			var notification = e.notification;
 			notification.addEventListener('seen', seen);
 			var notificationEntry = new NotificationEntry(notification);
-			notificationEntry.addEventListener('showpm', e=>self.dispatchEvent(e));
+			notificationEntry.addEventListener('showpm', showPm);
 			notificationEntry.addEventListener('dispose', dispose);
 			sortedFilteredEntries.addEntry(notificationEntry);
+		}
+		function showPm(e){
+			self.dispatchEvent(e);
+			if(popup)popup.hide();
 		}
 		function seen(e){
 			seenNotificationsManager.seen(e.notification);
