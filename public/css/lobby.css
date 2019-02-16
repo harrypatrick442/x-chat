@@ -107,7 +107,7 @@ width:55px;
 }
 .lobby .right .button-show-hide-wrapper .button-notifications .count{
 right:21px;
-bottom:2px;
+bottom:0px;
 font-size:10px;
 font-weight:bold;
 font-family:verdana, geneva, sans-serif;
