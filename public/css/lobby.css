@@ -123,4 +123,10 @@ width:12px;
 position:absolute;
 color:#ffffff;
 background-color:red;
+  display: flex;
+  align-items: center;
+  /* vertically   */
+  justify-content: center;
+  /* horisontally */
+  text-align: center;
 }
