@@ -109,7 +109,7 @@ padding:0px;
 .lobby .right .button-show-hide-wrapper .button-notifications .count{
 right:21px;
 bottom:3px;
-height:20px;
+height:10px;
 width:12px;
 position:absolute;
 color:#ffffff;
@@ -124,6 +124,7 @@ vertical-align:middle;
 position:relative;
 top:0px;
 float:top;
+padding-top:1px;
 background-color:green;
 font-size:0.6em;
 font-weight:bold;
