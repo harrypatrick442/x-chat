@@ -15,7 +15,7 @@ var NotificationsButton = (function(){
 	function UI(params){
 		var element = params.button.getElement();
 		var count = E.DIV();
-		var text = E.SPAN();
+		var text = E.DIV();
 		count.appendChild(text);
 		count.style.backgroundColor='red';	 
 		count.classList.add('count');

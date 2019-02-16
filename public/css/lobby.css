@@ -1,14 +1,14 @@
 * {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: -moz-none;
-    -o-user-select: none;
-    user-select: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: -moz-none;
+-o-user-select: none;
+user-select: none;
 }
 html, body{
-	height:100%;
-	margin:0px;
-	padding:0px;
+height:100%;
+margin:0px;
+padding:0px;
 }
 .lobby{
 border:1px solid black;
@@ -19,11 +19,11 @@ height:100%;
 background-color:rgb(44, 43, 43);
 }
 .lobby .left{
-	float:left;
-	height:100%;
-	box-sizing:border-box;
-	padding:6px;
-	padding-right:0px;
+float:left;
+height:100%;
+box-sizing:border-box;
+padding:6px;
+padding-right:0px;
 }
 .lobby .right{
 height:100%;
@@ -109,28 +109,25 @@ padding:0px;
 .lobby .right .button-show-hide-wrapper .button-notifications .count{
 right:21px;
 bottom:3px;
-font-size:10px;
-font-weight:bold;
-line-height:20px;
--moz-text-size-adjust: none;
--ms-text-size-adjust: none;
--webkit-text-size-adjust: none;
-text-size-adjust: none;
-vertical-align:middle;
-font-family:Sans-serif;
 height:20px;
 width:12px;
 position:absolute;
 color:#ffffff;
 background-color:red;
-  align-items: center;
-  /* vertically   */
-  justify-content: center;
-  /* horisontally */
-  text-align: center;
-  
+align-items: center;
+justify-content: center;
+text-align: center;
+vertical-align:middle;
+
 }
 .lobby .right .button-show-hide-wrapper .button-notifications .count .text{
 position:relative;
+top:0px;
+float:top;
 background-color:green;
+font-size:0.6em;
+font-weight:bold;
+line-height:10px;
+vertical-align:middle;
+font-family:Sans-serif;
 }
