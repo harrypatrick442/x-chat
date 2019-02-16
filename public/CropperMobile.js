@@ -194,7 +194,7 @@ var Cropper = (function(){
 		function getMaxTimesFingerDistance(){
 			if(imageWidth>imageHeight*aspectRatio)
 				return imageHeight*aspectRatio/startDimensions.width;
-			return imageHeight/startDimensions.width;
+			return imageWidth/startDimensions.width;
 		}
 		function getStartPositionWithOffsetForMove(touch){
 			return {x:element.offsetLeft - touch.pageX, y:element.offsetTop - touch.pageY};
