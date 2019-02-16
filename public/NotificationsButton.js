@@ -15,10 +15,14 @@ var NotificationsButton = (function(){
 	function UI(params){
 		var element = params.button.getElement();
 		var count = E.DIV();
+		var text = E.SPAN();
+		count.appendChild(text);
+		count.style.backgroundColor='red';	 
 		count.classList.add('count');
+		text.classList.add('text');
 		element.appendChild(count);
 		this.setCount = function(value){
-			count.innerHTML = value>9?'!':String(value);
+			text.innerHTML = value>9?'!':String(value);
 		};
 	}
 })();
