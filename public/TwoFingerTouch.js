@@ -27,7 +27,6 @@ var TwoFingerTouch=(function(){
 			for(var i=0; i<changedTouches.length; i++){
 				var changedTouch = changedTouches[i];
 				if(changedTouch.identifier ==0){
-					console.log('finger 1');
 					finger1Active=true;
 					new Task(function(){
 						documentElement.addEventListener('touchstart', startAnywhere);
@@ -41,15 +40,11 @@ var TwoFingerTouch=(function(){
 			}
 		}
 		function startAnywhere(e){
-			console.log('start anywhere');
 			var changedTouch = e.changedTouches[0];
-			console.log('startAnywhere identifier');
-			console.log(changedTouch.identifier);
 			startFinger2(changedTouch, e);
 		}
 		function startFinger2(changedTouch, e){
 			if(changedTouch.identifier==1){
-				console.log('finger 2');
 				finger2Active=true;
 				touch2 = changedTouch;
 				self.onStartFinger2(changedTouch, e);

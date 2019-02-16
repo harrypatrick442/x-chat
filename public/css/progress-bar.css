@@ -18,7 +18,8 @@ background-color:#777777;
 }
 .progress-bar .text{
 position:absolute;
-width:100%;
+left:10px;
+right:10px;
 height: 100%;
 top:5px;
 font-size:12px;
