@@ -48,7 +48,7 @@ exports.lobby = (function(){
 				var salt = bcrypt.genSaltSync(10);
 				var hash = bcrypt.hashSync(req.password, salt);
 				dalUsers.register({hash:hash, username:req.username, email:req.email, gender:req.gender, birthday:req.birthday, isGuest:false}, function(user){
-					user.addDevice(new Device({mysocket:mysocket, device:device}));
+					user.addDevice(new Device({mysocket:mysocket, user:user}));
 					var res = createSession(user);
 					res.type='register';
 					res.users = users.toJSON();
@@ -111,7 +111,7 @@ exports.lobby = (function(){
 			dalUsers.usernameAndEmailAreAvailable(req.username, req.username, function(usernameIsAvailable){
 			if(usernameIsAvailable!=''){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
-					user.addDevice(new Device({mysocket:mysocket, device:device}));
+					user.addDevice(new Device({mysocket:mysocket, user:user}));
 					console.log(user);
 					var res = createSession(user);
 					res.type='authenticate';
@@ -135,7 +135,7 @@ exports.lobby = (function(){
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
 					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
-					user.addDevice(new Device({mysocket:mysocket, device:device}));
+					user.addDevice(new Device({mysocket:mysocket, user:user}));
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
