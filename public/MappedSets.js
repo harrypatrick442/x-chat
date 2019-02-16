@@ -5,7 +5,6 @@ MappedSets=(function (){
 			if(!item)return false;
 			var items = map[id];
 			if(!items){
-				console.log('mapping expected way');
 				map[id]=new Items(item);
 				return true;
 			}

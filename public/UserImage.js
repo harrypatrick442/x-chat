@@ -7,9 +7,6 @@ var UserImage = new(function(){
 		var image = params.image;
 		var size = params.size;
 		size = defaultSize(size);
-		console.log('type on creation');
-		console.log(size);
-		console.log(getType(size));
 		var connectedImage = new ConnectedImage({def:'/images/user-default.png', type:getType(size), id:userId, url:getUrl(image, size)});
 		this.getElement = connectedImage.getElement;
 		this.dispose = connectedImage.dispose;

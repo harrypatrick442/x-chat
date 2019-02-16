@@ -7,7 +7,6 @@ var Message = (function(){
 		var components = params.components;
 		var content = params.content;
 		var clickMenuUser=params.clickMenuUser;
-		console.log(params.image);
 		var userImage = new UserImage({userId:userId, image:params.image});
 		var ignoreManager = params.ignoreManager;
 		var getUserMe = params.getUserMe;

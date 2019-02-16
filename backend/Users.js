@@ -4,15 +4,20 @@ exports.Users = (function(){
 	var _Users = function(){
 		var set = new Set({getEntryId:getEntryId});
 		this.add = function(user){
-		var list=[];
-			if(set.contains(user))return;
-			set.add(user);
-			user.addEventListener('dispose', userDispose);
+			if(set.contains(user))return false;
+			if(set.add(user)){
+				user.addEventListener('dispose', userDispose);
+				return true;
+			}
+			return false;
 		};
 		this.remove = function(user){
-			if(!set.contains(user))return;
-			set.remove(user);
-			user.removeEventListener('dispose', userDispose);
+			if(!set.contains(user))return false;
+			if(set.remove(user)){
+				user.removeEventListener('dispose', userDispose);
+				return true;
+			}
+			return false;
 		};
 		this.contains = set.contains;
 		this.getIds =function(){

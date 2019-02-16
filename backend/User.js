@@ -1,4 +1,5 @@
 exports.User = (function(){
+	const DISPOSE='dispose';
 	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
 	var Mysockets = require('./Mysockets').Mysockets;
 	var Set = require('./Set').Set;
@@ -22,11 +23,11 @@ exports.User = (function(){
 		this.setSession=function(value){session = value;};
 		this.joinedRoom = function(room){
 			roomsSet.add(room);
-			room.addEventListener('dispose', roomDisposed);
+			room.addEventListener(DISPOSE, roomDisposed);
 		};
 		this.leftRoom = function(room){
 			roomsSet.remove(room);
-			room.removeEventListener('dispose', roomDisposed);
+			room.removeEventListener(DISPOSE, roomDisposed);
 		};
 		this.dispose = function(){
 			mysockets.closeAll();
@@ -39,14 +40,14 @@ exports.User = (function(){
 		this.addMysocket = mysockets.add;
 		this.sendMessage = mysockets.sendMessage;
 		function dispose(){
-			console.log('dispose');
+			console.log(DISPOSE);
 			dispatchDispose();
 		}
 		function roomDisposed(){
 			roomsSet.remove(room);
 		}
 		function dispatchDispose(){
-			self.dispatchEvent({type:'dispose', user:self});
+			self.dispatchEvent({type:DISPOSE, user:self});
 		}
 		function getEntryId(room){
 			return room.getId();

@@ -14,8 +14,6 @@ var ConnectedImage = (function(){
 		element.appendChild(img);
 		var errorCount=0;
 		img.onerror = function (e) {
-			console.log(e);
-			console.log('error');
 			if(errorCount++<2)
 				img.src = def;
 		};	
@@ -26,15 +24,10 @@ var ConnectedImage = (function(){
 		};
 		map(type, id, instance);
 		function set(url){
-			console.log('set');
-			console.log(url);
 			img.src=url;
 		}
 	};
 	_ConnectedImage.update= function(type, id, url){
-		console.log(type);
-		console.log(id);
-		console.log(url);
 		var instances = getInstances(type, id);
 		if(!instances)return;
 		each(instances, function(instance){

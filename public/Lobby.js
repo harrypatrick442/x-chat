@@ -198,7 +198,6 @@ var Lobby = (function(){
 			});
 		}
 		function authenticateRegisterResponse(msg){
-			console.log('response');
 			if(msg.successful){
 				sessionId = msg.sessionId;
 				if(msg.token)automaticAuthentication.setToken(msg.token);

@@ -21,6 +21,7 @@ exports.Room = (function(){
 			if(users.contains(user))return;
 			users.add(user);
 			user.joinedRoom(self);
+			console.log('sending user ids');
 			self.sendUserIds();
 		};
 		this.leave = function(user){

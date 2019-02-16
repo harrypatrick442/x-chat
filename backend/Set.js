@@ -7,9 +7,10 @@ exports.Set = (function(){
 		var list =[];
 		var mapIdToItem={};
 		this.add=function(item){
-			if(!self.contains(item))
-				list.push(item);
+			if(self.contains(item))return false;
+			list.push(item);
 			mapIdToItem[getEntryId(item)]=item;
+			return true;
 		};
 		this.getById= function(id){
 			return mapIdToItem[id];

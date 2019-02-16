@@ -27,7 +27,6 @@ function Spinner(params) {
 		self.setVisible(false);
     };
 	this.setVisible = function(value){
-		console.log(value);
         element.style.display = value?'inline-block':'none';
 		if(!value||!preventInterraction)return;
         setTimeout(function () {
