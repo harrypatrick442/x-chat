@@ -71,6 +71,7 @@ var TwoFingerTouch=(function(){
 					self.onMoveFinger2(changedTouch, e);
 				}
 			}
+			e.preventDefault&&e.preventDefault();
 		};
 		function end(e){
 			var changedTouches = e.changedTouches;
