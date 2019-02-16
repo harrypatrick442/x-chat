@@ -17,7 +17,7 @@ var ConnectedImage = (function(){
 			if(errorCount++<2)
 				img.src = def;
 		};	
-		img.src=params.url;
+		img.src=url?url:def;
 		this.getElement = function(){return element;};
 		this.dispose = function(){
 			removeInstance(type, id, instance);

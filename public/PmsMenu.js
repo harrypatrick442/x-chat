@@ -1,4 +1,8 @@
 var PmsMenu = new (function(){
+		ImagePreloader.preloadRange([
+		'/images/close.jpg', 
+		'/images/close-hover.jpg'
+		]);
 	var _PmsMenu = function(params){
 		var self = this;
 		var popup = isMobile?new Popup({}):undefined;

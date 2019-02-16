@@ -12,7 +12,7 @@
 width:43px;
 margin-left:10px;
 float:left;
-background-image:url('/images/pms-mobile.png');	
+background-image:url('/images/pms-mobile.gif');	
 margin-top: 4px;
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
@@ -26,7 +26,7 @@ margin-top: 4px;
 width:43px;
 margin-left:10px;
 float:left;
-background-image:url('/images/users-mobile.png');	
+background-image:url('/images/users-mobile.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
 
@@ -34,7 +34,7 @@ background-image:url('/images/users-mobile.png');
 .lobby .right .button-show-hide-wrapper .button-notifications{
 margin-right:10px;
 float:right;
-background-image:url('/images/notifications.png');	
+background-image:url('/images/notifications.jpg');	
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
 

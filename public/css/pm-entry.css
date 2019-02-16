@@ -54,9 +54,9 @@
 	right:0px;
 	background-repeat:no-repeat;
 	background-size:contain;
-	background-image:url('/images/pm-close.png');	
+	background-image:url('/images/close.jpg');	
 	cursor:pointer;
 }
 .lobby .pms-menu .pm-entry .inner .button-close:hover{
-	background-image:url('/images/pm-close-hover.png');
+	background-image:url('/images/close-hover.jpg');
 }

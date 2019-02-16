@@ -9,40 +9,40 @@
 .lobby .right .button-show-hide-wrapper{
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
-background-image:url('/images/pms-show.png');	
+background-image:url('/images/pms-show.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
-background-image:url('/images/pms-show-hover.png');	
+background-image:url('/images/pms-show-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide{
-background-image:url('/images/pms-hide.png');	
+background-image:url('/images/pms-hide.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
 
-background-image:url('/images/pms-hide-hover.png');	
+background-image:url('/images/pms-hide-hover.gif');	
 }
 
 .lobby .right .button-show-hide-wrapper .button-users{
 width:60px;
-background-image:url('/images/users-show.png');	
+background-image:url('/images/users-show.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
 
-background-image:url('/images/users-show-hover.png');	
+background-image:url('/images/users-show-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide{
 
-background-image:url('/images/users-hide.png');	
+background-image:url('/images/users-hide.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
-background-image:url('/images/users-hide-hover.png');	
+background-image:url('/images/users-hide-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-notifications{
-background-image:url('/images/notifications.png');	
+background-image:url('/images/notifications.gif');	
 margin-right:10px;
 }
 .lobby .right .button-show-hide-wrapper .button-notifications:hover{
 
-background-image:url('/images/notifications-hover.png');	
+background-image:url('/images/notifications-hover.gif');	
 }

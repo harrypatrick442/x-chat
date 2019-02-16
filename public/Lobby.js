@@ -2,6 +2,12 @@ var Lobby = (function(){
 	const IMAGE_WIDTH_SMALL=32;
 	const IMAGE_WIDTH_LARGE=256;
 	const IMAGE_UPLOADER_URL='/image_uploader';
+	
+	
+	ImagePreloader.preloadRange([
+	'/images/close.jpg', 
+	'/images/close-hover.jpg'
+	]);
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;

@@ -92,7 +92,10 @@ margin-top:5px;
 float:right;
 width:43px;
 margin-right:10px;
-background-image:url('/images/profile-picture.png');	
+background-image:url('/images/profile-picture.gif');	
+}
+.lobby .right .button-show-hide-wrapper .button-profile-picture:hover{
+background-image:url('/images/profile-picture-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-notifications{
 cursor:pointer;
