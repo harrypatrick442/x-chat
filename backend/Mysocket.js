@@ -1,17 +1,19 @@
 module.exports = (function(){
+	const TIMEOUT_CLOSED_CHANNEL_MINUTES = 0.4;
 	var handler = require('./handler').handler;
 	var channelFactory = require('./MysocketChannelFactory');
-	var idCount=0;
 	var EventEnabledBuilder=require('./EventEnabledBuilder');
+	
 	var _Mysocket = function(params){
 		var self = this;
 		var id = params.id;
 		var channel;
+		var timeChannelClosed=getTime();
 		updateChannel(params);
 		EventEnabledBuilder(this);
 		
 		this.close=function(){
-			channel&&channel.close&&cannel.close();
+			channel&&channel.close&&channel.close();
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
@@ -20,14 +22,22 @@ module.exports = (function(){
 		};
 		this.sendMessage = sendMessage;
 		this.isActive = function(){
-			
+			if(channel)
+				return channel.isAlive();
+			return getTimeSinceChannelClosedMinutes()<TIMEOUT_CLOSED_CHANNEL_MINUTES;
 		};
 		function updateChannel(params){
 			channel = channelFactory.create(params);
 			channel.onClose=onClose;
 			channel.onMessage=onMessage;
 			onOpen();
-		};
+		}
+		function getTimeSinceChannelClosedMinutes(){
+			return (getTime()-timeChannelClosed)/60000;
+		}
+		function getTime(){
+			return new Date().getTime();
+		}
 		function dispatchClose(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}
@@ -39,6 +49,7 @@ module.exports = (function(){
 		}
 		function onClose(){
 			channel = null;
+			timeChannelClosed = getTime();
 		}
 		function sendMessage(msg){
 			channel&&channel.sendMessage(msg);
@@ -46,11 +57,7 @@ module.exports = (function(){
 		function nothing(){}
 	};
 	_Mysocket.fromWebsocket = function(params){
-		params.id = newId();
 		return new _Mysocket(params);
 	};
 	return _Mysocket;
-	function newId(){
-		return String(idCount++);
-	}
 })();

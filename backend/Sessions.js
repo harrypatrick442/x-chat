@@ -9,7 +9,12 @@ exports.Sessions = (function(){
 		};
 		this.add=function(session){
 			mapSessionIdToSession[session.getId()]=session;
+			session.addEventListener('dispose', onDispose);
 		};
+		function onDispose(e){
+			console.log('SESSION BEING DISPOSED');
+			delete mapSessionIdToSession[e.session.getId()];
+		}
 	};
 	return _Sessions;
 })();

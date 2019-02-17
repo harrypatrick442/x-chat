@@ -1,32 +1,43 @@
 module.exports = (function(){
-	var Set = require('./Set');
-	var Timer = require('./Timer');
-	var set = new Set({getEntryId:getEntryId});
-	var timerCleanup = new Timer({delay:300000, callback:cleanupRoutine});
-	this.add = function(mysocket){
-		if(!set.add(mysocket)) return;
-		if(set.count()<2)
-			startCleanupRoutine();
+	var _MysocketCleanup = function(mysockets){
+		const DELAY_CLEANUP_MINUTES = 1;
+		var Set = require('./Set');
+		var Timer = require('./Timer');
+		var each = require('./each');
+		var set = new Set({getEntryId:getEntryId});
+		var timerCleanup = new Timer({delay:DELAY_CLEANUP_MINUTES*1000, callback:cleanupRoutine});
+		mysockets.addEventListener('add', onAdd);
+		mysockets.addEventListener('remove', onRemove);
+		function onAdd(e){
+			var mysocket = e.mysocket;
+			if(!set.add(mysocket)) return;
+			if(set.count()<2)
+				startCleanupRoutine();
+		};
+		function onRemove(e){
+			var mysocket = e.mysocket;
+			if(!set.remove(mysocket))return;
+			if(set.count()>0)return;
+			postponeCleanupRoutine();
+		};
+		function startCleanupRoutine(){
+			timerCleanup.start();
+		}
+		function postponeCleanupRoutine(){
+			timerCleanup.stop();
+		}
+		function cleanupRoutine(){
+			console.log('cleanupRoutine running');
+			var mysockets = set.getEntries().slice();
+			each(mysockets, function(mysocket){
+				if(mysocket.isActive())return;
+				mysocket.close();
+			});
+			console.log(set.count());
+		}
+		function getEntryId(mysocket){
+			return mysocket.getId();
+		}
 	};
-	this.remove = function(mysocket){
-		if(!set.remove(mysocket))return;
-		if(set.count()>0)return;
-		posponeCleanupRoutine();
-	};
-	function startCleanupRoutine(){
-		timer.start();
-	}
-	function postponeCleanupRoutine(){
-		timer.stop();
-	}
-	function cleanupRoutine(){
-		var mysockets = set.getEntries().slice();
-		each(mysockets, function(mysocket){
-			if(mysocket.isActive())return;
-			mysocket.close();
-		});
-	}
-	function getEntryId(mysocket){
-		return mysocket.getId();
-	}
+	return _MysocketCleanup;
 })();

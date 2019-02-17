@@ -8,12 +8,12 @@ exports.Devices = (function(){
 		var set = new Set({getEntryId:getEntryId});
 		this.add=function(device){
 			if(!set.add(device))return false;
-			device.addEventListener('close', close);
+			device.addEventListener('close', onClose);
 			return true;
 		};
 		this.remove = function(device){
 			if(!set.remove(device))return false;
-			device.removeEventListener('close', close);
+			device.removeEventListener('close', onClose);
 			return true;
 		};
 		this.contains = set.contains;
@@ -24,7 +24,7 @@ exports.Devices = (function(){
 		};
 		this.closeAll = function(){
 			set.each(function(device){
-				device.removeEventListener('close', close);
+				device.removeEventListener('close', onClose);
 				device.close();
 			});
 			set.clear();
@@ -38,8 +38,11 @@ exports.Devices = (function(){
 			});
 			return list;
 		};
-		function close(e){
+		function onClose(e){
+			console.log('CLOSE');
+			console.log(e.device.getId());
 			self.remove(e.device);
+			console.log(set.getEntries());
 			if(set.count()>0)return;
 			dispatchAllClose();
 		}

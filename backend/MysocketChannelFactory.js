@@ -7,6 +7,7 @@ module.exports = new (function(){
 	};
 	function Websocket(ws){
 		var self = this;
+		var closed = false;
 		this.sendMessage=function(msg){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
@@ -14,8 +15,15 @@ module.exports = new (function(){
 			self.onMessage&&self.onMessage(msg);
 		});
 		ws.on('close', function(){
+			closed=true;
 			self.onClose&&self.onClose();
 		});
-		this.close = ws.close;
+		this.isAlive=function(){
+			return !closed;
+		};
+		this.close = function(){
+			closed=true;
+			ws.close();
+		};
 	}
 })();
