@@ -35,6 +35,14 @@ var RoomsMenu = new (function(){
 					usersMenu.hide();
 			ui.setVisible(value);
 		};
+		this.clear=function(){
+			
+			for(var id in mapIdToRoomEntry){
+				remove(mapIdToRoomEntry[id]);
+			}
+			mapIdToRoomEntry={};
+			entries=[];
+		};
 		this.getVisible = ui.getVisible;
 		WindowResizeManager.addEventListener('resized', resized);
 		function add(roomInfo){

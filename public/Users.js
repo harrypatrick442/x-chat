@@ -16,6 +16,10 @@ var Users = (function(){
 			user.removeEventListener('left', userLeft);
 			remove(user);
 		};
+		this.clear = function(){
+			var list = set.getEntries().slice();
+			each(list, self.remove);
+		};
 		this.getIds = set.getIds;
 		this.getEntries=set.getEntries;
 		function remove(user){

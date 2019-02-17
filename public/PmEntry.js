@@ -13,6 +13,7 @@ var PmEntry= new (function(){
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
 		this.parentWidth = ui.parentWidth;
+		this.dispose = userImage.dispose;
 		ui.addEventListener('click',dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchClosePm);
 		function dispatchShowPm(){

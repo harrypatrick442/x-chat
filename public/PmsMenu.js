@@ -16,6 +16,9 @@ var PmsMenu = new (function(){
 			popup.show();
 			resized();
 		};
+		this.clear = function(){
+			each(sortedFilteredEntries.getEntries().slice(), _remove);
+		};
 		var tabPortal;
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
@@ -37,7 +40,12 @@ var PmsMenu = new (function(){
 			sortedFilteredEntries.addEntry(pmEntry);
 		}
 		function remove(e){
-			sortedFilteredEntries.removeEntryById(e.userTo.getId());
+			var pmEntry = sortedFilteredEntries.getByEntryId(e.userTo.getId());
+			_remove(pmEntry);
+		}
+		function _remove(pmEntry){
+			sortedFilteredEntries.removeEntry(pmEntry);
+			pmEntry.dispose();
 		}
 		function getEntryId(pmEntry){
 			return pmEntry.getId();

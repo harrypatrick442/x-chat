@@ -18,6 +18,7 @@ exports.Device = (function(){
 			room.removeEventListener(DISPOSE, roomDisposed);
 		};
 		this.close=function(){
+			mysocket.close();
 			dispatchClose();
 		};
 		this.getUser = function(){

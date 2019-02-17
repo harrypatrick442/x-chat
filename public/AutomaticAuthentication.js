@@ -13,6 +13,9 @@ var AutomaticAuthentication = new (function(){
 		this.setToken = function(token){
 			settings.set(TOKEN, token);
 		};
+		this.clear = function(){
+			settings.set(TOKEN, null);
+		};
 	};
 	return _AutomaticAuthentication;
 })();

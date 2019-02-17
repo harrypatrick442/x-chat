@@ -61,6 +61,13 @@ var Rooms = new (function(){
 				room = loadRoom(roomInfo);
 			showEntry(room);
 		};
+		this.clear = function(){
+			each(set.getEntries(), function(room){
+				room.dispose&&room.dispose();
+				remove(room);
+			});
+			roomsMenu.clear();
+		};
 		function showRoom(e){
 			self.showRoom(e.roomInfo);
 		}

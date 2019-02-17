@@ -17,6 +17,10 @@ var Notifications = (function(){
 			 set.remove(notification);
 			 dispatchRemoved(notification);
 		}
+		this.clear = function(){
+			var list = set.getEntries().slice();
+			each(list, self.remove);
+		};
 		this.getById = set.getById;
 		this.getCount = set.count;
 		function getEntryId(notification){

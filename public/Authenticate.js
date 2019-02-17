@@ -10,14 +10,12 @@ var Authenticate = (function(){
 		document.documentElement.appendChild(spinner.getElement());
 		var settings = new Settings("#username", function () {
 			this.set("username");
-			//this is a reset function for this particualr instance of this particular class.
 		});
-		this.div = E.DIV();
+		var element = E.DIV();
 		var divInner = E.DIV();
 		var divInputsSignIn = E.DIV();
 		var divInputsRegister;
 		var divInputsGuest = E.DIV();
-		//var divTextInputs = document.createElement('div');
 		var textUsername = E.TEXT();
 		var tickboxStaySignedIn = new Tickbox({text:'Stay signed in'});
 		var tickboxStaySignedInGuest = new Tickbox({text:'Stay signed in'});
@@ -32,7 +30,7 @@ var Authenticate = (function(){
 		var buttonEnterGuest = new Button({classNames:['button-register'], text:'Done'});
 		var divError = E.DIV();
 		var textError = E.TEXTAREA();
-		this.div.classList.add('authenticate');
+		element.classList.add('authenticate');
 		divInner.classList.add('div-inner');
 		divInputsSignIn.classList.add('div-inputs-sign-in');
 		divInputsRegister = E.DIV();
@@ -99,7 +97,7 @@ var Authenticate = (function(){
 					break;
 			}
 		};
-		this.div.appendChild(tabPanel.div);
+		element.appendChild(tabPanel.div);
 		tabPanel.panels[0].div.appendChild(divInputsGuest);
 		tabPanel.panels[1].div.appendChild(divInputsSignIn);
 		tabPanel.panels[2].div.appendChild(divInputsRegister);
@@ -108,25 +106,25 @@ var Authenticate = (function(){
 		
 		tabPanel.div.style.height = 'auto';
 		tabPanel.div.style.position = 'relative';
-		//divInputsSignIn.appendChild(divTextInputs);
 		divInputsGuest.appendChild(tickboxStaySignedInGuest.getElement());
 		divInputsGuest.appendChild(buttonEnterGuest.getElement());
 		divInputsSignIn.appendChild(tickboxStaySignedIn.getElement());
 		divInputsSignIn.appendChild(button.getElement());
-		this.div.appendChild(divError);
+		element.appendChild(divError);
 		divError.appendChild(textError);
-		var flashing = false;
-		var flashingCount = 0;
-		var initialBackgroundColor = self.div.style.backgroundColor;
+		document.body.appendChild(element);
 		var username = settings.get("username");
 		if (username)
 		{
 			textUsername.value = username;
 		}
+		this.show=function(){
+			element.style.display='block';
+		};
 		this.hide = function ()
 		{
 			spinner.setVisible(false);	
-			self.div.style.display = 'none';
+			element.style.display = 'none';
 			settings.set("username", textUsername.value);
 		};
 		function setLayoutStyle(element)
@@ -243,27 +241,6 @@ var Authenticate = (function(){
 			{
 				divError.style.display = 'none';
 			}
-		}
-	};
-	var authenticate;
-	_Authenticate.acquire = function (params)
-	{
-		if (!authenticate)
-			authenticate = new Authenticate(params);
-		document.body.appendChild(authenticate.div);
-	};
-	_Authenticate.hide = function ()
-	{
-		if (authenticate)
-		{
-			authenticate.hide();
-		}
-	};
-	_Authenticate.error = function (message)
-	{
-		if (authenticate)
-		{
-			authenticate.setError(message);
 		}
 	};
 	return _Authenticate;

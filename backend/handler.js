@@ -91,6 +91,11 @@ exports.handler = new (function(){
 						if(!user)return;
 						lobby.getNotifications().setPmNotificationsSeen(user, req.seenPmNotificationUserIds);
 					break;
+					case 'sign_out':
+						var user = getUser(req);
+						if(!user)return;
+						user.dispose();
+					break;
 					case 'debug':
 						console.log(req.str);
 					break;

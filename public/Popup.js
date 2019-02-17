@@ -20,6 +20,11 @@ var Popup= new (function(){
 				element.style.left=String(params.left)+'px';
 			if(params.top)
 				element.style.top=String(params.top)+'px';
+			if(params.right)
+				element.style.right=String(params.right)+'px';
+			if(params.bottom)
+				element.style.bottom=String(params.bottom)+'px';
+			console.log(params);
 		};
 		this.getElement = function(){return element;};
 		function hide(){

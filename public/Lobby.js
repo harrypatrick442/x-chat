@@ -14,9 +14,11 @@ var Lobby = (function(){
 		var nDevice;
 		var userMe;
 		const url = '/servlet';
+		var authenticate = new Authenticate({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
 		var users = new Users({});
 		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});
 		var clickMenu = new ClickMenu({});
+		var mainMenu = new ClickMenu({});
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new Mysocket({url:'', urlWebsocket:getWebsocketUrl('endpoint')});
@@ -33,7 +35,7 @@ var Lobby = (function(){
 		], url:IMAGE_UPLOADER_URL});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
-		var mainMenu = new MainMenu({});
+		 //var mainMenu = new MainMenu({});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
@@ -138,10 +140,20 @@ var Lobby = (function(){
 			ui.setSpinnerAutomaticAuthenticationVisible(true);
 		}
 		function showAuthentication(){
-			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
+			authenticate.show();
 		}
 		function showMenu(){
-			mainMenu.show();
+			ui.showMainMenu({options:[{text:'Sign Out ', callback:signOut}]});
+		}
+		function signOut(){
+			mysocket.send({type:'sign_out', sessionId:sessionId});
+			sessionId=null;
+			rooms.clear();
+			automaticAuthentication.clear();
+			users.clear();
+			notifications.clear();
+			pmsMenu.clear();
+			showAuthentication();
 		}
 		function showNotifications(){
 			notificationsMenu.show();
@@ -219,13 +231,13 @@ var Lobby = (function(){
 				users.add(User.fromJSON(msg.user));
 				userMe = users.getById(msg.user.id);
 				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
-				Authenticate.hide();
+				authenticate.hide();
 				getRooms();
 				pms.load(userMe.getId());
 				ignoreManager.load(userMe.getId());
 				return;
 			}
-			Authenticate.error(msg.error);
+			authenticate.setError(msg.error);
 		}
 		function getRooms(){
 			mysocket.send({type:'rooms_get', sessionId:sessionId});
@@ -338,7 +350,14 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.appendChild(buttonMenu.getElement());
 		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
 		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
+		
+			 //(isMobile?document.body:divButtonShowHideWrapper).appendChild(mainMenu.getElement());
 		this.getElement = function(){return element;};
+		this.showMainMenu = function(options){
+			console.log(getAbsolute(buttonProfilePicture.getElement()).right);
+			mainMenu.show(options);
+			mainMenu.setPosition({right:6,top:getAbsolute(buttonProfilePicture.getElement()).bottom+3});
+		};
 		this.setSpinnerAutomaticAuthenticationVisible=spinnerAutomaticAuthentication.setVisible;
 	}
 	return _Lobby;

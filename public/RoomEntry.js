@@ -8,6 +8,7 @@ var RoomEntry = new (function(){
 		this.getElement = ui.getElement;
 		this.parentWidth=ui.parentWidth;
 		ui.getElement().addEventListener('click', dispatchSelected);
+		this.dispose = roomImage.dispose;
 		function dispatchSelected(){
 			self.dispatchEvent({type:'selected',roomInfo:params});
 		}
