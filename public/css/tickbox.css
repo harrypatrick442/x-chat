@@ -4,14 +4,14 @@ background-repeat:no-repeat;
 background-size:contain;
 position:relative;
 display:inline-block;
-background-image:url('/images/tickbox-unticked.png');
+background-image:url('/images/tickbox-unticked.gif');
 }
 .tickbox .box:hover{
-background-image:url('/images/tickbox-unticked-hover.png');
+background-image:url('/images/tickbox-unticked-hover.gif');
 }
 .tickbox .box.ticked{
-background-image:url('/images/tickbox-ticked.png');
+background-image:url('/images/tickbox-ticked.gif');
 }
 .tickbox .box.ticked:hover{
-background-image:url('/images/tickbox-ticked-hover.png');
+background-image:url('/images/tickbox-ticked-hover.gif');
 }

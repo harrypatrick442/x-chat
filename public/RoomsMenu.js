@@ -6,8 +6,11 @@ var RoomsMenu = new (function(){
 		var mapIdToRoomEntry={};
 		var entries =[];
 		var usersMenu = params.usersMenu;
+		var spinner = new Spinner({});
+		//spinner.show();
 		this.getId =function(){return 'RoomsMenu';};
 		this.set = function(roomInfos){
+			//spinner.hide();
 			var ids=[];
 			each(roomInfos, function(roomInfo){
 				var roomEntry = mapIdToRoomEntry[roomInfo.id];
