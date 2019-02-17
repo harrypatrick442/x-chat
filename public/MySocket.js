@@ -1,4 +1,5 @@
 var Mysocket = (function(){
+	const MYSOCKET_ID = 'mysocket_id';
 	var _Mysocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;
@@ -14,6 +15,7 @@ var Mysocket = (function(){
 				return;
 			}
 			toSend.push(msg);
+			getChannel();
 		};
 		function callbackOnOpen(){
 			dispatchOnOpen();
@@ -25,7 +27,6 @@ var Mysocket = (function(){
 			self.dispatchEvent({type:'onmessage', msg:msg});
 		}
 		function dispatchOnOpen(){
-			console.log('onopen dispatched');
 			self.dispatchEvent({type:'onopen'});
 		}
 		function dispatchOnClose(){
@@ -39,6 +40,12 @@ var Mysocket = (function(){
 			channel.onMessage = onMessage;
 		}
 		function onMessage(msg){
+			console.log(msg);
+			if(msg.type==MYSOCKET_ID){
+				id=msg.id;
+				console.log(MYSOCKET_ID);
+				return;
+			}
 			dispatchOnMessage(msg);
 		}
 		function onClose(){

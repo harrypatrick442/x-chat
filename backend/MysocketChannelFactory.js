@@ -1,6 +1,7 @@
 module.exports = new (function(){
 	this.create = function(params){
 		var id = params.id;
+		console.log(params);
 		if(params.ws)
 			return new Websocket(params.ws);
 		throw new Error('Not implemented');
@@ -10,7 +11,6 @@ module.exports = new (function(){
 		this.sendMessage=function(msg){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
-		ws.on('open', onOpen);
 		ws.on('message', function(msg) {
 			self.onMessage&&self.onMessage(msg);
 		});
@@ -18,8 +18,5 @@ module.exports = new (function(){
 			self.onClose&&self.onClose();
 		});
 		this.close = ws.close;
-		function onOpen(){
-			self.onOpen&&self.onOpen();
-		}
 	}
 })();

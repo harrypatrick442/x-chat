@@ -19,7 +19,7 @@ module.exports = (function(){
 			channel = channelFactory.create(params);
 			channel.onClose=onClose;
 			channel.onMessage=onMessage;
-			channel.onOpen = onOpen;
+			onOpen();
 		};
 		this.getId = function(){
 			return params.id;
@@ -35,7 +35,7 @@ module.exports = (function(){
 			sendMessage({type:'mysocket_id', id:id});
 		}
 		function onClose(){
-			console.log('ONCLOSEd');
+			console.log('closed');
 			channel = null;
 		}
 		function sendMessage(msg){

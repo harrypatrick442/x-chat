@@ -12,7 +12,7 @@ module.exports = new (function(){
 			mysocket = getById(id);
 		}
 		if(mysocket){
-			mysocket.setWebsocket(ws);
+			mysocket.setWebsocket(params);
 			return;
 		}
 		mysocket = Mysocket.fromWebsocket({ws:ws, id:getNewId()});
