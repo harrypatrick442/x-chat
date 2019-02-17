@@ -15,16 +15,19 @@ module.exports = (function(){
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
+		this.getId = function(){
+			return params.id;
+		};
+		this.sendMessage = sendMessage;
+		this.isActive = function(){
+			
+		};
 		function updateChannel(params){
 			channel = channelFactory.create(params);
 			channel.onClose=onClose;
 			channel.onMessage=onMessage;
 			onOpen();
 		};
-		this.getId = function(){
-			return params.id;
-		};
-		this.sendMessage = sendMessage;
 		function dispatchClose(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}

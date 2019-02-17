@@ -1,7 +1,7 @@
 module.exports = new (function(){
 	var Set = require('./Set');
 	var Mysocket = require('./Mysocket');
-	var idCount=0;
+	var uuid = require('uuid');
 	var set = new Set({getEntryId:getEntryId});
 	this.setWebsocket = function(params){
 		var id = params.id;
@@ -17,12 +17,24 @@ module.exports = new (function(){
 		}
 		mysocket = Mysocket.fromWebsocket({ws:ws, id:getNewId()});
 		set.add(mysocket);
+		addEvents(mysocket);
 	};
+	loadCleanup();
+	function loadCleanup(){
+		require('./MysocketCleanup');
+	}
+	function addEvents(mysocket){
+		mysocket.addEventListener('close', onClose);
+	}
+	function onClose(e){
+		var mysocket = e.mysocket;
+		set.remove(mysocket);
+	}
 	function getById(id){	
 		return set.getById(id);
 	}
 	function getNewId(){
-		return idCount++;
+		return uuid.v4();
 	}
 	function getEntryId(mysocket){
 		return mysocket.getId();

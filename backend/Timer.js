@@ -1,4 +1,4 @@
-exports.Timer=(function(){
+module.exports =(function(){
 	var _Timer = function(params)
 	{
 		var self = this;
