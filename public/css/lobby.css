@@ -134,3 +134,20 @@ font-weight:bold;
 line-height:10px;
 font-family:Sans-serif;
 }
+.lobby .right .button-show-hide-wrapper .button-menu{
+cursor:pointer;
+background-repeat:no-repeat;
+background-size:contain;
+margin:0px;
+position:relative;
+display:inline-block;
+height:28px;
+margin-top:5px;
+float:right;
+width:43px;
+margin-right:10px;
+background-image:url('/images/menu.gif');	
+}
+.lobby .right .button-show-hide-wrapper .button-menu:hover{
+background-image:url('/images/menu-hover.gif');	
+}

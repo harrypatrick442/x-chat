@@ -33,18 +33,23 @@ var Lobby = (function(){
 		], url:IMAGE_UPLOADER_URL});
 		var pms = new Pms({rooms:rooms});
 		var pmsMenu = new PmsMenu({pms:pms});
+		var mainMenu = new MainMenu({});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
 		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var buttonProfilePicture = new Button({ classNames:['button-profile-picture']});
 		var buttonNotifications = new NotificationsButton({notifications:notifications});
-		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture, buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu});
+		var buttonMenu = new Button({classNames:['button-menu']});
+		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture,
+		buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu,
+		buttonMenu:buttonMenu, mainMenu:mainMenu});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
 		mysocket.send({type:'test'});
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
 		buttonNotifications.addEventListener('click', showNotifications);
+		buttonMenu.addEventListener('click', showMenu);
 		if(!isMobile)
 		{
 			buttonPms.addEventListener('toggled', onToggleButtonPms);
@@ -134,6 +139,9 @@ var Lobby = (function(){
 		}
 		function showAuthentication(){
 			Authenticate.acquire({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
+		}
+		function showMenu(){
+			mainMenu.show();
 		}
 		function showNotifications(){
 			notificationsMenu.show();
@@ -290,10 +298,12 @@ var Lobby = (function(){
 	function UI(params){
 		var rooms = params.rooms;
 		var pmsMenu = params.pmsMenu;
+		var mainMenu = params.mainMenu;
 		var buttonUsers = params.buttonUsers;
 		var buttonPms = params.buttonPms;
 		var buttonProfilePicture = params.buttonProfilePicture;
 		var buttonNotifications = params.buttonNotifications;
+		var buttonMenu = params.buttonMenu;
 		var notificationsMenu = params.notificationsMenu;
 		var spinnerAutomaticAuthentication = new Spinner({preventInterraction:true});
 		var divButtonShowHideWrapper = E.DIV();
@@ -325,6 +335,7 @@ var Lobby = (function(){
 		}
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
+		divButtonShowHideWrapper.appendChild(buttonMenu.getElement());
 		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
 		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
 		this.getElement = function(){return element;};

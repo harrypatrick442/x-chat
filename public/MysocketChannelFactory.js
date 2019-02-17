@@ -13,6 +13,7 @@ var MysocketChannelFactory = new (function(){
 		websocket.onmessage = onMessage;
 		websocket.onopen = onOpen;
 		websocket.onclose=onClose;
+		websocket.onerror = onError;
 		function onMessage(e){
 			self.onMessage&&self.onMessage(JSON.parse(e.data));
 		}
@@ -22,6 +23,10 @@ var MysocketChannelFactory = new (function(){
 		}
 		function onClose(){
 			self.onClose&&self.onClose();
+		}
+		function onError(err){
+			console.log(err);
+			self.onError&&self.onError(err);
 		}
 		/*
 		function needToInitialize(){
