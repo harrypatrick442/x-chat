@@ -10,7 +10,6 @@ exports.endpoint = function(app){
 		try{
 			var parameters = url.parse(req.url, true).query
 			var mysocketId = parameters.mysocketId;
-			console.log(mysocketId);
 			Mysockets.setWebsocket({id:mysocketId, ws:ws});
 		}catch(ex){console.log(ex);}
 	});

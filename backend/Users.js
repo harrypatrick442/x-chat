@@ -1,5 +1,5 @@
 exports.Users = (function(){
-	var Set = require('./Set').Set;
+	var Set = require('./Set');
 	require('./Linq');
 	var _Users = function(){
 		var set = new Set({getEntryId:getEntryId});

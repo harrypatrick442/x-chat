@@ -1,4 +1,4 @@
-exports.EventEnabledBuilder= function(obj)
+module.exports= function(obj)
 {
 
 	obj.addEventListener= function ( type, listener ) {

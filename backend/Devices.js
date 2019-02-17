@@ -1,7 +1,7 @@
 exports.Devices = (function(){
-	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
-	var each = require('./each').each;
-	var Set = require('./Set').Set;
+	var EventEnabledBuilder = require('./EventEnabledBuilder');
+	var each = require('./each');
+	var Set = require('./Set');
 	var _Devices = function(params){
 		EventEnabledBuilder(this);
 		var self = this;

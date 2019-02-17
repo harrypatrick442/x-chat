@@ -1,4 +1,4 @@
-exports.Enumerable = (function () {
+module.exports = (function () {
     var _Enumerable = function (moveNext, current, reset) {
         this.moveNext = moveNext;
         this.current = current;

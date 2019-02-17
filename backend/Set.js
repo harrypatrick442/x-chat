@@ -1,5 +1,5 @@
-exports.Set = (function(){
-	var each = require('./each').each;
+module.exports = (function(){
+	var each = require('./each');
 	console.log(each);
 	var _Set = function(params){
 		var self = this;

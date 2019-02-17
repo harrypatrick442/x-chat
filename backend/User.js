@@ -1,8 +1,8 @@
 exports.User = (function(){
 	const DISPOSE='dispose';
-	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
+	var EventEnabledBuilder = require('./EventEnabledBuilder');
 	var Devices = require('./Devices').Devices;
-	var Set = require('./Set').Set;
+	var Set = require('./Set');
 	var set = new Set({getEntryId:getEntryId});
 	var __User = function(params){
 		EventEnabledBuilder(this);

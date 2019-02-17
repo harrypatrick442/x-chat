@@ -1,7 +1,7 @@
 exports.Messages = (function(){
 	const N_MESSAGES_HISTORY=50;
 	var dalMessages = require('./Dal/DalMessages').dalMessages;
-	var each = require('./each').each;
+	var each = require('./each');
 	var _Messages = function(params, callbackLoaded)
 	{
 		var self = this;

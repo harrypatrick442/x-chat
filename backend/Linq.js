@@ -1,5 +1,5 @@
 (function(){
-	var Enumerable = require('./Enumerable').Enumerable;
+	var Enumerable = require('./Enumerable');
 	console.log(Enumerable);
 	Enumerable.prototype.toList = function () {
 		var list = [];

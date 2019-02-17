@@ -1,5 +1,5 @@
 var Mysockets = new (function(){
-	var Set = require('./Set').Set;
+	var Set = require('./Set');
 	var idCount=0;
 	var set = new Set({getEntryId:getEntryId});
 	this.setWebsocket = function(params){

@@ -2,7 +2,7 @@ module.exports = (function(){
 	var handler = require('./handler').handler;
 	var channelFactory = require('./MysocketChannelFactory');
 	var idCount=0;
-	var EventEnabledBuilder=require('./EventEnabledBuilder').EventEnabledBuilder;
+	var EventEnabledBuilder=require('./EventEnabledBuilder');
 	var _Mysocket = function(params){
 		var self = this;
 		var id = params.id;
@@ -35,7 +35,6 @@ module.exports = (function(){
 			sendMessage({type:'mysocket_id', id:id});
 		}
 		function onClose(){
-			console.log('closed');
 			channel = null;
 		}
 		function sendMessage(msg){

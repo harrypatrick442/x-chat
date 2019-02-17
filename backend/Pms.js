@@ -1,7 +1,7 @@
 exports.Pms = (function(){
 	const N_MESSAGES_HISTORY=50;
 	var dalPms = require('./DAL/DalPms').dalPms;
-	var EventEnabledBuilder = require('./EventEnabledBuilder').EventEnabledBuilder;
+	var EventEnabledBuilder = require('./EventEnabledBuilder');
 	var _Pms = function(params){
 			EventEnabledBuilder(this);
 			var self = this;

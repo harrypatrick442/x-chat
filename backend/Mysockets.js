@@ -1,5 +1,5 @@
 module.exports = new (function(){
-	var Set = require('./Set').Set;
+	var Set = require('./Set');
 	var Mysocket = require('./Mysocket');
 	var idCount=0;
 	var set = new Set({getEntryId:getEntryId});
@@ -18,7 +18,7 @@ module.exports = new (function(){
 		mysocket = Mysocket.fromWebsocket({ws:ws, id:getNewId()});
 		set.add(mysocket);
 	};
-	function getById(id){
+	function getById(id){	
 		return set.getById(id);
 	}
 	function getNewId(){

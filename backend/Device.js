@@ -1,7 +1,7 @@
 exports.Device = (function(){
 	const DISPOSE='dispose';
-	var EventEnabledBuilder=require('./EventEnabledBuilder').EventEnabledBuilder;
-	var Set = require('./Set').Set;
+	var EventEnabledBuilder=require('./EventEnabledBuilder');
+	var Set = require('./Set');
 	var _Device = function(params){
 		EventEnabledBuilder(this);
 		var roomsSet = new Set({getEntryId:getEntryId});

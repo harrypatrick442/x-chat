@@ -1,7 +1,6 @@
 module.exports = new (function(){
 	this.create = function(params){
 		var id = params.id;
-		console.log(params);
 		if(params.ws)
 			return new Websocket(params.ws);
 		throw new Error('Not implemented');

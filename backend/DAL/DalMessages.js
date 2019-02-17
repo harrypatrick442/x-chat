@@ -7,8 +7,8 @@ exports.dalMessages= new (function(){
 	const CONTENT='content';
 	const SERVER_N_ASSIGNED_MESSAGE='serverAssignedNMessage';
     var dalXChat = require('./DalXChat').dalXChat;	
-	var Message = require('./../Message').Message;
-	var each = require('./../each').each;
+	var Message = require('./../Message');
+	var each = require('./../each');
 	var sql = require('mssql');
 	
 	this.getMessages = function(roomId, nMessages, callbackGotMessages){

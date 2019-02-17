@@ -7,7 +7,7 @@ exports.dalNotifications= new (function(){
 	const USER_TO_ID='userTOId';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var Notification = require('./../Notification').Notification;
-	var each = require('./../each').each;
+	var each = require('./../each');
 	var sql = require('mssql');
 	this.getPmNotificationsForUser = function(userId, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_NOTIFICATIONS_GET_FOR_USER, 

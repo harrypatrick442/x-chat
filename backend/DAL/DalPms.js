@@ -8,8 +8,8 @@ exports.dalPms= new (function(){
 	const CONTENT='content';
 	const SERVER_ASSIGNED_N_MESSAGE='serverAssignedNMessage';
     var dalXChat = require('./DalXChat').dalXChat;	
-	var Message = require('./../Message').Message;
-	var each = require('./../each').each;
+	var Message = require('./../Message');
+	var each = require('./../each');
 	var sql = require('mssql');
 	this.getMessages = function(userMeId, userToId, nMessages, callbackGotMessages){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGES_GET, 
