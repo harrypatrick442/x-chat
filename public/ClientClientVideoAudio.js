@@ -1,11 +1,13 @@
-var ClientClientPortal = new (function () {
+var ClientClientVideoAudio = new (function () {
 	var _ClientClientPortal = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		
-		
-		
-		
+		this.start = function(callback){
+			getUserPermission(function(result){
+				(!result.successful)&&callback(result);
+				
+			});
+		};
 		function getUserPermission(callback){
 			var constraints =  {audio: true,  video: true};
 			navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {

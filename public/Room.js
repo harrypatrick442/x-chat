@@ -10,6 +10,8 @@ var Room = new (function(){
 		var emoticonsParser = params.emoticonsParser;
 		var name = params.name;
 		var id = params.id;
+		var isPm = params.isPm;
+		var clientClientVideoAudio = isPm?new ClientClientVideoAudio({}):undefined;
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser =params.clickMenuUser;
 		var users = new Users({getUserById:getUserById});
@@ -18,16 +20,17 @@ var Room = new (function(){
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
 		var buttonClose = new Button({className:'button-close'});
+		var buttonVideoPmStart = isPm?new Button({className:'button-video-pm-start'}):undefined;
 		var spinner = new Spinner({});
 		spinner.show();
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose, spinner:spinner});
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose, buttonVideoPmStart:buttonVideoPmStart, spinner:spinner});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.getUsersMenu = function(){return usersMenu;};
 		this.getUserTo = function(){return params.userTo;};
-		this.isPm=function(){return params.isPm;};
+		this.isPm=function(){return isPm;};
 		this.incomingMessage = function(jObjectMessage){
 			var scroll = ui.feedIsAtBottom();
 			incomingMessage(jObjectMessage);
@@ -78,6 +81,8 @@ var Room = new (function(){
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		buttonClose.addEventListener('click', close);
 		buttonExit.addEventListener('click', exit);
+		if(buttonVideoPmStart)
+			buttonVideoPmStart.addEventListener('click', startVideoPm);
 		ui.addEventListener('keypress',keyPressed);
 		new Task(load).run();
 		function load(){
@@ -87,6 +92,10 @@ var Room = new (function(){
 				users.add(params.userTo);
 				users.add(getUserMe());
 			}
+		}
+		function startVideoPm(){
+			console.log('clicked start vid pm');
+			clientClientVideoAudio.start();
 		}
 		function dispose(){
 			messages.dispose();
@@ -154,6 +163,7 @@ var Room = new (function(){
 		var buttonExit = params.buttonExit;
 		var buttonEmoticons = params.buttonEmoticons;
 		var buttonClose = params.buttonClose;
+		var buttonVideoPmStart = params.buttonVideoPmStart;
 		var spinner = params.spinner;
 		var element = E.DIV();
 		element.classList.add('room');
@@ -177,6 +187,8 @@ var Room = new (function(){
 		menu.appendChild(buttonSend.getElement());
 		menu.appendChild(buttonExit.getElement());
 		menu.appendChild(buttonClose.getElement());
+		if(buttonVideoPmStart)
+			menu.appendChild(buttonVideoPmStart.getElement());
 		text.addEventListener('keypress',dispatchKeyPress);
 		this.getElement = function(){
 			return element;

@@ -119,3 +119,16 @@
 .lobby .rooms .entries .room .bottom .menu .button-close:hover{
 	background-image:url('/images/close-hover.jpg');	
 }
+.lobby .rooms .entries .room .bottom .menu .button-video-pm-start{
+	float:right;
+	width:43px;
+	height:24px;
+	margin-right:6px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/video-start.gif');	
+	cursor:pointer;
+}
+.lobby .rooms .entries .room .bottom .menu .button-video-pm-start:hover{
+background-image:url('/images/video-start-hover.gif');	
+}
