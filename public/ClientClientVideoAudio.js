@@ -94,8 +94,8 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchAddedIceCandidate(candidate){
 			self.dispatchEvent({type:'addedicecandidate', candidate:candidate});
 		}
-		function dispatchAllIceSent()
-			self.dispatchEvent({type:'allicesent'});
+		function onAllIceCandidatesSent()
+			self.dispatchEvent({type:'allicecandidatessent'});
 		}
 		function dispatchLocalStream(stream){
 			self.dispatchEvent({type:'localstream', stream:stream});
@@ -112,6 +112,9 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchSendAccept(accept){
 			self.dispatchEvent({type:'sendaccept', accept:accept});
 		}
+		function dispatchEnded(iceConnectionState){
+			self.dispatchEvent({type:'ended', iceConnectionState:iceConnectionState});
+		}
 		function onAddStream(e){
 			dispatchAddStream(e.stream);
 		}
@@ -119,8 +122,13 @@ var ClientClientVideoAudio = new (function () {
 			dispatchRemoveRemoteStream(e.stream);
 		}
 		function onIceConnectionStateChange(e){
-			if (pc.iceConnectionState == 'disconnected') {
-				
+			var iceConnectionState = rtcPeerConnection.iceConnectionState;
+			switch(iceConnectionState){
+				case 'failed':
+				case 'disconnected':
+				case 'closed':
+					dispatchEnded(iceConnectionState);
+				break;
 			}
 		}
 		function onIceCandidate(e){
@@ -129,7 +137,7 @@ var ClientClientVideoAudio = new (function () {
 				dispatchSendIce(candidate);
 				return;
 			}
-			dispatchAllIceSent();
+			dispatchAllIceCandidatesSent();
 		}
 		function getUserPermission(callback){
 			var constraints =  {audio: true,  video: true};
