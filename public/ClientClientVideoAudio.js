@@ -9,9 +9,8 @@ var ClientClientVideoAudio = new (function () {
 					callback&&callback(result);
 					return;
 				}
-				createNewPC();
 				dispatchLocalStream(result.stream);
-				sendOffer();
+				sendOffer(createNewPC());
 			});
 		};
 		this.acceptedOffer = function(offer){
@@ -20,13 +19,17 @@ var ClientClientVideoAudio = new (function () {
 					dispatchRejectedOffer();
 					return;
 				}
-				createNewPC();
 				dispatchLocalStream(result.stream);
-				sendAnswer();
+				sendAnswer(createNewPC());
 			});
 		};
-		function sendAccept(){
-			createAccept(function(result){
+		this.incomingIceCandidate = function(candidate){
+			rtcPeerConnection&&rtcPeerConnection.addIceCandidate(candidate, function(){
+				dispatchAddedIceCandidate(candidate);
+			}, error);
+		};
+		function sendAccept(rtcPeerConnection){
+			createAccept(rtcPeerConnection, function(result){
 				if(result.successful){
 					dispatchSendAccept(result.answer);
 					return;
@@ -34,7 +37,7 @@ var ClientClientVideoAudio = new (function () {
 				dispatchAcceptFailed(result.error);
 			});
 		}
-		function sendOffer(){
+		function sendOffer(rtcPeerConnection){
 			createOffer(rtcPeerConnection, function(result){
 				if(result.successful){
 					dispatchSendOffer(offer);
@@ -50,11 +53,11 @@ var ClientClientVideoAudio = new (function () {
 				}, errorCallback.bind(null, callback));
 			}, errorCallback.bind(null, callback));
 		}
-		function createAccept(callback)
+		function createAccept(tctPeerConnection, callback)
 		{
             rtcPeerConnection.createAnswer(function (answer)
             {
-				rtcPeerConnection.setLocalDescription(new RTCSessionDescription(answer), function () {
+				rtcPeerConnection.setLocalDescription(new RTCSessionDescription(answer), function(){
 					callback({successful:true, answer:answer});
 				}, errorCallback.bind(null, callback));
             }, errorCallback.bind(null, callback));
@@ -70,6 +73,7 @@ var ClientClientVideoAudio = new (function () {
 			rtcPeerConnection.onremovestream = onRemoveStream;
 			rtcPeerConnection.oniceconnectionstatechange = onIceConnectionStateChange;
 			rtcPeerConnection.onicecandidate = onIceCandidate;
+			return rtcPeerConnection;
 		}
 		function errorCallback(callback, err){
 			error(err);
@@ -83,6 +87,15 @@ var ClientClientVideoAudio = new (function () {
 		}
 		function dispatchOfferFailed(error){
 			self.dispatchEvent({type:'offerfailed', error:error});
+		}
+		function dispatchSendIce(ice){
+			self.dispatchEvent({type:'sendice', candidate:candidate});
+		}
+		function dispatchAddedIceCandidate(candidate){
+			self.dispatchEvent({type:'addedicecandidate', candidate:candidate});
+		}
+		function dispatchAllIceSent()
+			self.dispatchEvent({type:'allicesent'});
 		}
 		function dispatchLocalStream(stream){
 			self.dispatchEvent({type:'localstream', stream:stream});
@@ -113,8 +126,10 @@ var ClientClientVideoAudio = new (function () {
 		function onIceCandidate(e){
 			var candidate=e.candidate;
 			if (candidate != null) {
-				
+				dispatchSendIce(candidate);
+				return;
 			}
+			dispatchAllIceSent();
 		}
 		function getUserPermission(callback){
 			var constraints =  {audio: true,  video: true};
