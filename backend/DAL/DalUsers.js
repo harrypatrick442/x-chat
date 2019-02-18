@@ -6,6 +6,8 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_USER_IMAGE_SET='xchat_user_image_set'
 	const STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET = 'xchat_authentication_token_get';
 	const STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE='xchat_automatic_authenticate';
+	const STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE='xchat_authentication_tokens_delete';
+	const STORED_PROCEDURE_GUEST_DELETE='xchat_guest_delete';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -64,7 +66,14 @@ exports.dalUsers= new (function(){
 		}});
 	};
 	this.authenticationTokensDelete = function(userId){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET, 
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE, 
+			parameters:[
+				{name:USER_ID, value:parseInt(userId), type:sql.Int}
+			]});
+			
+	};
+	this.deleteGuest = function(userId){
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_GUEST_DELETE, 
 			parameters:[
 				{name:USER_ID, value:parseInt(userId), type:sql.Int}
 			]});

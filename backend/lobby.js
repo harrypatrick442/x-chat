@@ -67,6 +67,14 @@ exports.lobby = (function(){
 		this.authenticate = function(req, mysocket, callback){
 			(req.isGuest? authenticateGuest: authenticate)(req, mysocket, callback);
 		};
+		this.signOut = function(req, mysocket, callback){
+			var user = getUserFromSessionId(req.sessionId);
+			if(!user)return;
+			user.dispose();
+			dalUsers.authenticationTokensDelete(user.getId());
+			if(user.isGuest())
+				dalUsers.deleteGuest(user.getId());
+		};
 		this.automaticAuthenticate= function(req, mysocket, callback){
 			var token = req.token;
 			if(!token){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
