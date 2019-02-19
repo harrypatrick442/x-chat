@@ -40,10 +40,8 @@ var Mysocket = (function(){
 			channel.onMessage = onMessage;
 		}
 		function onMessage(msg){
-			console.log(msg);
 			if(msg.type==MYSOCKET_ID){
 				id=msg.id;
-				console.log(MYSOCKET_ID);
 				return;
 			}
 			dispatchOnMessage(msg);

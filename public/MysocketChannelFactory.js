@@ -8,7 +8,6 @@ var MysocketChannelFactory = new (function(){
 		this.send = function(msg){
 			websocket.send(JSON.stringify(msg));
 		};
-		console.log('ID is: '+id);
 		websocket = new WebSocket(url+(id?'?mysocketId='+id:''));
 		websocket.onmessage = onMessage;
 		websocket.onopen = onOpen;
@@ -18,7 +17,6 @@ var MysocketChannelFactory = new (function(){
 			self.onMessage&&self.onMessage(JSON.parse(e.data));
 		}
 		function onOpen(){
-			console.log('opened');
 			self.onOpen&&self.onOpen();
 		}
 		function onClose(){
