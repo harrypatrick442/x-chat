@@ -42,7 +42,6 @@ exports.dalUsers= new (function(){
 				{name:USER_ID, value:parseInt(userId), type:sql.Int},
 			],
 			callback:function(result){
-				console.log(result);
 				var rows = result.recordsets[0];
 				var token;
 				if(rows.length>0){
@@ -123,7 +122,6 @@ exports.dalUsers= new (function(){
 		}});
 	};
 	this.setImage = function(id, image){
-		console.log('b');
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_USER_IMAGE_SET, 
 		parameters:[
 			{name:ID, value:id, type:sql.Int},

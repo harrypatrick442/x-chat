@@ -4,14 +4,23 @@ var Room = new (function(){
 		EventEnabledBuilder(this);
 		const MAX_N_MESSAGES=100;
 		var self = this;
+		var send = params.send;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
 		var getNDevice = params.getNDevice;
+		var getSessionId = params.getSessionId;
 		var emoticonsParser = params.emoticonsParser;
 		var name = params.name;
 		var id = params.id;
 		var isPm = params.isPm;
-		var clientClientVideoAudio = isPm?new ClientClientVideoAudio({}):undefined;
+		var userTo = params.userTo;
+		var videoFeedPm;
+		if(isPm){
+			videoFeedPm = new VideoFeedPm({userTo:userTo, getSessionId:getSessionId, send:send});
+			this.videoOffer = videoFeedPm.incomingOffer;
+			this.videoAccept = videoFeedPm.incomingAccept;
+			this.videoIceCandidate = videoFeedPm.incomingIceCandidate;
+		}
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser =params.clickMenuUser;
 		var users = new Users({getUserById:getUserById});
@@ -23,7 +32,8 @@ var Room = new (function(){
 		var buttonVideoPmStart = isPm?new Button({className:'button-video-pm-start'}):undefined;
 		var spinner = new Spinner({});
 		spinner.show();
-		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose, buttonVideoPmStart:buttonVideoPmStart, spinner:spinner});
+		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose,
+		buttonVideoPmStart:buttonVideoPmStart, spinner:spinner, videoFeed:videoFeedPm});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -95,7 +105,7 @@ var Room = new (function(){
 		}
 		function startVideoPm(){
 			console.log('clicked start vid pm');
-			clientClientVideoAudio.start();
+			videoFeedPm.start();
 		}
 		function dispose(){
 			messages.dispose();
@@ -164,6 +174,10 @@ var Room = new (function(){
 		var buttonEmoticons = params.buttonEmoticons;
 		var buttonClose = params.buttonClose;
 		var buttonVideoPmStart = params.buttonVideoPmStart;
+		var videoFeed = params.videoFeed;
+		if(videoFeed){
+			var videoFeedUI = new VideoFeedUI(videoFeed);
+		}
 		var spinner = params.spinner;
 		var element = E.DIV();
 		element.classList.add('room');

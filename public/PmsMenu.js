@@ -7,15 +7,12 @@ var PmsMenu = new (function(){
 		var self = this;
 		var popup = isMobile?new Popup({}):undefined;
 		var buttonClose = isMobile?new Button({className:'button-close'}):undefined;
-		var ui = new UI({popupElement:isMobile?popup.getElement():undefined, buttonClose:buttonClose});
+		var ui = new UI({popupElement:isMobile?popup.getElement():undefined, buttonClose:buttonClose, getEntries:getEntries});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
-		this.show= function(){
-			popup.show();
-			resized();
-		};
+		this.show= ui.show;
 		this.clear = function(){
 			each(sortedFilteredEntries.getEntries().slice(), _remove);
 		};
@@ -23,8 +20,10 @@ var PmsMenu = new (function(){
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
 		pms.addEventListener('addclosed', addClosed);
-		WindowResizeManager.addEventListener('resized', resized);
 		if(buttonClose)buttonClose.addEventListener('click',popup.hide);
+		function getEntries(){
+			return sortedFilteredEntries.getEntries();
+		}
 		function add(e){
 			_add(e);
 		}
@@ -53,12 +52,6 @@ var PmsMenu = new (function(){
 		function compare(pmEntryA, pmEntryB){
 			return pmEntryA.getUsername()>pmEntryB.getUsername();
 		}
-		function resized(){
-			each(sortedFilteredEntries.getEntries(), function(pmEntry){
-				var clientWidth = ui.getElement().clientWidth;
-				pmEntry.parentWidth(clientWidth);
-			});
-		}
 		function showPm(e){
 			pms.showPmWithUser(e.user);
 			if(popup)popup.hide();
@@ -74,6 +67,7 @@ var PmsMenu = new (function(){
 		var self = this;
 		var element = params.popupElement;
 		var buttonClose = params.buttonClose;
+		var getEntries = params.getEntries;
 		var entries = E.DIV();
 		if(!isMobile)
 			element = E.DIV();
@@ -97,5 +91,16 @@ var PmsMenu = new (function(){
 			entries.style.display=value?'block':'none';
 		};
 		this.getEntries = function(){return entries;};
+		this.show = function(){
+			popup.show();
+			resized();
+		};
+		WindowResizeManager.addEventListener('resized', resized);
+		function resized(){
+			var clientWidth = entries.clientWidth;
+			each(getEntries(), function(pmEntry){
+				pmEntry.parentWidth(clientWidth);
+			});
+		}
 	}
 })();

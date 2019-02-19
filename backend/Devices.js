@@ -39,10 +39,7 @@ exports.Devices = (function(){
 			return list;
 		};
 		function onClose(e){
-			console.log('CLOSE');
-			console.log(e.device.getId());
 			self.remove(e.device);
-			console.log(set.getEntries());
 			if(set.count()>0)return;
 			dispatchAllClose();
 		}

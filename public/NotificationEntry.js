@@ -7,6 +7,7 @@ var NotificationEntry = (function(){
 		var ui = new UI({userImage:userImage, buttonClose:buttonClose, text:'PM from '+notification.getUsername()});
 		this.getElement = ui.getElement;
 		this.getId = notification.getId;
+		this.parentWidth=ui.parentWidth;
 		if(!notification.getIsPm())return;
 		ui.addEventListener('click', dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchDispose);

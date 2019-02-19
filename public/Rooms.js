@@ -3,6 +3,8 @@ var Rooms = new (function(){
 	var _Rooms = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var send = params.send;
+		var getSessionId=params.getSessionId;
 		var getUserMe = params.getUserMe;
 		var getUserById = params.getUserById;
 		var getNDevice = params.getNDevice;
@@ -79,7 +81,8 @@ var Rooms = new (function(){
 		}
 		function loadRoom(roomInfo){
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
-			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice});
+			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice,
+			getSessionId:getSessionId, send:send});
 			set.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);

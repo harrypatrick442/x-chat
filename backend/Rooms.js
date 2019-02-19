@@ -26,8 +26,6 @@ exports.Rooms = (function(){
 		this.setRoomsDeviceIsIn=function (device, roomIds){
 			var roomIdsUserIsIn = device.getRoomIdsIsIn();
 			var roomsToJoin = roomIds.where(x=>roomIdsUserIsIn.indexOf(x)<0).select(x=>self.getRoom(x)).where(x=>!x.isPm()||x.userAllowed(device.getUser()));
-			console.log(roomIdsUserIsIn);
-			console.log('a');
 			var roomsToLeave = roomIdsUserIsIn.where(x=>roomIds.indexOf(x)<0).select(x=>self.getRoom(x));
 			roomsToLeave.each(x=>x.leave(device));
 			roomsToJoin.each(x=>x.join(device));

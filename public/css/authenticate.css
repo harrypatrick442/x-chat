@@ -12,6 +12,7 @@
 		border-radius:5px;
 		padding:3px;
 		box-sizing:border-box;
+		display:none;
 }
 .authenticate .div-inner{
 		height:auto;

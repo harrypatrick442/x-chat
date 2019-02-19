@@ -7,6 +7,7 @@ var Notification = (function(){
 		this.getNotificationType= function(){return params.notificationType;};
 		this.getIsPm= function(){return self.getNotificationType()==PM;};
 		this.getUsername = function(){return params.username;};
+		this.getImage = function(){return params.image;};
 		this.getId = function(){return params.id;};
 		this.seen = dispatchSeen;
 		function dispatchSeen(){

@@ -5,7 +5,7 @@ module.exports = (function(){
 		var Timer = require('./Timer');
 		var each = require('./each');
 		var set = new Set({getEntryId:getEntryId});
-		var timerCleanup = new Timer({delay:DELAY_CLEANUP_MINUTES*1000, callback:cleanupRoutine});
+		var timerCleanup = new Timer({delay:DELAY_CLEANUP_MINUTES*60000, callback:cleanupRoutine});
 		mysockets.addEventListener('add', onAdd);
 		mysockets.addEventListener('remove', onRemove);
 		function onAdd(e){

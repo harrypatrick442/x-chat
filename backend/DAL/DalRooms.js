@@ -15,10 +15,8 @@ exports.dalRooms= new (function(){
 				var rows = result.recordsets[0];
 				var rooms=[];
 				each(rows, function(row){
-					console.log(row);
 					rooms.push(Room.fromSqlRow(row));
 				});
-				console.log(rooms);
 				callback(rooms);
 		}});
 	};

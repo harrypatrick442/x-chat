@@ -5,10 +5,10 @@ exports.handler = new (function(){
 		this.process = function(req, mysocket, callback){
 			var res = {};
 			try{
-				console.log(req);
+				//console.log(req);
 				switch(req.type){
 					case 'test':
-					console.log('was test');
+						console.log('test');
 						callback(test(req));
 					break;
 					case 'register':
@@ -64,6 +64,35 @@ exports.handler = new (function(){
 							
 						});
 					break;
+					case 'pm_video_offer':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						var userTo = users.getById(req.userToId);
+						if(!userTo) {
+							callback({type:'pm_video_offer_fail', userToId:req.userToId, successful:false, message:'The user is not online!'});
+							return;
+						}
+						userTo.send({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
+					break;
+					case 'pm_video_accept':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						var userTo = users.getById(req.userToId);
+						if(!userTo) {
+							callback({type:'pm_video_accept_fail', userToId:req.userToId, successful:false, message:'The user is no longer online!'});
+							return;
+						}
+						userTo.send({type:'pm_video_accept', userFromId:userMe.getId(), accept:req.accept});
+					break;
+					case 'pm_video_ice_candidate':
+						var userMe = getUser(req);
+						if(!userMe)return;
+						var userTo = users.getById(req.userToId);
+						if(!userTo){
+							return;
+						}
+						userTo.send({type:'pm_video_ice_candidate', userToId:userTo.getId(), candidate:req.candidate});
+					break;
 					case 'room_join':
 						var user = getUser(req);
 						if(!user)return;
@@ -71,7 +100,6 @@ exports.handler = new (function(){
 						if(!room)return;
 						var device = user.getDevices().getById(mysocket.getId());
 						if(!device)return;
-						console.log('about to call join');
 						room.join(device);
 					break;
 					case 'room_leave':

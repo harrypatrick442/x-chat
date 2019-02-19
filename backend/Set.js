@@ -1,6 +1,5 @@
 module.exports = (function(){
 	var each = require('./each');
-	console.log(each);
 	var _Set = function(params){
 		var self = this;
 		var getEntryId = params.getEntryId;

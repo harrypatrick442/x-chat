@@ -1,5 +1,5 @@
 var ClientClientVideoAudio = new (function () {
-	var _ClientClientPortal = function(params){
+	var _ClientClientVideoAudio = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
 		var rtcPeerConnection;
@@ -40,7 +40,7 @@ var ClientClientVideoAudio = new (function () {
 		function sendOffer(rtcPeerConnection){
 			createOffer(rtcPeerConnection, function(result){
 				if(result.successful){
-					dispatchSendOffer(offer);
+					dispatchSendOffer(result.offer);
 					return;
 				}
 				dispatchOfferFailed(result.error);
@@ -94,7 +94,7 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchAddedIceCandidate(candidate){
 			self.dispatchEvent({type:'addedicecandidate', candidate:candidate});
 		}
-		function onAllIceCandidatesSent()
+		function onAllIceCandidatesSent(){
 			self.dispatchEvent({type:'allicecandidatessent'});
 		}
 		function dispatchLocalStream(stream){
@@ -149,5 +149,5 @@ var ClientClientVideoAudio = new (function () {
 			});
 		}
 	};
-	return _ClientClientPortal;
+	return _ClientClientVideoAudio;
 })();

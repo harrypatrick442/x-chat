@@ -25,6 +25,31 @@ var Pms=  (function(){
 			if(!room){notify(msg);return;}
 			room.incomingMessages(msg.messages);
 		};
+		this.videoOfferFail = function(msg){
+			var room = rooms.getById(getRoomId(msg.userToId));
+			if(!room){return;}
+			room.videoOfferFail(msg);
+		};
+		this.videoOffer = function(msg){
+			var room = rooms.getById(getRoomId(msg.userFromId));
+			if(!room)return;
+			room.videoOffer(msg.offer);
+		};
+		this.videoAcceptFail = function(msg){
+			var room = rooms.getById(getRoomId(msg.userToId));
+			if(!room)return;
+			room.videoAcceptFail(msg);
+		};
+		this.videoAccept = function(msg){
+			var room = rooms.getById(getRoomId(msg.userFromId));
+			if(!room)return;
+			room.videoAccept(msg.accept);
+		};
+		this.videoIceCandidate = function(msg){
+			var room = rooms.getById(getRoomId(msg.userFromId));
+			if(!room)return;
+			room.videoIceCandidate(msg.candidate);
+		};
 		this.load = function(userMeId){
 			openHistory = new PmsOpenHistory({userMeId:userMeId});
 			tabPortal = new TabPortal({id:'PmsMenu_'+userMeId});

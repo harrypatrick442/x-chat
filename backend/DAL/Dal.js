@@ -1,7 +1,6 @@
 exports.Dal= (function(){
 	const CALL="CALL ";
     var sql = require("mssql");
-	console.log(sql);
     var each = require('./../each');
 	var _Dal = function(config){
 		this.nonQuery = function(params){

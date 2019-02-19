@@ -89,7 +89,14 @@ exports.lobby = (function(){
 				users.add(user);
 				sendJoin(user);
 				user.addEventListener('dispose', userDispose);
-				callback(res);
+				notifications.getPmNotificationsForUser(user, function(pmNotifications){
+					res.pmNotifications = pmNotifications.select(x=>x.toJSON()).toList();
+					if(!req.staySignedIn){ callback(res);return;}
+					dalUsers.getAuthenticationToken(user.getId(), function(token){
+						res.token = token;
+						callback(res);
+					});
+				});
 			});
 		};
 		this.setImageForUser = function(sessionId, image){//image is the first part of the file name (without _32-32.jpeg).

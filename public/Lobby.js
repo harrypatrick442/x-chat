@@ -28,7 +28,8 @@ var Lobby = (function(){
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
-	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu, getNDevice:getNDevice});
+	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu,
+		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send});
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
@@ -118,8 +119,21 @@ var Lobby = (function(){
 				case 'userids':
 					updateUserIdsLobby(msg.userIds);//is used for leave.
 					break;
-					
-					
+				case 'pm_video_offer_fail':
+					pms.videoOfferFail(msg);
+					break;
+				case 'pm_video_offer':
+					pms.videoOffer(msg);
+					break;
+				case 'pm_video_accept_fail':
+					pms.videoAcceptFail(msg);
+					break;
+				case 'pm_video_accept':
+					pms.videoAccept(msg);
+					break;
+				case 'pm_video_ice_candidate':
+					pms.videoIceCandidate(msg);
+					break;
 				case 'user_image_set':
 					console.log(msg);
 					UserImage.update(msg.userId, msg.image);

@@ -13,6 +13,7 @@ exports.Notifications = (function(){
 			});
 		};
 		this.setPmNotificationsSeen=function(userMe, userToIds){
+			console.log('SET AS SEEN');
 			var userMeId = userMe.getId();
 			each(userToIds, function(userToId){
 				dalNotifications.setPmNotificationSeen(userMeId, userToId);

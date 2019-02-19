@@ -7,7 +7,7 @@ var NotificationsMenu = (function(){
 		var seenNotificationsManager = params.seenNotificationsManager;
 		var popup = new Popup({});
 		var buttonClose = new Button({className:'button-close'});
-		var ui = new UI({popup:popup, buttonClose:buttonClose});
+		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries});
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.show = ui.show;
 		this.getElement = ui.getElement
@@ -15,6 +15,9 @@ var NotificationsMenu = (function(){
 		notifications.addEventListener('added', added);
 		notifications.addEventListener('removed', removed);
 		pms.addEventListener('showingpm', showingPm);
+		function getEntries(){
+			return sortedFilteredEntries.getEntries();
+		}
 		function showingPm(e){
 			var userId = e.user.getId();
 			var notification = notifications.getById(userId);
@@ -57,6 +60,7 @@ var NotificationsMenu = (function(){
 		var popup = params.popup;
 		var buttonClose = params.buttonClose;
 		var element = popup.getElement();
+		var getEntries = params.getEntries;
 		element.classList.add('notifications-menu');
 		var entries = E.DIV();
 		entries.classList.add('entries');
@@ -68,7 +72,15 @@ var NotificationsMenu = (function(){
 		element.appendChild(entries);
 		this.show = function(){
 			popup.show();
+			resized();
 		};
+		function resized(){
+			var clientWidth = entries.clientWidth;
+			each(getEntries(), function(notificationEntry){
+				console.log(notificationEntry);
+				notificationEntry.parentWidth(clientWidth);
+			});
+		}
 		this.addEntry = function(entry){
 			entries.appendChild(entry.getElement());
 		};
@@ -77,5 +89,6 @@ var NotificationsMenu = (function(){
 		};
 		this.getElement = function(){return element;};
 		this.getEntries = function(){return entries;};
+		WindowResizeManager.addEventListener('resized', resized);
 	}
 })();
