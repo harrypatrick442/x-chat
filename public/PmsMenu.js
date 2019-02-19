@@ -7,7 +7,7 @@ var PmsMenu = new (function(){
 		var self = this;
 		var popup = isMobile?new Popup({}):undefined;
 		var buttonClose = isMobile?new Button({className:'button-close'}):undefined;
-		var ui = new UI({popupElement:isMobile?popup.getElement():undefined, buttonClose:buttonClose, getEntries:getEntries});
+		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
@@ -65,7 +65,8 @@ var PmsMenu = new (function(){
 	function UI(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var element = params.popupElement;
+		var popup = params.popup;
+		var element = popup.getElement();
 		var buttonClose = params.buttonClose;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
