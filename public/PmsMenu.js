@@ -74,7 +74,7 @@ var PmsMenu = new (function(){
 			element = E.DIV();
 		else
 		{
-			document.body.appendChild(params.popupElement);
+			document.body.appendChild(popup.getElement());
 			var heading=E.DIV();
 			heading.innerHTML='&nbsp;Pms ';
 			heading.classList.add('heading');
