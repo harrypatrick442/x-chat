@@ -345,7 +345,10 @@ var Lobby = (function(){
 			var left = E.DIV();
 			left.classList.add('left');
 			element.appendChild(left);
+			var logo = new Logo();
+			left.appendChild(logo.getElement());
 			left.appendChild(usersMenues.getElement());
+			
 		}
 		element.appendChild(right);
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());

@@ -66,7 +66,7 @@ var PmsMenu = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var popup = params.popup;
-		var element = popup.getElement();
+		var element = isMobile?popup.getElement():E.DIV();
 		var buttonClose = params.buttonClose;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
