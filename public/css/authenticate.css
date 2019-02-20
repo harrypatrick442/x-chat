@@ -2,17 +2,22 @@
 	
 	font-family:verdana, geneva, sans-serif;
     color: #dddddd;
-		position:fixed;
-		height:auto;
-		width:244px;
-		top:calc(50% - 100px);
-		left:calc(50% - 128px);
-		background-color:rgb(44, 43, 43);
-		border:3px solid rgb(0, 135, 226);
-		border-radius:5px;
-		padding:3px;
-		box-sizing:border-box;
-		display:none;
+	position:fixed;
+	height:auto;
+	width:244px;
+	top:calc(50% - 100px);
+	background-color:rgb(44, 43, 43);
+	border:3px solid rgb(0, 135, 226);
+	border-radius:5px;
+	padding:3px;
+	box-sizing:border-box;
+	display:none;
+	margin:auto;
+	overflow: auto;
+	margin: auto;
+	left: 0; 
+	right: 0;
+		
 }
 .authenticate .div-inner{
 		height:auto;
