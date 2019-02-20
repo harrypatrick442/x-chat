@@ -150,11 +150,33 @@ var SplitPane= (function(){
 	function SliderX(params){
 		var getPanelWidth = params.getPanelWidth;
 		var element = E.DIV();
-		element.classList.add('slider-x');
+		element.classList.add('slider');
+		element.classList.add('x');
 		var leftPanelColumn = params.leftPanelColumn;
 		var rightPanelColumn;
+		var dragManager = new DragManager({
+			handle:this
+		});
 		this.setRightPanelColumn= function(value){
 			rightPanelColumn = value;
+		};
+		this.getConstraints=function(){
+			var constraints = getConstraintsLeftOfSlider();
+			constraints.yMin=0;
+			constraints.yMax=0;
+			return constraints;
+		};
+		this.getX=function(){
+			return element.offsetLeft;
+		};
+		this.getY=function(){
+			return element.offsetTop;
+		};
+		this.setPosition = function(position){
+			element.style.left=String(position.x)+'px';
+		};
+		this.endDrag = function(){
+			
 		};
 		function getXLeft(){
 			return element.offsetLeft;
@@ -176,11 +198,36 @@ var SplitPane= (function(){
 	function SliderY(params){
 		var getPanelHeight = params.getPaneleHeight;
 		var element = E.DIV();
-		element.classList.add('slider-y');
+		element.classList.add('slider');
+		element.classList.add('y');
 		var topPanelRow=params.topPanelRow;
 		var bottomPanelRow;
+		var dragManager = new DragManager({
+			handle:this
+		});
 		this.setBottomPanelRow = function(value){
 			bottomPanelRow = value;
+		};
+		this.getConstraints=function(){
+			var constraints = getConstraintsLeftOfSlider();
+			constraints.xMin=0;
+			constraints.xMax=0;
+			return constraints;
+		};
+		this.getX=function(){
+			return element.offsetLeft;
+		};
+		this.getY=function(){
+			return element.offsetTop;
+		};
+		this.setPosition = function(position){
+			element.style.top=String(position.y)+'px';
+		};
+		this.endDrag = function(){
+			
+		};
+		this.getAbsolutePosition=function(){
+			return getAbsolute(element);
 		};
 		function getYTop(){
 			return element.offsetTop;

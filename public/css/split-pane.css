@@ -1,0 +1,33 @@
+.split-pane{
+	background-color:rgb(32, 31, 31);
+	box-sizing:border-box;
+}
+.split-pane .panel{
+	box-sizing:border-box;
+	background-color:rgb(44, 43, 43);
+}
+.split-pane .panel.left{
+	padding-left:0px;
+}
+.split-pane .panel.right{
+	padding-right:0px;
+}
+.split-pane .panel.top{
+	padding-top:0px;
+}
+.split-pane .panel.bottom{
+	padding-bottom:0px;
+}
+.split-pane .slider{
+	box-sizing:border-box;
+}
+.split-pane .slider.x{
+	width:6px;
+	height:100%;
+	position:absolute;
+}
+.split-pane .slider.y{
+	height:6px;
+	width:100%;
+	position:absolute;
+}
