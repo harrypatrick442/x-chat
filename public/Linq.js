@@ -51,6 +51,14 @@ Enumerable.prototype.reverse=function(){
 	this.reset();
 	return Enumerable.fromArray(this.toList().reverse());
 };
+Enumerable.prototype.sum=function(func){
+	this.reset();	
+	var sum=0;
+	while (this.moveNext()) {
+		sum+=func(this.current());
+	}
+	return sum;
+};
 Enumerable.prototype.each=function(func){
 	this.reset();	
 	while (this.moveNext()) {
@@ -68,4 +76,7 @@ Array.prototype.each=function(func){
 };
 Array.prototype.take=function(n){
 	return Enumerable.fromArray(this).take(n);
+};
+Array.prototype.sum = function(){
+	return Enumeralbe.fromArray(this).sum();
 };
