@@ -77,6 +77,6 @@ Array.prototype.each=function(func){
 Array.prototype.take=function(n){
 	return Enumerable.fromArray(this).take(n);
 };
-Array.prototype.sum = function(){
-	return Enumeralbe.fromArray(this).sum();
+Array.prototype.sum = function(func){
+	return Enumerable.fromArray(this).sum(func);
 };

@@ -175,9 +175,6 @@ var Room = new (function(){
 		var buttonClose = params.buttonClose;
 		var buttonVideoPmStart = params.buttonVideoPmStart;
 		var videoFeed = params.videoFeed;
-		if(videoFeed){
-			var videoFeedUI = new VideoFeedUI(videoFeed);
-		}
 		var spinner = params.spinner;
 		var element = E.DIV();
 		element.classList.add('room');
@@ -191,10 +188,21 @@ var Room = new (function(){
 		menu.classList.add('menu');
 		var text = E.TEXT();
 		text.classList.add('text');
+		
+		if(videoFeed){
+			var videoFeedUI = new VideoFeedUI(videoFeed);
+			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2});
+			splitPane.getPanelXY(0, 0).getElement().appendChild(videoFeedUI.getElement());
+			top.appendChild(splitPane.getElement());
+			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
+			splitPane.initialize();
+		}
+		else{
+			top.appendChild(feed);
+		}
 		element.appendChild(top);
 		element.appendChild(bottom);
 		element.appendChild(spinner.getElement());
-	    top.appendChild(feed);
 		bottom.appendChild(text);
 		bottom.appendChild(menu);
 		menu.appendChild(buttonEmoticons.getElement());
