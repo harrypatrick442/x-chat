@@ -65,7 +65,7 @@ var Rooms = new (function(){
 			showEntry(room);
 		};
 		this.clear = function(){
-			each(set.getEntries(), function(room){
+			each(set.getEntries().slice(), function(room){
 				room.dispose&&room.dispose();
 				remove(room);
 			});
