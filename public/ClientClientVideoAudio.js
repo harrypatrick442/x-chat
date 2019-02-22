@@ -98,6 +98,7 @@ var ClientClientVideoAudio = new (function () {
 			self.dispatchEvent({type:'allicecandidatessent'});
 		}
 		function dispatchLocalStream(stream){
+			console.log('dispatching local stream');
 			self.dispatchEvent({type:'localstream', stream:stream});
 		}
 		function dispatchAddRemoteStream(stream){

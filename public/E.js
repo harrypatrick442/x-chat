@@ -25,6 +25,9 @@ var E = new (function () {
     this.H1 = function () {
         return c('h1');
     };
+	this.VIDEO = function(){
+		return c('video');
+	};
 	this.CHECKBOX = function(){
 		return i('input', 'checkbox');
 	};

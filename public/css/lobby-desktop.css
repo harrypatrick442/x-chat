@@ -5,8 +5,12 @@
 .lobby .left{
 	
 }
+.lobby .left .logo{
+	display:flex;
+}
 .lobby .left .users-menues{
 	flex-flow:grow;
+	flex-grow:1;
 }
 .lobby .right{
 }

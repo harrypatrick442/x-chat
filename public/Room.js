@@ -194,7 +194,9 @@ var Room = new (function(){
 			var resizeWatcher = ResizeManager.add({element:element, onResized:onResized});
 			var videoFeedUI = new VideoFeedUI(videoFeed);
 			splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
-			splitPane.getPanelXY(0, 0).getElement().appendChild(videoFeedUI.getElement());
+			var videoFeedPanel = splitPane.getPanelXY(0, 0).getElement();
+			videoFeedPanel.classList.add('video-feed-panel');
+			videoFeedPanel.appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
 			new Task(function(){	splitPane.resize();}).run();

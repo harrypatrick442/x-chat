@@ -2,8 +2,8 @@
 .lobby .users-menues{
 	position:relative;
 	float:left;
-	height:100%;
 	border-right:1px solid #2592E9;
+	flex-grow:1;
 }
 .lobby .users-menues .entries{
 	position:relative;

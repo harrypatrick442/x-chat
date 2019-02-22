@@ -5,7 +5,6 @@
 	background-color:rgb(32, 31, 31);
 	box-sizing:border-box;
 	position:relative;
-	background:green;
 }
 .split-pane .panel{
 	position:absolute;
