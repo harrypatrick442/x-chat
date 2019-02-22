@@ -4,10 +4,11 @@ var PmsMenu = new (function(){
 		'/images/close-hover.jpg'
 		]);
 	var _PmsMenu = function(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var popup = isMobile?new Popup({}):undefined;
 		var buttonClose = isMobile?new Button({className:'button-close'}):undefined;
-		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries});
+		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries, onResized:onResized});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
 		this.getElement = ui.getElement;
@@ -40,12 +41,12 @@ var PmsMenu = new (function(){
 		}
 		function remove(e){
 			var pmEntry = sortedFilteredEntries.getByEntryId(e.userTo.getId());
-			if(!pmEntry)return;
 			_remove(pmEntry);
-			ui.checkResized();
 		}
 		function _remove(pmEntry){
+			if(!pmEntry)return;
 			sortedFilteredEntries.removeEntry(pmEntry);
+			ui.checkResized();
 			pmEntry.dispose();
 		}
 		function getEntryId(pmEntry){
@@ -60,16 +61,23 @@ var PmsMenu = new (function(){
 		}
 		function closePm(e){
 			sortedFilteredEntries.removeEntry(e.pmEntry);
+			ui.checkResized();
 			pms.closePmWithUser(e.user);
+		}
+		function onResized(){
+			dispatchResized();
+		}
+		function dispatchResized(){
+			self.dispatchEvent({type:'resized'});
 		}
 	};
 	return _PmsMenu;
 	function UI(params){
-		EventEnabledBuilder(this);
 		var self = this;
 		var popup = params.popup;
 		var element = isMobile?popup.getElement():E.DIV();
 		var buttonClose = params.buttonClose;
+		var onResized = params.onResized;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
 		var resizeWatched;
@@ -101,19 +109,17 @@ var PmsMenu = new (function(){
 			resized();
 		};
 		this.checkResized=function(){
-			resizeWatched.manual();
+			resizeWatched.manual(true);
 		};
 		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
-		resizeWatched.manual();
+		resizeWatched.manual(true);
 		function resized(){
+			console.log('resized');
 			var clientWidth = entries.clientWidth;
 			each(getEntries(), function(pmEntry){
 				pmEntry.parentWidth(clientWidth);
 			});
-			dispatchResized();
-		}
-		function dispatchResized(){
-			self.dispatchEvent({type:'resized'});
+			onResized();
 		}
 	}
 })();

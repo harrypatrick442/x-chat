@@ -87,6 +87,7 @@ var Room = new (function(){
 				new Task(ui.scrollFeedToBottom).run();
 		};
 		this.getVisible = ui.getVisible;
+		this.resize=ui.resize;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
 		buttonClose.addEventListener('click', close);
@@ -188,10 +189,10 @@ var Room = new (function(){
 		menu.classList.add('menu');
 		var text = E.TEXT();
 		text.classList.add('text');
-		
+		var splitPane;
 		if(videoFeed){
 			var videoFeedUI = new VideoFeedUI(videoFeed);
-			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
+			splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
 			splitPane.getPanelXY(0, 0).getElement().appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
@@ -240,7 +241,10 @@ var Room = new (function(){
 		this.feedIsAtBottom = function(){
 			return feed.scrollTop >= (feed.scrollHeight - feed.offsetHeight)-10;
 		};
-		
+		this.resize = function(){
+			console.log('Room.UI.resize');
+			splitPane&&splitPane.resize();
+		};
 		function dispatchKeyPress(e){
 			if (!e) e = window.event;
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});

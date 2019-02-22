@@ -13,7 +13,8 @@ var ResizeManager=new (function(){
 			var temporalCallback = staggered?new TemporalCallback({callback:resized, delay:500,
 			maxTotalDelay:800}):undefined;
 			var loggedSize;
-			this.manual=function(){
+			this.manual=function(stillRunIfAutomatic){
+				if(!stillRunIfAutomatic&&ResizeObserver)return;
 				if(!loggedSize){logSize(); return;}
 				var previousLoggedSize= loggedSize;
 				logSize();
@@ -28,7 +29,8 @@ var ResizeManager=new (function(){
 			function scheduleResize(){
 				temporalCallback.trigger();
 			}
-			function resized(){
+			function resized(params){
+				console.log(params);
 				dispatchResized();
 			}
 			function dispatchResized(){

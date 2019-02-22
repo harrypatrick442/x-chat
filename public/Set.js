@@ -27,6 +27,9 @@ var Set = (function(){
 		this.contains=function(item){
 			return mapIdToItem[getEntryId(item)]?true:false;
 		};
+		this.getByIndex=function(index){
+			return list[index];
+		};
 		this.getById= function(id){
 			return mapIdToItem[id];
 		};

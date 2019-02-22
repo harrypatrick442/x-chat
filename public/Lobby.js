@@ -345,7 +345,7 @@ var Lobby = (function(){
 			var left = E.DIV();
 			left.classList.add('left');
 			element.appendChild(left);
-			var logo = new Logo();
+			var logo = new Logo();	
 			left.appendChild(logo.getElement());
 			left.appendChild(usersMenues.getElement());
 			
@@ -375,6 +375,10 @@ var Lobby = (function(){
 			mainMenu.setPosition({right:6,top:getAbsolute(buttonProfilePicture.getElement()).bottom+3});
 		};
 		this.setSpinnerAutomaticAuthenticationVisible=spinnerAutomaticAuthentication.setVisible;
+		pmsMenu.addEventListener('resized', pmsMenuResized);
+		function pmsMenuResized(){
+			rooms.resize();
+		}
 	}
 	return _Lobby;
 })();

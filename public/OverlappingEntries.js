@@ -32,6 +32,9 @@ var OverlappingEntries = new (function(){
 			overlappingEntry.removeElement();
 			showNext(overlappingEntry);
 		};
+		this.getTopEntry = function(){
+			return set.getByIndex(set.count()-1);
+		};
 		function show(e){
 			console.log(name+'show');
 			self.show(e.entry);
@@ -79,6 +82,7 @@ var OverlappingEntries = new (function(){
 				element.parentNode.removeChild(element);
 			};
 			this.getString = function(){return (entry.getName?entry.getName():'')+isSetShow ;};
+			this.getEntry = function(){return entry; };
 		}
 	};
 	return _OverlappingEntries;

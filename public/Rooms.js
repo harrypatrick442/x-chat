@@ -14,13 +14,14 @@ var Rooms = new (function(){
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll});
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
-		var ui = new UI({emoticons:emoticons});
+		var ui = new UI({emoticons:emoticons, getTopEntry:getTopEntry});
 		var overlappingEntries= new OverlappingEntries({element:ui.getEntries(), name:'rooms'});
 		roomsMenu.addEventListener('showroom', showRoom);
 		emoticons.addEventListener('addemoticon', addEmoticon);
 		overlappingEntries.add(roomsMenu);
 		overlappingEntries.show(roomsMenu);
 		this.getElement = ui.getElement
+		this.resize = ui.resize;
 		this.getById = function(id){
 			return set.getById(id);
 		};
@@ -70,6 +71,9 @@ var Rooms = new (function(){
 			});
 			roomsMenu.clear();
 		};
+		function getTopEntry(){
+			return overlappingEntries.getTopEntry();
+		}
 		function showRoom(e){
 			self.showRoom(e.roomInfo);
 		}
@@ -94,7 +98,7 @@ var Rooms = new (function(){
 			room.addEventListener('getmessages', e=>self.dispatchEvent(e));
 			}else{
 			room.addEventListener('sendpm', e=>self.dispatchEvent(e));
-			room.addEventListener('getpms', function(e){console.log('get pm 2');self.dispatchEvent(e);});
+			room.addEventListener('getpms', function(e){self.dispatchEvent(e);});
 			
 			}
 			//room.addEventListener('getuserids', self.dispatchEvent);
@@ -127,7 +131,6 @@ var Rooms = new (function(){
 			var emoticonEntry = e.emoticonEntry;
 		}
 		function showEmoticons(e){
-			console.log('show emoticons');
 			var picked = e.picked;
 			emoticons.show({picked:picked});
 		}
@@ -152,6 +155,7 @@ var Rooms = new (function(){
 	function UI(params){
 		var menu = params.menu;
 		var emoticons = params.emoticons;
+		var getTopEntry = params.getTopEntry;
 		var element = E.DIV();
 		element.classList.add('rooms');
 		var entries = E.DIV();
@@ -162,5 +166,11 @@ var Rooms = new (function(){
 			return entries;
 		};
 		this.getElement = function(){return element;};
+		this.resize = function(){
+			var topEntry = getTopEntry();
+			if(!topEntry)return;
+			topEntry = topEntry.getEntry();
+			topEntry.resize&topEntry.resize();
+		};
 	}
 })();
