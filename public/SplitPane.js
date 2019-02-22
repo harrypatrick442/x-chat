@@ -29,12 +29,11 @@ const MIN_MIN_WIDTH=20;
 		};
 		createPanels();
 		createSliders();
-		this.initialize=initializePositionDimensions;
-		function initializePositionDimensions(){
-			new Task(function(){
+		this.resize=resize;
+		window.res = resize;
+		function resize(){
 			initializePanelColumnsPositionDimensions(getWidth(), getSliderWidth());
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
-			}).run();
 		}
 		function initializePanelColumnsPositionDimensions(widthForPanels, sliderWidth){
 			var remainingWidth = widthForPanels;
@@ -44,13 +43,13 @@ const MIN_MIN_WIDTH=20;
 				var columnsToRightNotIncludingThisOne = getPanelColumnsToRight(x);
 				var nColumnsToRightNotIncludingThisOne = columnsToRightNotIncludingThisOne.length;
 				var minWidthRequiredToRight=columnsToRightNotIncludingThisOne.sum(function(panelColumn){return panelColumn.getMinWidth();})+(nColumnsToRightNotIncludingThisOne*sliderWidth);
-				var width = panelColumn.getWidth();
-				if(!width)
-					width = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
-				if(remainingWidth - width < minWidthRequiredToRight)
-					width = remainingWidth - minWidthRequiredToRight;
-				if(width < panelColumn.getMinWidth())throw new Error('Not enough space for specified widths');
-				panelColumn.setWidth(width);
+				var desiredWidth = panelColumn.getDesiredWidth();
+				if(!desiredWidth)
+					desiredWidth = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
+				if(remainingWidth - desiredWidth < minWidthRequiredToRight)
+					desiredWidth = remainingWidth - minWidthRequiredToRight;
+				if(desiredWidth < panelColumn.getMinWidth())throw new Error('Not enough space for specified widths');
+				panelColumn.setWidth(desiredWidth);
 				var left = widthForPanels- remainingWidth;
 				panelColumn.setLeft(left);
 				if(x>0)
@@ -58,25 +57,25 @@ const MIN_MIN_WIDTH=20;
 					var sliderX = slidersX[x-1];
 					sliderX.setLeft(left-sliderWidth);
 				}
-				remainingWidth = remainingWidth - (width+sliderWidth);
+				remainingWidth = remainingWidth - (desiredWidth+sliderWidth);
 			}		
 		}
 		function initializePanelRowsPositionDimensions(heightForPanels, sliderHeight){
 			var remainingHeight = heightForPanels;
 			var topHeight=0;
-			console.log(nPanelsHeight);
 			for(var y=0; y<nPanelsHeight; y++){
 				var panelRow = panelRows[y];
 				var rowsToBottomNotIncludingThisOne = getPanelRowsToBottom(y);
 				var nRowsToBottomNotIncludingThisOne=rowsToBottomNotIncludingThisOne.length;
 				var minHeightRequiredToBottom=rowsToBottomNotIncludingThisOne.sum(function(panelRow){return panelRow.getMinHeight();})+(nRowsToBottomNotIncludingThisOne*sliderHeight);
-				var height = panelRow.getHeight();
-				if(!height)
-					height = (remainingHeight-(nRowsToBottomNotIncludingThisOne*sliderHeight))/(nRowsToBottomNotIncludingThisOne+1);
-				if(remainingHeight - height < minHeightRequiredToBottom)
-					height = remainingHeight - minHeightRequiredToBottom;
-				if(height < panelRow.getMinHeight())throw new Error('Not enough space for specified heights');
-				panelRow.setHeight(height);
+				var desiredHeight = panelRow.getDesiredHeight();
+				if(!desiredHeight)
+					desiredHeight = (remainingHeight-(nRowsToBottomNotIncludingThisOne*sliderHeight))/(nRowsToBottomNotIncludingThisOne+1);
+				if(remainingHeight - desiredHeight < minHeightRequiredToBottom)
+					desiredHeight = remainingHeight - minHeightRequiredToBottom;
+				console.log('height is: '+desiredHeight);
+				if(desiredHeight < panelRow.getMinHeight())throw new Error('Not enough space for specified heights');
+				panelRow.setHeight(desiredHeight);
 				var top = heightForPanels- remainingHeight;
 				panelRow.setTop(top);
 				if(y>0)
@@ -84,7 +83,7 @@ const MIN_MIN_WIDTH=20;
 					var sliderY = slidersY[y-1];
 					sliderY.setTop(top-sliderHeight);
 				}
-				remainingHeight = remainingHeight - (height+sliderHeight);
+				remainingHeight = remainingHeight - (desiredHeight+sliderHeight);
 			}	
 		}
 		function getSliderWidth(){
@@ -186,8 +185,8 @@ const MIN_MIN_WIDTH=20;
 		var maxHeight = params.maxHeight;
 		if(maxHeight&&!maxHeight.isDimension)maxHeight = new Dimension(maxHeight);
 		
-		var height = params.height;
-		if(height&&!height.isDimension)height = new Dimension(height);
+		var desiredHeight = params.height;
+		if(desiredHeight&&!desiredHeight.isDimension)desiredHeight = new Dimension(desiredHeight);
 		
 		var rowBellow;
 		this.getTop = function(){
@@ -200,6 +199,9 @@ const MIN_MIN_WIDTH=20;
 		};
 		this.setPanelRowBellow = function(value){
 			rowBellow = value;
+		};
+		this.getDesiredHeight = function(){
+			return desiredHeight;
 		};
 		this.getHeight = function(){
 			return panels[0].getHeight();
@@ -233,6 +235,8 @@ const MIN_MIN_WIDTH=20;
 		
 		var maxWidth = params.maxWidth;
 		if(maxWidth&&!maxWidth.isDimension)maxWidth = new Dimension(maxWidth);
+		var desiredWidth = params.width;
+		if(desiredWidth&&!desiredWidth.isDimension)desiredWidth = new Dimension(desiredWidth);
 		
 		var panels=[];
 		var columnRight;
@@ -261,6 +265,9 @@ const MIN_MIN_WIDTH=20;
 		this.getWidth = function(){
 			return panels[0].getWidth();
 		};
+		this.getDesiredWidth = function(){
+			return desiredWidth;
+		};
 		this.setWidth = function(value){
 			each(panels, function(panel){
 				panel.setWidth(value);
@@ -279,10 +286,10 @@ const MIN_MIN_WIDTH=20;
 		var self = this;
 		var element = E.DIV();
 		element.classList.add('panel');
-		params.isLeft&&element.classList.add('left');
-		params.isRight&&element.classList.add('right');
-		params.isTop&&element.classList.add('top');
-		params.isBottom&&element.classList.add('bottom');
+		params.isLeft&&element.classList.add('panel-left');
+		params.isRight&&element.classList.add('panel-right');
+		params.isTop&&element.classList.add('panel-top');
+		params.isBottom&&element.classList.add('panel-bottom');
 		this.getElement = function(){
 			return element;
 		};

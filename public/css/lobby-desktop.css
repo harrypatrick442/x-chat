@@ -3,6 +3,10 @@
 	
 }
 .lobby .left{
+	
+}
+.lobby .left .users-menues{
+	flex-flow:grow;
 }
 .lobby .right{
 }

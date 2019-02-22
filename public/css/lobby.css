@@ -22,6 +22,8 @@ background-color:rgb(44, 43, 43);
 .lobby .left{
 float:left;
 height:100%;
+display:flex;
+flex-flow:column;
 box-sizing:border-box;
 padding:6px;
 padding-right:0px;

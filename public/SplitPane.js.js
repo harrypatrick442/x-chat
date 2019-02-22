@@ -91,7 +91,6 @@ var SplitPane= (function(){
 		this.getElement = function(){
 			return element;
 		};
-	}
 		var getPaneWidth = params.getPaneWidth;
 		var getPaneHeight = params.getPaneHeight;
 		var element = E.DIV();
