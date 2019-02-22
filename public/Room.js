@@ -191,7 +191,7 @@ var Room = new (function(){
 		
 		if(videoFeed){
 			var videoFeedUI = new VideoFeedUI(videoFeed);
-			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2});
+			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
 			splitPane.getPanelXY(0, 0).getElement().appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);

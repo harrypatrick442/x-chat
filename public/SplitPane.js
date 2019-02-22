@@ -38,7 +38,7 @@ const MIN_MIN_WIDTH=20;
 		function initializePanelColumnsPositionDimensions(widthForPanels, sliderWidth){
 			var remainingWidth = widthForPanels;
 			var topWidth=0;
-			for(var x=0; x<nPanelsWidth; x++){//tnake up what space they can up to the default width from top to bottom. so the bottom misses out on optional space.
+			for(var x=0; x<nPanelsWidth; x++){
 				var panelColumn = panelColumns[x];
 				var columnsToRightNotIncludingThisOne = getPanelColumnsToRight(x);
 				var nColumnsToRightNotIncludingThisOne = columnsToRightNotIncludingThisOne.length;
@@ -48,7 +48,7 @@ const MIN_MIN_WIDTH=20;
 					desiredWidth = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
 				if(remainingWidth - desiredWidth < minWidthRequiredToRight)
 					desiredWidth = remainingWidth - minWidthRequiredToRight;
-				if(desiredWidth < panelColumn.getMinWidth())throw new Error('Not enough space for specified widths');
+				//if(desiredWidth < panelColumn.getMinWidth())throw new Error('Not enough space for specified widths');
 				panelColumn.setWidth(desiredWidth);
 				var left = widthForPanels- remainingWidth;
 				panelColumn.setLeft(left);
@@ -74,7 +74,7 @@ const MIN_MIN_WIDTH=20;
 				if(remainingHeight - desiredHeight < minHeightRequiredToBottom)
 					desiredHeight = remainingHeight - minHeightRequiredToBottom;
 				console.log('height is: '+desiredHeight);
-				if(desiredHeight < panelRow.getMinHeight())throw new Error('Not enough space for specified heights');
+				//if(desiredHeight < panelRow.getMinHeight())throw new Error('Not enough space for specified heights');
 				panelRow.setHeight(desiredHeight);
 				var top = heightForPanels- remainingHeight;
 				panelRow.setTop(top);
@@ -135,7 +135,8 @@ const MIN_MIN_WIDTH=20;
 					rowAbove:previousPanelRow,
 					panels:currentPanelRow,
 					minHeight:rowProfile?rowProfile.minHeight:undefined,
-					height:rowProfile?rowProfile.height:undefined
+					height:rowProfile?rowProfile.height:undefined,
+					getPaneHeight:getHeight
 				});
 				previousPanelRow&&previousPanelRow.setPanelRowBellow(panelRow);
 				previousPanelRow = panelRow;
@@ -177,7 +178,7 @@ const MIN_MIN_WIDTH=20;
 	function PanelRow(params){
 		var panels = params.panels;
 		var rowAbove = params.rowAbove;
-		
+		var getPaneHeight = params.getPaneHeight;
 		var minHeight = params.minHeight;
 		if(!minHeight)minHeight=MIN_MIN_HEIGHT;
 		else if(!minHeight.isDimension)minHeight = new Dimension(minHeight);
@@ -201,7 +202,14 @@ const MIN_MIN_WIDTH=20;
 			rowBellow = value;
 		};
 		this.getDesiredHeight = function(){
-			return desiredHeight;
+			if(!desiredHeight)return;
+			console.log(desiredHeight.getValue());
+			switch(desiredHeight.getUnit()){
+				case Dimension.PX:
+					return desiredHeight.getValue();
+				case Dimension.PERCENT:
+					return desiredHeight.getValue()*getPaneHeight()/100;
+			}
 		};
 		this.getHeight = function(){
 			return panels[0].getHeight();
@@ -266,7 +274,14 @@ const MIN_MIN_WIDTH=20;
 			return panels[0].getWidth();
 		};
 		this.getDesiredWidth = function(){
-			return desiredWidth;
+			if(!desiredWidth)return;
+			console.log(desiredWidth.getValue());
+			switch(desiredWidth.getUnit()){
+				case Dimension.PX:
+					return desiredWidth.getValue();
+				case Dimension.PERCENT:
+					return desiredWidth.getValue()*getPaneWidth()/100;
+			}
 		};
 		this.setWidth = function(value){
 			each(panels, function(panel){

@@ -28,7 +28,6 @@ var PmsMenu = new (function(){
 			_add(e);
 		}
 		function addClosed(e){
-			console.log('add closed');
 			_add(e);
 		}
 		function _add(e){
@@ -37,10 +36,13 @@ var PmsMenu = new (function(){
 			pmEntry.addEventListener('showpm', showPm);
 			pmEntry.addEventListener('closepm', closePm);
 			sortedFilteredEntries.addEntry(pmEntry);
+			ui.checkResized();
 		}
 		function remove(e){
 			var pmEntry = sortedFilteredEntries.getByEntryId(e.userTo.getId());
+			if(!pmEntry)return;
 			_remove(pmEntry);
+			ui.checkResized();
 		}
 		function _remove(pmEntry){
 			sortedFilteredEntries.removeEntry(pmEntry);
@@ -70,6 +72,8 @@ var PmsMenu = new (function(){
 		var buttonClose = params.buttonClose;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
+		var resizeWatched;
+		
 		if(!isMobile)
 			element = E.DIV();
 		else
@@ -96,12 +100,20 @@ var PmsMenu = new (function(){
 			popup.show();
 			resized();
 		};
-		WindowResizeManager.addEventListener('resized', resized);
+		this.checkResized=function(){
+			resizeWatched.manual();
+		};
+		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
+		resizeWatched.manual();
 		function resized(){
 			var clientWidth = entries.clientWidth;
 			each(getEntries(), function(pmEntry){
 				pmEntry.parentWidth(clientWidth);
 			});
+			dispatchResized();
+		}
+		function dispatchResized(){
+			self.dispatchEvent({type:'resized'});
 		}
 	}
 })();

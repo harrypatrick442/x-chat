@@ -9,6 +9,7 @@ module.exports = (function(){
 		};
 	};
 	_Message.fromSqlRow = function(row){
+		row.userId = String(row.userId);
 		row.uniqueId = row.serverAssignedNMessage;
 		return new _Message(row);
 	};

@@ -7,6 +7,7 @@ exports.Notification = (function(){
 		};
 	};
 	_Notification.fromSqlRow= function(row){
+		console.log(row);
 		return new _Notification({userId:String(row.userId), username:row.username, image:row.image});
 	};
 	return _Notification;
