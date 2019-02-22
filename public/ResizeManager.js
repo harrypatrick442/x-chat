@@ -13,12 +13,7 @@ var ResizeManager=new (function(){
 			var temporalCallback = staggered?new TemporalCallback({callback:resized, delay:500,
 			maxTotalDelay:800}):undefined;
 			var loggedSize;
-			this.manual=function(stillRunIfAutomatic){
-				if(!stillRunIfAutomatic&&ResizeObserver)return;
-				if(!loggedSize){logSize(); return;}
-				var previousLoggedSize= loggedSize;
-				logSize();
-				if(previousLoggedSize.height==loggedSize.height&&previousLoggedSize.width==loggedSize.width)return;
+			this.manual=function(){
 				resized();
 			};
 			if(ResizeObserver)
@@ -30,7 +25,10 @@ var ResizeManager=new (function(){
 				temporalCallback.trigger();
 			}
 			function resized(params){
-				console.log(params);
+				if(!loggedSize){logSize(); return;}
+				var previousLoggedSize= loggedSize;
+				logSize();
+				if(previousLoggedSize.height==loggedSize.height&&previousLoggedSize.width==loggedSize.width)return;
 				dispatchResized();
 			}
 			function dispatchResized(){

@@ -61,7 +61,7 @@ var Lobby = (function(){
 		else
 		{
 			buttonPms.addEventListener('click', pmsMenu.show);
-			buttonUsers.addEventListener('click', function(){console.log('a');usersMenues.show();});
+			buttonUsers.addEventListener('click', function(){usersMenues.show();});
 		}
 		rooms.addEventListener('sendmessage', sendMessage);	
 		rooms.addEventListener('getmessages', getMessages);
