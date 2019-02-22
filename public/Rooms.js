@@ -166,11 +166,14 @@ var Rooms = new (function(){
 			return entries;
 		};
 		this.getElement = function(){return element;};
-		this.resize = function(){
+		var resizeOnce = new Once(resize);
+		this.resize = resizeOnce.trigger;
+		function resize(){
 			var topEntry = getTopEntry();
 			if(!topEntry)return;
 			topEntry = topEntry.getEntry();
-			topEntry.resize&topEntry.resize();
-		};
+			if(!topEntry)return;
+			topEntry.resize&&topEntry.resize();
+		}
 	}
 })();

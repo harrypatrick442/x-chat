@@ -25,7 +25,7 @@ var Dimension = (function(){
 	};
 	_Dimension.PX=PX;
 	_Dimension.PERCENT=PERCENT;
-	_Dimension.px = function(value){
+	_Dimension.px, _Dimension.pixels= function(value){
 		return new _Dimension(value, PX);
 	};
 	_Dimension.percent=function(value){

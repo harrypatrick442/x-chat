@@ -180,7 +180,7 @@ const MIN_MIN_WIDTH=20;
 		var rowAbove = params.rowAbove;
 		var getPaneHeight = params.getPaneHeight;
 		var minHeight = params.minHeight;
-		if(!minHeight)minHeight=MIN_MIN_HEIGHT;
+		if(!minHeight)minHeight=Dimension.pixels(MIN_MIN_HEIGHT);
 		else if(!minHeight.isDimension)minHeight = new Dimension(minHeight);
 		
 		var maxHeight = params.maxHeight;
@@ -202,14 +202,7 @@ const MIN_MIN_WIDTH=20;
 			rowBellow = value;
 		};
 		this.getDesiredHeight = function(){
-			if(!desiredHeight)return;
-			console.log(desiredHeight.getValue());
-			switch(desiredHeight.getUnit()){
-				case Dimension.PX:
-					return desiredHeight.getValue();
-				case Dimension.PERCENT:
-					return desiredHeight.getValue()*getPaneHeight()/100;
-			}
+			return getDimensionPixels(desiredHeight);
 		};
 		this.getHeight = function(){
 			return panels[0].getHeight();
@@ -219,15 +212,18 @@ const MIN_MIN_WIDTH=20;
 				panel.setHeight(value);
 			});
 		};
-		this.setHeight = function(value){
-			height = value;
-			each(panels, function(panel){
-				panel.setHeight(value);
-			});
-		};
 		this.getMinHeight = function(){
-			return minHeight;
+			return getDimensionPixels(minHeight);
 		};
+		function getDimensionPixels(dimension){
+			if(!dimension)return;
+			switch(dimension.getUnit()){
+				case Dimension.PX:
+					return dimension.getValue();
+				case Dimension.PERCENT:
+					return dimension.getValue()*getPaneHeight()/100;
+			}
+		}
 	}
 	
 	
@@ -238,11 +234,12 @@ const MIN_MIN_WIDTH=20;
 		var panelColumnLeft = params.panelColumnLeft;
 		
 		var minWidth = params.minWidth;
-		if(!minWidth)minWidth=MIN_MIN_WIDTH;
+		if(!minWidth)minWidth=Dimension.pixels(MIN_MIN_WIDTH);
 		else if (!minWidth.isDimension) minWidth = new Dimension(minWidth);
 		
 		var maxWidth = params.maxWidth;
 		if(maxWidth&&!maxWidth.isDimension)maxWidth = new Dimension(maxWidth);
+		
 		var desiredWidth = params.width;
 		if(desiredWidth&&!desiredWidth.isDimension)desiredWidth = new Dimension(desiredWidth);
 		
@@ -291,10 +288,15 @@ const MIN_MIN_WIDTH=20;
 		this.getMinWidth = function(){
 			return minWidth;
 		};
-		var width = params.width
-		if(width){
-			if(!width.isDimension)width = new Dimension(width);
-			self.setWidth(width);
+		
+		function getDimensionPixels(dimension){
+			if(!dimension)return;
+			switch(dimension.getUnit()){
+				case Dimension.PX:
+					return dimension.getValue();
+				case Dimension.PERCENT:
+					return dimension.getValue()*getPaneHeight()/100;
+			}
 		}
 	}
 	function Panel(params){

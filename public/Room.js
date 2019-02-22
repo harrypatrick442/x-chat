@@ -191,13 +191,13 @@ var Room = new (function(){
 		text.classList.add('text');
 		var splitPane;
 		if(videoFeed){
+			var resizeWatcher = ResizeManager.add({element:element, onResized:onResized});
 			var videoFeedUI = new VideoFeedUI(videoFeed);
 			splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
 			splitPane.getPanelXY(0, 0).getElement().appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
 			new Task(function(){	splitPane.resize();}).run();
-			
 		}
 		else{
 			top.appendChild(feed);
@@ -248,6 +248,9 @@ var Room = new (function(){
 		function dispatchKeyPress(e){
 			if (!e) e = window.event;
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
+		}
+		function onResized(){
+			self.resize();
 		}
 	}
 })();
