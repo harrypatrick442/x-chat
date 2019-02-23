@@ -114,8 +114,6 @@ const MIN_MIN_WIDTH=20;
 					desiredHeight = (remainingHeight-(nRowsToBottomNotIncludingThisOne*sliderHeight))/(nRowsToBottomNotIncludingThisOne+1);
 				if(remainingHeight - desiredHeight < minHeightRequiredToBottom)
 					desiredHeight = remainingHeight - minHeightRequiredToBottom;
-				console.log('desiredHeight');
-				console.log(desiredHeight);
 				if(!lastOne)
 					panelRow.getAssociatedSlider().setTop(currentY+desiredHeight);
 				else
@@ -143,8 +141,6 @@ const MIN_MIN_WIDTH=20;
 					width = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
 				if(remainingWidth - width < minWidthRequiredToRight)
 					width = remainingWidth - minWidthRequiredToRight;
-				console.log('width');
-				console.log(width);
 				if(!lastOne)
 					panelColumn.getAssociatedSlider().setLeft(currentX+width);
 				else
@@ -170,6 +166,9 @@ const MIN_MIN_WIDTH=20;
 		}
 		function createPanels(){
 			createPanelColumns();
+			createPanelRows();
+		}
+		function createPanelRows(){
 			var previousPanelRow;
 			for(var y=0; y<nPanelsHeight; y++){
 				var currentPanelRow=[];
@@ -190,9 +189,9 @@ const MIN_MIN_WIDTH=20;
 					panels:currentPanelRow,
 					minHeight:rowProfile?rowProfile.minHeight:undefined,
 					height:rowProfile?rowProfile.height:undefined,
-					getPaneHeight:getHeight,
-					getPaneWidth:getWidth
+					getPaneHeight:getHeight
 				});
+				panelRow.addEventListener('setvisible', onSetVisible);
 				previousPanelRow = panelRow;
 				panelRows.add(panelRow);
 			}
@@ -207,6 +206,7 @@ const MIN_MIN_WIDTH=20;
 					minWidth:columnProfile?columnProfile.minWidth:undefined,
 					width:columnProfile?columnProfile.width:undefined
 				});
+				panelColumn.addEventListener('setvisible', onSetVisible);
 				previousPanelColumn&&previousPanelColumn.setPanelColumnRight(panelColumn);
 				previousPanelColumn=panelColumn;
 				panelColumns.add(panelColumn);
@@ -224,8 +224,13 @@ const MIN_MIN_WIDTH=20;
 				element.appendChild(slider.getElement());
 			}
 		}
+		function onSetVisible(){
+			console.log('onSetVisible');
+			initialize();
+		}
 	};
 	function PanelRow(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var panels = params.panels;
 		var getPaneHeight = params.getPaneHeight;
@@ -240,7 +245,7 @@ const MIN_MIN_WIDTH=20;
 		var desiredHeight = params.height;
 		if(desiredHeight&&!desiredHeight.isDimension)desiredHeight = new Dimension(desiredHeight);
 		var associatedSlider;
-		this.setAssociatedSlider = function(value){//rhs slider
+		this.setAssociatedSlider = function(value){//bottom slider
 			associatedSlider = value;
 		};
 		this.getAssociatedSlider = function(){
@@ -254,6 +259,7 @@ const MIN_MIN_WIDTH=20;
 			each(panels, function(panel){
 				panel.setVisible(value);
 			});
+			dispatchSetVisible(value);
 		};
 		this.getVisible = function(){
 			return visible;
@@ -290,7 +296,12 @@ const MIN_MIN_WIDTH=20;
 					return dimension.getValue()*getPaneHeight()/100;
 			}
 		}
-	}function PanelColumn(params){
+		function dispatchSetVisible(visible){
+			self.dispatchEvent({type:'setvisible', visible:visible});
+		}
+	}
+	function PanelColumn(params){
+		EventEnabledBuilder(this);
 		var self = this;
 		var panelColumnLeft = params.panelColumnLeft;
 		var getPaneWidth = params.getPaneWidth;
@@ -320,6 +331,7 @@ const MIN_MIN_WIDTH=20;
 			each(panels, function(panel){
 				panel.setVisible(value);
 			});
+			dispatchSetVisible(value);
 		};
 		this.getVisible = function(){
 			return visible;
@@ -373,6 +385,9 @@ const MIN_MIN_WIDTH=20;
 				case Dimension.PERCENT:
 					return dimension.getValue()*getPaneWidth()/100;
 			}
+		}
+		function dispatchSetVisible(visible){
+			self.dispatchEvent({type:'setvisible', visible:visible});
 		}
 	}
 	function Panel(params){

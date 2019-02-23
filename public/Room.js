@@ -87,6 +87,9 @@ var Room = new (function(){
 				new Task(ui.scrollFeedToBottom).run();
 		};
 		this.getVisible = ui.getVisible;
+		this.videoOfferFail = function(msg){
+			console.log(msg.message);
+		};
 		this.resize=ui.resize;
 		buttonSend.addEventListener('click', sendMessage);
 		buttonEmoticons.addEventListener('click', dispatchShowEmoticons);
@@ -105,8 +108,8 @@ var Room = new (function(){
 			}
 		}
 		function startVideoPm(){
-			console.log('clicked start vid pm');
 			videoFeedPm.start();
+			ui.setVideoFeedVisible(true);
 		}
 		function dispose(){
 			messages.dispose();
@@ -190,16 +193,18 @@ var Room = new (function(){
 		var text = E.TEXT();
 		text.classList.add('text');
 		var splitPane;
+		var splitPanePanelVideoFeed;
 		if(videoFeed){
 			var resizeWatcher = ResizeManager.add({element:element, onResized:onResized});
 			var videoFeedUI = new VideoFeedUI(videoFeed);
-			splitPane = new SplitPane({nPanelsWidth:2, nPanelsHeight:3, rowProfiles:[{height:'200px'}]});
-			//splitPane.getPanelRow(1).setVisible(false);
+			splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
 			var videoFeedPanel = splitPane.getPanelXY(0, 0).getElement();
+			splitPanePanelVideoFeed=splitPane.getPanelRow(0);
 			videoFeedPanel.classList.add('video-feed-panel');
 			videoFeedPanel.appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
+			setVideoFeedVisible(false);
 			new Task(function(){splitPane.initialize();}).run();
 		}
 		else{
@@ -248,12 +253,16 @@ var Room = new (function(){
 			console.log('Room.UI.resize');
 			splitPane&&splitPane.resize();
 		};
+		this.setVideoFeedVisible=setVideoFeedVisible;
 		function dispatchKeyPress(e){
 			if (!e) e = window.event;
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
 		}
 		function onResized(){
 			self.resize();
+		}
+		function setVideoFeedVisible(value){
+			splitPanePanelVideoFeed.setVisible(value);
 		}
 	}
 })();

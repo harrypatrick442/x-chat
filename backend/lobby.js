@@ -106,6 +106,16 @@ exports.lobby = (function(){
 			dalUsers.setImage(user.getId(), image);
 			users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
 		};
+		this.pmVideoOffer= function(req, callback){
+			var userMe = getUserFromSessionId(req.sessionId);
+			if(!userMe)return;
+			var userTo = users.getById(req.userToId);
+			if(!userTo) {
+				callback({type:'pm_video_offer_fail', userToId:req.userToId, successful:false, message:'The user is not online!'});
+				return;
+			}
+			userTo.send({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
+		};
 		function getUnavailableResponse(available){
 			var error;
 			switch(available)

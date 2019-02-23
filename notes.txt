@@ -5,3 +5,7 @@ problem when user enters a room on two devices and one leaves the room. it remov
 
 
 add in check to see if user contains mysocket already indicating device already authenticated.
+
+
+Fix the issue with background room items resizing when not visible. make it so resize is called upon becoming visible but not when hiddne.
+that way the rooms menu will not have full width entries.

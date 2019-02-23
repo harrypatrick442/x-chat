@@ -65,14 +65,7 @@ exports.handler = new (function(){
 						});
 					break;
 					case 'pm_video_offer':
-						var userMe = getUser(req);
-						if(!userMe)return;
-						var userTo = users.getById(req.userToId);
-						if(!userTo) {
-							callback({type:'pm_video_offer_fail', userToId:req.userToId, successful:false, message:'The user is not online!'});
-							return;
-						}
-						userTo.send({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
+						lobby.pmVideoOffer(req, callback);
 					break;
 					case 'pm_video_accept':
 						var userMe = getUser(req);
