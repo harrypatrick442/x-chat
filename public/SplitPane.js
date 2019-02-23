@@ -12,6 +12,7 @@ const MIN_MIN_WIDTH=20;
 		var panelColumns=new PanelColumns();
 		var slidersX=new Sliders();
 		var slidersY=new Sliders();
+		var currentDimensions;
 		var element = E.DIV();
 		element.classList.add('split-pane');
 		this.getElement = function(){
@@ -32,10 +33,25 @@ const MIN_MIN_WIDTH=20;
 		createPanels();
 		createSliders();
 		this.resize=resize;
+		this.initialize=initialize;
 		function resize(){
 			updateSliderVisibility();
-			initializePanelColumnsPositionDimensions(getWidth(), getSliderWidth());
+			resizePanelColumnsPositionDimensions(getWidth(), getSliderWidth(), getProportionallyAdaptedPanelColumnWidth);
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
+			captureCurrentDimensions();
+		}
+		function initialize(){
+			updateSliderVisibility();
+			resizePanelColumnsPositionDimensions(getWidth(), getSliderWidth(), function(panelColumn){ return panelColumn.getDesiredWidth();});
+			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
+			captureCurrentDimensions();
+		}
+		function getProportionallyAdaptedPanelColumnWidth(panelColumn){
+			var p = getWidth()/currentDimensions.width;
+			return p*panelColumn.getWidth();
+		}
+		function captureCurrentDimensions(){
+			currentDimensions = {width: getWidth(), height:getHeight()};
 		}
 		function PanelColumns(){
 			return new PanelCollections();
@@ -109,7 +125,7 @@ const MIN_MIN_WIDTH=20;
 				remainingHeight = heightForPanels - currentY;
 			}	
 		}
-		function initializePanelColumnsPositionDimensions(widthForPanels, sliderWidth){
+		function resizePanelColumnsPositionDimensions(widthForPanels, sliderWidth, getWidth){
 			var remainingWidth = widthForPanels;
 			var panelColumnsVisible = panelColumns.getVisible();
 			var length = panelColumnsVisible.length;
@@ -121,20 +137,20 @@ const MIN_MIN_WIDTH=20;
 				var nColumnsToRightNotIncludingThisOne = rowsToRightNotIncludingThisOne.length;
 				var minWidthRequiredToRight=rowsToRightNotIncludingThisOne.sum(function(panelColumn){return panelColumn.getMinWidth();})+(nColumnsToRightNotIncludingThisOne*sliderWidth);
 				
-				var desiredWidth = panelColumn.getDesiredWidth();
+				var width = getWidth(panelColumn);
 				var lastOne = x>=length-1;
-				if(!desiredWidth||lastOne)
-					desiredWidth = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
-				if(remainingWidth - desiredWidth < minWidthRequiredToRight)
-					desiredWidth = remainingWidth - minWidthRequiredToRight;
-				console.log('desiredWidth');
-				console.log(desiredWidth);
+				if(!width||lastOne)
+					width = (remainingWidth-(nColumnsToRightNotIncludingThisOne*sliderWidth))/(nColumnsToRightNotIncludingThisOne+1);
+				if(remainingWidth - width < minWidthRequiredToRight)
+					width = remainingWidth - minWidthRequiredToRight;
+				console.log('width');
+				console.log(width);
 				if(!lastOne)
-					panelColumn.getAssociatedSlider().setLeft(currentX+desiredWidth);
+					panelColumn.getAssociatedSlider().setLeft(currentX+width);
 				else
 					panelColumn.setRight(widthForPanels);
 				
-				currentX = currentX+desiredWidth+sliderWidth;
+				currentX = currentX+width+sliderWidth;
 				remainingWidth = widthForPanels - currentX;
 			}	
 		}

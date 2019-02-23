@@ -200,7 +200,7 @@ var Room = new (function(){
 			videoFeedPanel.appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
-			new Task(function(){splitPane.resize();}).run();
+			new Task(function(){splitPane.initialize();}).run();
 		}
 		else{
 			top.appendChild(feed);
