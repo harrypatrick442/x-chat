@@ -17,13 +17,16 @@
 .split-pane .slider.x{
 	width:6px;
 	height:100%;
+	top:0px;
 	position:absolute;
 	cursor:e-resize;
+	background-color:#666666;
 	z-index:3;
 }
 .split-pane .slider.y{
 	height:6px;
 	width:100%;
+	left:0px;
 	position:absolute;
 	cursor:n-resize;
 	background-color:#666666;
