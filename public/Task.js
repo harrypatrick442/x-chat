@@ -9,7 +9,7 @@ function Task(callback, done)
         callback();
         }catch(ex)
         {
-         console.log(ex);
+         console.error(ex);
         }
                     if(done)
                     {
@@ -19,7 +19,7 @@ function Task(callback, done)
                         }
                         catch(ex)
                         {
-         console.log(ex);
+         console.error(ex);
                         }
                     }
                     if(c)
@@ -30,7 +30,7 @@ function Task(callback, done)
                         }
                         catch(ex)
                         {
-         console.log(ex);
+         console.error(ex);
                         }
                     }
     }, 0);

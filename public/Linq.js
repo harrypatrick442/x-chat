@@ -31,6 +31,21 @@ Enumerable.prototype.take = function (n) {
 		self.reset);
 	})(n, this);
 };
+Enumerable.prototype.leave = function (n) {
+	var self = this;
+	var count=0;
+	return new Enumerable(function(){
+		var next = self.moveNext();
+		if(next){
+			count++;
+			if(count>n)
+				return true;
+		}
+		return false;
+	},
+	self.current,
+	self.reset);
+};
 Enumerable.prototype.where = function (func) {
 	var self = this;
 	return new Enumerable(function () {
@@ -76,6 +91,9 @@ Array.prototype.each=function(func){
 };
 Array.prototype.take=function(n){
 	return Enumerable.fromArray(this).take(n);
+};
+Array.prototype.leave=function(n){
+	return Enumerable.fromArray(this).leave(n);
 };
 Array.prototype.sum = function(func){
 	return Enumerable.fromArray(this).sum(func);

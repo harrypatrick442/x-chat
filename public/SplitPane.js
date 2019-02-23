@@ -8,10 +8,10 @@ const MIN_MIN_WIDTH=20;
 		var columnProfiles = params.columnProfiles;
 		EventEnabledBuilder(this);
 		var self = this;
-		var panelRows=[];
-		var panelColumns=[];
-		var slidersX=[];
-		var slidersY=[];
+		var panelRows=new PanelRows();
+		var panelColumns=new PanelColumns();
+		var slidersX=new Sliders();
+		var slidersY=new Sliders();
 		var element = E.DIV();
 		element.classList.add('split-pane');
 		this.getElement = function(){
@@ -23,8 +23,10 @@ const MIN_MIN_WIDTH=20;
 		this.getPanelRows=function(){
 			return panelRows;
 		};
+		this.getPanelRow = panelRows.get;
+		this.getPanelColumn = panelColumns.get;
 		this.getPanelXY=function(x, y){
-			var column = panelColumns[x];
+			var column = panelColumns.get(x);
 			return column.getPanel(y);
 		};
 		createPanels();
@@ -32,15 +34,17 @@ const MIN_MIN_WIDTH=20;
 		this.resize=resize;
 		window.res = resize;
 		function resize(){
+			updateSliderVisibility();
 			initializePanelColumnsPositionDimensions(getWidth(), getSliderWidth());
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
 		}
 		function initializePanelColumnsPositionDimensions(widthForPanels, sliderWidth){
 			var remainingWidth = widthForPanels;
 			var topWidth=0;
-			for(var x=0; x<nPanelsWidth; x++){
-				var panelColumn = panelColumns[x];
-				var columnsToRightNotIncludingThisOne = getPanelColumnsToRight(x);
+			var panelColumnsVisible = panelColumns.getVisible();
+			for(var x=0; x<panelColumnsVisible.length; x++){
+				var panelColumn = panelColumnsVisible[x];
+				var columnsToRightNotIncludingThisOne = panelColumnsVisible.leave(x+1).toList();
 				var nColumnsToRightNotIncludingThisOne = columnsToRightNotIncludingThisOne.length;
 				var minWidthRequiredToRight=columnsToRightNotIncludingThisOne.sum(function(panelColumn){return panelColumn.getMinWidth();})+(nColumnsToRightNotIncludingThisOne*sliderWidth);
 				var desiredWidth = panelColumn.getDesiredWidth();
@@ -52,61 +56,88 @@ const MIN_MIN_WIDTH=20;
 				panelColumn.setWidth(desiredWidth);
 				var left = widthForPanels- remainingWidth;
 				panelColumn.setLeft(left);
-				if(x>0)
-				{
-					var sliderX = slidersX[x-1];
-					sliderX.setLeft(left-sliderWidth);
-				}
 				remainingWidth = remainingWidth - (desiredWidth+sliderWidth);
 			}		
 		}
+		function PanelColumns(){
+			return new PanelCollections();
+		}
+		function PanelRows(){
+			return new PanelCollections();
+		}
+		function PanelCollections(){
+			var list =[];
+			this.add = function(panelCollection){
+				list.push(panelCollection);
+			};
+			this.get=function(x){
+				return list[x];
+			};
+			this.getVisible = function(){
+				var visibles=[];
+				each(list, function(panelCollection){
+					if(panelCollection.getVisible())
+						visibles.push(panelCollection);
+				});
+				return visibles;
+			};
+			this.count=function(){return list.length;};
+			this.getNextSiblingVisible = function(panelCollection){//when a panel gets hidden it takes its right hand side slider with it. Therefore
+			//the panel to the right of a slider may not be the next one but cos that may be hidden and its the slider to the right of that, not this slider,
+			//which will have been hidden.
+			//The exception to that is when an end panel gets hidden but since the slider is taken with it its a non issue.
+				for(var i=0; i<list.length;i++){
+					var pc = list[i]; 
+					if(pc!=panelCollection)continue;
+					for(var j=i+1; j<list.length; j++){
+						var pc2 = list[j];
+						if(pc2.getVisible())
+							return pc2;
+					}
+					return;
+				}
+			};
+		}
+		function updateSliderVisibility(){
+			slidersX.updateVisibility();
+			slidersY.updateVisibility();
+		}
 		function initializePanelRowsPositionDimensions(heightForPanels, sliderHeight){
 			var remainingHeight = heightForPanels;
-			var topHeight=0;
-			for(var y=0; y<nPanelsHeight; y++){
-				var panelRow = panelRows[y];
-				var rowsToBottomNotIncludingThisOne = getPanelRowsToBottom(y);
-				var nRowsToBottomNotIncludingThisOne=rowsToBottomNotIncludingThisOne.length;
+			var panelRowsVisible = panelRows.getVisible();
+			var length = panelRowsVisible.length;
+			var currentX=0;
+			panelRowsVisible[0].setTop(0);
+			for(var y=0; y<length; y++){
+				var panelRow = panelRowsVisible[y];
+				var rowsToBottomNotIncludingThisOne = panelRowsVisible.slice(y+1);
+				var nRowsToBottomNotIncludingThisOne = rowsToBottomNotIncludingThisOne.length;
 				var minHeightRequiredToBottom=rowsToBottomNotIncludingThisOne.sum(function(panelRow){return panelRow.getMinHeight();})+(nRowsToBottomNotIncludingThisOne*sliderHeight);
+				
 				var desiredHeight = panelRow.getDesiredHeight();
-				if(!desiredHeight)
+				var lastOne = y>=length-1;
+				if(!desiredHeight||lastOne)
 					desiredHeight = (remainingHeight-(nRowsToBottomNotIncludingThisOne*sliderHeight))/(nRowsToBottomNotIncludingThisOne+1);
 				if(remainingHeight - desiredHeight < minHeightRequiredToBottom)
 					desiredHeight = remainingHeight - minHeightRequiredToBottom;
-				console.log('height is: '+desiredHeight);
-				//if(desiredHeight < panelRow.getMinHeight())throw new Error('Not enough space for specified heights');
-				panelRow.setHeight(desiredHeight);
-				var top = heightForPanels- remainingHeight;
-				panelRow.setTop(top);
-				if(y>0)
-				{
-					var sliderY = slidersY[y-1];
-					sliderY.setTop(top-sliderHeight);
-				}
-				remainingHeight = remainingHeight - (desiredHeight+sliderHeight);
+				console.log('desiredHeight');
+				console.log(desiredHeight);
+				if(!lastOne)
+					panelRow.getAssociatedSlider().setTop(currentX+desiredHeight);
+				else
+					panelRow.setBottom(heightForPanels);
+				
+				currentX = currentX+desiredHeight+sliderHeight;
+				remainingHeight = heightForPanels - currentX;
 			}	
 		}
 		function getSliderWidth(){
-			if(slidersX.length<1)return 0;
-			return slidersX[0].getWidth();
+			if(slidersX.count()<1)return 0;
+			return slidersX.get(0).getWidth();
 		}
 		function getSliderHeight(){
-			if(slidersY.length<1)return 0;
-			return slidersY[0].getHeight();
-		}
-		function getPanelColumnsToRight(x){
-			var list =[];
-			for(var i=x+1; i<panelColumns.length; i++){
-				list.push(panelColumns[i]);
-			}
-			return list;
-		}
-		function getPanelRowsToBottom(y){
-			var list =[];
-			for(var i=y+1; i<panelRows.length; i++){
-				list.push(panelRows[i]);
-			}
-			return list;
+			if(slidersY.count()<1)return 0;
+			return slidersY.get(0).getHeight();
 		}
 		function getWidth(){
 			return element.clientWidth;
@@ -128,7 +159,7 @@ const MIN_MIN_WIDTH=20;
 						isBottom:y>=nPanelsHeight-1?true:false,
 					});
 					element.appendChild(panel.getElement());
-					panelColumns[x].addNextPanel(panel);
+					panelColumns.get(x).addNextPanel(panel);
 					currentPanelRow.push(panel);
 				}
 				var panelRow = new PanelRow({
@@ -138,9 +169,8 @@ const MIN_MIN_WIDTH=20;
 					height:rowProfile?rowProfile.height:undefined,
 					getPaneHeight:getHeight
 				});
-				previousPanelRow&&previousPanelRow.setPanelRowBellow(panelRow);
 				previousPanelRow = panelRow;
-				panelRows.push(panelRow);
+				panelRows.add(panelRow);
 			}
 		}
 		function createPanelColumns(){
@@ -149,37 +179,34 @@ const MIN_MIN_WIDTH=20;
 			{
 				var columnProfile = columnProfiles?columnProfiles[i]:undefined;
 				var panelColumn=new PanelColumn({
-					panelColumnLeft:panelColumns[i-1],
+					panelColumnLeft:panelColumns.get(i-1),
 					minWidth:columnProfile?columnProfile.minWidth:undefined,
 					width:columnProfile?columnProfile.width:undefined
 				});
 				previousPanelColumn&&previousPanelColumn.setPanelColumnRight(panelColumn);
 				previousPanelColumn=panelColumn;
-				panelColumns.push(panelColumn);
+				panelColumns.add(panelColumn);
 			}
 		}
 		function createSliders(){
 			for(var x=0; x<nPanelsWidth-1; x++){
-				var slider = new SliderX({leftPanelColumn:panelColumns[x], rightPanelColumn:panelColumns[x+1]});
-				slidersX.push(slider);
+				var slider = new SliderX({leftPanelColumn:panelColumns.get(x), getNextSiblingVisible:panelColumns.getNextSiblingVisible});
+				slidersX.add(slider);
 				element.appendChild(slider.getElement());
 			}
 			for(var y=0; y<nPanelsHeight-1; y++){
-				var slider = new SliderY({topPanelRow:panelRows[y], bottomPanelRow:panelRows[y+1]});
-				slidersY.push(slider);
+				var slider = new SliderY({topPanelRow:panelRows.get(y), getNextSiblingVisible:panelRows.getNextSiblingVisible});
+				slidersY.add(slider);
 				element.appendChild(slider.getElement());
 			}
 		}
 	};
-	
-	
-	
-	
 	function PanelRow(params){
+		var self = this;
 		var panels = params.panels;
-		var rowAbove = params.rowAbove;
 		var getPaneHeight = params.getPaneHeight;
 		var minHeight = params.minHeight;
+		var visible=true;
 		if(!minHeight)minHeight=Dimension.pixels(MIN_MIN_HEIGHT);
 		else if(!minHeight.isDimension)minHeight = new Dimension(minHeight);
 		
@@ -188,18 +215,36 @@ const MIN_MIN_WIDTH=20;
 		
 		var desiredHeight = params.height;
 		if(desiredHeight&&!desiredHeight.isDimension)desiredHeight = new Dimension(desiredHeight);
-		
-		var rowBellow;
+		var associatedSlider;
+		this.getFirstPanel = function(){
+			return panels[0];
+		};
+		this.setAssociatedSlider = function(value){//rhs slider
+			associatedSlider = value;
+		};
+		this.getAssociatedSlider = function(){
+			return associatedSlider;
+		};
 		this.getTop = function(){
 			return panels[0].getTop();
+		};
+		this.setVisible = function(value){
+			visible = value;
+			each(panels, function(panel){
+				panel.setVisible(value);
+			});
+		};
+		this.getVisible = function(){
+			return visible;
 		};
 		this.setTop = function(value){
 			each(panels, function(panel){
 				panel.setTop(value);
 			});
 		};
-		this.setPanelRowBellow = function(value){
-			rowBellow = value;
+		this.setBottom = function(bottom){
+			var top = self.getTop();
+			self.setHeight(bottom-top);
 		};
 		this.getDesiredHeight = function(){
 			return getDimensionPixels(desiredHeight);
@@ -225,10 +270,6 @@ const MIN_MIN_WIDTH=20;
 			}
 		}
 	}
-	
-	
-	
-	
 	function PanelColumn(params){
 		var self = this;
 		var panelColumnLeft = params.panelColumnLeft;
@@ -245,10 +286,24 @@ const MIN_MIN_WIDTH=20;
 		
 		var panels=[];
 		var columnRight;
+		var visible=true;
+		var associatedSlider;
+		this.setAssociatedSlider = function(value){//rhs slider
+			associatedSlider = value;
+		};
 		this.setLeft = function(value){
 			each(panels, function(panel){
 				panel.setLeft(value);
 			});
+		};
+		this.setVisible = function(value){
+			visible = value;
+			each(panels, function(panel){
+				panel.setVisible(value);
+			});
+		};
+		this.getVisible = function(){
+			return visible;
 		};
 		this.getPanel = function(i){
 			return panels[i];
@@ -272,7 +327,6 @@ const MIN_MIN_WIDTH=20;
 		};
 		this.getDesiredWidth = function(){
 			if(!desiredWidth)return;
-			console.log(desiredWidth.getValue());
 			switch(desiredWidth.getUnit()){
 				case Dimension.PX:
 					return desiredWidth.getValue();
@@ -307,6 +361,9 @@ const MIN_MIN_WIDTH=20;
 		params.isRight&&element.classList.add('panel-right');
 		params.isTop&&element.classList.add('panel-top');
 		params.isBottom&&element.classList.add('panel-bottom');
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
 		this.getElement = function(){
 			return element;
 		};
@@ -336,25 +393,40 @@ const MIN_MIN_WIDTH=20;
 		};
 	}
 	function SliderX(params){
-	var self = this;
+		var self = this;
 		var getPanelWidth = params.getPanelWidth;
-		var element = E.DIV();
-		element.classList.add('slider');
-		element.classList.add('x');
 		var leftPanelColumn = params.leftPanelColumn;
-		var rightPanelColumn = params.rightPanelColumn;
+		var getNextSiblingVisible = params.getNextSiblingVisible;
 		var leftPanelColumnStartWidth;
 		var rightPanelColumnStartWidth;
 		var rightPanelColumnStartLeft;
 		var startLeft;
+		var currentRightPanelColumn;
+		var element = E.DIV();
+		element.classList.add('slider');
+		element.classList.add('x');
+		leftPanelColumn.setAssociatedSlider(this);
+		this.updateVisibility= function(){
+			if(!leftPanelColumn.getVisible())
+			{
+				self.setVisible(false);
+				return;
+			}
+			var rightPanelColumn = getNextSiblingVisible(leftPanelColumn);
+			if(!rightPanelColumn||!rightPanelColumn.getVisible()){
+				self.setVisible(false);
+				return;
+			}
+			self.setVisible(true);
+		};
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
 		this.setLeft=function(value){
 			element.style.left=String(value)+'px';
 		};
 		this.getWidth= function(){
 			return element.clientWidth;
-		};
-		this.setRightPanelColumn= function(value){
-			rightPanelColumn = value;
 		};
 		this.getConstraints=function(){
 			captureInitialVariables();
@@ -372,8 +444,8 @@ const MIN_MIN_WIDTH=20;
 			var dx = x-startLeft;
 			leftPanelColumn.setWidth(leftPanelColumnStartWidth+dx);
 			element.style.left=String(x)+'px';
-			rightPanelColumn.setWidth(rightPanelColumnStartWidth-dx);
-			rightPanelColumn.setLeft(rightPanelColumnStartLeft+dx);
+			currentRightPanelColumn.setWidth(rightPanelColumnStartWidth-dx);
+			currentRightPanelColumn.setLeft(rightPanelColumnStartLeft+dx);
 		};
 		this.endDrag = function(){
 			
@@ -382,9 +454,10 @@ const MIN_MIN_WIDTH=20;
 			return getAbsolute(element);
 		};
 		function captureInitialVariables(){
+			currentRightPanelColumn = getNextSiblingVisible(leftPanelColumn);
 			leftPanelColumnStartWidth= leftPanelColumn.getWidth();
-			rightPanelColumnStartWidth = rightPanelColumn.getWidth();
-			rightPanelColumnStartLeft = rightPanelColumn.getLeft();
+			rightPanelColumnStartWidth = currnetRightPanelColumn.getWidth();
+			rightPanelColumnStartLeft = currnetRightPanelColumn.getLeft();
 			startLeft = getXLeft();
 		}
 		var dragManager = new DragManager({
@@ -403,34 +476,52 @@ const MIN_MIN_WIDTH=20;
 			var width = getWidth();
 			var xLeft = getXLeft();
 			var minX = xLeft-(leftPanelColumn.getWidth()-leftPanelColumn.getMinWidth());
-			var maxX = xLeft+(rightPanelColumn.getWidth() - rightPanelColumn.getMinWidth());//right now only giving minimum but no maximum sizes
+			var maxX = xLeft+(currnetRightPanelColumn.getWidth() - currnetRightPanelColumn.getMinWidth());//right now only giving minimum but no maximum sizes
 			return {minX:minX, maxX:maxX};
 		}
 	}
 	function SliderY(params){
+		var self = this;
 		var getPanelHeight = params.getPaneleHeight;
-		var element = E.DIV();
-		element.classList.add('slider');
-		element.classList.add('y');
+		var getNextSiblingVisible= params.getNextSiblingVisible;
 		var topPanelRow=params.topPanelRow;
-		var bottomPanelRow=params.bottomPanelRow;
 		var topPanelColumnStartHeight;
 		var bottomPanelRowStartHeight;
 		var bottomPanelRowStartTop;
+		var currentBottomPanelRow;
 		var startTop;
+		var element = E.DIV();
+		element.classList.add('slider');
+		element.classList.add('y');
+		topPanelRow.setAssociatedSlider(this);
+		this.updateVisibility= function(){
+			if(!topPanelRow.getVisible())
+			{
+				self.setVisible(false);
+				return;
+			}
+			var bottomPanelRow = getNextSiblingVisible(topPanelRow);
+			if(!bottomPanelRow||!bottomPanelRow.getVisible()){
+				self.setVisible(false);
+				return;
+			}
+			self.setVisible(true);
+		};
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
 		this.setTop= function(value){
 			element.style.top=String(value)+'px';
+			topPanelRow.setBottom(value);
+			var bottomPanelRow = getNextSiblingVisible(topPanelRow);
+			bottomPanelRow&&bottomPanelRow.setTop(value+self.getHeight());
 		};
 		this.getHeight = function(){
 			return element.clientHeight;
 		};
-		this.setBottomPanelRow = function(value){
-			bottomPanelRow = value;
-		};
 		this.getConstraints=function(){
-			var constraints = getConstraintsTopOfSlider();
 			captureInitialVariables();
-			return constraints;
+			return getConstraintsTopOfSlider();
 		};
 		this.getElement = function(){
 			return element;
@@ -446,8 +537,8 @@ const MIN_MIN_WIDTH=20;
 			var dy = y-startTop;
 			element.style.top=String(position.y)+'px';
 			topPanelRow.setHeight(topPanelRowStartHeight+dy);
-			bottomPanelRow.setHeight(bottomPanelRowStartHeight-dy);
-			bottomPanelRow.setTop(bottomPanelRowStartTop+dy);
+			currentBottomPanelRow.setHeight(bottomPanelRowStartHeight-dy);
+			currentBottomPanelRow.setTop(bottomPanelRowStartTop+dy);
 		};
 		this.endDrag = function(){
 			
@@ -459,9 +550,10 @@ const MIN_MIN_WIDTH=20;
 			handle:this
 		});
 		function captureInitialVariables(){
+			currentBottomPanelRow=getNextSiblingVisible(topPanelRow);
 			topPanelRowStartHeight= topPanelRow.getHeight();
-			bottomPanelRowStartHeight = bottomPanelRow.getHeight();
-			bottomPanelRowStartTop = bottomPanelRow.getTop();
+			bottomPanelRowStartHeight = currentBottomPanelRow.getHeight();
+			bottomPanelRowStartTop = currentBottomPanelRow.getTop();
 			startTop = getYTop();
 		}
 		function getYTop(){
@@ -477,9 +569,25 @@ const MIN_MIN_WIDTH=20;
 			var height = getHeight();
 			var yTop = getYTop();
 			var minY = yTop-(topPanelRow.getHeight()-topPanelRow.getMinHeight());
-			var maxY = yTop+(bottomPanelRow.getHeight() - bottomPanelRow.getMinHeight());//right now only giving minimum but no maximum sizes
+			var maxY = yTop+(currentBottomPanelRow.getHeight() - currentBottomPanelRow.getMinHeight());//right now only giving minimum but no maximum sizes
 			return {minY:minY, maxY:maxY};
 		}
 	}
+	function Sliders(){
+		var list=[];
+		this.add = function(slider){
+			list.push(slider);
+		};
+		this.count = function(){
+			return list.length;
+		};
+		this.get = function(i){
+			return list[i];
+		};
+		this.updateVisibility = function(){
+			each(list, function(slider){slider.updateVisibility();});
+		};
+	}
+	//ToDo  only visible sliders so they get positioned in correct places. Or position them along with panels. (associated slider);
 	return _SplitPane;
 })();
