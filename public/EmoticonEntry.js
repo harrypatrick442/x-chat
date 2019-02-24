@@ -2,7 +2,6 @@ var EmoticonEntry = (function(){
 	var _EmoticonEntry = function(params){
 		var self = this;
 		EventEnabledBuilder(this);
-		console.log(params);
 		var element = E.DIV();
 		element.classList.add('emoticon-entry');
 		var emoticonInfo = params.emoticonInfo;

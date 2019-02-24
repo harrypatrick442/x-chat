@@ -21,6 +21,7 @@ exports.dalMessages= new (function(){
 			var rows = result.recordsets[0];
 			var messages=[];
 			each(rows, function(row){
+				console.log(row);
 				messages.push(Message.fromSqlRow(row));
 			});
 			callbackGotMessages(messages);

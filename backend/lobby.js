@@ -114,7 +114,7 @@ exports.lobby = (function(){
 				callback({type:'pm_video_offer_fail', userToId:req.userToId, successful:false, message:'The user is not online!'});
 				return;
 			}
-			userTo.send({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
+			userTo.sendMessage({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
 		};
 		function getUnavailableResponse(available){
 			var error;

@@ -1,8 +1,6 @@
 var Button = (function(){
 	var _Button = function(params){
 		EventEnabledBuilder(this);
-		console.log(params);
-		console.log
 		var self = this;
 		var preventPropagation = params.preventPropagation;
 		var className = params.className;

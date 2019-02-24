@@ -4,6 +4,9 @@ function MessageUI(params){
 	var components = params.components;
 	var name = params.username;
 	var userImage = params.userImage;
+	var sentAt = params.sentAt;
+	console.log(sentAt);
+	console.log(params);
 	var element = E.DIV();
 	element.classList.add('message');
 	var inner = E.DIV();
@@ -20,7 +23,7 @@ function MessageUI(params){
 	username.appendChild(innerUsername);
 	inner.appendChild(userImage.getElement());
 	inner.appendChild(username);
-	innerUsername.innerHTML += name&&name.length>0?name:'&nbsp;';
+	innerUsername.innerHTML += (name&&name.length>0?name:'&nbsp;')+(sentAt?getFormattedDateTime(sentAt):'');
 	each(components, function(component){
 		inner.appendChild(component.getElement());
 	});
@@ -34,5 +37,11 @@ function MessageUI(params){
 	innerUsername.addEventListener('click', dispatchShowUserMenu);
 	function dispatchShowUserMenu(e){
 		self.dispatchEvent({type:'showusermenu', left:e.clientX, top:e.clientY});
+	}
+	function getFormattedDateTime(sentAt){
+		var now = moment();
+		var ducation = moment.duration(now.diff(sentAt));
+		console.log(duration.asHours());
+		return sentAt.format();
 	}
 }

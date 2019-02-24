@@ -39,7 +39,6 @@ function PmsOpenHistory(params){
 		function save(){
 			var listUsers =[];
 			each(set.getEntries(), function(user){
-				console.log(user);
 				listUsers.push(user.toJSON());
 			});
 			settings.set(LIST_USERS, listUsers);

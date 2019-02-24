@@ -33,7 +33,6 @@ var Emoticons = (function(){
 			var path = emoticon.folder&&folders?folders[emoticon.folder]:defaultFolder;
 			path+=emoticon.file;
 			emoticon.imageSource = path;
-			console.log(path);
 		}
 	};
 	return _Emoticons;

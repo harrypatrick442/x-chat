@@ -36,11 +36,9 @@ var OverlappingEntries = new (function(){
 			return set.getByIndex(set.count()-1);
 		};
 		function show(e){
-			console.log(name+'show');
 			self.show(e.entry);
 		}
 		function hide(e){
-			console.log(name+'hide');
 			self.hide(e.entry);
 		}
 		function bringToFront(overlappingEntry){

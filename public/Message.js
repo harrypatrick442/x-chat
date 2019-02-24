@@ -21,7 +21,7 @@ var Message = (function(){
 		this.getImage = function(){return params.image;};
 		this.getUserId=function(){return params.userId;};
 		this.getUsername=function(){return params.username;};
-	
+		this.getSentAt = function(){return sentAt?moment(params.sentAt):undefined;};
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
 		};
