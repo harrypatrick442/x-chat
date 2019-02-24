@@ -18,6 +18,7 @@ module.exports = (function(){
 		req.userId = user.getId();
 		req.username = user.getUsername();
 		req.image= user.getImage();
+		req.sentAt=new Date().toISOString();
 		return new _Message(req);
 	};
 	return _Message;

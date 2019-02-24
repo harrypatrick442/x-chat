@@ -46,9 +46,8 @@ function MessageUI(params){
 		self.dispatchEvent({type:'showusermenu', left:e.clientX, top:e.clientY});
 	}
 	function getFormattedDateTime(sentAt){
-		var sentAtLocal = moment.utc(sentAt);
+		var sentAtLocal = moment.utc(sentAt).local();
 		var now = moment();
-		console.log('now is: '+now.format());
 		var duration = moment.duration(now.diff(sentAtLocal));
 		var midnight = moment().startOf('day');
 		console.log(now.hour());
@@ -66,23 +65,11 @@ function MessageUI(params){
 				return dayAndTime;
 			return 'last '+dayAndTime;
 		}
-		console.log('sentToday: '+sentToday);
 		var sentThisYear = sentAtLocal.isSame(new Date(), 'year');
 		var dayAndMonth =sentAtLocal.format('Do')+' '+sentAtLocal.format('MMMM');
 		if(sentThisYear){
 			return dayAndMonth;
 		}
 		return dayAndMonth+' '+sentAtLocal.year();
-		//if today: [Time]
-		
-		//if within last week[Day of week] at [Time]
-		//[int Day Month name] at [Time]
-		
-		
-		if(sentToday){
-			return ;
-		}
-		console.log(sentAtLocal);
-		return sentAtLocal.format();
 	}
 }
