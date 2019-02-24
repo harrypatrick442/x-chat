@@ -1,6 +1,6 @@
 var Cropper = (function(){
-	const MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 45;
-	const MIN_WIDTH_HEIGHT=70;
+	var MIN_FINGER_SPACING_FOR_RESIZE_COMPONENT = 45;
+	var MIN_WIDTH_HEIGHT=70;
 	var _Cropper=function(params){
 		var self = this;
 		var aspectRatio = params.aspectRatio;

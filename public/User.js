@@ -13,7 +13,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 //single message with id when user leaves or joins any room.
 //single mesage with all info when uer join lobby. this contains map of all rooms user is in.
 //if us
-	const TYPE = 'user';
+	var TYPE = 'user';
 	var set = new Set({getEntryId:getEntryId});
 	function _User(params){
 		EventEnabledBuilder(this);

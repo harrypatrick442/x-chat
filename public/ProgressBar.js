@@ -1,5 +1,5 @@
 var ProgressBar = (function(){
-	const DONE='progress-bar-done';
+	var DONE='progress-bar-done';
 	var _ProgressBar = function(params){
 		var self = this;
 		var addedDoneClass=false;

@@ -2,7 +2,7 @@ var Room = new (function(){
 	var _Room = function(params){
 		console.log(params);
 		EventEnabledBuilder(this);
-		const MAX_N_MESSAGES=100;
+		var MAX_N_MESSAGES=100;
 		var self = this;
 		var send = params.send;
 		var getUserMe = params.getUserMe;

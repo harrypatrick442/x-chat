@@ -1,7 +1,7 @@
 var UserImage = new(function(){
-	const LARGE='128_128';
-	const SMALL='32_32';
-	const SIZES=[SMALL, LARGE];
+	var LARGE='128_128';
+	var SMALL='32_32';
+	var SIZES=[SMALL, LARGE];
 	var _UserImage = function(params){
 		var userId = params.userId;
 		var image = params.image;

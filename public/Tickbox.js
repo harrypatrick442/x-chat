@@ -1,5 +1,5 @@
 var Tickbox = (function(){
-	const TICKED='ticked';
+	var TICKED='ticked';
 	var _Tickbox = function(params){
 		var ticked = false;
 		var element = E.DIV();

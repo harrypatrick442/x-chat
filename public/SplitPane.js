@@ -1,6 +1,6 @@
 var SplitPane= (function(){
-const MIN_MIN_HEIGHT=20;
-const MIN_MIN_WIDTH=20;
+var MIN_MIN_HEIGHT=20;
+var MIN_MIN_WIDTH=20;
 	var _SplitPane = function(params){
 		var nPanelsWidth= params.nPanelsWidth;
 		var nPanelsHeight = params.nPanelsHeight;

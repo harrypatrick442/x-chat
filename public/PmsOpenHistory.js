@@ -1,6 +1,6 @@
 function PmsOpenHistory(params){
-		const LIST_USERS = 'listUsers';
-		const PMS_OPEN_HISTORY='PmsOpenHistory_';
+		var LIST_USERS = 'listUsers';
+		var PMS_OPEN_HISTORY='PmsOpenHistory_';
 		var id = PMS_OPEN_HISTORY+userMeId;
 		var userMeId = params.userMeId;
 		var settings = new Settings(id);

@@ -1,5 +1,5 @@
 var Mysocket = (function(){
-	const MYSOCKET_ID = 'mysocket_id';
+	var MYSOCKET_ID = 'mysocket_id';
 	var _Mysocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;

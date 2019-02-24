@@ -1,5 +1,5 @@
 var AutomaticAuthentication = new (function(){
-	const TOKEN = 'token';
+	var TOKEN = 'token';
 	var _AutomaticAuthentication = function(params){
 		var send = params.send;
 		var settings = new Settings('AutomaticAuthentication');

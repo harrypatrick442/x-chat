@@ -1,5 +1,5 @@
 var IgnoreManager = new (function(){
-	const IGNORES='ignores';
+	var IGNORES='ignores';
 	var _IgnoreManager = function(params){
 		EventEnabledBuilder(this);
 		var tabPortal = new TabPortal({id:'IgnoreManager'});

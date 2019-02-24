@@ -1,7 +1,7 @@
 var FileSender = (function(){
-	const DONE='done';
-	const SENDING='sending';
-	const PROGRESS='progress';
+	var DONE='done';
+	var SENDING='sending';
+	var PROGRESS='progress';
 	var _FileSender = function(params){
 		EventEnabledBuilder(this);
 		var self = this;

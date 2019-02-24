@@ -1,6 +1,6 @@
 var MessageComponents = new (function(){
-	const EMOTICON ='emoticon';
-	const TEXT='text';
+	var EMOTICON ='emoticon';
+	var TEXT='text';
 	this.Text=function(str){
 		this.getString=function(){
 			return str;

@@ -1,5 +1,5 @@
 var Notification = (function(){
-	const PM='pm';
+	var PM='pm';
 	var _Notification = function(params){
 		console.log(params);
 		EventEnabledBuilder(this);

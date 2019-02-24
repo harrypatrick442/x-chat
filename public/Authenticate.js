@@ -79,7 +79,7 @@ var Authenticate = (function(){
 		{
 			textUsername.focus();
 		});
-		const Showings={Guest:0, SignIn:1, Register:2};
+		var Showings={Guest:0, SignIn:1, Register:2};
 		var showing = Showings.Guest;
 		var tabPanel = new TabPanel(['Guest', 'Sign In', 'Register'], true);
 		tabPanel.onChangeTab = function (i) {

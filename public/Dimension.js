@@ -1,7 +1,7 @@
 
 var Dimension = (function(){
-	const PX='px';
-	const PERCENT='%';
+	var PX='px';
+	var PERCENT='%';
 	var _Dimension = function(value, unit){
 		console.log(unit);
 		var self = this;

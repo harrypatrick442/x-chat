@@ -1,10 +1,10 @@
 var EfficientMovingCycle = (function(){
-	const MOUSE_MOVE='mousemove';
-	const MOUSE_UP='mouseup';
-	const MOUSE_DOWN='mousedown';
-	const TOUCH_START='touchstart'
-	const TOUCH_MOVE='touchmove';
-	const TOUCH_END='touchend';
+	var MOUSE_MOVE='mousemove';
+	var MOUSE_UP='mouseup';
+	var MOUSE_DOWN='mousedown';
+	var TOUCH_START='touchstart'
+	var TOUCH_MOVE='touchmove';
+	var TOUCH_END='touchend';
 	var currentMouseMove;
 	var currentMouseUp;
 	var currentTouchMove;

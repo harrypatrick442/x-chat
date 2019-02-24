@@ -1,7 +1,7 @@
 var Lobby = (function(){
-	const IMAGE_WIDTH_SMALL=32;
-	const IMAGE_WIDTH_LARGE=256;
-	const IMAGE_UPLOADER_URL='/image_uploader';
+	var IMAGE_WIDTH_SMALL=32;
+	var IMAGE_WIDTH_LARGE=256;
+	var IMAGE_UPLOADER_URL='/image_uploader';
 	
 	
 	ImagePreloader.preloadRange([
@@ -13,7 +13,7 @@ var Lobby = (function(){
 		var sessionId;
 		var nDevice;
 		var userMe;
-		const url = '/servlet';
+		var url = '/servlet';
 		var authenticate = new Authenticate({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
 		var users = new Users({});
 		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});

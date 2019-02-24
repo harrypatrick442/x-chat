@@ -1,6 +1,6 @@
 var Ajax = (function(){
 	
-	const DEFAULT_CONTENT_TYPE='application/json';
+	var DEFAULT_CONTENT_TYPE='application/json';
 	var _Ajax= function(params){
 		var url = params.url;
 		this.post = function(params){
