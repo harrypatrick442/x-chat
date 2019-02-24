@@ -36,10 +36,10 @@
 	border-radius:2px;
 	margin-right:3px;
 }
-.lobby .rooms .room .feed .message .inner .username{
+.lobby .rooms .room .feed .message .inner .username-and-timestamp{
 	overflow:hidden;
 }
-.lobby .rooms .room .feed .message .inner .username div{
+.lobby .rooms .room .feed .message .inner .username-and-timestamp .username{
     font-size: 11px;
     cursor: pointer;
     color: rgb(59, 89, 152);
@@ -47,7 +47,15 @@
     float: left;
 	overflow:hidden;
 }
-.lobby .rooms .room .feed .message .inner .username div:hover{
+.lobby .rooms .room .feed .message .inner .username-and-timestamp .timestamp{
+    font-size: 8px;
+    color: #666;
+    float: left;
+	overflow:hidden;
+	padding-top:2px;
+	padding-left:2px;
+}
+.lobby .rooms .room .feed .message .inner .username-and-timestamp .username:hover{
     text-decoration:underline;
 }
 .lobby .rooms .room .feed .message .inner .connected-image img{

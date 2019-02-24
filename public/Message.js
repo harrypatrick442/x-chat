@@ -1,5 +1,6 @@
 var Message = (function(){
 	var _Message = function(params){
+		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
 		var userId = params.userId;
@@ -21,7 +22,7 @@ var Message = (function(){
 		this.getImage = function(){return params.image;};
 		this.getUserId=function(){return params.userId;};
 		this.getUsername=function(){return params.username;};
-		this.getSentAt = function(){return sentAt?moment(params.sentAt):undefined;};
+		this.getSentAtUTC = function(){return params.sentAt?moment(params.sentAt):undefined;};
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
 		};
@@ -43,7 +44,7 @@ var Message = (function(){
 		this.getIgnored = function(){return ignored;};
 		function getUI(){
 			if(!ui){
-				ui = new MessageUI({userImage:userImage, components:components, username:username, pending:params.pending});
+				ui = new MessageUI({userImage:userImage, components:components, username:username, pending:params.pending, sentAt:self.getSentAtUTC()});
 				ui.addEventListener('showusermenu', showUserMenu);
 			}
 			return ui;
@@ -71,6 +72,7 @@ var Message = (function(){
 		return _from(params, params.content);
 	}
 	_Message.fromTypedString= function(params){
+		params.sentAt=moment().format();
 		return _from(params, params.str);
 	};
 	function _from(params, content){
@@ -81,7 +83,7 @@ var Message = (function(){
 		function(component){  components.push(component);});
 		return new Message({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, content:content,
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
-		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe,image:params.image});
+		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe,image:params.image, sentAt:params.sentAt});
 	}
 	function generatecontentFromMessageComponents(components){
 		var list =[];

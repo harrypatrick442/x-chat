@@ -84,7 +84,10 @@ var Room = new (function(){
 					usersMenu.hide();
 			ui.setVisible(value);
 			if(value)
-				new Task(ui.scrollFeedToBottom).run();
+				new Task(function(){
+				ui.resize();
+				ui.scrollFeedToBottom();
+				}).run();
 		};
 		this.getVisible = ui.getVisible;
 		this.videoOfferFail = function(msg){
