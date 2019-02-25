@@ -8,6 +8,7 @@ var Mysocket = (function(){
 		var channel;
 		var id=1;
 		var toSend=[];
+		var analysisLastChannel;
 		getChannel();
 		this.send = function(msg){
 			if(channel&&channel.isOpen()){
@@ -34,7 +35,7 @@ var Mysocket = (function(){
 		}
 		function getChannel(){
 			if(channel)return channel;
-			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket});
+			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket, analysisLastChannel});
 			channel.onClose = onClose;
 			channel.onOpen = onOpen;
 			channel.onMessage = onMessage;
@@ -47,6 +48,7 @@ var Mysocket = (function(){
 			dispatchOnMessage(msg);
 		}
 		function onClose(){
+			analysisLastChannel = channel.getAnalysis();
 			channel = null;
 		}
 		function onOpen(){

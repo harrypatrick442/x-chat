@@ -8,11 +8,10 @@ var MysocketChannelAnalysis = new (function(){
 		var openedAt;
 		var stopWatchOpenFor = new StopWatch();
 		this.getSuccessfullyOpened= function(){
-				
+				return successfullyOpened;
 		};
-		this.getOpenForMilliseconds = function(){
-			stopWatch.getMilliseconds();
-		};
+		this.getOpenForMilliseconds = stopWatch.getMilliseconds;
+		this.getOpenForSeconds = stopWatch.getSeconds;
 		this.opened = function(){
 			successfullyOpened=true;
 			openedAt = new Date();

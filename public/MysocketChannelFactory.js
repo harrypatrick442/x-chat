@@ -1,6 +1,6 @@
 var MysocketChannelFactory = new (function(){
 	this.create = function(params){
-		return new _Websocket(params.id, params.urlWebsocket);
+		return new _Websocket(params.id, params.urlWebsocket, params.analysisLastChannel);
 	};
 	function _Websocket(id, url, analysis){
 		var analysis = new MysocketChannelAnalysis(Mysocket.WEBSOCKET);
