@@ -58,8 +58,8 @@ var Pms=  (function(){
 			each(userTos, dispatchAddClosed);
 		};
 		rooms.addEventListener('showpm', showPm);
-		rooms.addEventListener('sendpm', e=>self.dispatchEvent(e));
-		rooms.addEventListener('getpms', e=>self.dispatchEvent(e));
+		rooms.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
+		rooms.addEventListener('getpms', function(e){ return self.dispatchEvent(e);});
 		rooms.addEventListener('createdroom', createdRoom);
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		function showPmWithUser(user){

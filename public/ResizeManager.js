@@ -16,7 +16,7 @@ var ResizeManager=new (function(){
 			this.manual=function(){
 				resized();
 			};
-			if(ResizeObserver)
+			if(window.ResizeObserver)
 				new ResizeObserver(staggered?scheduleResize:resized).observe(element);
 			else
 				WindowResizeManager.addEventListener('resized', staggered?resized:scheduleResize);

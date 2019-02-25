@@ -78,7 +78,7 @@ var E = new (function () {
 
     function c(name) {
         var element =  document.createElement(name);
-		if(element.addEventListener)
+		if(!element.addEventListener)
 			element.addEventListener = element.attachEvent;
 		return element;
     }

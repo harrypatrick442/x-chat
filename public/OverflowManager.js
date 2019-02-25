@@ -8,7 +8,7 @@ var OverflowManager = new (function(){
 		this.trigger = temporalCallback.trigger;
 		function overflow(){
 			var messages = getMessages();
-			var nonIgnored = messages.where(x=>!x.getIgnored()).toList();
+			var nonIgnored = messages.where(function(x){ return !x.getIgnored();}).toList();
 			var nNonIgnored = nonIgnored.length;
 			var nToRemove =  nNonIgnored - maxNMessages;
 			if(nToRemove<1)return;

@@ -92,12 +92,12 @@ var Rooms = new (function(){
 			overlappingEntries.add(room);
 			room.addEventListener('showemoticons', showEmoticons);
 			room.addEventListener('hide', hideRoom);
-			room.addEventListener('showpm', e=>self.dispatchEvent(e));
+			room.addEventListener('showpm', function(e){ return self.dispatchEvent(e);});
 			if(!isPm){
-			room.addEventListener('sendmessage', e=>self.dispatchEvent(e));
-			room.addEventListener('getmessages', e=>self.dispatchEvent(e));
+			room.addEventListener('sendmessage', function(e){ return self.dispatchEvent(e);});
+			room.addEventListener('getmessages', function(e){ return self.dispatchEvent(e);});
 			}else{
-			room.addEventListener('sendpm', e=>self.dispatchEvent(e));
+			room.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
 			room.addEventListener('getpms', function(e){self.dispatchEvent(e);});
 			
 			}
@@ -119,7 +119,7 @@ var Rooms = new (function(){
 			overlappingEntries.hide(room);
 		}
 		function dispatchRoomsInChanged(){
-			self.dispatchEvent({type:'roomsinchanged', roomIds:set.getEntries().where(x=>!x.isPm()).select(x=>x.getId()).toList()});
+			self.dispatchEvent({type:'roomsinchanged', roomIds:set.getEntries().where(function(x){ return !x.isPm();}).select(function(x){ return x.getId();}).toList()});
 		}
 		function dispatchCreatedRoom(room){
 			self.dispatchEvent({type:'createdroom', room:room});

@@ -49,7 +49,7 @@ var IgnoreManager = new (function(){
 		};
 		tabPortal.addEventListener('message', messageFromAnotherTab);
 		function save(){
-			settings.set('ignores', set.getEntries().select(x=>x.toJSON()).toList());
+			settings.set('ignores', set.getEntries().select(function(x){ return x.toJSON();}).toList());
 		}
 		function dispatchIgnored(userId, ignored){
 			self.dispatchEvent({type:'ignored', userId:userId, ignored:ignored});

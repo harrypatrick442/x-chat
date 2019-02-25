@@ -1,10 +1,4 @@
 (function(){
-	if(!document.addEventListener){
-		document.addEventListener = document.attachEvent;
-	}
-	if(!window.addEventListener){
-		window.addEventListener = window.attachEvent;
-	}
 	
 	if (!Array.prototype.indexOf)
 	{

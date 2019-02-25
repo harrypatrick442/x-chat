@@ -96,10 +96,10 @@ var Messages = new (function(){
 			message.removeEventListener('showpm', showPm);
 		}
 		function ignored(e){
-			messages.where(x=>x.getUserId()==e.userId).each(x=>x.setIgnored(true));
+			messages.where(function(x){ return x.getUserId()==e.userId;}).each(function(x){ return x.setIgnored(true);});
 		}
 		function unignored(e){
-			messages.where(x=>x.getUserId()==e.userId).each(x=>x.setIgnored(false));
+			messages.where(function(x){ return x.getUserId()==e.userId;}).each(function(x){ return x.setIgnored(false);});
 		}
 	};
 	return _Messages;

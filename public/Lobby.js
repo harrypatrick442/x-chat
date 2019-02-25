@@ -182,7 +182,7 @@ var Lobby = (function(){
 			});
 		}
 		function roomUserIds_Leave(room, userIds){
-			var usersToRemove = room.getUsers().getEntries().where(x=>userIds.indexOf(x.getId())<0).toList();
+			var usersToRemove = room.getUsers().getEntries().where(function(x){ return userIds.indexOf(x.getId())<0;}).toList();
 			each(usersToRemove, function(userToRemove){
 				console.log(userToRemove.getId());
 				room.leave(userToRemove);
@@ -231,8 +231,8 @@ var Lobby = (function(){
 			}
 		}
 		function updateUserIdsLobby(userIds){
-		    userIds.where(x=>!users.containsId(x)).each(x=>missingUsersManager.get(x));
-		    var toRemove = users.getIds().where(x=>userIds.indexOf(x)<0).each(function(userId){
+		    userIds.where(function(x){ return !users.containsId(x);}).each(function(x){ return missingUsersManager.get(x);});
+		    var toRemove = users.getIds().where(function(x){ return userIds.indexOf(x)<0;}).each(function(userId){
 				var user = users.getById(userId);
 				if(user)user.left();
 			});
@@ -244,7 +244,7 @@ var Lobby = (function(){
 				nDevice = msg.nDevice;
 				users.add(User.fromJSON(msg.user));
 				userMe = users.getById(msg.user.id);
-				msg.users.select(x=>User.fromJSON(x)).each(x=>users.add(x));
+				msg.users.select(function(x){ return User.fromJSON(x);}).each(function(x){ return users.add(x);});
 				authenticate.hide();
 				getRooms();
 				pms.load(userMe.getId());

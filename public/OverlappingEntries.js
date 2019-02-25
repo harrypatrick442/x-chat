@@ -8,7 +8,7 @@ var OverlappingEntries = new (function(){
 			var overlappingEntry = set.getById(entryToShow.getId());
 			if(!overlappingEntry)return;
 			overlappingEntry.setIsSetShow(true);
-			set.each(x=>x.setVisible(x==overlappingEntry));
+			set.each(function(x){ return x.setVisible(x==overlappingEntry);});
 			bringToFront(overlappingEntry);
 		};
 		this.hide = function(entryToHide){
@@ -56,7 +56,7 @@ var OverlappingEntries = new (function(){
 		}
 		function getNextToShow(){
 			var str=name+' ';
-			return set.getEntries().slice().reverse().where(x=>x.getIsSetShow()).firstOrDefault();
+			return set.getEntries().slice().reverse().where(function(x){ return x.getIsSetShow();}).firstOrDefault();
 		}
 		function OverlappingEntry(entry){
 			var isSetShow = false;

@@ -37,7 +37,7 @@ var TabPortal = new (function () {
 		if(!data.id)return;
 		var instances = mappedSets.getList(data.id);
 		if(!instances)return;
-		instances.each(x=>x.receivedMessage(data.message));
+		instances.each(function(x){ return x.receivedMessage(data.message);});
 	}
 	function sendMessage(id, message){
 		broadcastChannel.postMessage({id:id, message:message});
