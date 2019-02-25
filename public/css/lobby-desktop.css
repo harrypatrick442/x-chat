@@ -6,10 +6,18 @@
 	
 }
 .lobby .left .logo{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 	display:flex;
 }
 .lobby .left .users-menues{
 	flex-flow:grow;
+	-webkit-flex-flow: grow; /* Safari 6.1+ */
+	-webkit-flex-grow: 1; /* Safari */
 	flex-grow:1;
 }
 .lobby .right{

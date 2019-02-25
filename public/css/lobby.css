@@ -22,7 +22,13 @@ background-color:rgb(44, 43, 43);
 .lobby .left{
 float:left;
 height:100%;
-display:flex;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flexbox;
+display: -ms-flexbox;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-flow: column; /* Safari 6.1+ */
 flex-flow:column;
 box-sizing:border-box;
 padding:6px;
@@ -31,8 +37,14 @@ padding-right:0px;
 .lobby .right{
 height:100%;
 overflow:hidden;
+display: -webkit-box;
+display: -moz-box;
+display: -webkit-flexbox;
+display: -ms-flexbox;
+display: -webkit-flex;
 display: flex;
 position:relative;
+-webkit-flex-flow: column; /* Safari 6.1+ */
 flex-flow: column;
 }
 .lobby .right .button-show-hide-wrapper{

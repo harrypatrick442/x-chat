@@ -5,6 +5,7 @@ body{
 	position:relative;
 	width:100%;
 	box-sizing:border-box;
+	-webkit-flex-grow: 1; /* Safari */
 	flex-grow:1;
 }
 .lobby .rooms .entries{
