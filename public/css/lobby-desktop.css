@@ -3,22 +3,14 @@
 	
 }
 .lobby .left{
-	
+	display:table;
 }
 .lobby .left .logo{
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flexbox;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-	display:flex;
+	display:table-row;
 }
 .lobby .left .users-menues{
-	flex-flow:grow;
-	-webkit-flex-flow: grow; /* Safari 6.1+ */
-	-webkit-flex-grow: 1; /* Safari */
-	flex-grow:1;
+	display:table-row;
+	height:100%;
 }
 .lobby .right{
 }
