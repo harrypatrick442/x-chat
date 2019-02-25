@@ -170,6 +170,7 @@ var Lobby = (function(){
 			showAuthentication();
 		}
 		function showNotifications(){
+			console.log('showing notifications');
 			notificationsMenu.show();
 		}
 		function roomUserIds_Join(room, userIds){

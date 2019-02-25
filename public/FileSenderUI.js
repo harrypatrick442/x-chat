@@ -10,7 +10,7 @@ var FileSenderUI=(function(){
 		element.appendChild(entries);
 		this.getElement = function(){return element;};
 		this.setVisible = function(value){
-			element.style.display=value?'block':'none';
+			element.style.display=value?'table-row':'none';
 		};
 		this.clear = function(){
 			each(sendings, function(sending){

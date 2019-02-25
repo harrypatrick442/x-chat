@@ -7,6 +7,7 @@
 	box-sizing:border-box;
 	width:100%;
 	border:1px solid #000000;
+	top:0px;
 }
 .notifications-menu .entries{
 	background-color:rgb(32, 31, 31);

@@ -16,7 +16,7 @@ var CroppingFrame = new (function () {
 		element.appendChild(imgWrapper);
 		this.getElement = function(){return element;};
 		function show(){
-			element.style.display='flex';
+			element.style.display='table-row';
 			cropper.onShow();
 		};
 		this.hide = function(){

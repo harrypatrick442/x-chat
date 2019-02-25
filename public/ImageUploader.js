@@ -101,7 +101,7 @@ var ImageUploader = new (function(){
 			heading.innerHTML = text;
 		};
 		this.setCroppingMenuVisible = function(value){
-			croppingMenu.style.display=value?'flex':'none';
+			croppingMenu.style.display=value?'table-row':'none';
 		};
 		this.setFileSenderVisible = fileSenderUI.setVisible;
 		this.clearFileSender= fileSenderUI.clear;
