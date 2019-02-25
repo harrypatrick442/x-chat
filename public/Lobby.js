@@ -337,26 +337,32 @@ var Lobby = (function(){
 		var usersMenues = params.usersMenues;
 		var element = E.DIV();
 		var right = E.DIV();
+		var rightInner = E.DIV();
 		var divButtonShowHideWrapper = E.DIV();
 		element.classList.add('lobby');
 		right.classList.add('right');
+		rightInner.classList.add('right-inner');
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
 		if(!isMobile){
 			var left = E.DIV();
 			left.classList.add('left');
+			var leftInner = E.DIV();
+			leftInner.classList.add('left-inner');
 			element.appendChild(left);
+			left.appendChild(leftInner);
 			var logo = new Logo();	
-			left.appendChild(logo.getElement());
-			left.appendChild(usersMenues.getElement());
+			leftInner.appendChild(logo.getElement());
+			leftInner.appendChild(usersMenues.getElement());
 			
 		}
 		element.appendChild(right);
+		right.appendChild(rightInner);
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
-		right.appendChild(pmsMenu.getElement());
-		right.appendChild(divButtonShowHideWrapper);
-		right.appendChild(rooms.getElement());
+		rightInner.appendChild(pmsMenu.getElement());
+		rightInner.appendChild(divButtonShowHideWrapper);
+		rightInner.appendChild(rooms.getElement());
 		if(!isMobile){
-			right.appendChild(notificationsMenu.getElement());
+			rightInner.appendChild(notificationsMenu.getElement());
 		}
 		else{
 			document.body.appendChild(notificationsMenu.getElement());

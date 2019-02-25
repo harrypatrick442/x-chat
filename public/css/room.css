@@ -3,13 +3,12 @@
   margin-top:-40px;
 }
 .lobby .rooms .entries .room{
-	position:absolute;
-	box-sizing:border-box;	
-	background-color:rgb(32, 31, 31);
-	left:0px;
-	right:0px;
-	top:6px;
-	bottom:0px;
+	position:relative;
+	width:100%;
+	box-sizing:border-box;
+	min-height:100%;
+	padding-left:3px;
+	padding-top:3px;
 
 }
 .lobby .rooms .entries .room .top{

@@ -159,9 +159,12 @@ var Rooms = new (function(){
 		var element = E.DIV();
 		element.classList.add('rooms');
 		var entries = E.DIV();
+		var inner = E.DIV();
+		inner.classList.add('rooms-inner');
+		element.appendChild(inner);
 		entries.classList.add('entries');
-		element.appendChild(entries);
-		element.appendChild(emoticons.getElement());
+		inner.appendChild(entries);
+		inner.appendChild(emoticons.getElement());
 		this.getEntries = function(){
 			return entries;
 		};

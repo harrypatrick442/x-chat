@@ -4,6 +4,7 @@
 	box-sizing:border-box;	
 	padding:6px;
 	padding-bottom:0px;
+	display:table-row;	
 }
 .lobby .pms-menu .entries-wrapper{
 	position:relative;

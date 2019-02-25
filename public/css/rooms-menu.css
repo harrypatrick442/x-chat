@@ -2,8 +2,6 @@ body{
 	
 }
 .lobby .rooms-menu{
-	position:absolute;
-	float:left;
 	width:100%;
 	box-sizing:border-box;
 	min-height:100%;
