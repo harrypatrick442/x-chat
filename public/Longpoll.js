@@ -5,6 +5,7 @@ var Longpoll = (function(){
 		var id = params.id;
 		var ajax = new Ajax({url:url});
 		var stop=false;
+		var started=false;
 		this.send = function(msg){
 			if(closed)return;
 			ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
@@ -14,18 +15,21 @@ var Longpoll = (function(){
 		};
 		this.dispose=this.stop;
 		function poll(){
-			console.log('polling');
+			console.log('polling_');
 			console.log(urlPoll);
 			ajax.get({url:urlPoll, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError});
 		}
 		function callbackSendSuccessful(res){
+			console.log('done');
 			res = JSON.parse(res);
 			if(res.id)
 				id = res.id;
 			urlPoll = url+'/'+id;
 			console.log('id is: '+id);
 			dispatchGotId(id);
-			poll();
+			if(started)return;
+			started=true;
+			new Timer({delay:3000, callback:poll, nTicks:1}).start();
 		}
 		function callbackSendError(err){
 			console.error(err);
@@ -35,7 +39,7 @@ var Longpoll = (function(){
 			console.error(err);
 			dispatchOnError(err);
 			if(stop)return;
-			//poll();
+			poll();
 		}
 		function callbackPollSuccessful(res){
 			console.log(typeof(JSON.parse(res)));
