@@ -2,14 +2,13 @@ var Mysocket = (function(){
 	var MYSOCKET_ID = 'mysocket_id';
 	var _Mysocket= function(params){
 		var url = params.url;
+		console.log(url);
 		var urlWebsocket = params.urlWebsocket;
 		EventEnabledBuilder(this);
 		var self = this;
 		var channel;
 		var id=1;
 		var toSend=[];
-		var analysisLastChannel;
-		getChannel();
 		this.send = function(msg){
 			if(channel&&channel.isOpen()){
 				channel.send(msg);
@@ -18,6 +17,11 @@ var Mysocket = (function(){
 			toSend.push(msg);
 			getChannel();
 		};
+		this.getUrl = function(){
+			return url;
+		};
+		var mysocketAnalysis = new MysocketAnalysis({mysocket:this});
+		getChannel();
 		function callbackOnOpen(){
 			dispatchOnOpen();
 		}
@@ -35,7 +39,10 @@ var Mysocket = (function(){
 		}
 		function getChannel(){
 			if(channel)return channel;
-			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket, analysisLastChannel});
+			console.log('getting channel');
+			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket, url:url, mysocketAnalysis:mysocketAnalysis});
+			
+			console.log(channel);
 			channel.onClose = onClose;
 			channel.onOpen = onOpen;
 			channel.onMessage = onMessage;
@@ -48,7 +55,7 @@ var Mysocket = (function(){
 			dispatchOnMessage(msg);
 		}
 		function onClose(){
-			analysisLastChannel = channel.getAnalysis();
+			mysocketAnalysis.add(channel.getAnalysis());
 			channel = null;
 		}
 		function onOpen(){
@@ -71,5 +78,8 @@ var Mysocket = (function(){
 			}
 		}
 	};
+	_Mysocket.CORS='cors';
+	_Mysocket.AJAX='ajax';
+	_Mysocket.WEBSOCKET='websocket';
 	return _Mysocket;
 })();

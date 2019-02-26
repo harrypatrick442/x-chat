@@ -10,8 +10,11 @@ var MysocketChannelAnalysis = new (function(){
 		this.getSuccessfullyOpened= function(){
 				return successfullyOpened;
 		};
-		this.getOpenForMilliseconds = stopWatch.getMilliseconds;
-		this.getOpenForSeconds = stopWatch.getSeconds;
+		this.getOpenForMilliseconds = stopWatchOpenFor.getMilliseconds;
+		this.getOpenForSeconds = stopWatchOpenFor.getSeconds;
+		this.getOpeneAt = function(){
+			return openedAt;
+		};
 		this.opened = function(){
 			successfullyOpened=true;
 			openedAt = new Date();
@@ -24,9 +27,10 @@ var MysocketChannelAnalysis = new (function(){
 			stopWatchOpenFor.stop();
 			closed = true;
 		};
-		this.error = function(){
+		this.error = function(error){
 			errors.push(error);
 			while(errors.length>N_ERRORS_TO_STORE)errors.splice(0, 1);
 		};
 	};
+	return _MysocketChannelAnalysis;
 })();

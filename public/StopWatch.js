@@ -6,7 +6,7 @@ function StopWatch(){
 	this.getMilliseconds = function(){
 		var total = ticksFromOtherRuns;
 		if(running)
-			total += Date().getTicks()- startTicks;
+			total += Date().getTime()- startTicks;
 		return total;
 	};
 	this.getSeconds = function(){
@@ -15,7 +15,7 @@ function StopWatch(){
 	this.start = function(){
 		if(running)return;
 		running = true;
-		startTicks = new Date().getTicks();
+		startTicks = new Date().getTime();
 	};
 	this.stop = function(){
 		if(!running)return;
@@ -29,6 +29,6 @@ function StopWatch(){
 		startTicks=0;
 	};
 	function getTicksThisRun(){
-		return new Date().getTicks()-startTicks;
+		return new Date().getTime()-startTicks;
 	}
 }

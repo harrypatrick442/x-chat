@@ -5,6 +5,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
+    "express-longpoll": "0.0.4",
     "express-ws": "^4.0.0",
     "image-data-uri": "^2.0.0",
     "mssql": "^4.3.0",

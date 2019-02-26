@@ -17,6 +17,11 @@ module.exports = (function(){
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
+		this.setToAjax = function(){
+			if(channel.channelType==Mysocket.AJAX)return;
+			channel.close();
+			updateChannel();
+		};
 		this.getId = function(){
 			return params.id;
 		};
@@ -57,6 +62,9 @@ module.exports = (function(){
 		function nothing(){}
 	};
 	_Mysocket.fromWebsocket = function(params){
+		return new _Mysocket(params);
+	};
+	_Mysocket.fromAjax=function(params){
 		return new _Mysocket(params);
 	};
 	return _Mysocket;

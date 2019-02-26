@@ -25,6 +25,22 @@ module.exports = new (function(){
 		addEvents(mysocket);
 		dispatchAdd(mysocket);
 	};
+	this.getOrCreateAjax=function(id){
+		var mysocket;
+		if(id){
+			mysocket = getById(id);
+		}
+		if(mysocket)
+		{
+			mysocket.setToAjax();
+			return mysocket;
+		}
+		mysocket = Mysocket.fromAjax({id:getNewId()});
+		set.add(mysocket);
+		addEvents(mysocket);
+		dispatchAdd(mysocket);
+		return mysocket;
+	};
 	function dispatchAdd(mysocket){
 		self.dispatchEvent({type:'add', mysocket:mysocket});
 	}
