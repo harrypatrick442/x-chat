@@ -1,17 +1,19 @@
 module.exports = new (function(){
 	var Mysocket = require('./Mysocket');
+	var ChannelType = require('./ChannelType');
 	this.create = function(params){
 		var id = params.id;
+		console.log(params);
 		if(params.ws)
 			return new Websocket(params.ws);
 		else 
-			return new Ajax();
+			return new Longpoll(params.url, params.longpoll, id);
 		throw new Error('Not implemented');
 	};
 	function Websocket(ws){
 		var self = this;
 		var closed = false;
-		this.channelType = Mysocket.WEBSOCKET;
+		this.channelType = ChannelType.WEBSOCKET;
 		this.sendMessage=function(msg){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
@@ -30,27 +32,14 @@ module.exports = new (function(){
 			ws.close();
 		};
 	}
-	function Ajax(){
+	function Longpoll(url, longpoll, id){
 		var self = this;
 		var closed = false;
 		var messageQueue=[];
-		this.channelType = Mysocket.AJAX;
+		this.channelType = ChannelType.LONGPOLL;
 		this.sendMessage=function(msg){
-			messageQueue.push(JSON.stringify(msg));
+			longpoll.publishToId(url, id, msg);
 		};
-		this.incomingMessage = function(msg) {
-			self.onMessage&&self.onMessage(msg);
-		};
-		this.getAndReleaseQueuedMessages = function(){
-			var list = messageQueue;
-			messageueue =[];
-			return list;
-		};
-		/*
-		ws.on('close', function(){
-			closed=true;
-			self.onClose&&self.onClose();
-		});*/
 		this.isAlive=function(){
 			return !closed;
 		};

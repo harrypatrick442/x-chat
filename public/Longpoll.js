@@ -1,5 +1,5 @@
-var Longpolling = (function(){
-	var _Longpolling = function(){
+var Longpoll = (function(){
+	var _Longpoll = function(params){
 		var self = this;
 		var url = params.url;
 		var id = params.id;
@@ -7,22 +7,23 @@ var Longpolling = (function(){
 		var stop=false;
 		this.send = function(msg){
 			if(closed)return;
-			data.id = id;
-			data.msg = msg;
-			ajax.post({data:JSON.stringify(data)}, callbackSendSuccessful);
+			ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
 		};
 		this.stop=function(){
 			stop=true;
 		};
 		this.dispose=this.stop;
 		function poll(){
-			ajax.get({url:urlPoll, callbackSuccessful:callbackPollSuccessful, callbackError:callbackPollError});
+			console.log('polling');
+			console.log(urlPoll);
+			ajax.get({url:urlPoll, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError});
 		}
 		function callbackSendSuccessful(res){
 			res = JSON.parse(res);
 			if(res.id)
 				id = res.id;
 			urlPoll = url+'/'+id;
+			console.log('id is: '+id);
 			dispatchGotId(id);
 			poll();
 		}
@@ -30,16 +31,15 @@ var Longpolling = (function(){
 			console.error(err);
 			dispatchOnError(err);
 		}
-		function callbackPollError(){
+		function callbackPollError(err){
 			console.error(err);
 			dispatchOnError(err);
 			if(stop)return;
-			poll();
+			//poll();
 		}
 		function callbackPollSuccessful(res){
-			console.log(res);
-			var msg = JSON.parse(res.data);
-			dispatchOnMessage(msg);
+			console.log(typeof(JSON.parse(res)));
+			dispatchOnMessage(JSON.parse(res));
 			poll();
 		}
 		function dispatchOnError(err){
@@ -52,5 +52,5 @@ var Longpolling = (function(){
 			self.onGotId&&self.onGotId(id);
 		}
 	};
-	return _Longpolling;
+	return _Longpoll;
 })();

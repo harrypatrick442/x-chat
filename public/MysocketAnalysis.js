@@ -14,7 +14,7 @@ var MysocketAnalysis = (function(){
 		this.getRecommendedTypes = function(){
 			console.log(mysocket);
 			var requiresCors = isCrossDomain(mysocket.getUrl());
-			if(requiresCors)return [Mysocket.CORS];
+			if(requiresCors)return [ChannelType.CORS];
 			var websocketFailedQuickly = !(websocketFailedQuicklyChannelAnalysis.openedAt||
 			websocketFailedQuicklyChannelAnalysis.getOpenForMilliseconds()<=MAX_OPEN_FOR_WEBSOCKET_FOR_FAIL);
 			var shouldUseWebsocket
@@ -26,9 +26,9 @@ var MysocketAnalysis = (function(){
 			}
 			if(shouldUseWebsocket)
 			{
-				return [Mysocket.WEBSOCKET, Mysocket.LONGPOLL];
+				return [ChannelType.WEBSOCKET, ChannelType.LONGPOLL];
 			}
-			return [Mysocket.LONGPOLL];
+			return [ChannelType.LONGPOLL];
 		};
 		this.add=function(channelAnalysis){
 			currentChannelAnalysis = channelAnalysis;       

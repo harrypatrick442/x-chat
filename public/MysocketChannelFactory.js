@@ -52,18 +52,15 @@ var MysocketChannelFactory = new (function(){
 	}
 	function _Longpoll(id, url){
 		var self = this;
-		var analysis = new MysocketChannelAnalysis(Mysocket.LONGPOLL);
+		var analysis = new MysocketChannelAnalysis(ChannelType.LONGPOLL);
 		var longpoll = new Longpoll({url:url, id:id});
 		longpoll.onMessage= onMessage;
 		longpoll.onError = onError;
 		longpoll.onSent = onOpen;
-		this.send = longpoll.send(msg);
+		this.send = longpoll.send;
 		this.getAnalysis= function(){
 			return analysis;
 		};
-		function onError(err){
-			onError(err);
-		}
 		function onMessage(msg){
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(msg);

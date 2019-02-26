@@ -25,17 +25,17 @@ module.exports = new (function(){
 		addEvents(mysocket);
 		dispatchAdd(mysocket);
 	};
-	this.getOrCreateAjax=function(id){
+	this.getOrCreateLongpoll=function(id, longpoll, url){
 		var mysocket;
 		if(id){
 			mysocket = getById(id);
 		}
 		if(mysocket)
 		{
-			mysocket.setToAjax();
+			mysocket.setToLongpoll();
 			return mysocket;
 		}
-		mysocket = Mysocket.fromAjax({id:getNewId()});
+		mysocket = Mysocket.fromLongpoll({longpoll:longpoll, id:getNewId(), url:url});
 		set.add(mysocket);
 		addEvents(mysocket);
 		dispatchAdd(mysocket);

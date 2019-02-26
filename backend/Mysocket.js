@@ -1,6 +1,7 @@
 module.exports = (function(){
 	const TIMEOUT_CLOSED_CHANNEL_MINUTES = 0.4;
 	var handler = require('./handler').handler;
+	var ChannelType = require('./ChannelType');
 	var channelFactory = require('./MysocketChannelFactory');
 	var EventEnabledBuilder=require('./EventEnabledBuilder');
 	
@@ -17,15 +18,16 @@ module.exports = (function(){
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
-		this.setToAjax = function(){
-			if(channel.channelType==Mysocket.AJAX)return;
-			channel.close();
-			updateChannel();
+		this.setToLongpoll = function(params){
+			console.log(channel);
+			if(channel&&channel.channelType==ChannelType.LONGPOLL)return;
+			updateChannel(params);
 		};
 		this.getId = function(){
 			return params.id;
 		};
 		this.sendMessage = sendMessage;
+		this.incomingMessage = onMessage;
 		this.isActive = function(){
 			if(channel)
 				return channel.isAlive();
@@ -47,7 +49,8 @@ module.exports = (function(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}
 		function onMessage(msg){
-			handler.process(JSON.parse(msg), self, sendMessage);
+			console.log(msg);
+			handler.process(msg, self, sendMessage);
 		}
 		function onOpen(){
 			sendMessage({type:'mysocket_id', id:id});
@@ -61,14 +64,10 @@ module.exports = (function(){
 		}
 		function nothing(){}
 	};
-	
-	_Mysocket.JSONP='jsonp';
-	_Mysocket.LONGPOLL='longpoll';
-	_Mysocket.WEBSOCKET='websocket';
 	_Mysocket.fromWebsocket = function(params){
 		return new _Mysocket(params);
 	};
-	_Mysocket.fromAjax=function(params){
+	_Mysocket.fromLongpoll=function(params){
 		return new _Mysocket(params);
 	};
 	return _Mysocket;
