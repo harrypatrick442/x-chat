@@ -30,12 +30,12 @@ module.exports =(function() {
 
 		this.create = function(url, middleware, opts) {
 			if (typeof middleware === "function") {
-				return _createWithId(url, middleware, opts);
+				return createWithId(url, middleware, opts);
 			}
 			else {
 				opts = middleware;
 			}
-			return _setupListener(url, "longpoll", null, opts);
+			return setupListener(url, "longpoll", null, opts);
 		};
 		this.publish = function(url, data) {
 			return new Promise(function(resolve, reject) {
@@ -49,15 +49,15 @@ module.exports =(function() {
 			});
 		};
 		this.publishToId = function(url, id, data) {
-				return _emit(url, "longpoll." + id, data);
+				return emit(url, "longpoll." + id, data);
 		};
-		function _createWithId(url, middleware, opts) {
-				return _setupListener(url, "longpoll", middleware, opts);
+		function createWithId(url, middleware, opts) {
+				return setupListener(url, "longpoll", middleware, opts);
 		}
 		function use(middleware) {
 			_app.use(middleware);
 		}
-		function _setupListener(url, event, middleware, opts) {
+		function setupListener(url, event, middleware, opts) {
 			if (middleware == null) {
 				middleware = (req, res, next) => next();
 			}
@@ -100,7 +100,7 @@ module.exports =(function() {
 				resolve();
 			});
 		}
-		function _emit(url, event, data) {
+		function emit(url, event, data) {
 			return new Promise(function(resolve, reject) {
 				if (mapUrlToEmitter[url]) {
 					mapUrlToEmitter[url].emit(event, data);
@@ -129,7 +129,5 @@ module.exports =(function() {
 			return dispatcher;
 		}
 	};
-	console.log('returning');
-	console.log(_Longpoll);
 	return _Longpoll;
 })();

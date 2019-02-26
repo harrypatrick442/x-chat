@@ -2,8 +2,11 @@ module.exports=new (function(){
 	const URL="/poll/:id";
 	var Mysockets = require('./Mysockets');
 	var url = require('url');
+	var Longpoll = require("express-longpoll");
 	this.load = function(app){
-		var longpoll = require("express-longpoll")(app);
+		console.log(Longpoll);
+		console.log('about to create');
+		var longpoll = new Longpoll(app);
 		console.log(longpoll);
 		longpoll.create(URL, (req,res, next) => {
 			var mysocketId = req.params.id;

@@ -28,8 +28,8 @@ var Longpoll = (function(){
 			console.log('id is: '+id);
 			dispatchGotId(id);
 			if(started)return;
-			started=true;
-			new Timer({delay:3000, callback:poll, nTicks:1}).start();
+			poll();
+			//new Timer({delay:3000, callback:poll, nTicks:1}).start();
 		}
 		function callbackSendError(err){
 			console.error(err);
