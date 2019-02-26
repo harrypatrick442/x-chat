@@ -61,6 +61,10 @@ module.exports = (function(){
 		}
 		function nothing(){}
 	};
+	
+	_Mysocket.JSONP='jsonp';
+	_Mysocket.LONGPOLL='longpoll';
+	_Mysocket.WEBSOCKET='websocket';
 	_Mysocket.fromWebsocket = function(params){
 		return new _Mysocket(params);
 	};

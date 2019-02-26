@@ -6,7 +6,7 @@ var app = express();
 var path = require('path');
 var servlet = require('./servlet').servlet;
 var endpoint = require('./endpoint').endpoint;
-var endpointAjax = require('./EndpointAjax');
+var endpointLongpoll = require('./EndpoingLongpoll');
 var imageUploader = new (require('./ImageUploader').ImageUploader)();
 app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
@@ -20,4 +20,4 @@ app.post('/image_uploader', function(req, res){
 	console.log(req);
 	res.send(imageUploader.process(req));
 });
-endpointAjax.load(app);
+endpointLongpoll.load(app);

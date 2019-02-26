@@ -78,8 +78,8 @@ var Mysocket = (function(){
 			}
 		}
 	};
-	_Mysocket.CORS='cors';
-	_Mysocket.AJAX='ajax';
+	_Mysocket.JSONP='jsonp';
+	_Mysocket.LONGPOLL='longpoll';
 	_Mysocket.WEBSOCKET='websocket';
 	return _Mysocket;
 })();

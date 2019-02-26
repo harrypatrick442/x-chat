@@ -7,7 +7,7 @@ var MysocketChannelFactory = new (function(){
 			case Mysocket.JSONP:
 			default:
 			console.log(params.url);
-				return new _Ajax(params.id, params.url);
+				return new _Longpoll(params.id, params.url);
 		}
 	};
 	function _Websocket(id, url){
@@ -50,26 +50,23 @@ var MysocketChannelFactory = new (function(){
 			return websocket.readyState==websocket.OPEN;
 		};
 	}
-	function _Ajax(id, url){
+	function _Longpoll(id, url){
 		var self = this;
-		var analysis = new MysocketChannelAnalysis(Mysocket.AJAX);
-		var ajax = new Ajax({url:url});
-		this.send = function(msg){
-			msg.mysocketId = id;
-			ajax.post({data:JSON.stringify(msg), callbackSuccessful:postSuccessful, callbackFailed:postFailed});
-		};
+		var analysis = new MysocketChannelAnalysis(Mysocket.LONGPOLL);
+		var longpoll = new Longpoll({url:url, id:id});
+		longpoll.onMessage= onMessage;
+		longpoll.onError = onError;
+		longpoll.onSent = onOpen;
+		this.send = longpoll.send(msg);
 		this.getAnalysis= function(){
 			return analysis;
 		};
-		function postSuccessful(){
-			
-		}
-		function postFailed(err){
+		function onError(err){
 			onError(err);
 		}
-		function onMessage(e){
+		function onMessage(msg){
 			analysis.receivedMessage();
-			self.onMessage&&self.onMessage(JSON.parse(e.data));
+			self.onMessage&&self.onMessage(msg);
 		}
 		function onOpen(){
 			analysis.opened();
@@ -84,11 +81,6 @@ var MysocketChannelFactory = new (function(){
 			console.log(err);
 			self.onError&&self.onError(err);
 		}
-		onOpen();
-		/*
-		function needToInitialize(){
-			return !websocket||websocket.readyState === websocket.CLOSED||websocket.readyState === websocket.CLOSING;
-		}*/
 		this.isOpen = function(){
 			return true;
 		};

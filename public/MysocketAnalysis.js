@@ -26,9 +26,9 @@ var MysocketAnalysis = (function(){
 			}
 			if(shouldUseWebsocket)
 			{
-				return [Mysocket.WEBSOCKET, Mysocket.AJAX];
+				return [Mysocket.WEBSOCKET, Mysocket.LONGPOLL];
 			}
-			return [Mysocket.AJAX];
+			return [Mysocket.LONGPOLL];
 		};
 		this.add=function(channelAnalysis){
 			currentChannelAnalysis = channelAnalysis;       
