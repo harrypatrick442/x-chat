@@ -5,7 +5,7 @@
 }
 .birthday select{
 	
-        width :calc(33.33% - 1.33px);
+        width :33.33%;
         height :100%;
         position :relative;
         float :left;

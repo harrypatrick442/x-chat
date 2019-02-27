@@ -17,7 +17,7 @@
 .tab-panel .tab .name{
 	padding-left:5px;
 	height :100%;
-	width :calc(100% - 5px);
+	padding-right:2px;
 	white-space :nowrap;
 	overflow :hidden;
 	text-overflow :ellipsis;

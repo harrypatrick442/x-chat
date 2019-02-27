@@ -19,20 +19,21 @@ body{
 	border-radius:7px;
 	overflow:hidden;
 	border:2px solid #efefef;
+	width:100%;
 }
 .lobby .rooms-menu .room-entry .inner:hover{
 	background-color:#dddddd;
 	cursor:pointer;
 }
-.lobby .rooms-menu .room-entry .connected-image{
+.lobby .rooms-menu .room-entry .inner .connected-image{
 	float:left;
 	box-sizing:border-box;
 	height:30px;
 	width:30px;
 	border-radius:2px;
-	display:inline-block;
+    overflow: hidden;
 }
-.lobby .rooms-menu .room-entry .connected-image img{
+.lobby .rooms-menu .room-entry .inner .connected-image img{
 	box-sizing:border-box;
 	height:100%;
 	width:100%;
@@ -41,16 +42,15 @@ body{
     background-position: center; 
 	background-size:contain;*/
 }
-.lobby .rooms-menu .room-entry .name{
-	float:left;
-	width:calc(100% - 36px);
+.lobby .rooms-menu .room-entry .inner .name{
+	height:30px;
 	padding-top:5px;
 	padding-left:2px;
 	padding-right:2px;
 	font-size:16px;
 	font-family :Arial;
-	display:inline;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+    box-sizing: border-box;
 }

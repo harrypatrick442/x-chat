@@ -3,9 +3,12 @@
 	font-family:verdana, geneva, sans-serif;
     color: #dddddd;
 	position:fixed;
-	height:auto;
 	width:244px;
-	top:calc(50% - 100px);
+	margin:auto;
+	top:50%;
+	-webkit-transform:  translateY(-50%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+	-ms-transform:  translateY(-50%); /* IE 9 */
+	transform:  translateY(-50%); /* IE 10, Fx 16+, Op 12.1+ */
 	background-color:rgb(44, 43, 43);
 	border:3px solid rgb(0, 135, 226);
 	border-radius:5px;
@@ -18,13 +21,6 @@
 	left: 0; 
 	right: 0;
 		
-}
-.authenticate .div-inner{
-		height:auto;
-		width:calc(100% - 8px);
-		position:relative;
-		float:left;
-		box-sizing:border-box;
 }
 .authenticate .tickbox{
 margin-top:4px;

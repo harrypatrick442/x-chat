@@ -231,7 +231,7 @@ var Room = new (function(){
 		this.getFeed= function(){return feed;};
 		this.setVisible = function(value){
 			visible = value;
-			element.style.display=value?'block':'none';
+			element.style.display=value?'table':'none';
 		};
 		this.getVisible = function(){return visible;};
 		this.getTextValue= function(){return text.value;};
