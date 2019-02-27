@@ -1,8 +1,9 @@
-
+	
 module.exports =(function() {
 	console.log('running');
-
+	var EventEnabledBuilder=require('./EventEnabledBuilder');
 	var _Longpoll = function(params){
+		console.log(new Error().stack);
 		EventEnabledBuilder(this);
 		var self = this;
 		var app = params.app;
@@ -12,7 +13,11 @@ module.exports =(function() {
 		var messagesQueue =[];
 		var currentRequest;
 		var sendScheduled=false;
-		app.get(url, function(req, res, next){
+		var lastActive;
+		active();
+		app.get(url+'/'+id, function(req, res, next){
+			active();
+			console.log('polling');
 			endPreviousRequest();
 			currentRequest = new CurrentRequest(req, res);
 			if(messagesQueue.length>0)
@@ -24,6 +29,9 @@ module.exports =(function() {
 		};
 		this.getDisposed = function(){
 			return disposed;
+		};
+		this.getLastActive = function(){
+			return lastActive;
 		};
 		this.dispose = function(){
 			if(disposed)return;
@@ -44,8 +52,10 @@ module.exports =(function() {
 			if(sendScheduled)return;
 			if(!currentRequest)return;
 			setTimeout(send, 0);
+			sendScheduled=true;
 		}
 		function send(){
+			console.log(messagesQueue);
 			currentRequest.send(messagesQueue);
 			messagesQueue=[];
 			currentRequest=null;
@@ -54,13 +64,17 @@ module.exports =(function() {
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', longpoll:self});
 		}
+		function active(){
+			lastActive = getTime();
+		}
 	};
 	return _Longpoll;
+	function getTime(){return new Date().getTime();}
 	function CurrentRequest(req, res){
 		this.end = function(){
 			res.end();
 		};
-		this.send = function(){
+		this.send = function(msgs){
 			res.json({msgs:msgs});
 		};
 	}

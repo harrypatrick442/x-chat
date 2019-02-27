@@ -1,4 +1,5 @@
 var Longpoll = (function(){
+	var TIMEOUT=30000;
 	var _Longpoll = function(params){
 		var self = this;
 		var url = params.url;
@@ -17,7 +18,7 @@ var Longpoll = (function(){
 		function poll(){
 			console.log('polling_');
 			console.log(urlPoll);
-			ajax.get({url:urlPoll, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError});
+			ajax.get({url:urlPoll, timeout:TIMEOUT, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function callbackSendSuccessful(res){
 			console.log('done');
@@ -27,7 +28,8 @@ var Longpoll = (function(){
 			urlPoll = url+'/'+id;
 			console.log('id is: '+id);
 			dispatchGotId(id);
-			if(started)return;
+			if(started)return
+			started=true;
 			poll();
 			//new Timer({delay:3000, callback:poll, nTicks:1}).start();
 		}
@@ -35,16 +37,28 @@ var Longpoll = (function(){
 			console.error(err);
 			dispatchOnError(err);
 		}
+		function callbackPollTimeout(){
+			console.log('timed out');
+			poll();
+		}
 		function callbackPollError(err){
+			console.log('error');
 			console.error(err);
 			dispatchOnError(err);
 			if(stop)return;
 			poll();
 		}
 		function callbackPollSuccessful(res){
-			console.log(typeof(JSON.parse(res)));
-			dispatchOnMessage(JSON.parse(res));
+			console.log('successful');
+			if(res)
+				handleMessages(res);
 			poll();
+		}
+		function handleMessages(res){
+			res = JSON.parse(res);
+			each(res.msgs, function(msg){
+				dispatchOnMessage(msg);
+			});
 		}
 		function dispatchOnError(err){
 			self.onError&&self.onError(err);

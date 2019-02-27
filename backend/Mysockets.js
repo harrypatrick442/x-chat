@@ -29,18 +29,21 @@ module.exports = new (function(){
 		var mysocket;
 		if(id){
 			mysocket = getById(id);
+			if(mysocket)
+			{
+				mysocket.setToLongpoll(longpoll);
+				return mysocket;
+			}
 		}
-		if(mysocket)
-		{
-			mysocket.setToLongpoll(longpoll);
-			return mysocket;
-		}
-		mysocket = Mysocket.fromLongpoll({longpoll:longpoll, id:getNewId()});
+		else
+			id=getNewId();
+		mysocket = Mysocket.fromLongpoll({longpoll:longpoll, id});
 		set.add(mysocket);
 		addEvents(mysocket);
 		dispatchAdd(mysocket);
 		return mysocket;
 	};
+	this.getNewId=getNewId;
 	function dispatchAdd(mysocket){
 		self.dispatchEvent({type:'add', mysocket:mysocket});
 	}

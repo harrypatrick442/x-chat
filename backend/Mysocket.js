@@ -1,5 +1,5 @@
 module.exports = (function(){
-	const TIMEOUT_CLOSED_CHANNEL_MINUTES = 0.4;
+	const TIMEOUT_CLOSED_CHANNEL_MINUTES = 2;
 	var handler = require('./handler').handler;
 	var ChannelType = require('./ChannelType');
 	var channelFactory = require('./MysocketChannelFactory');
@@ -28,9 +28,9 @@ module.exports = (function(){
 		};
 		this.sendMessage = sendMessage;
 		this.incomingMessage = onMessage;
-		this.isActive = function(){
+		this.isActive = function(time){
 			if(channel)
-				return channel.isAlive();
+				return channel.isAlive(time);
 			return getTimeSinceChannelClosedMinutes()<TIMEOUT_CLOSED_CHANNEL_MINUTES;
 		};
 		function updateChannel(params){

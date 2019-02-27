@@ -16,6 +16,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 var server = app.listen(80, function () {
     console.log('Server is running..');
 });
+server.setTimeout(5000, function(r){console.log('timed out'); //console.log(r);
+});
 app.post('/image_uploader', function(req, res){
 	console.log(req);
 	res.send(imageUploader.process(req));

@@ -51,6 +51,7 @@ var MysocketChannelFactory = new (function(){
 		};
 	}
 	function _Longpoll(id, url){
+		console.log('_ID:'+id);
 		var self = this;
 		var analysis = new MysocketChannelAnalysis(ChannelType.LONGPOLL);
 		var longpoll = new Longpoll({url:url, id:id});

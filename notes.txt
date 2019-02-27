@@ -9,3 +9,8 @@ add in check to see if user contains mysocket already indicating device already 
 
 Fix the issue with background room items resizing when not visible. make it so resize is called upon becoming visible but not when hiddne.
 that way the rooms menu will not have full width entries.
+
+
+remove unneeded longpolling endpoints when mysocket closes.
+
+fix issue with endpoint being ddosed upon restart server, by longpolling.

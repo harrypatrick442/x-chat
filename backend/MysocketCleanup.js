@@ -30,7 +30,7 @@ module.exports = (function(){
 			console.log('cleanupRoutine running');
 			var mysockets = set.getEntries().slice();
 			each(mysockets, function(mysocket){
-				if(mysocket.isActive())return;
+				if(mysocket.isActive(new Date().getTime()))return;
 				mysocket.close();
 			});
 			console.log(set.count());

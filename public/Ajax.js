@@ -13,31 +13,26 @@ var Ajax = (function(){
 		};
 	};
 	_Ajax.post= function(params){
-		var url = params.url;
-		var data = params.data;
-		var parameters = params.parameters;
-		var callbackSuccessful = params.callbackSuccessful;
-		var callbackFailed= params.callbackFailed;
-		var contentType = params.contentType?params.contentType:DEFAULT_CONTENT_TYPE;
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', url, true);
-		xhr.setRequestHeader('Content-Type', contentType);
-		addUrlParameters(url, parameters);
-		return new Handle(xhr, data, callbackSuccessful, callbackFailed);
+		ajax(params, true);
 	};
 	_Ajax.get= function(params){
-		var url = params.url;
-		var data = params.data;
+		ajax(params, false);
+	};
+	function ajax(params, isPost){var url = params.url;
 		var parameters = params.parameters;
 		var callbackSuccessful = params.callbackSuccessful;
 		var callbackFailed= params.callbackFailed;
+		var callbackTimeout = params.callbackTimeout;
 		var contentType = params.contentType?params.contentType:DEFAULT_CONTENT_TYPE;
+		var timeout = params.timeout;
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', url, true);
+		xhr.open(isPost?'POST':'GET', url, true);
+		if(timeout)
+			xhr.timeout=timeout;
 		xhr.setRequestHeader('Content-Type', contentType);
 		addUrlParameters(url, parameters);
-		return new Handle(xhr, undefined, callbackSuccessful, callbackFailed);
-	};
+		return new Handle(xhr, isPost?params.data:undefined, callbackSuccessful, callbackFailed, callbackTimeout);
+	}
 	function addUrlParameters(url, parameters){
 		if(!parameters)return url;
 		var first=true;
@@ -49,7 +44,7 @@ var Ajax = (function(){
 		}
 		return url;
 	}
-	function Handle(xhr, data, callbackSuccessful, callbackFailed){
+	function Handle(xhr, data, callbackSuccessful, callbackFailed, callbackTimeout){
 		var self = this;
 		var successful;
 		xhr.onload = function() {
@@ -70,6 +65,8 @@ var Ajax = (function(){
 				callbackFailed&&callbackFailed();
 			}
 		};
+		if(callbackTimeout)
+			xhr.ontimeout = callbackTimeout;
 		xhr.onprogress = onProgress;
 		xhr.send(data);
 		this.getXhr = function(){

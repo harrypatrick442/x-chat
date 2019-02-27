@@ -1,4 +1,5 @@
 module.exports = new (function(){
+	var TIMEOUT_CHANNEL_LONGPOLL= 120000;
 	var Mysocket = require('./Mysocket');
 	var ChannelType = require('./ChannelType');
 	this.create = function(params){
@@ -32,7 +33,9 @@ module.exports = new (function(){
 			ws.close();
 		};
 	}
-	function Longpoll(longpoll){
+	function Longpoll(longpoll){ 
+	console.log(longpoll);
+	console.log('was');
 		var self = this;
 		var closed = false;
 		var messageQueue=[];
@@ -43,8 +46,10 @@ module.exports = new (function(){
 		longpoll.onMessage = function(msg){
 			self.onMessage(msg);
 		};
-		this.isAlive=function(){
-			return longpoll.getDisposed();
+		this.isAlive=function(time){
+			console.log('now: '+time);
+			console.log(longpoll.getLastActive());
+			return !longpoll.getDisposed()&&(time - longpoll.getLastActive()<TIMEOUT_CHANNEL_LONGPOLL);
 		};
 		this.close = function(){
 			longpoll.dispose();

@@ -7,7 +7,7 @@ var Mysocket = (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var channel;
-		var id=1;
+		var id;
 		var toSend=[];
 		this.send = function(msg){
 			if(channel&&channel.isOpen()){
