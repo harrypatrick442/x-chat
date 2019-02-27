@@ -26,6 +26,8 @@ var UsersMenues = (function(){
 		};
 		this.show = function(){
 			popup.show();
+			console.log(overlappingEntries.getTopEntry().getEntry());
+			overlappingEntries.getTopEntry().getEntry().resize();
 		};
 		function hidePopup(){
 			popup.hide();
@@ -46,7 +48,7 @@ var UsersMenues = (function(){
 		this.getElement=function(){return element;};
 		this.getEntries = function(){return entries;};
 		var entries = E.DIV();
-		entries.classList.add('entries');
+		entries.classList.add('users-menues-entries');
 		element.appendChild(entries);
 		this.setVisible = function(value){
 			entries.style.display=value?'block':'none';

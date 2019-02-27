@@ -9,9 +9,6 @@ box-sizing: border-box;
 	display:table-row;
 }
 .lobby .left .users-menues{
-box-sizing: border-box;
-	display:table-row;
-	height:100%;
 }
 .lobby .right{
 }

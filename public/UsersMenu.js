@@ -31,6 +31,7 @@ var UsersMenu =(function(){
 		this.hide = function(){
 			self.dispatchEvent({type:'hide', entry:self});
 		};
+		this.resize = ui.resize;
 		loadIgnores();
 		function dispatchHidePopup(){
 			self.dispatchEvent({type:'hidepopup'});
@@ -38,11 +39,8 @@ var UsersMenu =(function(){
 
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
-			for(var i=0; i<20; i++){
-				e.user.setId(i+100);
 				var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
 				sortedFilteredEntries.addEntry(userEntry);
-			}
 			userEntry.addEventListener('showpm', function(e){
 			console.log('a');self.dispatchEvent(e);});
 		}
@@ -80,33 +78,57 @@ var UsersMenu =(function(){
 		var buttonClose = params.buttonClose;
 		var visible=false;
 		var element = E.DIV();
-		element.classList.add('users-menu');
+		var entries = E.DIV();
+		var entriesWrapper = E.DIV();
 		var heading=E.DIV();
-		heading.innerHTML='&nbsp;'+params.name;
+		var headingWrapper = E.DIV();
+		var headingIgnored=E.DIV();
+		var entriesIgnored = E.DIV();
+		var entriesIgnoredWrapper = E.DIV();
+		var headingIgnoredWrapper = E.DIV();
+		var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'70%',minHeight:'60px'}, {minMeight:'60px'}]});
+		var top = splitPane.getPanelXY(0, 0).getElement();
+		var bottom = splitPane.getPanelXY(0, 1).getElement();
+		element.classList.add('users-menu');
 		heading.classList.add('heading');
+		entries.classList.add('users-menu-entries');
+		headingIgnored.classList.add('heading');
+		entriesIgnored.classList.add('users-menu-entries');
+		
+		
+		headingWrapper.classList.add('heading-wrapper');
+		entriesWrapper.classList.add('user-menu-entries-wrapper');
+		headingIgnoredWrapper.classList.add('heading-wrapper');
+		entriesIgnoredWrapper.classList.add('user-menu-entries-wrapper');
+		
+		headingWrapper.appendChild(heading);
+		entriesWrapper.appendChild(entries);
+		headingIgnoredWrapper.appendChild(headingIgnored);
+		entriesIgnoredWrapper.appendChild(entriesIgnored);
+		
+		element.appendChild(splitPane.getElement());
+		top.appendChild(headingWrapper);
+		top.appendChild(entriesWrapper);
+		headingIgnored.innerHTML='&nbsp;Ignored ';
+		bottom.appendChild(headingIgnoredWrapper);
+		bottom.appendChild(entriesIgnoredWrapper);
+		heading.innerHTML='&nbsp;'+params.name;
 		if(buttonClose){
 			heading.appendChild(buttonClose.getElement());
 		}
-		element.appendChild(heading);
-		var entries = E.DIV();
-		entries.classList.add('entries');
-		element.appendChild(entries);
-		var ignoredHeading=E.DIV();
-		ignoredHeading.innerHTML='&nbsp;Ignored ';
-		ignoredHeading.classList.add('heading');
-		element.appendChild(ignoredHeading);
-		var entriesIgnored = E.DIV();
-		entriesIgnored.classList.add('entries-ignored');
-		element.appendChild(entriesIgnored);
 		
 		
 		this.getEntries = function(){return entries;};
 		this.getEntriesIgnored = function(){return entriesIgnored;};
 		
 		this.getElement=function(){return element;};
+		this.resize = splitPane.resize;
 		this.setVisible = function(value){
 			visible = value;
 			element.style.display=value?'block':'none';
+			new Task(function(){
+			splitPane.initialize();
+			console.log('initialized');}).run();	
 		};
 		this.getVisible = function(){return visible;};
 	}

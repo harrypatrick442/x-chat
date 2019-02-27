@@ -1,13 +1,15 @@
 
 .users-menues{
+	box-sizing:border-box;
 	position:absolute;
 	width:100%;
 	display:none;
-	padding:6px;
+	padding-left:6px;
+	padding-top:6px;
+	padding-right:6px;
+	padding-bottom:6px;
 	background-color:rgb(44, 43, 43);
 }
-.users-menues .entries{
-	width:100%;
-	height:auto;
+.users-menues .users-menues-entries{
 	
 }
