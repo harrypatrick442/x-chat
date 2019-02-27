@@ -2,15 +2,14 @@
 .users-menues .entries .users-menu{
 	width:100%;
 	box-sizing:border-box;
-	background-color:rgb(32, 31, 31);
-	overflow:auto;
 }
 .users-menues .entries .users-menu .entries{
 	position:relative;
-	float:left;
 	width:100%;
 	box-sizing:border-box;
 	padding:3px;
+	overflow-y:auto;
+	overflow:hidden;
 }
 .users-menues .entries .users-menu .heading{
 	width:100%;
@@ -19,10 +18,11 @@
 }
 .users-menues .entries .users-menu .entries-ignored{
 	position:relative;
-	float:left;
 	width:100%;
 	box-sizing:border-box;
 	padding:3px;
 	padding-top:0px;
 	padding-bottom:0px;
+	overflow-y:auto;
+	overflow:hidden;
 }

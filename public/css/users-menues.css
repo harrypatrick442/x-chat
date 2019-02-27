@@ -1,9 +1,14 @@
 
 .users-menues{
+	display:block;
 	box-sizing:border-box;
 	background-color:rgb(32, 31, 31);
+    height: 100%;
 }
 .users-menues .entries{
+	display:block;
 	box-sizing:border-box;
 	background-color:rgb(32, 31, 31);
+	overflow:hidden;
+	height:100%;
 }

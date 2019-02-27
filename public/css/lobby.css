@@ -20,6 +20,7 @@ background-color:rgb(44, 43, 43);
 display:table;
 }
 .lobby .left{
+	height:100%;
 	display:table-cell;
 }
 .lobby .left .left-inner{
@@ -29,6 +30,8 @@ display:table;
 box-sizing:border-box;
 padding:6px;
 padding-right:0px;
+position:relative;
+    overflow: hidden;
 }
 .lobby .right{
 	display:table-cell;
@@ -36,7 +39,7 @@ padding-right:0px;
 }
 .lobby .right .right-inner{
 height:100%;
-	width:100%;
+	width:100%;	
 float:left;
 overflow:hidden;
 display: table;

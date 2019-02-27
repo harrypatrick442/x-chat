@@ -9,6 +9,7 @@
 	padding:1px;
 	display:inline-block;
 	position:relative;
+	margin-bottom:2px;
 }.lobby .rooms .room .feed .message .pending{
 	left:0px;
 	right:0px;

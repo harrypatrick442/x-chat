@@ -20,6 +20,7 @@ var User = (function(){//Two kinds of users information from server. 1) a compre
 		var referenceCounter = new ReferenceCounter();
 		var self = this;
 		this.getId = function(){return params.id;};
+		this.setId = function(value){params.id = value;};
 		this.getUsername = function(){return String(params.username);};
 		this.getEmail = function(){return params.email;};
 		this.isGuest= function(){return params.isGuest;};

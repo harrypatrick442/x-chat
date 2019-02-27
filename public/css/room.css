@@ -27,7 +27,7 @@
 	padding-left:3px;
 	padding-right:3px;
 	box-sizing:border-box;
-	padding-bottom:3px;
+	padding-bottom:1px;
 	height:100%;
 }
 .lobby .rooms .entries .room .top .video-feed-panel{
@@ -50,6 +50,7 @@
 	background-color:rgb(44, 43, 43);
 }
 .lobby .rooms .entries .room .bottom .text{
+	position:relative;
 	width:100%;
 	border:0px;
 	margin:0px;
