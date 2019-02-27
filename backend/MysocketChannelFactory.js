@@ -7,7 +7,7 @@ module.exports = new (function(){
 		if(params.ws)
 			return new Websocket(params.ws);
 		else 
-			return new Longpoll(params.url, params.longpoll, id);
+			return new Longpoll(params.longpoll);
 		throw new Error('Not implemented');
 	};
 	function Websocket(ws){
@@ -32,18 +32,22 @@ module.exports = new (function(){
 			ws.close();
 		};
 	}
-	function Longpoll(url, longpoll, id){
+	function Longpoll(longpoll){
 		var self = this;
 		var closed = false;
 		var messageQueue=[];
 		this.channelType = ChannelType.LONGPOLL;
 		this.sendMessage=function(msg){
-			longpoll.publishToId(url, id, msg);
+			longpoll.send(msg);
+		};
+		longpoll.onMessage = function(msg){
+			self.onMessage(msg);
 		};
 		this.isAlive=function(){
-			return !closed;
+			return longpoll.getDisposed();
 		};
 		this.close = function(){
+			longpoll.dispose();
 			closed=true;
 		};
 	}

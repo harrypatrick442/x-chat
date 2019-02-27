@@ -1,29 +1,23 @@
 module.exports=new (function(){
-	const URL="/poll/:id";
+	const URL="/poll";
 	var Mysockets = require('./Mysockets');
 	var url = require('url');
-	var Longpoll = require("express-longpoll");
+	var Longpolls = require("Longpolls");
+	var Longpoll = require("Longpoll");
 	this.load = function(app){
-		console.log(Longpoll);
-		console.log('about to create');
-		var longpoll = new Longpoll(app);
-		console.log(longpoll);
-		longpoll.create(URL, (req,res, next) => {
-			var mysocketId = req.params.id;
-			req.id=mysocketId;
-			console.log('created');
-			console.log(this);
-			next();
-		});
+		var longpolls = new Longpolls();
 		app.post('/poll', function(req, res, next){
 			var data = req.body;
 			var mysocketId = data.id;
 			var msg = data.msg;
-			var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, longpoll, URL);
-			mysocket.incomingMessage(msg);
-			console.log('end');
+			var longpoll = longpolls.getById(mysocketId);
+			if(!longpoll)
+			{
+				longpoll = new Longpoll({app:app, id:mysocketId, url:URL});
+				Mysockets.getOrCreateLongpoll(mysocketId, longpoll);
+			}
+			longpoll.incomingMessage(msg);
 			res.send({id:mysocket.getId()});
-			res.end();
 		});
 	};
 })();

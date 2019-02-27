@@ -2,9 +2,13 @@
 module.exports =(function() {
 	console.log('running');
 
-	var _Longpoll = function(app){
+	var _Longpoll = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		var app = params.app;
+		var id = params.id;
+		var url = params.url;
+		var disposed = false;
 		var messagesQueue =[];
 		var currentRequest;
 		var sendScheduled=false;
@@ -18,13 +22,21 @@ module.exports =(function() {
 			messagesQueue.push(msg);
 			scheduleSend();
 		};
+		this.getDisposed = function(){
+			return disposed;
+		};
 		this.dispose = function(){
-			closed=true;
+			if(disposed)return;
+			disposed=true;
 			if(!currentRequest)return;
 			currentRequest.end();
 			dispatchDispose();
 		};
-		function endCurrentRequest(){
+		this.incomingMessage = function(msg){
+			self.onMessage(msg);
+		};
+		this.getId = function(){return id;};
+		function endPreviousRequest(){
 			if(!currentRequest)return;
 			currentRequest.end();
 		}

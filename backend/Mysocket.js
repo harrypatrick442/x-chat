@@ -18,10 +18,10 @@ module.exports = (function(){
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
-		this.setToLongpoll = function(params){
+		this.setToLongpoll = function(longpoll){
 			console.log(channel);
 			if(channel&&channel.channelType==ChannelType.LONGPOLL)return;
-			updateChannel(params);
+			updateChannel({longpoll:longpoll});
 		};
 		this.getId = function(){
 			return params.id;
