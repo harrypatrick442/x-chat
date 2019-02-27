@@ -16,40 +16,32 @@ var Longpoll = (function(){
 		};
 		this.dispose=this.stop;
 		function poll(){
-			console.log('polling_');
-			console.log(urlPoll);
 			ajax.get({url:urlPoll, timeout:TIMEOUT, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function callbackSendSuccessful(res){
-			console.log('done');
 			res = JSON.parse(res);
 			if(res.id)
 				id = res.id;
 			urlPoll = url+'/'+id;
-			console.log('id is: '+id);
 			dispatchGotId(id);
 			if(started)return
 			started=true;
 			poll();
-			//new Timer({delay:3000, callback:poll, nTicks:1}).start();
 		}
 		function callbackSendError(err){
 			console.error(err);
 			dispatchOnError(err);
 		}
 		function callbackPollTimeout(){
-			console.log('timed out');
 			poll();
 		}
 		function callbackPollError(err){
-			console.log('error');
 			console.error(err);
 			dispatchOnError(err);
 			if(stop)return;
 			poll();
 		}
 		function callbackPollSuccessful(res){
-			console.log('successful');
 			if(res)
 				handleMessages(res);
 			poll();

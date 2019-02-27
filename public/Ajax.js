@@ -51,11 +51,8 @@ var Ajax = (function(){
 			if (xhr.readyState === 4)
 			{
 				if(xhr.status === 200) {
-					console.log('status 200');
 					successful = true;
 					done();
-					console.log(xhr.responseText);
-					console.log(callbackSuccessful);
 					callbackSuccessful&&callbackSuccessful(xhr.responseText);
 					return;
 				}

@@ -1,9 +1,7 @@
 	
 module.exports =(function() {
-	console.log('running');
 	var EventEnabledBuilder=require('./EventEnabledBuilder');
 	var _Longpoll = function(params){
-		console.log(new Error().stack);
 		EventEnabledBuilder(this);
 		var self = this;
 		var app = params.app;
@@ -17,7 +15,6 @@ module.exports =(function() {
 		active();
 		app.get(url+'/'+id, function(req, res, next){
 			active();
-			console.log('polling');
 			endPreviousRequest();
 			currentRequest = new CurrentRequest(req, res);
 			if(messagesQueue.length>0)
@@ -55,7 +52,6 @@ module.exports =(function() {
 			sendScheduled=true;
 		}
 		function send(){
-			console.log(messagesQueue);
 			currentRequest.send(messagesQueue);
 			messagesQueue=[];
 			currentRequest=null;
