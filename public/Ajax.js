@@ -13,10 +13,10 @@ var Ajax = (function(){
 		};
 	};
 	_Ajax.post= function(params){
-		ajax(params, true);
+		return ajax(params, true);
 	};
 	_Ajax.get= function(params){
-		ajax(params, false);
+		return ajax(params, false);
 	};
 	function ajax(params, isPost){var url = params.url;
 		var parameters = params.parameters;

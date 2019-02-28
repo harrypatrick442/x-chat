@@ -159,10 +159,10 @@ var MIN_MIN_WIDTH=20;
 			return slidersY.get(0).getHeight();
 		}
 		function getWidth(){
-			return element.clientWidth;
+			return element.getBoundingClientRect().width;
 		}
 		function getHeight(){
-			return element.clientHeight;
+			return element.getBoundingClientRect().height;
 		}
 		function createPanels(){
 			createPanelColumns();
@@ -466,7 +466,7 @@ var MIN_MIN_WIDTH=20;
 			rightPanelColumn&&rightPanelColumn.setLeft(value+self.getWidth());
 		};
 		this.getWidth= function(){
-			return element.clientWidth;
+			return element.getBoundingClientRect().width;
 		};
 		this.getConstraints=function(){
 			captureInitialVariables();
@@ -510,7 +510,7 @@ var MIN_MIN_WIDTH=20;
 			return getXLeft()+getWidth();
 		}
 		function getWidth(){
-			return element.clientWidth;
+			return element.getBoundingClientRect().width;
 		}
 		function getConstraintsLeftOfSlider(){
 			var width = getWidth();
@@ -557,7 +557,7 @@ var MIN_MIN_WIDTH=20;
 			bottomPanelRow&&bottomPanelRow.setTop(value+self.getHeight());
 		};
 		this.getHeight = function(){
-			return element.clientHeight;
+			return element.getBoundingClientRect().height;
 		};
 		this.getConstraints=function(){
 			captureInitialVariables();
@@ -603,7 +603,7 @@ var MIN_MIN_WIDTH=20;
 			return getYTop()+getHeight();
 		}
 		function getHeight(){
-			return element.clientHeight;
+			return element.getBoundingClientRect().width;
 		}
 		function getConstraintsTopOfSlider(){
 			var height = getHeight();
