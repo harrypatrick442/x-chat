@@ -86,7 +86,7 @@ var PmsMenu = new (function(){
 		
 		if(!isMobile)
 		{
-			element.appendChild(entriesWrapper);
+			inner.appendChild(entriesWrapper);
 			entriesWrapper.appendChild(entries); 
 		}
 		else
@@ -102,7 +102,6 @@ var PmsMenu = new (function(){
 			element.appendChild(headingWrapper);
 			
 			inner.appendChild(headingWrapper);
-			inner.appendChild(entriesWrapper);
 			entriesWrapper.appendChild(entries); 
 		}
 		element.classList.add('pms-menu');
@@ -110,6 +109,7 @@ var PmsMenu = new (function(){
 		entriesWrapper.classList.add('entries-wrapper');
 		entries.classList.add('entries');
 		
+		inner.appendChild(entriesWrapper);
 		element.appendChild(inner); 
 		this.getElement = function(){return element;};
 		this.setVisible=function(value){
