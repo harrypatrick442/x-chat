@@ -16,10 +16,13 @@ var Longpoll = (function(){
 		};
 		this.dispose=this.stop;
 		function poll(){
+			console.log('poll');
 			ajax.get({url:urlPoll, timeout:TIMEOUT, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function callbackSendSuccessful(res){
+			console.log('callbackSendSuccessful');
 			res = JSON.parse(res);
+			console.log('parsed json');
 			if(res.id)
 				id = res.id;
 			urlPoll = url+'/'+id;

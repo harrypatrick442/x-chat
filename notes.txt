@@ -14,3 +14,5 @@ that way the rooms menu will not have full width entries.
 remove unneeded longpolling endpoints when mysocket closes.
 
 fix issue with endpoint being ddosed upon restart server, by longpolling.
+
+connected image cleanup on mobile.

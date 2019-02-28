@@ -63,13 +63,28 @@ var NotificationsMenu = (function(){
 		var getEntries = params.getEntries;
 		element.classList.add('notifications-menu');
 		var entries = E.DIV();
-		entries.classList.add('entries');
+		var entriesWrapper = E.DIV();
 		var heading = E.DIV();
+		var headingWrapper = E.DIV();
+		var inner = E.DIV();
+		inner.classList.add('notifications-menu-inner');
+		entries.classList.add('entries');
 		heading.classList.add('heading');
+		entriesWrapper.classList.add('entries-wrapper');
+		headingWrapper.classList.add('heading-wrapper');
 		heading.innerHTML='PM Notifications';
+		
+		
 		heading.appendChild(buttonClose.getElement());
-		element.appendChild(heading);
-		element.appendChild(entries);
+		
+		headingWrapper.appendChild(heading);
+		
+		inner.appendChild(headingWrapper);
+		inner.appendChild(entriesWrapper);
+		entriesWrapper.appendChild(entries); 
+		element.appendChild(inner);
+		
+		
 		this.show = function(){
 			popup.show();
 			resized();

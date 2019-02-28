@@ -80,25 +80,37 @@ var PmsMenu = new (function(){
 		var onResized = params.onResized;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
+		var inner = E.DIV();
+		var entriesWrapper = E.DIV();
 		var resizeWatched;
 		
 		if(!isMobile)
-			element = E.DIV();
+		{
+			element.appendChild(entriesWrapper);
+			entriesWrapper.appendChild(entries); 
+		}
 		else
 		{
 			document.body.appendChild(popup.getElement());
 			var heading=E.DIV();
+			var headingWrapper = E.DIV();
 			heading.innerHTML='&nbsp;Pms ';
+			headingWrapper.classList.add('heading-wrapper');
 			heading.classList.add('heading');
 			heading.appendChild(buttonClose.getElement());
-			element.appendChild(heading);
+			headingWrapper.appendChild(heading);
+			element.appendChild(headingWrapper);
+			
+			inner.appendChild(headingWrapper);
+			inner.appendChild(entriesWrapper);
+			entriesWrapper.appendChild(entries); 
 		}
 		element.classList.add('pms-menu');
-		var entriesWrapper = E.DIV();
+		inner.classList.add('pms-menu-inner');
 		entriesWrapper.classList.add('entries-wrapper');
 		entries.classList.add('entries');
-		element.appendChild(entriesWrapper); 
-		entriesWrapper.appendChild(entries); 
+		
+		element.appendChild(inner); 
 		this.getElement = function(){return element;};
 		this.setVisible=function(value){
 			entries.style.display=value?'block':'none';

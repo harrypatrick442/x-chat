@@ -13,6 +13,7 @@ var Ajax = (function(){
 		};
 	};
 	_Ajax.post= function(params){
+		console.log('doing post');
 		return ajax(params, true);
 	};
 	_Ajax.get= function(params){
@@ -53,6 +54,7 @@ var Ajax = (function(){
 				if(xhr.status === 200) {
 					successful = true;
 					done();
+					console.log(xhr.responseText);
 					callbackSuccessful&&callbackSuccessful(xhr.responseText);
 					return;
 				}
