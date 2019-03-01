@@ -126,9 +126,7 @@ var UsersMenu =(function(){
 		this.setVisible = function(value){
 			visible = value;
 			element.style.display=value?'block':'none';
-			new Task(function(){
-			splitPane.initialize();
-			console.log('initialized');}).run();	
+			new Task(splitPane.resize).run();	
 		};
 		this.getVisible = function(){return visible;};
 	}

@@ -208,7 +208,7 @@ var Room = new (function(){
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
 			setVideoFeedVisible(false);
-			new Task(function(){splitPane.initialize();}).run();
+			new Task(splitPane.resize).run();
 		}
 		else{
 			top.appendChild(feed);

@@ -6,7 +6,7 @@ var UsersMenues = (function(){
 		if(isMobile){
 			popup = new Popup({});
 		}
-		var ui = new UI({popupElement:isMobile?popup.getElement():undefined});
+		var ui = new UI({popupElement:isMobile?popup.getElement():undefined, getTopEntry:getTopEntry});
 		var overlappingEntries = new OverlappingEntries({element:ui.getEntries()});
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
@@ -29,6 +29,9 @@ var UsersMenues = (function(){
 			console.log(overlappingEntries.getTopEntry().getEntry());
 			overlappingEntries.getTopEntry().getEntry().resize();
 		};
+		function getTopEntry(){
+			return overlappingEntries.getTopEntry();
+		}
 		function hidePopup(){
 			popup.hide();
 		}
@@ -42,6 +45,7 @@ var UsersMenues = (function(){
 	return _UsersMenues;
 	function UI(params){
 		var element = params.popupElement;
+		var getTopEntry = params.getTopEntry;
 		if(!element) element = E.DIV();
 		else document.body.appendChild(element);
 		element.classList.add('users-menues');
@@ -50,8 +54,14 @@ var UsersMenues = (function(){
 		var entries = E.DIV();
 		entries.classList.add('users-menues-entries');
 		element.appendChild(entries);
+		if(!isMobile){
+			ResizeManager.add({element:element, onResized:onResized});
+		}
 		this.setVisible = function(value){
 			entries.style.display=value?'block':'none';
 		};
+		function onResized(){console.log('a');
+			getTopEntry().getEntry().resize();
+		}
 	}
 })();

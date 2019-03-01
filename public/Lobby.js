@@ -368,7 +368,7 @@ var Lobby = (function(){
 			rightBottom.appendChild(rooms.getElement());
 			rightInner.appendChild(splitPane.getElement());
 			rightInner.appendChild(notificationsMenu.getElement());
-			new Task(function(){splitPane.initialize();}).run();
+			new Task(splitPane.resize).run();
 			buttonUsers.addEventListener('click', onResized);
 			ResizeManager.add({element:element, onResized:onResized});
 		}

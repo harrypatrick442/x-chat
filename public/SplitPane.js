@@ -6,6 +6,7 @@ var MIN_MIN_WIDTH=20;
 		var nPanelsHeight = params.nPanelsHeight;
 		var rowProfiles=params.rowProfiles;
 		var columnProfiles = params.columnProfiles;
+		var initialized=false;
 		EventEnabledBuilder(this);
 		var self = this;
 		var panelRows=new PanelRows();
@@ -35,12 +36,16 @@ var MIN_MIN_WIDTH=20;
 		this.resize=resize;
 		this.initialize=initialize;
 		function resize(){
+			if(!initialized)
+			return initialize();
+			console.log('resie');
 			updateSliderVisibility();
 			resizePanelColumnsPositionDimensions(getWidth(), getSliderWidth(), getProportionallyAdaptedPanelColumnWidth);
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
 			captureCurrentDimensions();
 		}
 		function initialize(){
+			initialized=true;
 			updateSliderVisibility();
 			resizePanelColumnsPositionDimensions(getWidth(), getSliderWidth(), function(panelColumn){ return panelColumn.getDesiredWidth();});
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
