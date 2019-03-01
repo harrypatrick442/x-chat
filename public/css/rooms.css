@@ -6,10 +6,10 @@ body{
 	width:100%;
 	box-sizing:border-box;
 	top:38px;
-	bottom:0px;
+	bottom:6px;
 }
 .lobby .rooms .rooms-inner{
-	display:block;
+	display:block;	
 	box-sizing:border-box;	
 	width:100%;
 	height:100%;
