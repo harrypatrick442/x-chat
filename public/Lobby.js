@@ -367,23 +367,22 @@ var Lobby = (function(){
 			rightBottom.appendChild(divButtonShowHideWrapper);
 			rightBottom.appendChild(rooms.getElement());
 			rightInner.appendChild(splitPane.getElement());
+			rightInner.appendChild(notificationsMenu.getElement());
 			new Task(function(){splitPane.initialize();}).run();
+			buttonUsers.addEventListener('click', onResized);
+			ResizeManager.add({element:element, onResized:onResized});
 		}
 		else
 		{
 			rightInner.appendChild(pmsMenu.getElement());
 			rightInner.appendChild(divButtonShowHideWrapper);
 			rightInner.appendChild(rooms.getElement());
+			document.body.appendChild(notificationsMenu.getElement());
 		}
 		element.appendChild(right);
 		right.appendChild(rightInner);
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
-		if(!isMobile){
-			rightInner.appendChild(notificationsMenu.getElement());
-		}
-		else{
-			document.body.appendChild(notificationsMenu.getElement());
-		}
+		
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
 		divButtonShowHideWrapper.appendChild(buttonMenu.getElement());
@@ -407,8 +406,6 @@ var Lobby = (function(){
 		//function pmsMenuResized(){
 		//	rooms.resize();
 		//}
-		ResizeManager.add({element:element, onResized:onResized});
-		buttonUsers.addEventListener('click', onResized);
 		function onResized(){
 			console.log('click');
 			new Task(
