@@ -19,7 +19,7 @@ var ResizeManager=new (function(){
 			if(window.ResizeObserver)
 				new ResizeObserver(staggered?scheduleResize:resized).observe(element);
 			else
-				WindowResizeManager.addEventListener('resized', staggered?resized:scheduleResize);
+				WindowResizeManager.addEventListener('resized', staggered?scheduleResize:resized);
 			function logSize(){loggedSize= element.getBoundingClientRect();}
 			function scheduleResize(){
 				temporalCallback.trigger();

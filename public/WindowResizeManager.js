@@ -1,11 +1,11 @@
 var WindowResizeManager=new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
-		var temporalCallback = new TemporalCallback({callback:doResize, delay:500,
-		maxTotalDelay:800});
-		window.addEventListener("resize", scheduleResize);
+		/*var temporalCallback = new TemporalCallback({callback:doResize, delay:500,
+		maxTotalDelay:800});*/
+		window.addEventListener("resize", doResize);
 		function scheduleResize(){
-			temporalCallback.trigger();
+			//temporalCallback.trigger();
 		}
 		function doResize(){
 			console.log('doing resize');
