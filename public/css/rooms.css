@@ -2,11 +2,11 @@ body{
 	
 }
 .lobby .rooms{
-	position:relative;
+	position:absolute;
 	width:100%;
 	box-sizing:border-box;
-	display:table-row;
-	height:100%;
+	top:32px;
+	bottom:0px;
 }
 .lobby .rooms .rooms-inner{
 	display:block;
@@ -23,5 +23,6 @@ body{
 	top:0px;
 	bottom:6px;
 	height:100%;
+	overflow:hidden;
 
 }

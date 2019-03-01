@@ -2,25 +2,27 @@ var Mysocket = (function(){
 	var MYSOCKET_ID = 'mysocket_id';
 	var _Mysocket= function(params){
 		var url = params.url;
-		console.log(url);
 		var urlWebsocket = params.urlWebsocket;
+		var temporalCallbackGetChannel = new TemporalCallback({delay:3000});
 		EventEnabledBuilder(this);
 		var self = this;
 		var channel;
 		var id;
 		var toSend=[];
 		this.send = function(msg){
+			var channel = getChannel();
 			if(channel&&channel.isOpen()){
+			console.log('send2');
 				channel.send(msg);
 				return;
 			}
 			toSend.push(msg);
-			getChannel();
 		};
 		this.getUrl = function(){
 			return url;
 		};
 		var mysocketAnalysis = new MysocketAnalysis({mysocket:this});
+		var channelManager = new MysocketChannelManager({mysocketAnalysis:mysocketAnalysis, urlWebsocket:urlWebsocket, url:url, getId:getId});
 		getChannel();
 		function callbackOnOpen(){
 			dispatchOnOpen();
@@ -39,13 +41,18 @@ var Mysocket = (function(){
 		}
 		function getChannel(){
 			if(channel)return channel;
-			console.log('getting channel');
-			channel = MysocketChannelFactory.create({id:id, urlWebsocket:urlWebsocket, url:url, mysocketAnalysis:mysocketAnalysis});
-			
-			console.log(channel);
+			channel = channelManager.wouldLikeNewChannel();
+			if(!channel)return;
+			prepareChannel(channel);
+		}
+		function getId(){
+			return id;
+		}
+		function prepareChannel(channel){
 			channel.onClose = onClose;
 			channel.onOpen = onOpen;
 			channel.onMessage = onMessage;
+			mysocketAnalysis.add(channel.getAnalysis());
 		}
 		function onMessage(msg){
 			if(msg.type==MYSOCKET_ID){
@@ -55,7 +62,6 @@ var Mysocket = (function(){
 			dispatchOnMessage(msg);
 		}
 		function onClose(){
-			mysocketAnalysis.add(channel.getAnalysis());
 			channel = null;
 		}
 		function onOpen(){

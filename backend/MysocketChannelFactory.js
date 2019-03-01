@@ -19,7 +19,7 @@ module.exports = new (function(){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
 		ws.on('message', function(msg) {
-			self.onMessage&&self.onMessage(msg);
+			self.onMessage&&self.onMessage(JSON.parse(msg));
 		});
 		ws.on('close', function(){
 			closed=true;

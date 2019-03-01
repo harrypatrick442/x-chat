@@ -9,28 +9,32 @@
 	width:100%;
 }
  .notifications-menu .notifications-menu-inner{
-	display:table;
-	flex-direction: column;
-	display:flex;
+	box-sizing:border-box;
+	position:relative;
 	height:100%;
 	width:100%;
 }
  .notifications-menu  .notifications-menu-inner .entries-wrapper{
-	display:table-row;	
-	display:flex;
-	height:100%;
-    overflow-y: auto;
+	box-sizing:border-box;
+	 position:absolute;
+	 top:36px;
+	 bottom:0px;
+	width:100%;
+	
 }
  .notifications-menu .notifications-menu-inner .entries-wrapper .entries{
+	box-sizing:border-box;
 	height:100%;
+	width:100%;
+    overflow-y: auto;
 }
  .notifications-menu .notifications-menu-inner .heading-wrapper{
-	display:table-row;
-	display:flex;
+	box-sizing:border-box;
 	height:32px;
 	width:100%;
 }
  .notifications-menu .notifications-menu-inner .heading-wrapper .heading{
+	box-sizing:border-box;
 	padding:4px;
 	margin-bottom:3px;
 	box-sizing:border-box;

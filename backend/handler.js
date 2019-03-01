@@ -5,7 +5,6 @@ exports.handler = new (function(){
 		this.process = function(req, mysocket, callback){
 			var res = {};
 			try{
-				//console.log(req);
 				switch(req.type){
 					case 'test':
 						console.log('test');

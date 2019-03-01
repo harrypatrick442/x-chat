@@ -255,6 +255,7 @@ var MIN_MIN_WIDTH=20;
 			return panels[0].getTop();
 		};
 		this.setVisible = function(value){
+			console.log(value);
 			visible = value;
 			each(panels, function(panel){
 				panel.setVisible(value);

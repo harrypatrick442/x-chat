@@ -13,29 +13,35 @@ overscroll-behavior-y: none;
 }
 .lobby{
 border:1px solid black;
+box-sizing:border-box;
 position:relative;
 width:100%;
 height:100%;
+display:block;
 background-color:rgb(44, 43, 43);
-display:table;
 }
 .lobby .left{
 	height:100%;
-	display:table-cell;
+	width:200px;
+	float:left;
+	box-sizing:border-box;
+	padding:6px;
+	padding-right:0px;
 }
 .lobby .left .left-inner{
-float:left;
-height:100%;
-display:table;
-box-sizing:border-box;
-padding:6px;
-padding-right:0px;
-position:relative;
-    overflow: hidden;
+	float:left;
+	height:100%;
+	box-sizing:border-box;
+	position:relative;
+	width:100%;
 }
 .lobby .right{
-	display:table-cell;
-	width:100%;
+	box-sizing:border-box;
+	overflow:hidden;
+	top:0px;
+	position:relative;
+	width:auto;
+	right:0px;
 	height:100%;
 }
 .lobby .right .right-inner{
@@ -46,6 +52,11 @@ overflow:hidden;
 display: table;
 position:relative;
 }
+.lobby .right .right-inner .split-pane .slider.y{
+    left: 6px;
+    right: 6px;
+    width: auto;
+}
 .lobby .right .button-show-hide-wrapper{
 float:left;	
 margin-top:0px;
@@ -53,7 +64,6 @@ text-align:center;
 width:100%;
 height:32px;	
 position:relative;
-display:table-row;
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
 cursor:pointer;

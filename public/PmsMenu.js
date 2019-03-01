@@ -80,14 +80,13 @@ var PmsMenu = new (function(){
 		var onResized = params.onResized;
 		var getEntries = params.getEntries;
 		var entries = E.DIV();
-		var inner = E.DIV();
 		var entriesWrapper = E.DIV();
+		var inner = E.DIV();
 		var resizeWatched;
 		
 		if(!isMobile)
 		{
-			inner.appendChild(entriesWrapper);
-			entriesWrapper.appendChild(entries); 
+			
 		}
 		else
 		{
@@ -99,17 +98,15 @@ var PmsMenu = new (function(){
 			heading.classList.add('heading');
 			heading.appendChild(buttonClose.getElement());
 			headingWrapper.appendChild(heading);
-			element.appendChild(headingWrapper);
-			
 			inner.appendChild(headingWrapper);
-			entriesWrapper.appendChild(entries); 
 		}
-		element.classList.add('pms-menu');
 		inner.classList.add('pms-menu-inner');
+		element.classList.add('pms-menu');
 		entriesWrapper.classList.add('entries-wrapper');
 		entries.classList.add('entries');
 		
-		inner.appendChild(entriesWrapper);
+			entriesWrapper.appendChild(entries); 
+			inner.appendChild(entriesWrapper);
 		element.appendChild(inner); 
 		this.getElement = function(){return element;};
 		this.setVisible=function(value){

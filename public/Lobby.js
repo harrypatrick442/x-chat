@@ -190,10 +190,10 @@ var Lobby = (function(){
 			});
 		}
 		function onToggleButtonUsers(e){
-			usersMenues.setVisible(e.toggled);
+			ui.setLeftVisible(e.toggled);
 		}
 		function onToggleButtonPms(e){
-			pmsMenu.setVisible(e.toggled);
+			ui.setPmsMenuVisible(e.toggled);
 		}
 		function callbackRegister(obj){
 			obj.type='register';
@@ -344,6 +344,7 @@ var Lobby = (function(){
 		right.classList.add('right');
 		rightInner.classList.add('right-inner');
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
+		var rightTopRow;
 		if(!isMobile){
 			var left = E.DIV();
 			left.classList.add('left');
@@ -355,13 +356,28 @@ var Lobby = (function(){
 			leftInner.appendChild(logo.getElement());
 			leftInner.appendChild(usersMenues.getElement());
 			
+			
+			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'120px', minHeight:'60px'}, {minHeight:'60px'}]});
+			rightTopRow= splitPane.getPanelRow(0);
+			var rightTopPanel = splitPane.getPanelXY(0, 0);
+			var rightBottomPanel = splitPane.getPanelXY(0, 1);
+			var rightTop = rightTopPanel.getElement();
+			var rightBottom = rightBottomPanel.getElement();
+			rightTop.appendChild(pmsMenu.getElement());
+			rightBottom.appendChild(divButtonShowHideWrapper);
+			rightBottom.appendChild(rooms.getElement());
+			rightInner.appendChild(splitPane.getElement());
+			new Task(function(){splitPane.initialize();}).run();
+		}
+		else
+		{
+			rightInner.appendChild(pmsMenu.getElement());
+			rightInner.appendChild(divButtonShowHideWrapper);
+			rightInner.appendChild(rooms.getElement());
 		}
 		element.appendChild(right);
 		right.appendChild(rightInner);
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
-		rightInner.appendChild(pmsMenu.getElement());
-		rightInner.appendChild(divButtonShowHideWrapper);
-		rightInner.appendChild(rooms.getElement());
 		if(!isMobile){
 			rightInner.appendChild(notificationsMenu.getElement());
 		}
@@ -373,19 +389,32 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.appendChild(buttonMenu.getElement());
 		divButtonShowHideWrapper.appendChild(buttonNotifications.getElement());
 		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
-		
-			 //(isMobile?document.body:divButtonShowHideWrapper).appendChild(mainMenu.getElement());
 		this.getElement = function(){return element;};
 		this.showMainMenu = function(options){
 			console.log(getAbsolute(buttonProfilePicture.getElement()).right);
 			mainMenu.show(options);
 			mainMenu.setPosition({right:6,top:getAbsolute(buttonProfilePicture.getElement()).bottom+3});
 		};
+		this.setPmsMenuVisible= function(value){
+			console.log(value);
+			rightTopRow.setVisible(value);
+		};
+		this.setLeftVisible = function(value){
+			left.style.display=value?'block':'none';
+		};
 		this.setSpinnerAutomaticAuthenticationVisible=spinnerAutomaticAuthentication.setVisible;
-		pmsMenu.addEventListener('resized', pmsMenuResized);
-		function pmsMenuResized(){
-			rooms.resize();
+		//pmsMenu.addEventListener('resized', pmsMenuResized);
+		//function pmsMenuResized(){
+		//	rooms.resize();
+		//}
+		ResizeManager.add({element:element, onResized:onResized});
+		buttonUsers.addEventListener('click', onResized);
+		function onResized(){
+			console.log('click');
+			new Task(
+			splitPane.resize).run();
 		}
+		
 	}
 	return _Lobby;
 })();

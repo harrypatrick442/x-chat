@@ -74,6 +74,14 @@ Enumerable.prototype.sum=function(func){
 	}
 	return sum;
 };
+Enumerable.prototype.count=function(){
+	this.reset();	
+	var count=0;
+	while (this.moveNext()) {
+		count++;
+	}
+	return count;
+};
 Enumerable.prototype.each=function(func){
 	this.reset();	
 	while (this.moveNext()) {

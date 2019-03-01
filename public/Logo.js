@@ -5,10 +5,11 @@ function Logo(){
 	element.classList.add('logo');
 	var inner = E.DIV();
 	element.appendChild(inner);
+	ImagePreloader.preloadRange(['/logo.gif', '/logo-hover.gif']);
 	this.getElement = function(){
 		return element;
 	};
-	function dispatchClickpe(){
+	function dispatchClick(){
 		self.dispatchEvent({type:'click'});
 	}
 }

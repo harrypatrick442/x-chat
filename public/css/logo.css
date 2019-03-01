@@ -2,15 +2,13 @@
 	width:100%;
 	height:100px;
 	margin:auto;
-	right:0;
-	left:0;
 	background-position:center;	
 	box-sizing:border-box;
 	
 }
 .logo div{
 	width:100%;
-	height:100px;
+	height:100%;
 	background-position:center;	
 	box-sizing:border-box;
 	cursor:pointer;
@@ -20,8 +18,8 @@
 -o-background-size: contain;
 	background-size:contain;
     border-right: 1px solid #2592E9;
-	background-image:url('/images/logo-brexit-chat.gif');	
+	background-image:url('/images/logo.gif');	
 }
 .logo div:hover{
-	background-image:url('/images/logo-brexit-chat-hover.gif');
+	background-image:url('/images/logo-hover.gif');
 }
