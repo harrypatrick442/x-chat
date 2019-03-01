@@ -22,6 +22,9 @@ var Rooms = new (function(){
 		overlappingEntries.show(roomsMenu);
 		this.getElement = ui.getElement
 		this.resize = ui.resize;
+		this.showMenu = function(){
+			overlappingEntries.show(roomsMenu);
+		};
 		this.getById = function(id){
 			return set.getById(id);
 		};

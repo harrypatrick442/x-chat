@@ -9,6 +9,7 @@ function Logo(){
 	this.getElement = function(){
 		return element;
 	};
+	element.addEventListener('click', dispatchClick);
 	function dispatchClick(){
 		self.dispatchEvent({type:'click'});
 	}
