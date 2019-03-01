@@ -49,7 +49,6 @@ height:100%;
 	width:100%;	
 float:left;
 overflow:hidden;
-display: table;
 position:relative;
 }
 .lobby .right .right-inner .split-pane .slider.y{
