@@ -5,7 +5,7 @@ body{
 	position:absolute;
 	width:100%;
 	box-sizing:border-box;
-	top:32px;
+	top:38px;
 	bottom:0px;
 }
 .lobby .rooms .rooms-inner{
@@ -16,6 +16,7 @@ body{
 	padding:6px;
 }
 .lobby .rooms .entries{
+	position:absolute;
 	box-sizing:border-box;	
 	background-color:rgb(32, 31, 31);
 	left:6px;

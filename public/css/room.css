@@ -14,9 +14,10 @@
 
 }
 .lobby .rooms .entries .room .top{
-	display:table-row;	
+	position:absolute;
 	width:100%;
-	height:100%;
+	top:0px;
+	bottom:58px;
 	box-sizing:border-box;
 }
 .lobby .rooms .entries .room .top .feed{
@@ -45,8 +46,8 @@
 	width:100%;
 	box-sizing:border-box;	
 	background-color:orange;
-	display:table-row;
-	position:relative;
+	position:absolute;
+	bottom:0px;
 	background-color:rgb(44, 43, 43);
 }
 .lobby .rooms .entries .room .bottom .text{
