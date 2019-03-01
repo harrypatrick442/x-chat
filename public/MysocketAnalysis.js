@@ -18,8 +18,10 @@ var MysocketAnalysis = (function(){
 			if(requiresCors)return [ChannelType.JSONP];*/
 			var nRecentWebsocketsFailedQuickly = getNRecentWebsocketsFailedQuickly();
 			console.log(nRecentWebsocketsFailedQuickly);
-			var websocketFailedQuickly= nRecentWebsocketsFailedQuickly>0;
-			var shouldUseWebsocket=!websocketFailedQuickly;
+			;
+			var supportsWebsocket=window.Websocket?true:false;
+			var websocketFailedQuickly;
+			var shouldUseWebsocket=supportsWebsocket&&!(websocketFailedQuickly= nRecentWebsocketsFailedQuickly>0);
 			if(websocketFailedQuickly)
 			{
 				var shouldAttemptWebsocketAgain = new Date().getTime()-websocketFailedQuickly.getOpenedAt()
