@@ -11,6 +11,7 @@ var Longpoll = (function(){
 		var didFirstSend = false;
 		var waitingToBeSent = [];
 		this.send = function(msg){//issue was caused by multiple sends in parallel before an id got returned.
+			console.log('send');
 			if(closed)return;
 			if(started||!didFirstSend){
 				didFirstSend = true;
@@ -20,14 +21,17 @@ var Longpoll = (function(){
 				waitingToBeSent.push(msg);
 		};
 		this.stop=function(){
+			console.log('stop');
 			stop=true;
 		};
 		this.dispose=this.stop;
 		function poll(){
+			console.log('poll');
 			console.log('get id is: '+id);
 			ajax.get({url:urlPoll, timeout:TIMEOUT, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function callbackSendSuccessful(res){
+			console.log('callbackSendSuccessful');
 			res = JSON.parse(res);
 			console.log(res.id);
 			if(started)return
@@ -42,36 +46,44 @@ var Longpoll = (function(){
 			poll();
 		}
 		function callbackSendError(err){
+			console.log('callbackSendError');
 			console.error(err);
 			dispatchOnError(err);
 		}
 		function callbackPollTimeout(){
+			console.log('callbackPollTimeout');
 			poll();
 		}
 		function callbackPollError(err){
+			console.log('callbackPollError');
 			console.error(err);
 			dispatchOnError(err);
 			if(stop)return;
 			poll();
 		}
 		function callbackPollSuccessful(res){
+			console.log('callbackPollSuccessful');
 			poll();
 			if(res)
 				handleMessages(res);
 		}
 		function handleMessages(res){
+			console.log('handleMessages');
 			res = JSON.parse(res);
 			each(res.msgs, function(msg){
 				dispatchOnMessage(msg);
 			});
 		}
 		function dispatchOnError(err){
+			console.log('dispatchOnError');
 			self.onError&&self.onError(err);
 		}
 		function dispatchOnMessage(msg){
+			console.log('dispatchOnError');
 			self.onMessage&&self.onMessage(msg);
 		}
 		function dispatchGotId(id){
+			console.log('dispatchGotId');
 			self.onGotId&&self.onGotId(id);
 		}
 	};
