@@ -1,0 +1,48 @@
+.dialog{
+    font-family: verdana, geneva, sans-serif;
+    color: #dddddd;
+    position: fixed;
+    width: 244px;
+    margin: auto;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background-color: rgb(44, 43, 43);
+    border: 3px solid rgb(0, 135, 226);
+    border-radius: 5px;
+    padding: 3px;
+    box-sizing: border-box;
+    display: none;
+    margin: auto;
+    overflow: auto;
+    margin: auto;
+    left: 0;
+    right: 0;
+	max-width:100%;
+}
+.dialog .inner{
+    border-radius: 4px;
+    top: 0px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    background-color: rgb(32, 31, 30);
+}
+.dialog .inner .message{
+	
+}
+.dialog .inner .dialog-button{width: 100%;
+    margin-top: 4px;
+    box-sizing: border-box;
+    margin-bottom: 3px;
+    border: 2px solid rgb(0, 135, 226);
+    border-radius: 4px;	
+    text-align: center;
+    padding: 3px;
+    cursor: pointer;
+
+}
+.dialog .inner .dialog-button:hover{
+	background-color:rgb(44, 43, 43);
+}
