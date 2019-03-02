@@ -7,7 +7,6 @@ var debug = new(function(){
 	};
 	this.log=function(msg){
 		oldConsole.log(msg);
-		oldConsole.log(new Error().stack);
 		return;
 		if(mysocket)
 		mysocket.send({type:'debug', str:isObject(msg)?JSON.stringify(msg):msg});
