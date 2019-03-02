@@ -2,7 +2,6 @@ var Message = (function(){
 	var ERROR='error';
 	var USER='user';
 	var _Message = function(params){
-		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
 		var userId = params.userId;
@@ -61,7 +60,6 @@ var Message = (function(){
 		function showUserMenu(e){
 			if(userId==getUserMe().getId())return;
 			clickMenuUser.setPosition(e);
-			console.log('show');
 			clickMenuUser.show({options:[{text:'Pm '+username, callback:pm}, {text:(ignored?'Unignore ':'Ignore ')+username, callback:ignored?unignore:ignore}]});
 		}
 		function pm(){

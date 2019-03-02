@@ -12,7 +12,6 @@ var Mysocket = (function(){
 		this.send = function(msg){
 			var channel = getChannel();
 			if(channel&&channel.isOpen()){
-			console.log('send2');
 				channel.send(msg);
 				return;
 			}

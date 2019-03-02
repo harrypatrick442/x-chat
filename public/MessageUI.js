@@ -6,8 +6,6 @@ function MessageUI(params){
 	var userImage = params.userImage;
 	var sentAt = params.sentAt;
 	var messageType = params.messageType;
-	console.log(sentAt);
-	console.log(params);
 	var element = E.DIV();
 	element.classList.add('message');
 	var inner = E.DIV();
@@ -26,7 +24,6 @@ function MessageUI(params){
 	var timestamp = E.DIV();
 	timestamp.classList.add('timestamp');
 	usernameAndTimestamp.appendChild(timestamp);
-	console.log(messageType);
 	switch(messageType){
 		case Message.ERROR:
 			element.classList.add('error');
@@ -60,9 +57,6 @@ function MessageUI(params){
 		var now = moment();
 		var duration = moment.duration(now.diff(sentAtLocal));
 		var midnight = moment().startOf('day');
-		console.log(now.hour());
-		console.log(now.minute());
-		console.log(now.second());
 		var time = sentAtLocal.format('HH:mm:ss');
 		var sentToday = sentAtLocal.diff(midnight, 'seconds')>=0?true:false;
 		if(sentToday){

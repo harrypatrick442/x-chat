@@ -36,7 +36,6 @@ var Messages = new (function(){
 			remove(message);
 		};
 		this.nextUniqueId=function(){
-			console.log(getNDevice());
 			return getNDevice()+'_'+uniqueIdCount++;
 		};
 		this.dispose = function(){
@@ -85,7 +84,7 @@ var Messages = new (function(){
 			element.appendChild(message.getElement());
 		}
 		function addEventListener(message){
-			message.addEventListener('showpm', function(e){console.log('a');self.dispatchEvent(e);});
+			message.addEventListener('showpm', function(e){self.dispatchEvent(e);});
 		}
 		function overflow(){
 			overflowManager.trigger();

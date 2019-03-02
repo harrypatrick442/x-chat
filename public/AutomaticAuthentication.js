@@ -7,7 +7,6 @@ var AutomaticAuthentication = new (function(){
 			var token = settings.get(TOKEN);
 			if(!token)return false;
 			send({type:'automatic_authenticate', token:token});
-			console.log('attempting automatic authentication');
 			return true;
 		};
 		this.setToken = function(token){
