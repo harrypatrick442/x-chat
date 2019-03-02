@@ -47,8 +47,6 @@ module.exports = new (function(){
 			self.onMessage(msg);
 		};
 		this.isAlive=function(time){
-			console.log('now: '+time);
-			console.log(longpoll.getLastActive());
 			return !longpoll.getDisposed()&&(time - longpoll.getLastActive()<TIMEOUT_CHANNEL_LONGPOLL);
 		};
 		this.close = function(){
