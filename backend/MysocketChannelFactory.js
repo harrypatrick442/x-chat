@@ -41,7 +41,6 @@ module.exports = new (function(){
 		var messageQueue=[];
 		this.channelType = ChannelType.LONGPOLL;
 		this.sendMessage=function(msg){
-			console.log('longpoll is sending');
 			longpoll.send(msg);
 		};
 		longpoll.onMessage = function(msg){
