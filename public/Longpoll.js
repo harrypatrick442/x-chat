@@ -55,9 +55,9 @@ var Longpoll = (function(){
 			poll();
 		}
 		function callbackPollSuccessful(res){
+			poll();
 			if(res)
 				handleMessages(res);
-			poll();
 		}
 		function handleMessages(res){
 			res = JSON.parse(res);

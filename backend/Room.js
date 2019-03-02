@@ -35,6 +35,7 @@ exports.Room = (function(){
 			return {id:String(params.id), name:params.name};
 		};
 		this.sendMessage = function(message){
+			message.setSentAt(new Date().toISOString());
 			getMessages(function(messages){messages.add(message);});
 			devices.sendMessage({type:'message', roomId:id, message:message.toJSON()});
 		};

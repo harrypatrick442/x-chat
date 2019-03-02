@@ -4,6 +4,9 @@ module.exports = (function(){
 		this.getContent = function(){return params.content;};
 		this.getServerAssignedNMessage=function(){return params.serverAssignedNMessage;};
 		this.setServerAssignedNMessage = function(value){params.serverAssignedNMessage = value;};
+		this.setSentAt=function(value){
+			params.sentAt=value;
+		};
 		this.toJSON= function(){
 			return params;
 		};
