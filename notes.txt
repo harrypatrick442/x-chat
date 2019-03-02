@@ -16,3 +16,16 @@ remove unneeded longpolling endpoints when mysocket closes.
 fix issue with endpoint being ddosed upon restart server, by longpolling.
 
 connected image cleanup on mobile.
+
+
+Finish up the MysocketChannelManager so that it works perfectly. 
+
+Then debug disconnceting on mobile.
+
+Then make cursor go back to after emoticon when select.
+
+check all images preloading.
+
+Seems to be ddosing rooms get.
+
+checkbox on sign in to remain signed in is not working properly on mobile.

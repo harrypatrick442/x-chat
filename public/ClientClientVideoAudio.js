@@ -141,8 +141,10 @@ var ClientClientVideoAudio = new (function () {
 			dispatchAllIceCandidatesSent();
 		}
 		function getUserPermission(callback){
-			var constraints =  {audio: true,  video: true};
-			navigator.mediaDevices.getUserMedia(constraints, function(stream) {
+			var constraints =  {audio: false,  video: true};
+			console.log('CALLING GET USER MEDIA');
+			navigator.getUserMedia(constraints, function(stream) {
+				console.log('GOT USRE MEDIA');
 				callback({successful:true, stream:stream});
 			}, function(error) {
 				console.log('Error in getting stream', error);

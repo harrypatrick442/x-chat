@@ -15,7 +15,7 @@ var VideoFeedUI = (function(){
 		function onSetLocalStream(e){
 			console.log('setting stream');
 			var stream = e.stream;
-			attachMediaStream(video, stream);
+			video.srcObject=stream;
 			video.play();
 		}
 	};
