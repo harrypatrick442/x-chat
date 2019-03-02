@@ -16,6 +16,9 @@
 .authenticate{
 	z-index:300;
 }
+.dialog{
+	z-index:400;
+}
 .prevent-interraction{
 	z-index:500;
 }

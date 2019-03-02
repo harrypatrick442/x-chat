@@ -4,6 +4,7 @@ var Pms=  (function(){
 		var self = this;
 		var rooms = params.rooms;
 		var getUserMe = params.getUserMe;
+		var getUserById= params.getUserById;
 		var openHistory;
 		var tabPortal;
 		this.showPmWithUser = function(user){
@@ -33,7 +34,8 @@ var Pms=  (function(){
 		this.videoOffer = function(msg){
 			var room = rooms.getById(getRoomId(msg.userFromId));
 			if(!room)return;
-			room.videoOffer(msg.offer);
+			msg.userFrom = getUserById(msg.userFromId);
+			room.videoOffer(msg);
 		};
 		this.videoAcceptFail = function(msg){
 			var room = rooms.getById(getRoomId(msg.userToId));

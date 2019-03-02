@@ -14,13 +14,15 @@ var ClientClientVideoAudio = new (function () {
 			});
 		};
 		this.acceptedOffer = function(offer){
-			getUserPermissions(function(result){
-				if(!result){
-					dispatchRejectedOffer();
+			console.log('ClientClientVideoAudio.acceptedOffer');
+			getUserPermission(function(result){
+				if(!result.successful){
+					dispatchAcceptFailed(result.error);
 					return;
 				}
 				dispatchLocalStream(result.stream);
-				sendAnswer(createNewPC());
+				console.log('ClientClientVideoAudio.dispatching local stream');
+				sendAccept(createNewPC());
 			});
 		};
 		this.incomingIceCandidate = function(candidate){
@@ -80,10 +82,10 @@ var ClientClientVideoAudio = new (function () {
 			callback({successful:false, error:err});
 		}
 		function error(err){
-			console.log(err);
+			console.error(err.message?err.message:err);
 		}
 		function dispatchAcceptFailed(error){
-			self.dispatchEvent({type:'acceptfailed', error:error});
+			self.dispatchEvent({type:'acceptfailed', error:error, message:error?error.message:undefined});
 		}
 		function dispatchOfferFailed(error){
 			self.dispatchEvent({type:'offerfailed', error:error});
@@ -142,14 +144,10 @@ var ClientClientVideoAudio = new (function () {
 		}
 		function getUserPermission(callback){
 			var constraints =  {audio: false,  video: true};
-			console.log('CALLING GET USER MEDIA');
 			navigator.getUserMedia(constraints, function(stream) {
 				console.log('GOT USRE MEDIA');
 				callback({successful:true, stream:stream});
-			}, function(error) {
-				console.log('Error in getting stream', error);
-				callback({successful:false, error:error});
-			});
+			}, errorCallback.bind(null, callback));
 		}
 	};
 	return _ClientClientVideoAudio;

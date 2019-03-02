@@ -31,6 +31,10 @@ var Set = (function(){
 			return list[index];
 		};
 		this.getById= function(id){
+			console.log('called getById');
+			console.log(id);
+			console.log(mapIdToItem);
+			console.log(mapIdToItem[id]);
 			return mapIdToItem[id];
 		};
 		this.containsId=function(id){return mapIdToItem[id]?true:false;};

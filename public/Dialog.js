@@ -3,7 +3,7 @@ var Dialog = (function(){
 		var self = this;
 		var disposeOnHide=params.disposeOnHide;
 		var message = params.message;
-		var popup = new Popup({});
+		var popup = new Popup({closeOnClickOff:false});
 		var element = popup.getElement();
 		var inner = E.DIV();
 		var message = E.DIV();
@@ -18,6 +18,7 @@ var Dialog = (function(){
 		this.show = function(){
 			setVisible(true);
 		};
+		this.dispose = dispose;
 		function hide(){
 			if(disposeOnHide){
 				dispose();
@@ -49,7 +50,3 @@ var Dialog = (function(){
 	};
 	return _Dialog;
 })();
-
-setTimeout(function(){
-new Dialog({message:'tsdffdfds', buttons:[{text:'dsffds'}]}).show();
-}, 0);

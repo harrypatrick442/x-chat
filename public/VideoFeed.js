@@ -17,8 +17,8 @@ var VideoFeed = (function(){
 			});
 		};
 		this.acceptedOffer = clientClientVideoAudio.acceptedOffer;
-		this.incomingOffer = function(offer){
-			dispatchGotOffer(offer);
+		this.incomingOffer = function(wrappedOffer){
+			dispatchGotOffer(wrappedOffer);
 		};
 		this.incomingAccept = function(accept){
 			
@@ -61,8 +61,8 @@ var VideoFeed = (function(){
 			closeCurrentStream();
 			dispatchSetRemoteStream();
 		}
-		function dispatchGotOffer(offer){
-			self.dispatchEvent({type:'gotoffer', offer:offer});
+		function dispatchGotOffer(wrappedOffer){
+			self.dispatchEvent({type:'gotoffer', wrappedOffer:wrappedOffer, offer:wrappedOffer.offer});
 		}
 		function dispatchStopped(){
 			self.dispatchEvent({type:'stopped'});
