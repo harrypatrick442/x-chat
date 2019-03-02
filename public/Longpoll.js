@@ -76,6 +76,7 @@ var Longpoll = (function(){
 		}
 		function dispatchOnError(err){
 			console.log('dispatchOnError');
+			console.log(err);
 			self.onError&&self.onError(err);
 		}
 		function dispatchOnMessage(msg){
