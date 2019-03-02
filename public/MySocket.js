@@ -15,6 +15,7 @@ var Mysocket = (function(){
 				channel.send(msg);
 				return;
 			}
+			console.log('added to tosend');
 			toSend.push(msg);
 		};
 		this.getUrl = function(){
@@ -64,6 +65,7 @@ var Mysocket = (function(){
 			channel = null;
 		}
 		function onOpen(){
+			console.log('onopen');
 			if(toSend.length>0)
 				sendPending();
 			dispatchOnOpen();

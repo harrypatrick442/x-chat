@@ -68,11 +68,14 @@ var MysocketChannelFactory = new (function(){
 		var longpoll = new Longpoll({url:url, id:id});
 		longpoll.onMessage= onMessage;
 		longpoll.onError = onError;
-		longpoll.onSent = onOpen;
+		longpoll.onSent = nothing;//onOpen
+		
 		this.send = longpoll.send;
 		this.getAnalysis= function(){
 			return analysis;
 		};
+		setTimeout(onOpen, 0);
+		function nothing(){}
 		function onMessage(msg){
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(msg);
