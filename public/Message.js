@@ -1,4 +1,6 @@
 var Message = (function(){
+	var ERROR='error';
+	var USER='user';
 	var _Message = function(params){
 		console.log(params);
 		EventEnabledBuilder(this);
@@ -11,6 +13,7 @@ var Message = (function(){
 		var userImage = new UserImage({userId:userId, image:params.image});
 		var ignoreManager = params.ignoreManager;
 		var getUserMe = params.getUserMe;
+		var messageType=params.messageType?params.messageType:USER;
 		var ignored=false;
 		var ui;
 		this.getElement = function(){
@@ -25,6 +28,9 @@ var Message = (function(){
 		this.getSentAtUTC = function(){return params.sentAt?moment(params.sentAt):undefined;};
 		this.getServerAssignedNMessage = function(){
 			return params.serverAssignedNMessage;
+		};
+		this.getMessageType= function(){
+			return messageType;
 		};
 		this.confirm = function(receivedMessage){
 			params.serverAssignedNMessage = receivedMessage.getServerAssignedNMessage();
@@ -44,7 +50,7 @@ var Message = (function(){
 		this.getIgnored = function(){return ignored;};
 		function getUI(){
 			if(!ui){
-				ui = new MessageUI({userImage:userImage, components:components, username:username, pending:params.pending, sentAt:self.getSentAtUTC()});
+				ui = new MessageUI({userImage:userImage, components:components, username:username, pending:params.pending, sentAt:self.getSentAtUTC(), messageType:messageType});
 				ui.addEventListener('showusermenu', showUserMenu);
 			}
 			return ui;
@@ -68,6 +74,8 @@ var Message = (function(){
 			ignoreManager.unignoreUserById(userId);
 		}
 	};
+	_Message.ERROR=ERROR;
+	_Message.USER=USER;
 	_Message.fromJSON = function(params){
 		return _from(params, params.content);
 	}
@@ -75,15 +83,24 @@ var Message = (function(){
 		params.sentAt=moment().format();
 		return _from(params, params.str);
 	};
+	_Message.error = function(params){
+		params.messageType=ERROR;
+		return _from(params, params.message);
+	};
 	function _from(params, content){
 		if(!content)content='';
 		var emoticonsParser = params.emoticonsParser;
 		var components =[] ;
-		emoticonsParser.pipe(new MessageComponents.Text(content),	
-		function(component){  components.push(component);});
+		var text = new MessageComponents.Text(content)
+		if(emoticonsParser){
+			emoticonsParser.pipe(text,	
+			function(component){  components.push(component);});
+		}
+		else
+			components=[text];
 		return new Message({userId:params.userId, username:params.username, uniqueId:params.uniqueId, components:components, content:content,
 		serverAssignedNMessage:params.serverAssignedNMessage, pending:params.pending, clickMenuUser:params.clickMenuUser,
-		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe,image:params.image, sentAt:params.sentAt});
+		ignoreManager:params.ignoreManager,getUserMe:params.getUserMe,image:params.image, sentAt:params.sentAt, messageType:params.messageType});
 	}
 	function generatecontentFromMessageComponents(components){
 		var list =[];

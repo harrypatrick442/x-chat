@@ -10,7 +10,14 @@
 	display:inline-block;
 	position:relative;
 	margin-bottom:2px;
-}.lobby .rooms .room .feed .message .pending{
+}.lobby .rooms .room .feed .message.error{
+	font-size:16px;
+	background-color:#FFF0F0;
+	color:#FF0000;
+	border:1px solid #FFD6D6;
+	border-radius:0px;
+}
+.lobby .rooms .room .feed .message .pending{
 	left:0px;
 	right:0px;
 	top:0px;

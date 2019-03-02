@@ -33,7 +33,7 @@ var Room = new (function(){
 		var spinner = new Spinner({});
 		spinner.show();
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose,
-		buttonVideoPmStart:buttonVideoPmStart, spinner:spinner, videoFeed:videoFeedPm});
+		buttonVideoPmStart:buttonVideoPmStart, spinner:spinner, videoFeed:videoFeedPm, addMessage:addMessage});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -57,13 +57,7 @@ var Room = new (function(){
 			spinner.hide();
 		};
 		messages.addEventListener('showpm', function(e){self.dispatchEvent(e);});
-		function incomingMessage(jObjectMessage){
-			jObjectMessage.emoticonsParser=emoticonsParser;
-			jObjectMessage.clickMenuUser = clickMenuUser;
-			jObjectMessage.ignoreManager = ignoreManager;
-			jObjectMessage.getUserMe=getUserMe;
-			messages.addReceived(Message.fromJSON(jObjectMessage));
-		}
+		
 		this.join=function(user){
 			if(users.contains(user))return;
 			users.add(user);
@@ -110,9 +104,18 @@ var Room = new (function(){
 				users.add(getUserMe());
 			}
 		}
+		function incomingMessage(jObjectMessage){
+			jObjectMessage.emoticonsParser=emoticonsParser;
+			jObjectMessage.clickMenuUser = clickMenuUser;
+			jObjectMessage.ignoreManager = ignoreManager;
+			jObjectMessage.getUserMe=getUserMe;
+			messages.addReceived(Message.fromJSON(jObjectMessage));
+		}
+		function addMessage(message){
+			messages.add(message);
+		}
 		function startVideoPm(){
 			videoFeedPm.start();
-			ui.setVideoFeedVisible(true);
 		}
 		function dispose(){
 			messages.dispose();
@@ -181,6 +184,7 @@ var Room = new (function(){
 		var buttonEmoticons = params.buttonEmoticons;
 		var buttonClose = params.buttonClose;
 		var buttonVideoPmStart = params.buttonVideoPmStart;
+		var addMessage = params.addMessage;
 		var videoFeed = params.videoFeed;
 		var spinner = params.spinner;
 		var element = E.DIV();
@@ -207,8 +211,11 @@ var Room = new (function(){
 			videoFeedPanel.appendChild(videoFeedUI.getElement());
 			top.appendChild(splitPane.getElement());
 			splitPane.getPanelXY(0, 1).getElement().appendChild(feed);
-			setVideoFeedVisible(false);
+			hideVideoFeed();
 			new Task(splitPane.resize).run();
+			videoFeedUI.addEventListener('show', showVideoFeed);
+			videoFeedUI.addEventListener('hide', hideVideoFeed);
+			videoFeedUI.addEventListener('showmessagetouser', onShowMessageToUser);
 		}
 		else{
 			top.appendChild(feed);
@@ -256,7 +263,6 @@ var Room = new (function(){
 			console.log('Room.UI.resize');
 			splitPane&&splitPane.resize();
 		};
-		this.setVideoFeedVisible=setVideoFeedVisible;
 		function dispatchKeyPress(e){
 			if (!e) e = window.event;
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
@@ -264,8 +270,15 @@ var Room = new (function(){
 		function onResized(){
 			self.resize();
 		}
-		function setVideoFeedVisible(value){
-			splitPanePanelVideoFeed.setVisible(value);
+		function showVideoFeed(value){
+			splitPanePanelVideoFeed.setVisible(true);
+		}
+		function hideVideoFeed(){
+			splitPanePanelVideoFeed.setVisible(false);
+		}
+		function onShowMessageToUser(e){
+			var message = Message.error({message:e.message});
+			addMessage(message);
 		}
 	}
 })();

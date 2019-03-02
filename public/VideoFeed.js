@@ -28,7 +28,8 @@ var VideoFeed = (function(){
 			stop();
 			dispatchStopped();
 		};
-		clientClientVideoAudio.addEventListener('acceptfailed', onGeneralFailure);
+		clientClientVideoAudio.addEventListener('acceptfailed', onAcceptFailed);
+		clientClientVideoAudio.addEventListener('offerfailed', onOfferFailed);
 		clientClientVideoAudio.addEventListener('sendice', onSendIce);
 		clientClientVideoAudio.addEventListener('allicesent', onAllIceCandidatesSent);
 		clientClientVideoAudio.addEventListener('localstream', onLocalStream);
@@ -37,8 +38,14 @@ var VideoFeed = (function(){
 		clientClientVideoAudio.addEventListener('sendoffer', onSendOffer);
 		clientClientVideoAudio.addEventListener('sendaccept', onSendAccept);
 		clientClientVideoAudio.addEventListener('ended', onEnded);
-		function onGeneralFailure(e){
+		function onOfferFailed(e){
 			dispatchGeneralFailure(e);
+			dispatchOfferFailed(e);
+		}
+		function onAcceptFailed(e){
+			console.log(e);
+			dispatchGeneralFailure(e);
+			dispatchAcceptFailed(e);
 		}
 		function onSendIce(e){
 			sendIce(e.candidate);
@@ -77,7 +84,13 @@ var VideoFeed = (function(){
 			self.dispatchEvent(e);
 		}
 		function dispatchGeneralFailure(e){
-			self.dispatchEvent({type:'generalfailure', error:e.error, message:e.message});
+			self.dispatchEvent({type:'generalfailure', error:e.error});
+		}
+		function dispatchOfferFailed(e){
+			self.dispatchEvent({type:'offerfailed', error:e.error});
+		}
+		function dispatchAcceptFailed(e){
+			self.dispatchEvent({type:'acceptfailed', error:e.error});
 		}
 		function onAddRemoteStream(e){
 			

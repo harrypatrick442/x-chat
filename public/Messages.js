@@ -28,6 +28,10 @@ var Messages = new (function(){
 				message.setIgnored(true);
 			overflow();
 		};
+		this.add= function(message){
+				mapUniqueIdToMessage[message.getUniqueId()]=message;
+				append(message);
+		};
 		this.remove = function(message){
 			remove(message);
 		};
@@ -46,13 +50,13 @@ var Messages = new (function(){
 		ignoreManager.addEventListener('unignored', unignored);
 		function insertInPlace(message){
 			addEventListener(message);
-			var serverAssignedNMessage = message.getServerAssignedNMessage();
 			if(messages.length<1)
 			{
 				messages.push(message);
 				element.appendChild(message.getElement());
 				return;
 			}
+			var serverAssignedNMessage = message.getServerAssignedNMessage();
 			var reverseIterator = new ReverseIterator(messages);
 			while(reverseIterator.hasNext()){
 				var placedMessage = reverseIterator.next();

@@ -116,6 +116,16 @@ exports.lobby = (function(){
 			}
 			userTo.sendMessage({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
 		};
+		this.pmVideoAccept = function(req, callback){
+			var userMe = getUserFromSessionId(req.sessionId);
+			if(!userMe)return;
+			var userTo = users.getById(req.userToId);
+			if(!userTo) {
+				callback({type:'pm_video_accept_fail', userToId:req.userToId, successful:false, message:'The user is no longer online!'});
+				return;
+			}
+			userTo.sendMessage({type:'pm_video_accept', userFromId:userMe.getId(), accept:req.accept});
+		};
 		function getUnavailableResponse(available){
 			var error;
 			switch(available)

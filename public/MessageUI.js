@@ -5,6 +5,7 @@ function MessageUI(params){
 	var name = params.username;
 	var userImage = params.userImage;
 	var sentAt = params.sentAt;
+	var messageType = params.messageType;
 	console.log(sentAt);
 	console.log(params);
 	var element = E.DIV();
@@ -22,15 +23,24 @@ function MessageUI(params){
 		element.appendChild(pending);
 	}
 	usernameAndTimestamp.appendChild(username);
-	inner.appendChild(userImage.getElement());
-	inner.appendChild(usernameAndTimestamp);
-	username.innerHTML += (name&&name.length>0?name:'&nbsp;');
-	if(sentAt){
-		var timestamp = E.DIV();
-		timestamp.classList.add('timestamp');
-		timestamp .innerHTML=' ('+getFormattedDateTime(sentAt)+')';
-		usernameAndTimestamp.appendChild(timestamp);
+	var timestamp = E.DIV();
+	timestamp.classList.add('timestamp');
+	usernameAndTimestamp.appendChild(timestamp);
+	console.log(messageType);
+	switch(messageType){
+		case Message.ERROR:
+			element.classList.add('error');
+			timestamp .innerHTML=' ('+getFormattedDateTime(new Date())+')';
+		break;
+		default:
+		inner.appendChild(userImage.getElement());
+		username.innerHTML += (name&&name.length>0?name:'&nbsp;');
+		if(sentAt){
+			timestamp .innerHTML=' ('+getFormattedDateTime(sentAt)+')';
+		}
+		break;
 	}
+	inner.appendChild(usernameAndTimestamp);
 	each(components, function(component){
 		inner.appendChild(component.getElement());
 	});

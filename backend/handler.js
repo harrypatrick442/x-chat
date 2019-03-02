@@ -67,14 +67,7 @@ exports.handler = new (function(){
 						lobby.pmVideoOffer(req, callback);
 					break;
 					case 'pm_video_accept':
-						var userMe = getUser(req);
-						if(!userMe)return;
-						var userTo = users.getById(req.userToId);
-						if(!userTo) {
-							callback({type:'pm_video_accept_fail', userToId:req.userToId, successful:false, message:'The user is no longer online!'});
-							return;
-						}
-						userTo.send({type:'pm_video_accept', userFromId:userMe.getId(), accept:req.accept});
+						lobby.pmVideoAccept(req, callback);
 					break;
 					case 'pm_video_ice_candidate':
 						var userMe = getUser(req);

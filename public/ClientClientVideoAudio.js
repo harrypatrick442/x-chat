@@ -7,6 +7,7 @@ var ClientClientVideoAudio = new (function () {
 			getUserPermission(function(result){
 				if(!result.successful){
 					callback&&callback(result);
+					dispatchOfferFailed(result.error);
 					return;
 				}
 				dispatchLocalStream(result.stream);
@@ -107,7 +108,7 @@ var ClientClientVideoAudio = new (function () {
 			console.error(new Error().stack);
 		}
 		function dispatchAcceptFailed(error){
-			self.dispatchEvent({type:'acceptfailed', error:error, message:error?error.message:undefined});
+			self.dispatchEvent({type:'acceptfailed', error:error});
 		}
 		function dispatchOfferFailed(error){
 			self.dispatchEvent({type:'offerfailed', error:error});
