@@ -37,8 +37,8 @@ var VideoFeed = (function(){
 		clientClientVideoAudio.addEventListener('sendoffer', onSendOffer);
 		clientClientVideoAudio.addEventListener('sendaccept', onSendAccept);
 		clientClientVideoAudio.addEventListener('ended', onEnded);
-		function onGeneralFailure(){
-			
+		function onGeneralFailure(e){
+			dispatchGeneralFailure(e);
 		}
 		function onSendIce(e){
 			sendIce(e.candidate);
@@ -75,6 +75,9 @@ var VideoFeed = (function(){
 		}
 		function dispatchLocalStream(stream){
 			self.dispatchEvent(e);
+		}
+		function dispatchGeneralFailure(e){
+			self.dispatchEvent({type:'generalfailure', error:e.error, message:e.message});
 		}
 		function onAddRemoteStream(e){
 			
