@@ -8,9 +8,7 @@ var Longpoll = (function(){
 		var stop=false;
 		var started=false;
 		this.send = function(msg){
-			console.log('longpoll is sending');
 			if(closed)return;
-			console.log('is not closed');
 			ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
 		};
 		this.stop=function(){
