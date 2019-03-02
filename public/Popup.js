@@ -26,6 +26,10 @@ var Popup= new (function(){
 				element.style.bottom=String(params.bottom)+'px';
 			console.log(params);
 		};
+		this.dispose = function(){
+			ClickedOff.remove(element);
+			element.parentNode.removeChild(element);
+		};
 		this.getElement = function(){return element;};
 		function hide(){
 			setVisible(false);
