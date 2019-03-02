@@ -1,6 +1,4 @@
 .dialog{
-    font-family: verdana, geneva, sans-serif;
-    color: #dddddd;
     position: fixed;
     width: 244px;
     margin: auto;
@@ -30,6 +28,8 @@
     background-color: rgb(32, 31, 30);
 }
 .dialog .inner .message{
+    font-family: verdana, geneva, sans-serif;
+    color: #dddddd;
 	
 }
 .dialog .inner .dialog-button{width: 100%;
@@ -41,6 +41,8 @@
     text-align: center;
     padding: 3px;
     cursor: pointer;
+    font-family: verdana, geneva, sans-serif;
+    color: #dddddd;
 
 }
 .dialog .inner .dialog-button:hover{

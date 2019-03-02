@@ -9,7 +9,7 @@ var Button = (function(){
 		var isToggle = params.toggle;
 		var toggled = params.toggled?true:false;
 		var text = params.text;
-		var element = E.DIV();
+		var element = E.BUTTON();
 		if(text)
 			element.innerHTML = text;
 		if(className)

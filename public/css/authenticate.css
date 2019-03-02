@@ -74,6 +74,8 @@ float:right;
 			text-align:center;
 			padding:3px;
 			cursor:pointer;
+			font-family: verdana, geneva, sans-serif;
+			color: #dddddd;
 }
 .authenticate .button-register:hover{
 	background-color:rgb(44, 43, 43);

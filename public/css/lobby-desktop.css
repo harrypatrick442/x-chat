@@ -29,7 +29,7 @@ background-image:url('/images/pms-hide-hover.gif');
 }
 
 .lobby .right .button-show-hide-wrapper .button-users{
-width:60px;
+width:40px;
 background-image:url('/images/users-show.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
