@@ -20,9 +20,7 @@ var VideoFeed = (function(){
 		this.incomingOffer = function(wrappedOffer){
 			dispatchGotOffer(wrappedOffer);
 		};
-		this.incomingAccept = function(accept){
-			
-		};
+		this.incomingAccept = clientClientVideoAudio.incomingAccept;
 		this.incomingIceCandidate = clientClientVideoAudio.incomingIceCandidate;
 		this.stop = function(){
 			stop();

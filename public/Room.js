@@ -112,7 +112,10 @@ var Room = new (function(){
 			messages.addReceived(Message.fromJSON(jObjectMessage));
 		}
 		function addMessage(message){
+			var scroll = ui.feedIsAtBottom();
 			messages.add(message);
+			if(scroll)
+				ui.scrollFeedToBottom();
 		}
 		function startVideoPm(){
 			videoFeedPm.start();
@@ -264,7 +267,7 @@ var Room = new (function(){
 			splitPane&&splitPane.resize();
 		};
 		function dispatchKeyPress(e){
-			if (!e) e = window.event;
+			if (!e) e = window.events
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
 		}
 		function onResized(){

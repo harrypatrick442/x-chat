@@ -33,6 +33,15 @@ var ClientClientVideoAudio = new (function () {
 				dispatchAddedIceCandidate(candidate);
 			}, error);
 		};
+		this.incomingAccept = function(accept){
+			console.log(accept);
+			rtcPeerConnection.setRemoteDescription(accept, function(){
+				console.log('set');
+			}, 
+			function(){
+				console.error(error);
+			});
+		};
 		function sendAccept(){
 			createAccept(function(result){
 				if(result.successful){
@@ -64,7 +73,7 @@ var ClientClientVideoAudio = new (function () {
 					callback({successful:true, offer:offer});
 				},
 				function(error){
-					errorCallback(callback, error)
+					errorCallback(callback, error);
 				});
 			},
 			function(error){
@@ -148,6 +157,7 @@ var ClientClientVideoAudio = new (function () {
 			dispatchRemoveRemoteStream(e.stream);
 		}
 		function onIceConnectionStateChange(e){
+			console.log('onIceConnectionStateChange');
 			var iceConnectionState = rtcPeerConnection.iceConnectionState;
 			switch(iceConnectionState){
 				case 'failed':
@@ -158,6 +168,7 @@ var ClientClientVideoAudio = new (function () {
 			}
 		}
 		function onIceCandidate(e){
+			console.log('onicecandidate');
 			var candidate=e.candidate;
 			if (candidate != null) {
 				dispatchSendIce(candidate);
