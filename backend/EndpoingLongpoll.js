@@ -23,7 +23,7 @@ module.exports=new (function(){
 			console.log('longpoll is: ');
 			console.log(longpoll);
 			if(!longpoll)
-			{
+			{	
 				longpoll = new Longpoll({app:app, id:mysocketId, url:URL});
 				longpolls.add(longpoll);
 				var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, longpoll);
