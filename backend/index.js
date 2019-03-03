@@ -15,7 +15,7 @@ var greenlock = Greenlock.create({
 , configDir: '~/.config/acme/'      // Writable directory where certs will be saved
 , communityMember: true             // Join the community to get notified of important updates
 , telemetry: true                   // Contribute telemetry data to the project
-,approvedDomains: [ 'x-chat.co' ]
+,approvedDomains: [ 'www.x-chat.co', 'x-chat.co' ]
   // Using your express app:
   // simply export it as-is, then include it here
 , app: (function(){
