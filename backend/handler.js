@@ -7,10 +7,6 @@ exports.handler = new (function(){
 			console.log(req.type);
 			try{
 				switch(req.type){
-					case 'test':
-						console.log('test');
-						callback(test(req));
-					break;
 					case 'register':
 						lobby.register(req, mysocket, callback);
 						break;
@@ -119,5 +115,4 @@ exports.handler = new (function(){
 		this.setImageForUser = lobby.setImageForUser;
 		function getUser(req){return sessions.getById(req.sessionId).getUser();}
 		function getRoom(req){return lobby.getRooms().getRoom(req.roomId);}
-		function test(jObject){ return {type:'response',received:jObject};}
 })();

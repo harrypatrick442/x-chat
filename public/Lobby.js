@@ -49,7 +49,6 @@ var Lobby = (function(){
 		buttonMenu:buttonMenu, mainMenu:mainMenu});
 		mysocket.addEventListener('onmessage', onMessage);
 		mysocket.addEventListener('onopen', onOpen);
-		mysocket.send({type:'test'});
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
 		buttonNotifications.addEventListener('click', showNotifications);
 		buttonMenu.addEventListener('click', showMenu);
