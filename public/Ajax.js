@@ -44,7 +44,9 @@ var Ajax = (function(){
 		}
 		return url;
 	}
+	var gcount=0;
 	function Handle(xhr, data, callbackSuccessful, callbackFailed, callbackTimeout){
+		var count = gcount++;
 		var self = this;
 		var successful;
 		xhr.onload = function() {
@@ -77,6 +79,10 @@ var Ajax = (function(){
 			self.onDone&&self.onDone(self);
 		}
 		function onProgress(e){
+			console.log('onProgress');
+			console.log(e.loaded);
+			console.log(self.onProgress);
+			console.log(count);
 			self.onProgress&&self.onProgress(e.total?(e.loaded/e.total):1);
 		}
 	}

@@ -84,14 +84,17 @@ var FileSender = (function(){
 		function dispatchDone(){
 			self.dispatchEvent({type:DONE, sender:self});
 		}
-		function onProgress(proportion){
-			self.onProgress&&self.onProgress(proportion);
+		function onProgress(percent){
+			console.log('progress');
+			console.log(percent);
+			self.onProgress&&self.onProgress(percent);
 		}
 		function onSending(){
 			self.onSending&&self.onSending();
 		}
 	}
 	function Handle(sender){
+		console.log('handle');
 		EventEnabledBuilder(this);
 		var self = this;
 		this.abort = sender.abort;
@@ -99,8 +102,8 @@ var FileSender = (function(){
 		sender.onProgress = dispatchProgress;
 		sender.onSending = dispatchSending;
 		this.getFileName = sender.getFileName;
-		function dispatchProgress(proportion){
-			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, percent:proportion*100, proportion:proportion});
+		function dispatchProgress(percent){
+			self.dispatchEvent({type:PROGRESS,  sendingHandle:self, percent:percent, proportion:percent/100});
 		}
 		function dispatchDone(){
 			self.dispatchEvent({type:DONE, sendingHandle:self, successful:sender.getSuccessful()});
