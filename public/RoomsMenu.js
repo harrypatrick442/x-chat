@@ -47,7 +47,6 @@ var RoomsMenu = new (function(){
 			entries=[];
 		};
 		this.getVisible = ui.getVisible;
-		WindowResizeManager.addEventListener('resized', resized);
 		function add(roomInfo){
 			var roomEntry = new RoomEntry(roomInfo);
 			entries.push(roomEntry);

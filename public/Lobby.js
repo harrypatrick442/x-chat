@@ -238,20 +238,21 @@ var Lobby = (function(){
 			});
 		}
 		function authenticateRegisterResponse(msg){
-			if(msg.successful){
-				sessionId = msg.sessionId;
-				if(msg.token)automaticAuthentication.setToken(msg.token);
-				nDevice = msg.nDevice;
-				users.add(User.fromJSON(msg.user));
-				userMe = users.getById(msg.user.id);
-				msg.users.select(function(x){ return User.fromJSON(x);}).each(function(x){ return users.add(x);});
-				authenticate.hide();
-				getRooms();
-				pms.load(userMe.getId());
-				ignoreManager.load(userMe.getId());
+			if(!msg.successful){
+				authenticate.setError(msg.error);
 				return;
 			}
-			authenticate.setError(msg.error);
+			sessionId = msg.sessionId;
+			if(msg.token)automaticAuthentication.setToken(msg.token);
+			nDevice = msg.nDevice;
+			users.add(User.fromJSON(msg.user));
+			userMe = users.getById(msg.user.id);
+			msg.users.select(function(x){ return User.fromJSON(x);}).each(function(x){ return users.add(x);});
+			authenticate.hide();
+			setVisible(true);
+			getRooms();
+			pms.load(userMe.getId());
+			ignoreManager.load(userMe.getId());
 		}
 		function getRooms(){
 			mysocket.send({type:'rooms_get', sessionId:sessionId});
@@ -319,7 +320,12 @@ var Lobby = (function(){
 		function getNDevice(){
 			return nDevice;
 		}
-		
+		function setVisible(value){
+			ui.setVisible(value);
+			if(value){
+				new Task(ui.resize).run();
+			}
+		}
 	};
 	function UI(params){
 		var rooms = params.rooms;
@@ -356,7 +362,7 @@ var Lobby = (function(){
 			leftInner.appendChild(usersMenues.getElement());
 			
 			
-			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'120px', minHeight:'60px'}, {minHeight:'60px'}]});
+			var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'120px', minHeight:'60px'}, {minHeight:'160px'}]});
 			rightTopRow= splitPane.getPanelRow(0);
 			var rightTopPanel = splitPane.getPanelXY(0, 0);
 			var rightBottomPanel = splitPane.getPanelXY(0, 1);
@@ -369,8 +375,8 @@ var Lobby = (function(){
 			rightInner.appendChild(notificationsMenu.getElement());
 			new Task(splitPane.resize).run();
 			logo.addEventListener('click', rooms.showMenu);
-			buttonUsers.addEventListener('click', onResized);
-			ResizeManager.add({element:element, onResized:onResized});
+			buttonUsers.addEventListener('click', resize);
+			ResizeManager.add({element:element, onResized:resize});
 		}
 		else
 		{
@@ -397,19 +403,25 @@ var Lobby = (function(){
 		this.setPmsMenuVisible= function(value){
 			console.log(value);
 			rightTopRow.setVisible(value);
+			resize();
 		};
 		this.setLeftVisible = function(value){
 			left.style.display=value?'block':'none';
+			resize();
 		};
 		this.setSpinnerAutomaticAuthenticationVisible=spinnerAutomaticAuthentication.setVisible;
 		//pmsMenu.addEventListener('resized', pmsMenuResized);
 		//function pmsMenuResized(){
 		//	rooms.resize();
 		//}
-		function onResized(){
-			console.log('click');
-			new Task(
-			splitPane.resize).run();
+		this.setVisible = function(value){
+			element.style.display=value?'block':'none';
+		};
+		this.resize = resize;
+		function resize(){
+			splitPane.resize();
+			usersMenues.resize();
+			rooms.resize();
 		}
 		
 	}

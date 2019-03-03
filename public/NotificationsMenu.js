@@ -104,6 +104,7 @@ var NotificationsMenu = (function(){
 		};
 		this.getElement = function(){return element;};
 		this.getEntries = function(){return entries;};
-		WindowResizeManager.addEventListener('resized', resized);
+		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
+		resizeWatched.manual(true);
 	}
 })();

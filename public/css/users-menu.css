@@ -11,10 +11,11 @@
 }
 .users-menues .users-menues-entries .users-menu .user-menu-entries-wrapper{
 	box-sizing:border-box;
-	position:relative;
+	position:absolute;
 	width:100%;
 	box-sizing:border-box;
-	height:100%;
+	top:34px;
+	bottom:0px;
 }
 .users-menues .users-menues-entries .users-menu .user-menu-entries-wrapper .users-menu-entries{
 	display:block;

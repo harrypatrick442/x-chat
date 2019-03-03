@@ -205,7 +205,6 @@ var Room = new (function(){
 		var splitPane;
 		var splitPanePanelVideoFeed;
 		if(videoFeed){
-			var resizeWatcher = ResizeManager.add({element:element, onResized:onResized});
 			var videoFeedUI = new VideoFeedUI(videoFeed);
 			splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'200px'}]});
 			var videoFeedPanel = splitPane.getPanelXY(0, 0).getElement();
@@ -262,16 +261,14 @@ var Room = new (function(){
 		this.feedIsAtBottom = function(){
 			return feed.scrollTop >= (feed.scrollHeight - feed.offsetHeight)-10;
 		};
-		this.resize = function(){
-			console.log('Room.UI.resize');
-			splitPane&&splitPane.resize();
-		};
+		this.resize = resize;
 		function dispatchKeyPress(e){
 			if (!e) e = window.events
 			self.dispatchEvent({type:'keypress', keyCode:e.keyCode||e.which});
 		}
-		function onResized(){
-			self.resize();
+		function resize(){
+			console.log('Room.UI.resize');
+			splitPane&&splitPane.resize();
 		}
 		function showVideoFeed(value){
 			splitPanePanelVideoFeed.setVisible(true);

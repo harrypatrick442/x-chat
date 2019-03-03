@@ -175,6 +175,7 @@ var Rooms = new (function(){
 		var resizeOnce = new Once(resize);
 		this.resize = resizeOnce.trigger;
 		function resize(){
+			console.log('rooms.resize'); 	
 			var topEntry = getTopEntry();
 			if(!topEntry)return;
 			topEntry = topEntry.getEntry();

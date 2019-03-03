@@ -29,6 +29,7 @@ var UsersMenues = (function(){
 			console.log(overlappingEntries.getTopEntry().getEntry());
 			overlappingEntries.getTopEntry().getEntry().resize();
 		};
+		this.resize = ui.resize;
 		function getTopEntry(){
 			return overlappingEntries.getTopEntry();
 		}
@@ -54,13 +55,11 @@ var UsersMenues = (function(){
 		var entries = E.DIV();
 		entries.classList.add('users-menues-entries');
 		element.appendChild(entries);
-		if(!isMobile){
-			ResizeManager.add({element:element, onResized:onResized});
-		}
 		this.setVisible = function(value){
 			entries.style.display=value?'block':'none';
 		};
-		function onResized(){console.log('a');
+		this.resize = resize;
+		function resize(){console.log('a');
 			getTopEntry().getEntry().resize();
 		}
 	}
