@@ -44,7 +44,7 @@ var FileSenderUI=(function(){
 			progressBar.setPercent(e.percent);
 		}
 		function done(e){
-			
+			progressBar.setPercent(100);
 		}
 	}
 	return _FileSenderUI;

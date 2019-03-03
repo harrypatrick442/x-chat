@@ -17,6 +17,7 @@ var PmsMenu = new (function(){
 		this.clear = function(){
 			each(sortedFilteredEntries.getEntries().slice(), _remove);
 		};
+		this.resize = ui.resize;
 		var tabPortal;
 		pms.addEventListener('add', add);
 		pms.addEventListener('remove', remove);
@@ -115,15 +116,15 @@ var PmsMenu = new (function(){
 		this.getEntries = function(){return entries;};
 		this.show = function(){
 			popup.show();
-			resized();
+			resize();
 		};
 		this.checkResized=function(){
 			resizeWatched.manual(true);
 		};
-		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
+		resizeWatched = ResizeManager.add({element:element, onResized:resize, staggered:true});
 		resizeWatched.manual(true);
-		function resized(){
-			console.log('resized');
+		this.resize = resize;
+		function resize(){
 			var clientWidth = entries.clientWidth;
 			each(getEntries(), function(pmEntry){
 				pmEntry.parentWidth(clientWidth);

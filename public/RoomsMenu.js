@@ -2,9 +2,9 @@ var RoomsMenu = new (function(){
 	var _RoomsMenu = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var ui = new UI();
 		var mapIdToRoomEntry={};
 		var entries =[];
+		var ui = new UI({entries:entries});
 		var usersMenu = params.usersMenu;
 		var spinner = new Spinner({});
 		//spinner.show();
@@ -23,6 +23,7 @@ var RoomsMenu = new (function(){
 					remove(mapIdToRoomEntry[id]);
 				}
 			}
+			ui.resize();
 		};
 		this.getName = function(){
 			return 'roomsmenu';
@@ -47,13 +48,12 @@ var RoomsMenu = new (function(){
 			entries=[];
 		};
 		this.getVisible = ui.getVisible;
+		this.resize = ui.resize;
 		function add(roomInfo){
 			var roomEntry = new RoomEntry(roomInfo);
 			entries.push(roomEntry);
 			mapIdToRoomEntry[roomEntry.getId()]=roomEntry;
 			ui.add(roomEntry.getElement());
-			var width= ui.getWidth();
-			roomEntry.parentWidth(width);
 			roomEntry.addEventListener('selected', selected);
 			return roomEntry;
 		}
@@ -63,12 +63,6 @@ var RoomsMenu = new (function(){
 			entries.splice(entries.indexOf(roomEntry), 1);
 			ui.remove(roomEntry.getElement());
 		}
-		function resized(){
-			var width= ui.getWidth();
-			each(entries, function(entry){
-				if(entry.parentWidth)entry.parentWidth(width);
-			});
-		}
 		function selected(e){
 			dispatchShowRoom(e.roomInfo);
 		}
@@ -77,16 +71,14 @@ var RoomsMenu = new (function(){
 		}
 	};
 	return _RoomsMenu;
-	function UI(){
+	function UI(params){
+		var entries = params.entries;
 		var visible=false;
 		var element = E.DIV();
 		element.classList.add('rooms-menu');
 		this.getElement = function(){
 			return element;
 		};
-		this.getWidth = function(){
-			return element.clientWidth;
-		};		
 		this.add = function(entryElement){element.appendChild(entryElement);};
 		this.remove = function(entryElement){element.removeChild(entryElement);};
 		this.setVisible = function(value){
@@ -94,5 +86,11 @@ var RoomsMenu = new (function(){
 			element.style.display=value?'block':'none';
 		};
 		this.getVisible = function(){return visible;};
+		this.resize = function(){
+			var width= element.clientWidth;
+			each(entries, function(entry){
+				entry.parentWidth&&entry.parentWidth(width);
+			});
+		};
 	}
 })();

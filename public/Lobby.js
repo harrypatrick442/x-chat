@@ -419,9 +419,10 @@ var Lobby = (function(){
 		};
 		this.resize = resize;
 		function resize(){
-			splitPane.resize();
+			splitPane&&splitPane.resize();
 			usersMenues.resize();
 			rooms.resize();
+			pmsMenu.resize();
 		}
 		
 	}
