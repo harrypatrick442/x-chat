@@ -390,7 +390,10 @@ var Lobby = (function(){
 		element.appendChild(right);
 		right.appendChild(rightInner);
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
-		
+		var logoSignIn= E.IMG();
+		logoSignIn.classList.add('logo-sign-in');
+		logoSignIn.src='/images/logo.gif';
+		document.body.appendChild(logoSignIn);
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
 		divButtonShowHideWrapper.appendChild(buttonMenu.getElement());

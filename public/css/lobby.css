@@ -11,6 +11,9 @@ margin:0px;
 padding:0px;
 overscroll-behavior-y: none;
 }
+body{
+	background-color:rgb(44, 43, 43);
+}
 button{
 	background-color:transparent;
 	padding: 0;
@@ -153,6 +156,17 @@ text-align: center;
 vertical-align:middle;
 
 }
+.logo-sign-in{
+	width:1450;
+	max-width:80%;
+	max-height:390px;
+	margin:auto;
+	left:0px;
+	right:0px;
+	display:block;
+	position:absolute;
+	top:0px;
+	}
 .lobby .right .button-show-hide-wrapper .button-notifications .count .text{
 position:relative;
 vertical-align:top;
