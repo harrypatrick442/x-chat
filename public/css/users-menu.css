@@ -8,11 +8,9 @@
 .users-menues .users-menues-entries .users-menu .split-pane .panel	{
 	width:100%;
 	box-sizing:border-box;
-	display:table;
 }
 .users-menues .users-menues-entries .users-menu .user-menu-entries-wrapper{
 	box-sizing:border-box;
-	display:table-row;
 	position:relative;
 	width:100%;
 	box-sizing:border-box;
@@ -28,7 +26,6 @@
 }
 .users-menues .users-menues-entries .users-menu .heading-wrapper{
 	box-sizing:border-box;
-	display:table-row;
 	width:100%;
 	margin-bottom:3px;
 }
