@@ -25,6 +25,8 @@ var RoomEntry = new (function(){
 		name.classList.add('name');
 		name.innerHTML = params.name;
 		inner.appendChild(name);
+		element.title = params.name;
+		
 		this.getElement = function(){return element;};
 		this.parentWidth = function(clientWidth){
 			if(clientWidth<200){

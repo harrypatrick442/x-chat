@@ -44,6 +44,7 @@ var PmEntry= new (function(){
 		inner.appendChild(username);
 		inner.appendChild(buttonClose.getElement());
 		username.innerHTML=params.name;
+		element.title = 'Open PM with '+params.name;
 		this.getElement=function(){return element;};
 		this.parentWidth = function(clientWidth){
 			if(clientWidth<200){

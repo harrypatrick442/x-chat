@@ -47,6 +47,7 @@ var UserEntry =(function(){
 		username.classList.add('username');
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
+		element.title=params.name;	
 		username.innerHTML=params.name;
 		this.getElement=function(){return element;};
 	}

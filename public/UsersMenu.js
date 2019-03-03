@@ -113,6 +113,7 @@ var UsersMenu =(function(){
 		bottom.appendChild(headingIgnoredWrapper);
 		bottom.appendChild(entriesIgnoredWrapper);
 		heading.innerHTML='&nbsp;'+params.name;
+		heading.title = heading.innerHTML;
 		if(buttonClose){
 			heading.appendChild(buttonClose.getElement());
 		}
