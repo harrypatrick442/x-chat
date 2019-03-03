@@ -80,7 +80,7 @@ var Longpoll = (function(){
 			self.onError&&self.onError(err);
 		}
 		function dispatchOnMessage(msg){
-			console.log('dispatchOnError');
+			console.log(msg);
 			self.onMessage&&self.onMessage(msg);
 		}
 		function dispatchGotId(id){
