@@ -9,12 +9,19 @@ module.exports=new (function(){
 		app.post('/poll', function(req, res, next){
 			var data = req.body;
 			var mysocketId = data.id;
+			console.log('mysocket id is: '+mysocketId);
 			var msg = data.msg;
 			var longpoll;
-			if(mysocketId)
+			if(mysocketId){console.log('getting by id');
 				longpoll= longpolls.getById(mysocketId);
+			}
 			else
+			{
 				mysocketId = Mysockets.getNewId();
+				console.log('new id');
+			}
+			console.log('longpoll is: ');
+			console.log(longpoll);
 			if(!longpoll)
 			{
 				longpoll = new Longpoll({app:app, id:mysocketId, url:URL});
