@@ -40,16 +40,14 @@ var RoomsMenu = new (function(){
 			ui.setVisible(value);
 		};
 		this.clear=function(){
-			
 			for(var id in mapIdToRoomEntry){
 				remove(mapIdToRoomEntry[id]);
 			}
-			mapIdToRoomEntry={};
-			entries=[];
 		};
 		this.getVisible = ui.getVisible;
 		this.resize = ui.resize;
 		function add(roomInfo){
+			console.log('add');
 			var roomEntry = new RoomEntry(roomInfo);
 			entries.push(roomEntry);
 			mapIdToRoomEntry[roomEntry.getId()]=roomEntry;

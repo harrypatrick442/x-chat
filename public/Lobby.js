@@ -167,6 +167,8 @@ var Lobby = (function(){
 			notifications.clear();
 			pmsMenu.clear();
 			showAuthentication();
+			setVisible(false);
+			
 		}
 		function showNotifications(){
 			console.log('showing notifications');

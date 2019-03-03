@@ -68,9 +68,10 @@ var Rooms = new (function(){
 			showEntry(room);
 		};
 		this.clear = function(){
-			each(set.getEntries().slice(), function(room){
-				room.dispose&&room.dispose();
-				remove(room);
+			each(set.getEntries().slice(), function(entry){
+				console.log(entry);
+				entry.dispose&&entry.dispose();
+				remove(entry);
 			});
 			roomsMenu.clear();
 		};
