@@ -5,16 +5,20 @@
 
 'use strict';
 
-require('greenlock-express').create({
-  email: 'awonderfulmachine@gmail.com'     // The email address of the ACME user / hosting provider
+var Greenlock = require('greenlock-express');
+var greenlock = Greenlock.create({
+  version: 'draft-11'
+
+, server: 'https://acme-v02.api.letsencrypt.org/directory'
+, email: 'awonderfulmachine@gmail.com'     // The email address of the ACME user / hosting provider
 , agreeTos: true                    // You must accept the ToS as the host which handles the certs
 , configDir: '~/.config/acme/'      // Writable directory where certs will be saved
 , communityMember: true             // Join the community to get notified of important updates
 , telemetry: true                   // Contribute telemetry data to the project
-
+,approvedDomains: [ 'x-chat.co' ]
   // Using your express app:
   // simply export it as-is, then include it here
-, app: function(){
+, app: (function(){
 		const SIZE_LIMIT_MB=1.5;
 		var dal = require('./dal');
 		var express = require('express');
@@ -29,17 +33,16 @@ require('greenlock-express').create({
 		app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
 		servlet(app);
 		endpoint(app);
-		app.use(express.static(path.join(__dirname, '../public')));
-		var server = app.listen(80, function () {
-			console.log('Server is running..');
-		});
-		server.setTimeout(5000, function(r){console.log('timed out'); //console.log(r);
-		});
 		app.post('/image_uploader', function(req, res){
 			console.log(req);
 			res.send(imageUploader.process(req));
 		});
 		endpointLongpoll.load(app);
-	}
- debug: true
-}).listen(80, 443);
+		return app.use(express.static(path.join(__dirname, '../public')));
+	})(),
+	debug:true
+});
+var server = greenlock.listen(80, 443);
+server.setTimeout(5000, function(r){console.log('timed out'); //console.log(r);
+});
+
