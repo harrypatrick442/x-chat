@@ -10,8 +10,10 @@ var ClientClientVideoAudio = new (function () {
 					dispatchOfferFailed(result.error);
 					return;
 				}
+				createNewPC()
+				rtcPeerConnection.addStream(result.stream);
 				dispatchLocalStream(result.stream);
-				sendOffer(createNewPC());
+				sendOffer();
 			});
 		};
 		this.acceptedOffer = function(offer){
@@ -22,6 +24,7 @@ var ClientClientVideoAudio = new (function () {
 					return;
 				}
 				createNewPC()
+				rtcPeerConnection.addStream(result.stream);
 				dispatchLocalStream(result.stream);
 				setRemoteDescription(offer, function(){
 					sendAccept();
@@ -85,7 +88,7 @@ var ClientClientVideoAudio = new (function () {
             rtcPeerConnection.createAnswer(function (answer)
 			{
 				rtcPeerConnection.setLocalDescription(new RTCSessionDescription(answer), function(){
-					callback({successful:true, answer:answer});
+					callback({successfuel:true, answer:answer});
 				},
 				function(error){
 					errorCallback(callback, error)
