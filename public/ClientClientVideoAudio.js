@@ -172,6 +172,7 @@ var ClientClientVideoAudio = new (function () {
 		}
 		function onIceCandidate(e){
 			console.log('onicecandidate');
+			console.log(e);
 			var candidate=e.candidate;
 			if (candidate != null) {
 				dispatchSendIce(candidate);
