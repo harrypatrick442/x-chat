@@ -73,6 +73,7 @@ exports.handler = new (function(){
 						if(!userTo){
 							return;
 						}
+						console.log('forwarded ice candidate');
 						userTo.send({type:'pm_video_ice_candidate', userToId:userTo.getId(), candidate:req.candidate});
 					break;
 					case 'room_join':

@@ -48,8 +48,10 @@ var Pms=  (function(){
 			room.videoAccept(msg.accept);
 		};
 		this.videoIceCandidate = function(msg){
+			console.log('video ice candidate');
 			var room = rooms.getById(getRoomId(msg.userFromId));
 			if(!room)return;
+			console.log('video ice candidate b');
 			room.videoIceCandidate(msg.candidate);
 		};
 		this.load = function(userMeId){

@@ -32,6 +32,8 @@ var ClientClientVideoAudio = new (function () {
 			});
 		};
 		this.incomingIceCandidate = function(candidate){
+			console.log('incoming ice candidate');
+			console.log(candidate);
 			rtcPeerConnection&&rtcPeerConnection.addIceCandidate(candidate, function(){
 				dispatchAddedIceCandidate(candidate);
 			}, error);
