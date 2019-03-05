@@ -67,14 +67,7 @@ exports.handler = new (function(){
 						lobby.pmVideoAccept(req, callback);
 					break;
 					case 'pm_video_ice_candidate':
-						var userMe = getUser(req);
-						if(!userMe)return;
-						var userTo = users.getById(req.userToId);
-						if(!userTo){
-							return;
-						}
-						console.log('forwarded ice candidate');
-						userTo.send({type:'pm_video_ice_candidate', userToId:userTo.getId(), candidate:req.candidate});
+						lobby.pmVideoIceCandidate(req, callback);
 					break;
 					case 'room_join':
 						var user = getUser(req);

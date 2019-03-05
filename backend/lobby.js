@@ -126,6 +126,16 @@ exports.lobby = (function(){
 			}
 			userTo.sendMessage({type:'pm_video_accept', userFromId:userMe.getId(), accept:req.accept});
 		};
+		this.pmVideoIceCandidate = function(req, callback){
+			var userMe = getUserFromSessionId(req.sessionId);
+			if(!userMe)return;
+			var userTo = users.getById(req.userToId);
+			if(!userTo){
+				return;
+			}
+			console.log('forwarded ice candidate');
+			userTo.sendMessage({type:'pm_video_ice_candidate', userToId:userTo.getId(), candidate:req.candidate});
+		};
 		function getUnavailableResponse(available){
 			var error;
 			switch(available)
