@@ -131,7 +131,7 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchAddedIceCandidate(candidate){
 			self.dispatchEvent({type:'addedicecandidate', candidate:candidate});
 		}
-		function onAllIceCandidatesSent(){
+		function dispatchAllIceCandidatesSent(){
 			self.dispatchEvent({type:'allicecandidatessent'});
 		}
 		function dispatchLocalStream(stream){
