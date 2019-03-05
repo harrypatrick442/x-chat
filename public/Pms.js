@@ -51,6 +51,9 @@ var Pms=  (function(){
 			console.log('video ice candidate');
 			console.log(msg);
 			var room = rooms.getById(getRoomId(msg.userFromId));
+			console.log('roomId is: ');
+			console.log(getRoomId(msg.userFromId));
+			console.log(room);
 			if(!room)return;
 			console.log('video ice candidate b');
 			room.videoIceCandidate(msg.candidate);

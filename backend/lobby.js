@@ -134,7 +134,7 @@ exports.lobby = (function(){
 				return;
 			}
 			console.log('forwarded ice candidate');
-			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userTo.getId(), candidate:req.candidate});
+			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
 		};
 		function getUnavailableResponse(available){
 			var error;
