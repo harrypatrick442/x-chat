@@ -31,6 +31,7 @@ var OnlineIndicators  = (function(){
 		if(onlineIndicator)return onlineIndicator;
 		onlineIndicator = new __OnlineIndicator();
 		map[userId]=onlineIndicator;
+		return onlineIndicator;
 	};
 	_OnlineIndicators.setOnline = function(userId, value){
 		_OnlineIndicators.get(userId).setOnline(value);
