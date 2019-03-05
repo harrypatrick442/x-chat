@@ -1,6 +1,9 @@
 function OnlineIndicatorUI(onlineIndicator){
 	var element = E.DIV();
 	element.classList.add('online-indicator');
+	this.getElement = function(){
+		return element;
+	};
 	onlineIndicator.addEventListener('cameonline', cameOnline);
 	onlineIndicator.addEventListener('wentofline', wentOffline);
 	(onlineIndicator.getOnline()?cameOnline:wentOffline)();

@@ -2,13 +2,14 @@ var NotificationEntry = (function(){
 	var _NotificationEntry = function(notification){
 		EventEnabledBuilder(this);
 		var self = this;
+		var isPm = notification.getIsPm();
 		var buttonClose = new Button({className:'button-close', preventPropagation:true});
 		var userImage = new UserImage({userId:notification.getId(), username:notification.getUsername()});
-		var ui = new UI({userImage:userImage, buttonClose:buttonClose, text:'PM from '+notification.getUsername()});
+		var ui = new UI({userImage:userImage, buttonClose:buttonClose, text:'PM from '+notification.getUsername(), isPm:isPm, userId:isPm?notification.getId():undefined});
 		this.getElement = ui.getElement;
 		this.getId = notification.getId;
 		this.parentWidth=ui.parentWidth;
-		if(!notification.getIsPm())return;
+		if(!isPm)return;
 		ui.addEventListener('click', dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchDispose);
 		function dispatchShowPm(){
@@ -26,17 +27,20 @@ var NotificationEntry = (function(){
 		var self = this;
 		var userImage = params.userImage;
 		var buttonClose = params.buttonClose;
+		var userId = params.userId;
 		var text= params.text;
 		var element = E.DIV();
 		element.classList.add('notification-entry');
 		var inner = E.DIV();
 		inner.classList.add('inner');
 		element.appendChild(inner);
+		var onlineIndicatorUI = new OnlineIndicatorUI(OnlineIndicators.get(userId));
 		var username=E.DIV();
 		username.classList.add('username');
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
 		inner.appendChild(buttonClose.getElement());
+		inner.appendChild(onlineIndicatorUI.getElement());
 		username.innerHTML=text;
 		this.getElement=function(){return element;};
 		this.parentWidth = function(clientWidth){

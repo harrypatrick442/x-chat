@@ -5,7 +5,7 @@ var PmEntry= new (function(){
 		var userTo = params.userTo;
 		var buttonClose = new Button({className:'button-close', preventPropagation:true});
 		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername()});
-		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose});
+		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose, userId:userTo.getId()});
 		this.getId = function(){
 			return userTo.getId();
 		};
@@ -33,6 +33,8 @@ var PmEntry= new (function(){
 		var self = this;
 		var userImage = params.userImage;
 		var buttonClose = params.buttonClose;
+		var userId = params.userId;
+		var onlineIndicatorUI = new OnlineIndicatorUI(OnlineIndicators.get(userId));
 		var element = E.DIV();
 		element.classList.add('pm-entry');
 		var inner = E.DIV();
@@ -43,6 +45,7 @@ var PmEntry= new (function(){
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
 		inner.appendChild(buttonClose.getElement());
+		inner.appendChild(onlineIndicatorUI.getElement());
 		username.innerHTML=params.name;
 		element.title = 'Open PM with '+params.name;
 		this.getElement=function(){return element;};

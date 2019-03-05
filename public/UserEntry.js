@@ -7,7 +7,7 @@ var UserEntry =(function(){
 		var ignoreManager = params.ignoreManager;
 		var clickMenu = params.clickMenu;
 		var userImage = new UserImage({userId:user.getId(), username:user.getUsername()});
-		var ui = new UI({name:user.getUsername(), userImage:userImage});
+		var ui = new UI({name:user.getUsername(), userImage:userImage, userId:user.getId()});
 		this.getElement = ui.getElement;
 		this.getId = function(){return user.getId();};
 		this.getUsername=user.getUsername;
@@ -38,6 +38,8 @@ var UserEntry =(function(){
 	return _UserEntry;
 	function UI(params){
 		var userImage = params.userImage;
+		var userId = params.userId;
+		var onlineIndicatorUI = new OnlineIndicatorUI(OnlineIndicators.get(userId));
 		var element = E.DIV();
 		element.classList.add('user-entry');
 		var inner = E.DIV();
@@ -47,6 +49,7 @@ var UserEntry =(function(){
 		username.classList.add('username');
 		inner.appendChild(userImage.getElement());
 		inner.appendChild(username);
+		inner.appendChild(onlineIndicatorUI.getElement());
 		element.title=params.name;	
 		username.innerHTML=params.name;
 		this.getElement=function(){return element;};
