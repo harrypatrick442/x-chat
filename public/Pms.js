@@ -49,6 +49,7 @@ var Pms=  (function(){
 		};
 		this.videoIceCandidate = function(msg){
 			console.log('video ice candidate');
+			console.log(msg);
 			var room = rooms.getById(getRoomId(msg.userFromId));
 			if(!room)return;
 			console.log('video ice candidate b');
