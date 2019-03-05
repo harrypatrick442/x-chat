@@ -125,7 +125,7 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchOfferFailed(error){
 			self.dispatchEvent({type:'offerfailed', error:error});
 		}
-		function dispatchSendIce(ice){
+		function dispatchSendIce(candidate){
 			self.dispatchEvent({type:'sendice', candidate:candidate});
 		}
 		function dispatchAddedIceCandidate(candidate){
