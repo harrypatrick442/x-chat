@@ -1,3 +1,3 @@
 module.exports={
-	useHttps:true
+	useHttps:false
 };
