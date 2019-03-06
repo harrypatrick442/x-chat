@@ -92,9 +92,6 @@ var VideoFeed = (function(){
 		function dispatchAcceptFailed(e){
 			self.dispatchEvent({type:'acceptfailed', error:e.error});
 		}
-		function onAddRemoteStream(e){
-			
-		}
 		function onSendOffer(e){
 			sendOffer(e.offer);
 		}

@@ -142,6 +142,7 @@ var ClientClientVideoAudio = new (function () {
 			self.dispatchEvent({type:'localstream', stream:stream});
 		}
 		function dispatchAddRemoteStream(stream){
+			console.log('dispatchAddRemoteStream');
 			self.dispatchEvent({type:'addremotestream', stream:stream});
 		}
 		function dispatchRemoveRemoteStream(stream){
