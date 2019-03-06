@@ -20,8 +20,6 @@ module.exports=new (function(){
 				mysocketId = Mysockets.getNewId();
 				console.log('new id');
 			}
-			console.log('longpoll is: ');
-			console.log(longpoll);
 			if(!longpoll)
 			{	
 				longpoll = new Longpoll({app:app, id:mysocketId, url:URL});
