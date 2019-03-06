@@ -158,7 +158,7 @@ var ClientClientVideoAudio = new (function () {
 			self.dispatchEvent({type:'ended', iceConnectionState:iceConnectionState});
 		}
 		function onAddStream(e){
-			console.lo('ON ADD STREAM');
+			console.log('ON ADD STREAM');
 			dispatchAddRemoteStream(e.stream);
 		}
 		function onRemoveStream(e){
