@@ -41,7 +41,7 @@ var ClientClientVideoAudio = new (function () {
 			console.log(accept);
 			console.log('setting remote description a');
 				console.log('set answer b');
-			rtcPeerConnection.setRemoteDescription(accept, function(){
+			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(accept), function(){
 				console.log('set');
 			}, 
 			function(){
@@ -69,7 +69,7 @@ var ClientClientVideoAudio = new (function () {
 		function setRemoteDescription(offer, callback){
 			console.log('setting remote description b');
 				console.log('set offer b');
-			rtcPeerConnection.setRemoteDescription(offer, function(){
+			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
 				callback();
 			},function(){
 				errorCallback(callback, error);
