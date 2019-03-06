@@ -46,6 +46,9 @@ var VideoFeedUI = (function(){
 		}
 		function onSetRemoteStream(e){
 			var stream = e.stream;
+			console.log(stream);
+			console.log(new Error().stack);
+			console.log('setting videoThem and calling play');
 			videoThem.srcObject = stream;
 			videoThem.play();
 		}
