@@ -163,7 +163,6 @@ var ClientClientVideoAudio = new (function () {
 			self.dispatchEvent({type:'ended', iceConnectionState:iceConnectionState});
 		}
 		function onTrack(e){
-			console.log('ON ADD TRACK');
 			console.log(e.streams[0]);
 			dispatchAddRemoteStream(e.streams[0]);
 		}
