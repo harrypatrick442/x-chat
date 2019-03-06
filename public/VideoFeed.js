@@ -58,6 +58,7 @@ var VideoFeed = (function(){
 			dispatchStopped();
 		}
 		function onAddRemoteStream(e){
+			console.log('onAddRemoteStream');
 			closeCurrentStream();
 			stream = e.stream;
 			dispatchSetRemoteStream(stream);
