@@ -21,9 +21,8 @@ var ClientClientVideoAudio = new (function () {
 			console.log('setting remote description b');
 			console.log('set offer b');
 			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
-				callback();
-			},function(){
-				errorCallback(callback, error);
+			},function(err){
+				error(err);
 			});
 		};
 		this.acceptedOffer = function(offer){
