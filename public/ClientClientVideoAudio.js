@@ -91,7 +91,7 @@ var ClientClientVideoAudio = new (function () {
             rtcPeerConnection.createAnswer(function (answer)
 			{
 				rtcPeerConnection.setLocalDescription(new RTCSessionDescription(answer), function(){
-					callback({successfuel:true, answer:answer});
+					callback({successful:true, answer:answer});
 				},
 				function(error){
 					errorCallback(callback, error)
