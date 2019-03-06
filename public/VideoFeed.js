@@ -41,6 +41,7 @@ var VideoFeed = (function(){
 			dispatchOfferFailed(e);
 		}
 		function onAcceptFailed(e){
+			console.log(new Error().stack);
 			console.log(e);
 			dispatchGeneralFailure(e);
 			dispatchAcceptFailed(e);
