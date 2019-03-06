@@ -171,7 +171,7 @@ var ClientClientVideoAudio = new (function () {
 			dispatchRemoveRemoteStream(e.stream);
 		}
 		function onIceConnectionStateChange(e){
-			console.log('onIceConnectionStateChange');
+			console.log('ICE state: ',rtcPeerConnection.iceConnectionState);
 			var iceConnectionState = rtcPeerConnection.iceConnectionState;
 			switch(iceConnectionState){
 				case 'failed':
