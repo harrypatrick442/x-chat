@@ -17,7 +17,6 @@ module.exports = (function(){
 		return new _Message(row);
 	};
 	_Message.fromRequest=function(req, user){
-		console.log(req);
 		req.userId = user.getId();
 		req.username = user.getUsername();
 		req.image= user.getImage();

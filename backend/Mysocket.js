@@ -51,7 +51,6 @@ module.exports = (function(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}
 		function onMessage(msg){
-			console.log(msg);
 			handler.process(msg, self, sendMessage);
 		}
 		function onOpen(){
@@ -62,7 +61,6 @@ module.exports = (function(){
 			timeChannelClosed = getTime();
 		}
 		function sendMessage(msg){
-			console.log(msg);
 			channel&&channel.sendMessage(msg);
 		}
 		function nothing(){}

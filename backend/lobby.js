@@ -117,6 +117,7 @@ exports.lobby = (function(){
 		this.pmVideoAccept = function(req, callback){
 			console.log('PM VIDEO ACCEPT');
 			console.log(req);
+			console.log('PM VIDEO ACCEPT');
 			var userMe = getUserFromSessionId(req.sessionId);
 			if(!userMe)return;
 			console.log('PM VIDEO ACCEPT B');
