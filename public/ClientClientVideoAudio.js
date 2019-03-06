@@ -40,7 +40,8 @@ var ClientClientVideoAudio = new (function () {
 		this.incomingAccept = function(accept){
 			console.log(accept);
 			console.log('setting remote description a');
-			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(accept), function(){
+				console.log('set answer b');
+			rtcPeerConnection.setRemoteDescription(accept, function(){
 				console.log('set');
 			}, 
 			function(){
@@ -67,7 +68,8 @@ var ClientClientVideoAudio = new (function () {
 		}
 		function setRemoteDescription(offer, callback){
 			console.log('setting remote description b');
-			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
+				console.log('set offer b');
+			rtcPeerConnection.setRemoteDescription(offer, function(){
 				callback();
 			},function(){
 				errorCallback(callback, error);
@@ -75,7 +77,8 @@ var ClientClientVideoAudio = new (function () {
 		}
 		function createOffer(callback){
 			rtcPeerConnection.createOffer(function(offer){
-                rtcPeerConnection.setLocalDescription(new RTCSessionDescription(offer),function(){
+				console.log('set offer a');
+                rtcPeerConnection.setLocalDescription(offer,function(){
 					callback({successful:true, offer:offer});
 				},
 				function(error){
@@ -90,7 +93,8 @@ var ClientClientVideoAudio = new (function () {
 		{
             rtcPeerConnection.createAnswer(function (answer)
 			{
-				rtcPeerConnection.setLocalDescription(new RTCSessionDescription(answer), function(){
+				console.log('set answer a');
+				rtcPeerConnection.setLocalDescription(answer, function(){
 					callback({successful:true, answer:answer});
 				},
 				function(error){
