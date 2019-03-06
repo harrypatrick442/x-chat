@@ -40,7 +40,7 @@ var ClientClientVideoAudio = new (function () {
 		this.incomingAccept = function(accept){
 			console.log(accept);
 			console.log('setting remote description a');
-			rtcPeerConnection.setRemoteDescription(accept, function(){
+			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(accept), function(){
 				console.log('set');
 			}, 
 			function(){
