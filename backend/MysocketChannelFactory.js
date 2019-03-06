@@ -4,7 +4,6 @@ module.exports = new (function(){
 	var ChannelType = require('./ChannelType');
 	this.create = function(params){
 		var id = params.id;
-		console.log(params);
 		if(params.ws)
 			return new Websocket(params.ws);
 		else 
@@ -34,8 +33,6 @@ module.exports = new (function(){
 		};
 	}
 	function Longpoll(longpoll){ 
-	console.log(longpoll);
-	console.log('was');
 		var self = this;
 		var closed = false;
 		var messageQueue=[];
