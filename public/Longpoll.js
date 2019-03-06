@@ -1,5 +1,5 @@
 var Longpoll = (function(){
-	var TIMEOUT=30000;
+	//var TIMEOUT=30000;
 	var _Longpoll = function(params){
 		var self = this;
 		var url = params.url;
@@ -29,7 +29,7 @@ var Longpoll = (function(){
 		function poll(){
 			console.log('poll');
 			console.log('get id is: '+id);
-			ajax.get({url:urlPoll+getUniqueParameter(), timeout:TIMEOUT, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
+			ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function getUniqueParameter(){
 			return '?t='+count++ +'_'+getTime();
