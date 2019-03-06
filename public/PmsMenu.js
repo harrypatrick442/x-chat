@@ -42,6 +42,7 @@ var PmsMenu = new (function(){
 		}
 		function remove(e){
 			var pmEntry = sortedFilteredEntries.getByEntryId(e.userTo.getId());
+			pmEntry.dispose();
 			_remove(pmEntry);
 		}
 		function _remove(pmEntry){

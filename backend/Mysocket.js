@@ -15,7 +15,6 @@ module.exports = (function(){
 		
 		this.close=function(){
 			console.log('close called');
-			console.log(new Error().stack);
 			channel&&channel.close&&channel.close();
 			dispatchClose();
 		};

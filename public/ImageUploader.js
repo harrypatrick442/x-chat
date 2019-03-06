@@ -50,8 +50,8 @@ var ImageUploader = new (function(){
 		function fileSenderDone(){
 			console.log('fileSenderDone');
 			new Timer({callback:function(){
-					//ui.clearFileSender();
-					//hide();
+					ui.clearFileSender();
+					hide();
 				}
 			, delay:1000, nTicks:1}).start();
 		}

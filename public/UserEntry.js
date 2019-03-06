@@ -11,6 +11,7 @@ var UserEntry =(function(){
 		this.getElement = ui.getElement;
 		this.getId = function(){return user.getId();};
 		this.getUsername=user.getUsername;
+		this.dispose = ui.dispose;
 		ui.getElement().addEventListener('click', click);
 		function click(e){
 			clickMenu.setPosition({left:e.clientX, top:e.clientY});
@@ -53,5 +54,10 @@ var UserEntry =(function(){
 		element.title=params.name;	
 		username.innerHTML=params.name;
 		this.getElement=function(){return element;};
+		this.dispose = function(){
+			userImage.dispose();
+			onlineIndicatorUI.dispose();
+			console.log('disposed');
+		};
 	}
 })();

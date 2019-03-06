@@ -32,6 +32,7 @@ var UsersMenu =(function(){
 			self.dispatchEvent({type:'hide', entry:self});
 		};
 		this.resize = ui.resize;
+		this.dispose = ui.dispose;
 		loadIgnores();
 		function dispatchHidePopup(){
 			self.dispatchEvent({type:'hidepopup'});
@@ -45,7 +46,9 @@ var UsersMenu =(function(){
 			console.log('a');self.dispatchEvent(e);});
 		}
 		function userRemove(e){
-			sortedFilteredEntries.removeEntryById(e.user.getId());
+			var userEntry = sortedFilteredEntries.getByEntryId(e.user.getId());
+			userEntry.dispose();
+			sortedFilteredEntries.removeEntry(userEntry);
 		}
 		function callbackIgnoreAdd(e){
 			ignoreAdd(e.ignored);

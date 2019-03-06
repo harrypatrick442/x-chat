@@ -5,11 +5,24 @@
 	box-sizing:border-box;
 	position:relative;
 }
-.video-feed video{
+.video-feed .video-them{
 	height:100%;
 	max-width:100%;
 	margin: auto;
 	position: absolute;
 	top: 0; left: 0; bottom: 0; right: 0;
+	box-sizing:border-box;
+}
+.video-feed .me{
+	max-width:20%;
+	max-height:30%;
+	position:absolute;
+	right:0px;
+	bottom:0px;
+	box-sizing:border-box;
+}
+.video-feed .video-me{
+	height:100%;
+	width:100%;
 	box-sizing:border-box;
 }

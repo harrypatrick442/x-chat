@@ -5,8 +5,12 @@ function OnlineIndicatorUI(onlineIndicator){
 		return element;
 	};
 	onlineIndicator.addEventListener('cameonline', cameOnline);
-	onlineIndicator.addEventListener('wentofline', wentOffline);
+	onlineIndicator.addEventListener('wentoffline', wentOffline);
 	(onlineIndicator.getOnline()?cameOnline:wentOffline)();
+	this.dispose = function(){
+		onlineIndicator.addEventListener('cameonline', cameOnline);
+		onlineIndicator.addEventListener('wentoffline', wentOffline);
+	};
 	function cameOnline(e){
 		element.classList.add('online');
 		element.classList.remove('offline');

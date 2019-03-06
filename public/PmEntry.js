@@ -13,7 +13,7 @@ var PmEntry= new (function(){
 		this.getElement = ui.getElement;
 		this.setVisible = ui.setVisible;
 		this.parentWidth = ui.parentWidth;
-		this.dispose = userImage.dispose;
+		this.dispose = ui.dispose;
 		ui.addEventListener('click',dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchClosePm);
 		function dispatchShowPm(){
@@ -49,6 +49,10 @@ var PmEntry= new (function(){
 		username.innerHTML=params.name;
 		element.title = 'Open PM with '+params.name;
 		this.getElement=function(){return element;};
+		this.dispose = function(){
+			userImage.dispose();
+			onlineIndicatorUI.dispose();
+		};
 		this.parentWidth = function(clientWidth){
 			if(clientWidth<200){
 				element.style.width='100%';

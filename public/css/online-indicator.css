@@ -2,14 +2,17 @@
 	position:absolute;
 	bottom:2px;
 	right:2px;
-	border-radius:5px;
+	border-radius:2px;
 	height:10px;
 	width:10px;
+	box-sizing:border-box;
 }
 .online-indicator.online{
-	background-color:#00ff66;
+	background-color:#00AFFF;
+	border:1px solid #55ee44;
 }
 .online-indicator.offline{
-	background-color:#ffff99;
+	background-color:#333333;
+	border:1px solid #555555;
 	
 }

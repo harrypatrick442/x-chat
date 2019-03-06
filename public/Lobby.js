@@ -52,6 +52,8 @@ var Lobby = (function(){
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
 		buttonNotifications.addEventListener('click', showNotifications);
 		buttonMenu.addEventListener('click', showMenu);
+		users.addEventListener('add', userJoined);
+		users.addEventListener('remove', userLeft);
 		if(!isMobile)
 		{
 			buttonPms.addEventListener('toggled', onToggleButtonPms);
@@ -173,6 +175,14 @@ var Lobby = (function(){
 		function showNotifications(){
 			console.log('showing notifications');
 			notificationsMenu.show();
+		}
+		function userLeft(e){
+			var user = e.user;
+			OnlineIndicators.setOnline(user.getId(), false);
+		}
+		function userJoined(e){
+			var user = e.user;
+			OnlineIndicators.setOnline(user.getId(), true);
 		}
 		function roomUserIds_Join(room, userIds){
 			each(userIds, function(userId){

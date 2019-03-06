@@ -5,11 +5,19 @@ var VideoFeedUI = (function(){
 		var latestWrappedOffer;
 		var currentDialog;
 		var element = E.DIV();
+		var me = E.DIV();
+		var videoMe = E.VIDEO();
 		element.classList.add('video-feed');
-		var video = E.VIDEO();
-		element.appendChild(video);
+		me.classList.add('me');
+		var videoThem = E.VIDEO();
+		videoThem.classList.add('video-them');
+		videoMe.classList.add('video-me');
+		element.appendChild(videoThem);
+		element.appendChild(me);
+		me.appendChild(videoMe);
 		videoFeed.addEventListener('gotoffer', onGotOffer);
 		videoFeed.addEventListener('setlocalstream', onSetLocalStream);
+		videoFeed.addEventListener('setremotestream', onSetRemoteStream);
 		videoFeed.addEventListener('stopped', onStopped);
 		videoFeed.addEventListener('offerfailed', onOfferFailed);
 		videoFeed.addEventListener('acceptfailed', onAcceptFailed);
@@ -30,9 +38,14 @@ var VideoFeedUI = (function(){
 		function onSetLocalStream(e){
 			console.log('setting stream');
 			var stream = e.stream;
-			video.srcObject=stream;
-			video.play();
+			videoMe.srcObject=stream;
+			videoMe.play();
 			dispatchShow();
+		}
+		function onSetRemoteStream(e){
+			var stream = e.stream;
+			videoThem.srcObject = stream;
+			videoThem.play();
 		}
 		function onStopped(e){
 			dispatchHide();

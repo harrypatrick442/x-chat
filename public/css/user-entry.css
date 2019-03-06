@@ -1,7 +1,7 @@
 
 .users-menues .users-menues-entries .users-menu .user-entry{
 	position:relative;
-	float:left;
+	left:0px;
 	width:100%;
 	box-sizing:border-box;
 	margin-bottom:3px;
@@ -17,9 +17,11 @@
 	border-radius:3px;
 	overflow:hidden;
 }
+.users-menues .users-menues-entries .users-menu .user-entry .inner .online-indicator{
+	top:10px;
+}
 .users-menues .users-menues-entries .users-menu .user-entry .inner .connected-image{
 	position:relative;
-	float:left;
 	height:30px;
 	width:30px;
 	border-radius:2px;
@@ -30,6 +32,10 @@
 	height:100%;
 }
 .users-menues .users-menues-entries .users-menu .user-entry .inner .username{
+	position:absolute;
+	left:30px;
+	right:10px;
+	top:0px;
 	height:30px;
 	font-family:verdana, geneva, sans-serif;
     font-size:16px;
