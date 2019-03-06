@@ -10,9 +10,8 @@ var ClientClientVideoAudio = new (function () {
 					dispatchOfferFailed(result.error);
 					return;
 				}
-				createNewPC()
-				rtcPeerConnection.addStream(result.stream);
-				dispatchLocalStream(result.stream);
+				createNewPC();
+				handleLocalStream(result.stream);
 				sendOffer();
 			});
 		};
@@ -20,7 +19,7 @@ var ClientClientVideoAudio = new (function () {
 			createNewPC();
 			console.log('setting remote description b');
 			console.log('set offer b');
-			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
+			rtcPeerConnection.setRemoteDescription(offer, function(){
 			},function(err){
 				error(err);
 			});
@@ -32,8 +31,7 @@ var ClientClientVideoAudio = new (function () {
 					dispatchAcceptFailed(result.error);
 					return;
 				}
-				rtcPeerConnection.addStream(result.stream);
-				dispatchLocalStream(result.stream);
+				handleLocalStream(result.stream);
 				sendAccept();
 			});
 		};
@@ -47,13 +45,19 @@ var ClientClientVideoAudio = new (function () {
 			console.log(accept);
 			console.log('setting remote description a');
 				console.log('set answer b');
-			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(accept), function(){
+			rtcPeerConnection.setRemoteDescription(accept, function(){
 				console.log('set');
 			}, 
 			function(){
 				console.error(error);
 			});
 		};
+		function handleLocalStream(stream){
+				for (var track of stream.getTracks()) {
+					rtcPeerConnection.addTrack(track, stream);
+				}
+				dispatchLocalStream(stream);
+		}
 		function sendAccept(){
 			createAccept(function(result){
 				if(result.successful){
@@ -109,7 +113,7 @@ var ClientClientVideoAudio = new (function () {
 		function createNewPC() {
 			clearOldPC();
 			rtcPeerConnection = new RTCPeerConnection(null);
-			rtcPeerConnection.onaddstream = onAddStream;
+			rtcPeerConnection.ontrack = onTrack;
 			rtcPeerConnection.onremovestream = onRemoveStream;
 			rtcPeerConnection.oniceconnectionstatechange = onIceConnectionStateChange;
 			rtcPeerConnection.onicecandidate = onIceCandidate;
@@ -158,9 +162,9 @@ var ClientClientVideoAudio = new (function () {
 		function dispatchEnded(iceConnectionState){
 			self.dispatchEvent({type:'ended', iceConnectionState:iceConnectionState});
 		}
-		function onAddStream(e){
+		function onTrack(e){
 			console.log('ON ADD STREAM');
-			dispatchAddRemoteStream(e.stream);
+			dispatchAddRemoteStream(e.streams[0]);
 		}
 		function onRemoveStream(e){
 			dispatchRemoveRemoteStream(e.stream);
