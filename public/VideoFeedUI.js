@@ -38,6 +38,8 @@ var VideoFeedUI = (function(){
 		function onSetLocalStream(e){
 			console.log('setting stream');
 			var stream = e.stream;
+			console.log(e);
+			console.log(e.stream);
 			videoMe.srcObject=stream;
 			videoMe.play();
 			dispatchShow();
