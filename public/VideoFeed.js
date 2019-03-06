@@ -18,6 +18,7 @@ var VideoFeed = (function(){
 		};
 		this.acceptedOffer = clientClientVideoAudio.acceptedOffer;
 		this.incomingOffer = function(wrappedOffer){
+			clientClientVideoAudio.incomingOffer(wrappedOffer.offer);
 			dispatchGotOffer(wrappedOffer);
 		};
 		this.incomingAccept = clientClientVideoAudio.incomingAccept;

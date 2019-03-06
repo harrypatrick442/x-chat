@@ -16,6 +16,16 @@ var ClientClientVideoAudio = new (function () {
 				sendOffer();
 			});
 		};
+		this.incomingOffer = function(offer){
+			createNewPC();
+			console.log('setting remote description b');
+			console.log('set offer b');
+			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
+				callback();
+			},function(){
+				errorCallback(callback, error);
+			});
+		};
 		this.acceptedOffer = function(offer){
 			console.log('ClientClientVideoAudio.acceptedOffer');
 			getUserPermission(function(result){
@@ -23,12 +33,9 @@ var ClientClientVideoAudio = new (function () {
 					dispatchAcceptFailed(result.error);
 					return;
 				}
-				createNewPC()
 				rtcPeerConnection.addStream(result.stream);
 				dispatchLocalStream(result.stream);
-				setRemoteDescription(offer, function(){
-					sendAccept();
-				});
+				sendAccept();
 			});
 		};
 		this.incomingIceCandidate = function(candidate){
@@ -64,15 +71,6 @@ var ClientClientVideoAudio = new (function () {
 					return;
 				}
 				dispatchOfferFailed(result.error);
-			});
-		}
-		function setRemoteDescription(offer, callback){
-			console.log('setting remote description b');
-				console.log('set offer b');
-			rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(offer), function(){
-				callback();
-			},function(){
-				errorCallback(callback, error);
 			});
 		}
 		function createOffer(callback){
