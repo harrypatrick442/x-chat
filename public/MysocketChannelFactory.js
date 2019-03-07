@@ -41,12 +41,12 @@ var MysocketChannelFactory = new (function(){
 			self.onMessage&&self.onMessage(JSON.parse(e.data));
 		}
 		function onOpen(){
-			console.log('onOpen');
+			console.log('Open');
 			analysis.opened();
 			self.onOpen&&self.onOpen();
 		}
 		function onClose(){
-			console.log('onClose');
+			console.log('Close');
 			analysis.closed();
 			self.onClose&&self.onClose();
 		}
@@ -80,7 +80,7 @@ var MysocketChannelFactory = new (function(){
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(msg);
 		}
-		function onOpen(){
+		function onOpen(){onClose
 			analysis.opened();
 			self.onOpen&&self.onOpen();
 		}

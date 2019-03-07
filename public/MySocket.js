@@ -31,13 +31,13 @@ var Mysocket = (function(){
 			dispatchOnClose();
 		}
 		function dispatchOnMessage(msg){
-			self.dispatchEvent({type:'onmessage', msg:msg});
+			self.dispatchEvent({type:'message', msg:msg});
 		}
 		function dispatchOnOpen(){
-			self.dispatchEvent({type:'onopen'});
+			self.dispatchEvent({type:'open'});
 		}
 		function dispatchOnClose(){
-			self.dispatchEvent({type:'onclose'});
+			self.dispatchEvent({type:'close'});
 		}
 		function getChannel(){
 			if(channel)return channel;
@@ -62,10 +62,11 @@ var Mysocket = (function(){
 			dispatchOnMessage(msg);
 		}
 		function onClose(){
+			dispatchClose();
 			channel = null;
 		}
 		function onOpen(){
-			console.log('onopen');
+			console.log('open');
 			if(toSend.length>0)
 				sendPending();
 			dispatchOnOpen();

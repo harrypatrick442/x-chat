@@ -47,8 +47,8 @@ var Lobby = (function(){
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture,
 		buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu,
 		buttonMenu:buttonMenu, mainMenu:mainMenu});
-		mysocket.addEventListener('onmessage', onMessage);
-		mysocket.addEventListener('onopen', onOpen);
+		mysocket.addEventListener('message', onMessage);
+		mysocket.addEventListener('open', onOpen);
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
 		buttonNotifications.addEventListener('click', showNotifications);
 		buttonMenu.addEventListener('click', showMenu);
