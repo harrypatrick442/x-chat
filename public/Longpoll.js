@@ -5,7 +5,6 @@ var Longpoll = (function(){
 		var url = params.url;
 		var id = params.id;
 		var count=0;
-		console.log('incoming id is: '+id);
 		var ajax = new Ajax({url:url});
 		var disposed=false;
 		var started=false;
@@ -13,9 +12,7 @@ var Longpoll = (function(){
 		var disposedByServer = false;
 		var waitingToBeSent = [];
 		this.send = function(msg){//issue was caused by multiple sends in parallel before an id got returned.
-			console.log('send');
 			if(disposed)return;
-			console.log('send2');
 			if(started||!didFirstSend){
 				didFirstSend = true;
 				ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
@@ -30,9 +27,6 @@ var Longpoll = (function(){
 			dispatchOnDispose();
 		};
 		function poll(){
-			console.log(new Error().stack);
-			console.log('poll');
-			console.log('get id is: '+id);
 			ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function getUniqueParameter(){
@@ -42,7 +36,6 @@ var Longpoll = (function(){
 			return new Date().getTime();
 		}
 		function callbackSendSuccessful(res){
-			console.log('callbackSendSuccessful');
 			console.log(res);
 			res = JSON.parse(res);
 			if(res.disposed)
@@ -50,8 +43,7 @@ var Longpoll = (function(){
 				self.dispose();
 				return;
 			}
-			console.log(res.id);
-			if(started)return
+			if(started)return;
 			started=true;
 			id = res.id;
 			urlPoll = url+'/'+id;
@@ -63,16 +55,13 @@ var Longpoll = (function(){
 			poll();
 		}
 		function callbackSendError(err){
-			console.log('callbackSendError');
 			console.error(err);
 			dispatchOnError(err);
 		}
 		function callbackPollTimeout(){
-			console.log('callbackPollTimeout');
 			poll();
 		}
 		function callbackPollError(err){
-			console.log('callbackPollError');
 			console.error(err);
 			dispatchOnError(err);
 			if(disposed)return;
