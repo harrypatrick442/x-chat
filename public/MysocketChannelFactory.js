@@ -24,6 +24,9 @@ var MysocketChannelFactory = new (function(){
 		this.getAnalysis= function(){
 			return analysis;
 		};
+		this.getChannelType = function(){
+			return ChannelType.WEBSOCKET;
+		};
 		this.isOpen = function(){
 			return websocket&&(websocket.readyState==websocket.OPEN);
 		};
@@ -75,6 +78,9 @@ var MysocketChannelFactory = new (function(){
 		this.send = longpoll.send;
 		this.getAnalysis= function(){
 			return analysis;
+		};
+		this.getChannelType = function(){
+			return ChannelType.LONGPOLL;
 		};
 		setTimeout(onOpen, 0);
 		function nothing(){}

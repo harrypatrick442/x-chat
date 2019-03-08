@@ -5,6 +5,7 @@ var MysocketAnalysis = (function(){
 	var MAX_N_CHANNELS_PER_MINUTE=3;
 	var MIN_DELAY_BETWEEN_CLOSE_AND_CREATE=2000;
 	var MAX_N_CHANNEL_ANALYSISS= 20;
+	var FAILED_QUICKLY_DELAY_MILLISECONDS=10000;
 	var _MysocketAnalysis = function(params){
 		var self = this;
 		var mysocket = params.mysocket;
@@ -50,11 +51,11 @@ var MysocketAnalysis = (function(){
 			channelAnalysis.addEventListener(CLOSED, channelAnalysisClosed);
 		};
 		function getNRecentWebsocketsFailedQuickly(){
-			console.log('recentChannels'+ getRecentChannels().length);
-			return getRecentWebsockets().where(function(x){ return x.getOpenForMilliseconds()<2000;}).count();
+			return getRecentWebsockets().where(function(x){ return x.getOpenForMilliseconds()<FAILED_QUICKLY_DELAY_MILLISECONDS;}).count();
 		}
 		function getRecentWebsockets(){
-			return getRecentChannels().where(function(x){ return x.channelType==ChannelType.WEBSOCKET;});
+			
+			return getRecentChannels().where(function(x){ return x.getChannelType()==ChannelType.WEBSOCKET;});
 		}
 		function getRecentChannels(){
 			var now = getTime();

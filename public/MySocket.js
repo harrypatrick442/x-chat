@@ -29,7 +29,6 @@ var Mysocket = (function(){
 			dispatchOnOpen();
 		}
 		function callbackOnClose(){
-			console.log('ON CLOSE MYSOCKET');
 			dispatchClose();
 		}
 		function dispatchMessage(msg){
