@@ -23,6 +23,7 @@ var Mysocket = (function(){
 		};
 		var mysocketAnalysis = new MysocketAnalysis({mysocket:this});
 		var channelManager = new MysocketChannelManager({mysocketAnalysis:mysocketAnalysis, urlWebsocket:urlWebsocket, url:url, getId:getId});
+		channelManager.addEventListener('newchannel', onNewChannel);
 		getChannel();
 		function callbackOnOpen(){
 			dispatchOnOpen();
@@ -71,6 +72,10 @@ var Mysocket = (function(){
 			if(toSend.length>0)
 				sendPending();
 			dispatchOpen();
+		}
+		function onNewChannel(e){
+			channel = e.channel;
+			prepareChannel(channel);
 		}
 		function sendPending(){
 			var iterator = new Iterator(toSend);
