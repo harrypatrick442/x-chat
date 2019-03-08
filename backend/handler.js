@@ -4,7 +4,7 @@ exports.handler = new (function(){
 		var sessions = lobby.getSessions();
 		this.process = function(req, mysocket, callback){
 			var res = {};
-			console.log(req.type);
+			console.log('type: '+req.type);
 			try{
 				switch(req.type){
 					case 'register':

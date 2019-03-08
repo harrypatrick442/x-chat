@@ -3,6 +3,7 @@ module.exports = new (function(){
 	var EventEnabledBuilder= require('./EventEnabledBuilder');
 	var MysocketCleanup=require('./MysocketCleanup');
 	var Mysocket = require('./Mysocket');
+	var ChannelType = require('./ChannelType');
 	var uuid = require('uuid');
 	EventEnabledBuilder(this);
 	var self = this;
@@ -14,13 +15,21 @@ module.exports = new (function(){
 		var mysocket;
 		if(id)
 		{
+			console.log('in id if');
 			mysocket = getById(id);
+			console.log('mysocket was: ');
+			console.log(mysocket);
 			if(!mysocket)return;
+			console.log('channel type is: '+mysocket.getChannelType());
+			if(mysocket.getChannelType()!=ChannelType.WEBSOCKET)
+				mysocket.setWebsocket(params);
+			return mysocket;
 		}
 		mysocket = Mysocket.fromWebsocket({ws:ws, id:getNewId()});
 		set.add(mysocket);
 		addEvents(mysocket);
 		dispatchAdd(mysocket);
+		return mysocket;
 	};
 	this.getOrCreateLongpoll=function(id, createLongpoll){
 		var mysocket;

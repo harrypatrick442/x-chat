@@ -13,7 +13,7 @@ var MysocketChannelFactory = new (function(){
 		}
 	};
 	function _Websocket(id, url){
-		console.log('websocket created');
+		console.log('websocket created' +id);
 		var self = this;
 		var analysis = new MysocketChannelAnalysis(ChannelType.WEBSOCKET);
 		var websocket;
@@ -40,12 +40,19 @@ var MysocketChannelFactory = new (function(){
 		websocket.onerror = onError
 		this.close = function(){websocket.close();};
 		this.getDisposedByServer = function(){
+			console.log(disposedByServer);
 			return disposedByServer;
 		};
 		window.channel = this;
 		function onMessage(e){
 			var msg = JSON.parse(e.data);
+				console.log('on message');
+				console.log(msg);
+			if(msg.mysocketId){
+				id=msg.mysocketId;
+			}
 			if(msg.disposed){
+				console.log('got disposed message');
 				disposedByServer = true;
 				websocket.close();
 				return;

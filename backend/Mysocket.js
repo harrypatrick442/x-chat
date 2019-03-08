@@ -19,6 +19,11 @@ module.exports = (function(){
 			dispatchClose();
 		};
 		this.setWebsocket = updateChannel;
+		this.getChannelType = function(){
+			
+			if(!channel)return;
+			return channel.getChannelType();
+		};
 		this.setToLongpoll = function(longpoll){
 			updateChannel({longpoll:longpoll});
 		};

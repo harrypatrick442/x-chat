@@ -10,14 +10,21 @@ module.exports = new (function(){
 			return new Longpoll(params.longpoll);
 		throw new Error('Not implemented');
 	};
+	var count=0;
 	function Websocket(ws){
+		console.log(new Error().stack);
+		var c = count++;
 		var self = this;
 		var closed = false;
 		this.channelType = ChannelType.WEBSOCKET;
+		this.getChannelType = function(){
+			return ChannelType.WEBSOCKET;
+		};
 		this.sendMessage=function(msg){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
 		ws.on('message', function(msg) {
+			console.log('Websocket.onMessage: '+c);
 			self.onMessage&&self.onMessage(JSON.parse(msg));
 		});
 		ws.on('close', function(){
@@ -37,6 +44,9 @@ module.exports = new (function(){
 		var closed = false;
 		var messageQueue=[];
 		this.channelType = ChannelType.LONGPOLL;
+		this.getChannelType = function(){
+			return ChannelType.LONGPOLL;
+		};
 		this.sendMessage=function(msg){
 			longpoll.send(msg);
 		};

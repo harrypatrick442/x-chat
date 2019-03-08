@@ -43,6 +43,7 @@ var MysocketChannelManager = (function(){
 			
 		}
 		function createNewChannel(){
+			console.log('get id is: '+getId());
 			channel = MysocketChannelFactory.create({id:getId(), urlWebsocket:urlWebsocket, url:url, mysocketAnalysis:mysocketAnalysis});
 			return channel;
 		}
