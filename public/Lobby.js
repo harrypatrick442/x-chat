@@ -75,6 +75,7 @@ var Lobby = (function(){
 		usersMenues.addEventListener('showpm', showPm);
 		notificationsMenu.addEventListener('showpm', showPm);
 		pms.addEventListener('addnotification', addNotification);
+		mysocket.addEventListener('disposedbyserver', mysocketDisposedByServer);
 		this.getElement = ui.getElement;
 		function onOpen(){ }
 		function onMessage(e){
@@ -165,6 +166,13 @@ var Lobby = (function(){
 		}
 		function signOut(){
 			mysocket.send({type:'sign_out', sessionId:sessionId});
+			setToSignedOutState();
+		}
+		function mysocketDisposedByServer(){
+			mysocket.reset();
+			setToSignedOutState();
+		}
+		function setToSignedOutState(){
 			sessionId=null;
 			rooms.clear();
 			automaticAuthentication.clear();
@@ -173,7 +181,6 @@ var Lobby = (function(){
 			pmsMenu.clear();
 			showAuthentication();
 			setVisible(false);
-			
 		}
 		function showNotifications(){
 			console.log('showing notifications');

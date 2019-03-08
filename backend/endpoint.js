@@ -10,7 +10,16 @@ exports.endpoint = function(app){
 		try{
 			var parameters = url.parse(req.url, true).query
 			var mysocketId = parameters.mysocketId;
-			Mysockets.setWebsocket({id:mysocketId, ws:ws});
+			var params = {id:mysocketId, ws:ws};
+			var mysocket = Mysockets.getOrCreateWebsocket(params);
+			if(!mysocketId)return;
+			if(!mysocket){
+				console.log('sent it');
+				ws.send(JSON.stringify({disposed:true}));
+				console.log('sent it');
+				return;
+			}
+			mysocket.setWebsocket(params);
 		}catch(ex){console.log(ex);}
 	});
 };

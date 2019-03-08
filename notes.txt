@@ -1,24 +1,10 @@
 If somebody still struggles to connect despite doing all that was proposed.
 In my case I had to manually set TCP Port property to 1433 in SQL Server Network Configuration -> Protocols for ... -> TCP/IP -> IP Addresses -> IPAll.
 
-problem when user enters a room on two devices and one leaves the room. it removes the user from the room on the backend meaning they get no further messages
-
-
-add in check to see if user contains mysocket already indicating device already authenticated.
-
-
-Fix the issue with background room items resizing when not visible. make it so resize is called upon becoming visible but not when hiddne.
-that way the rooms menu will not have full width entries.
-
-
-remove unneeded longpolling endpoints when mysocket closes.
-
-fix issue with endpoint being ddosed upon restart server, by longpolling.
 
 connected image cleanup on mobile.
 
 
-Finish up the MysocketChannelManager so that it works perfectly. 
 
 Then debug disconnceting on mobile.
 
@@ -29,3 +15,6 @@ check all images preloading.
 Seems to be ddosing rooms get.
 
 checkbox on sign in to remain signed in is not working properly on mobile.
+
+put xchat_guest_delete on server and update all.
+

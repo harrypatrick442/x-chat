@@ -8,17 +8,14 @@ module.exports = new (function(){
 	var self = this;
 	var set = new Set({getEntryId:getEntryId});
 	var mysocketCleanup = new MysocketCleanup(this);
-	this.setWebsocket = function(params){
+	this.getOrCreateWebsocket = function(params){
 		var id = params.id;
 		var ws = params.ws;
 		var mysocket;
 		if(id)
 		{
 			mysocket = getById(id);
-		}
-		if(mysocket){
-			mysocket.setWebsocket(params);
-			return;
+			if(!mysocket)return;
 		}
 		mysocket = Mysocket.fromWebsocket({ws:ws, id:getNewId()});
 		set.add(mysocket);

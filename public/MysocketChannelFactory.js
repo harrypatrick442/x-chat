@@ -17,6 +17,7 @@ var MysocketChannelFactory = new (function(){
 		var self = this;
 		var analysis = new MysocketChannelAnalysis(ChannelType.WEBSOCKET);
 		var websocket;
+		var disposedByServer = false;
 		this.send = function(msg){
 			console.log(msg);
 			websocket.send(JSON.stringify(msg));
@@ -38,10 +39,19 @@ var MysocketChannelFactory = new (function(){
 		websocket.onclose=onClose;
 		websocket.onerror = onError
 		this.close = function(){websocket.close();};
+		this.getDisposedByServer = function(){
+			return disposedByServer;
+		};
 		window.channel = this;
 		function onMessage(e){
+			var msg = JSON.parse(e.data);
+			if(msg.disposed){
+				disposedByServer = true;
+				websocket.close();
+				return;
+			}
 			analysis.receivedMessage();
-			self.onMessage&&self.onMessage(JSON.parse(e.data));
+			self.onMessage&&self.onMessage(msg);
 		}
 		function onOpen(){
 			analysis.opened();
@@ -56,10 +66,6 @@ var MysocketChannelFactory = new (function(){
 			console.log(err);
 			self.onError&&self.onError(err);
 		}
-		/*
-		function needToInitialize(){
-			return !websocket||websocket.readyState === websocket.CLOSED||websocket.readyState === websocket.CLOSING;
-		}*/
 	}
 	function _Longpoll(id, url){
 		var self = this;
@@ -81,6 +87,7 @@ var MysocketChannelFactory = new (function(){
 		this.getChannelType = function(){
 			return ChannelType.LONGPOLL;
 		};
+		this.getDisposedByServer = longpoll.getDisposedByServer;
 		setTimeout(onOpen, 0);
 		function nothing(){}
 		function onMessage(msg){

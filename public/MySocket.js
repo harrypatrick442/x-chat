@@ -3,13 +3,22 @@ var Mysocket = (function(){
 	var _Mysocket= function(params){
 		var url = params.url;
 		var urlWebsocket = params.urlWebsocket;
-		var temporalCallbackGetChannel = new TemporalCallback({delay:3000});
 		EventEnabledBuilder(this);
 		var self = this;
 		var channel;
 		var id;
 		var toSend=[];
+		var resetting=false;
+		this.reset = function(){
+			resetting=true;
+			id=null;
+			toSend=[];
+			channel&&channel.dispose();
+			channel=null;
+			mysocketAnalysis.clear();
+		};
 		this.send = function(msg){
+			resetting=false;
 			var channel = getChannel();
 			if(channel&&channel.isOpen()){
 				channel.send(msg);
@@ -63,8 +72,15 @@ var Mysocket = (function(){
 			dispatchMessage(msg);
 		}
 		function onChannelClose(){
+			var disposedByServer = channel.getDisposedByServer();
 			channel = null;
-			setTimeout(getChannel,0);
+			if(disposedByServer)
+			{
+				dispatchDisposedByServer();
+				return;
+			}
+			if(!resetting)
+				setTimeout(getChannel,0);
 		}
 		function onChannelOpen(){
 			console.log('open');
@@ -77,6 +93,10 @@ var Mysocket = (function(){
 		function onNewChannel(e){
 			channel = e.channel;
 			prepareChannel(channel);
+		}
+		function dispatchDisposedByServer(){
+			console.log('dispatchDisposedByServer');
+			self.dispatchEvent({type:'disposedbyserver'});
 		}
 		function sayHiAgain(){
 					channel&&channel.isOpen()&&channel.send({type:'hi'});

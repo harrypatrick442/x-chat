@@ -107,6 +107,10 @@ exports.handler = new (function(){
 			return JSON.stringify(res);
 		};
 		this.setImageForUser = lobby.setImageForUser;
-		function getUser(req){return sessions.getById(req.sessionId).getUser();}
+		function getUser(req){
+			var session = sessions.getById(req.sessionId);
+			if(!session)return;
+			return session.getUser();
+		}
 		function getRoom(req){return lobby.getRooms().getRoom(req.roomId);}
 })();

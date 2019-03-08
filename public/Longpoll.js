@@ -40,6 +40,7 @@ var Longpoll = (function(){
 			res = JSON.parse(res);
 			if(res.disposed)
 			{
+				disposedByServer = true;
 				self.dispose();
 				return;
 			}

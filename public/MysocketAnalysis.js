@@ -46,9 +46,13 @@ var MysocketAnalysis = (function(){
 			return {type:When.NOW};
 		};
 		this.add=function(channelAnalysis){
-			console.log('this.add=function(channelAnalysis){');
 			currentChannelAnalysis = channelAnalysis;       
 			channelAnalysis.addEventListener(CLOSED, channelAnalysisClosed);
+		};
+		this.clear = function(){
+			currentChannelAnalysis.closed();
+			channelAnalysiss=[];
+			currentChannelAnalysis=undefined;
 		};
 		function getNRecentWebsocketsFailedQuickly(){
 			return getRecentWebsockets().where(function(x){ return x.getOpenForMilliseconds()<FAILED_QUICKLY_DELAY_MILLISECONDS;}).count();
