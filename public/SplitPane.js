@@ -38,7 +38,6 @@ var MIN_MIN_WIDTH=20;
 		function resize(){
 			if(!initialized)
 			return initialize();
-			console.log('resie');
 			updateSliderVisibility();
 			resizePanelColumnsPositionDimensions(getWidth(), getSliderWidth(), getProportionallyAdaptedPanelColumnWidth);
 			initializePanelRowsPositionDimensions(getHeight(), getSliderHeight());
