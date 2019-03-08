@@ -13,7 +13,8 @@ module.exports =(function() {
 		var sendScheduled=false;
 		var lastActive;
 		active();
-		app.get(url+'/'+id, function(req, res, next){
+		app.get(getUrl(), function(req, res, next){
+			console.log('incoming get');
 			active();
 			endPreviousRequest();
 			currentRequest = new CurrentRequest(req, res);
@@ -33,17 +34,29 @@ module.exports =(function() {
 		this.dispose = function(){
 			if(disposed)return;
 			disposed=true;
-			if(!currentRequest)return;
-			currentRequest.end();
+			currentRequest&&currentRequest.send([{disposed:true}]);
+			removeGet();
 			dispatchDispose();
 		};
 		this.incomingMessage = function(msg){
 			self.onMessage(msg);
 		};
 		this.getId = function(){return id;};
+		function removeGet(){
+			var url = getUrl();
+			var stack = app._router.stack;
+			var i=0;
+			while(i<stack.length){
+				var layer = stack[i];
+				if(layer.path ==   url){
+					stack.splice(i, 1);
+				}
+				else
+				i++;
+			}
+		}
 		function endPreviousRequest(){
-			if(!currentRequest)return;
-			currentRequest.end();
+			currentRequest&&currentRequest.end();
 		}
 		function scheduleSend(){
 			if(sendScheduled)return;
@@ -52,6 +65,7 @@ module.exports =(function() {
 			sendScheduled=true;
 		}
 		function send(){
+			if(!currentRequest)return;
 			currentRequest.send(messagesQueue);
 			messagesQueue=[];
 			currentRequest=null;
@@ -62,6 +76,9 @@ module.exports =(function() {
 		}
 		function active(){
 			lastActive = getTime();
+		}
+		function getUrl(){
+			return url+'/'+id;
 		}
 	};
 	return _Longpoll;

@@ -20,8 +20,6 @@ module.exports = (function(){
 		};
 		this.setWebsocket = updateChannel;
 		this.setToLongpoll = function(longpoll){
-			console.log(channel);
-			if(channel&&channel.channelType==ChannelType.LONGPOLL)return;
 			updateChannel({longpoll:longpoll});
 		};
 		this.getId = function(){
@@ -35,7 +33,6 @@ module.exports = (function(){
 			return getTimeSinceChannelClosedMinutes()<TIMEOUT_CLOSED_CHANNEL_MINUTES;
 		};
 		function updateChannel(params){
-			console.log(new Error().stack);
 			channel = channelFactory.create(params);
 			channel.onClose=onClose;
 			channel.onMessage=onMessage;

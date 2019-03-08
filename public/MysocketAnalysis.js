@@ -4,29 +4,30 @@ var MysocketAnalysis = (function(){
 	var DELAY_BEFORE_ATTEMPT_WEBSOCKET_AGAIN= 60000;
 	var MAX_N_CHANNELS_PER_MINUTE=3;
 	var MIN_DELAY_BETWEEN_CLOSE_AND_CREATE=2000;
+	var MAX_N_CHANNEL_ANALYSISS= 20;
 	var _MysocketAnalysis = function(params){
 		var self = this;
 		var mysocket = params.mysocket;
 		var channelAnalysiss = [];
 		var currentChannelAnalysis;
-		var websocketFailedQuicklyChannelAnalysis;
-		this.getWebsocketFailedQuiclyChannelAnalysis= function(){
-			return websocketFailedQuicklyChannelAnalysis;
-		};
 		this.getRecommendedTypes = function(){
 			/*var requiresCors = isCrossDomain(mysocket.getUrl());
 			if(requiresCors)return [ChannelType.JSONP];*/
 			var nRecentWebsocketsFailedQuickly = getNRecentWebsocketsFailedQuickly();
-			console.log(nRecentWebsocketsFailedQuickly);
-			;
-			var supportsWebsocket=window.Websocket?true:false;
+			var supportsWebsocket=window.WebSocket?true:false;
 			var websocketFailedQuickly;
 			var shouldUseWebsocket=supportsWebsocket&&!(websocketFailedQuickly= nRecentWebsocketsFailedQuickly>0);
-			if(websocketFailedQuickly)
+			console.log('nRecentWebsocketsFailedQuickly'+nRecentWebsocketsFailedQuickly);
+			console.log('shouldUseWebsocket'+shouldUseWebsocket);
+			console.log('websocket failed quickly'+websocketFailedQuickly);
+			if(shouldUseWebsocket&&websocketFailedQuickly)
 			{
+				console.log('websocket failed quickly');
 				var shouldAttemptWebsocketAgain = new Date().getTime()-websocketFailedQuickly.getOpenedAt()
 				>DELAY_BEFORE_ATTEMPT_WEBSOCKET_AGAIN;
 				shouldUseWebsocket = shouldAttemptWebsocketAgain;
+				console.log('shouldAttemptWebsocketAgain'+shouldAttemptWebsocketAgain);
+				shouldUseWebsocket=shouldAttemptWebsocketAgain;
 			}
 			if(shouldUseWebsocket)
 			{
@@ -35,18 +36,21 @@ var MysocketAnalysis = (function(){
 			return [ChannelType.LONGPOLL];
 		};
 		this.getRecommendedDelayBeforeCreatingChannel= function(){
-			if(isFrstChannel())return {type:When.NOW};
+			console.log(isFirstChannel());
+			if(isFirstChannel())return {type:When.NOW};
 			var tooManyChannelsThisMinute=getNChannelsCreatedLastMinute()>MAX_N_CHANNELS_PER_MINUTE;
-			if(tooManyChannelsThisMinute)return {type:When.SECONDS};
-			var minimumDelayBetweenCloseAndReopenPassed = getTime() - getgetLastChannelClosedAt()> MIN_DELAY_BETWEEN_CLOSE_AND_CREATE;
-			if(!minimumDelayBetweenCloseAndReopenPassed) return {type:When.SECONDS};
+			if(tooManyChannelsThisMinute)return {type:When.SECONDS , seconds:5};
+			var minimumDelayBetweenCloseAndReopenPassed = getTime() - getLastChannelClosedAt()> MIN_DELAY_BETWEEN_CLOSE_AND_CREATE;
+			if(!minimumDelayBetweenCloseAndReopenPassed) return {type:When.SECONDS, seconds:1};
 			return {type:When.NOW};
 		};
 		this.add=function(channelAnalysis){
+			console.log('this.add=function(channelAnalysis){');
 			currentChannelAnalysis = channelAnalysis;       
 			channelAnalysis.addEventListener(CLOSED, channelAnalysisClosed);
 		};
 		function getNRecentWebsocketsFailedQuickly(){
+			console.log('recentChannels'+ getRecentChannels().length);
 			return getRecentWebsockets().where(function(x){ return x.getOpenForMilliseconds()<2000;}).count();
 		}
 		function getRecentWebsockets(){
@@ -56,10 +60,12 @@ var MysocketAnalysis = (function(){
 			var now = getTime();
 			var i=channelAnalysiss.length-1;
 			var list=[];
+			var backThen = now - 60000;
+			console.log('channelAnalysiss.length is: '+channelAnalysiss.length);
 			while(i>=0)
 			{
 				var channelAnalysis=channelAnalysiss[i];
-				if(now - channelAnalysis.getClosedAt()<60000)
+				if(backThen <channelAnalysis.getClosedAt())
 					list.push(channelAnalysis);
 				else
 					return list;
@@ -67,7 +73,7 @@ var MysocketAnalysis = (function(){
 			}
 			return list;
 		}
-		function isFrstChannel(){
+		function isFirstChannel(){
 			return channelAnalysiss.length<1;
 		}
 		function getTime(){
@@ -86,6 +92,7 @@ var MysocketAnalysis = (function(){
 			return channelAnalysiss[channelAnalysiss.length-1].getClosedAt();
 		}
 		function channelAnalysisClosed(e){
+			console.log('channelAnalysisClosed');
 			var channelAnalysis = e.mysocketChannelAnalysis;
 			channelAnalysis.removeEventListener(CLOSED, channelAnalysisClosed);
 			channelAnalysiss.push(channelAnalysis);
@@ -96,8 +103,6 @@ var MysocketAnalysis = (function(){
 			switch(channelAnalysis.getChannelType())
 			{
 				case Mysocket.WEBSOCKET:
-					if(channelAnalysis.getOpenForMilliseconds()<MAX_OPEN_FOR_WEBSOCKET_USE_AJAX)
-						websocketFailedQuicklyChannelAnalysis = channelAnalysis;
 				break;
 			}
 		}

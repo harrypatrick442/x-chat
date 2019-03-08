@@ -7,13 +7,15 @@ var Longpoll = (function(){
 		var count=0;
 		console.log('incoming id is: '+id);
 		var ajax = new Ajax({url:url});
-		var stop=false;
+		var disposed=false;
 		var started=false;
 		var didFirstSend = false;
+		var disposedByServer = false;
 		var waitingToBeSent = [];
 		this.send = function(msg){//issue was caused by multiple sends in parallel before an id got returned.
 			console.log('send');
-			if(closed)return;
+			if(disposed)return;
+			console.log('send2');
 			if(started||!didFirstSend){
 				didFirstSend = true;
 				ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
@@ -21,12 +23,14 @@ var Longpoll = (function(){
 			else
 				waitingToBeSent.push(msg);
 		};
-		this.stop=function(){
-			console.log('stop');
-			stop=true;
+		this.getDisposedByServer = function(){return disposedByServer;};
+		this.dispose=function(){
+			if(disposed)return;
+			disposed=true;
+			dispatchOnDispose();
 		};
-		this.dispose=this.stop;
 		function poll(){
+			console.log(new Error().stack);
 			console.log('poll');
 			console.log('get id is: '+id);
 			ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
@@ -39,7 +43,13 @@ var Longpoll = (function(){
 		}
 		function callbackSendSuccessful(res){
 			console.log('callbackSendSuccessful');
+			console.log(res);
 			res = JSON.parse(res);
+			if(res.disposed)
+			{
+				self.dispose();
+				return;
+			}
 			console.log(res.id);
 			if(started)return
 			started=true;
@@ -65,25 +75,30 @@ var Longpoll = (function(){
 			console.log('callbackPollError');
 			console.error(err);
 			dispatchOnError(err);
-			if(stop)return;
+			if(disposed)return;
 			poll();
 		}
 		function callbackPollSuccessful(res){
-			console.log('callbackPollSuccessful');
 			poll();
-			if(res)
-				handleMessages(res);
+			if(!res)
+				return;
+			
+			res = JSON.parse(res);
+			if(res.disposed){
+				self.dispose();
+			}
+			handleMessages(res);
 		}
 		function handleMessages(res){
-			console.log('handleMessages');
-			res = JSON.parse(res);
+			if(!res.msgs)return;
 			each(res.msgs, function(msg){
 				dispatchOnMessage(msg);
 			});
 		}
+		function dispatchOnDispose(){
+			self.onDispose&&self.onDispose();
+		}
 		function dispatchOnError(err){
-			console.log('dispatchOnError');
-			console.log(err);
 			self.onError&&self.onError(err);
 		}
 		function dispatchOnMessage(msg){

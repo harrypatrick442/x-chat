@@ -115,12 +115,9 @@ exports.lobby = (function(){
 			userTo.sendMessage({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
 		};
 		this.pmVideoAccept = function(req, callback){
-			console.log('PM VIDEO ACCEPT');
 			console.log(req);
-			console.log('PM VIDEO ACCEPT');
 			var userMe = getUserFromSessionId(req.sessionId);
 			if(!userMe)return;
-			console.log('PM VIDEO ACCEPT B');
 			var userTo = users.getById(req.userToId);
 			if(!userTo) {
 				callback({type:'pm_video_accept_fail', userToId:req.userToId, successful:false, message:'The user is no longer online!'});

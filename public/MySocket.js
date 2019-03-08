@@ -28,15 +28,16 @@ var Mysocket = (function(){
 			dispatchOnOpen();
 		}
 		function callbackOnClose(){
-			dispatchOnClose();
+			console.log('ON CLOSE MYSOCKET');
+			dispatchClose();
 		}
-		function dispatchOnMessage(msg){
+		function dispatchMessage(msg){
 			self.dispatchEvent({type:'message', msg:msg});
 		}
-		function dispatchOnOpen(){
+		function dispatchOpen(){
 			self.dispatchEvent({type:'open'});
 		}
-		function dispatchOnClose(){
+		function dispatchClose(){
 			self.dispatchEvent({type:'close'});
 		}
 		function getChannel(){
@@ -49,27 +50,27 @@ var Mysocket = (function(){
 			return id;
 		}
 		function prepareChannel(channel){
-			channel.onClose = onClose;
-			channel.onOpen = onOpen;
-			channel.onMessage = onMessage;
+			channel.onClose = onChannelClose;
+			channel.onOpen = onChannelOpen;
+			channel.onMessage = onChannelMessage;
 			mysocketAnalysis.add(channel.getAnalysis());
 		}
-		function onMessage(msg){
+		function onChannelMessage(msg){
 			if(msg.type==MYSOCKET_ID){
 				id=msg.id;
 				return;
 			}
-			dispatchOnMessage(msg);
+			dispatchMessage(msg);
 		}
-		function onClose(){
-			dispatchClose();
+		function onChannelClose(){
+			console.log('MySocket.onClose');
 			channel = null;
 		}
-		function onOpen(){
+		function onChannelOpen(){
 			console.log('open');
 			if(toSend.length>0)
 				sendPending();
-			dispatchOnOpen();
+			dispatchOpen();
 		}
 		function sendPending(){
 			var iterator = new Iterator(toSend);

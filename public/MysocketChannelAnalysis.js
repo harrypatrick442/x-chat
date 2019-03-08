@@ -1,7 +1,8 @@
 var MysocketChannelAnalysis = new (function(){
 	var N_ERRORS_TO_STORE=30;
-	var _MysocketChannelAnalysis = function(){
+	var _MysocketChannelAnalysis = function(channelType){
 		EventEnabledBuilder(this);
+		var self = this;
 		var successfullyOpened =false;
 		var receivedMessages=false;
 		var closed = false;
@@ -20,6 +21,9 @@ var MysocketChannelAnalysis = new (function(){
 		this.getClosedAt = function(){
 			return closedAt;
 		};
+		this.getChannelType =function(){
+			return channelType;
+		};
 		this.opened = function(){
 			successfullyOpened=true;
 			openedAt = getTime();
@@ -32,6 +36,7 @@ var MysocketChannelAnalysis = new (function(){
 			stopWatchOpenFor.stop();
 			closed = true;
 			closedAt = getTime();
+			dispatchClosed();
 		};
 		this.error = function(error){
 			errors.push(error);

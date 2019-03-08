@@ -22,22 +22,25 @@ var MysocketChannelManager = (function(){
 					return createNewChannel();
 				case When.SECONDS:
 					var seconds = recommendedDelay.seconds;
-					createNewChannelAfterDelayMilliseconds(seconds);
+					console.log(seconds);
+					createNewChannelAfterDelayMilliseconds(seconds*1000);
 					break;
 			}
 		};
 		function createNewChannelAfterDelayMilliseconds(milliseconds){
 			pendingCreate = true;
-			new Timer({delay:milliseconds, callback:callbackCreateChannel});
+			console.log('function createNewChannelAfterDelayMilliseconds(milliseconds){');
+			new Timer({delay:milliseconds, callback:callbackCreateChannel, nTicks:1}).start();
 		}
 		function callbackCreateChannel(){
+			console.log('callbackCreateChannel');
 			disposeOldChannel();
 			createNewChannel();
 			dispatchNewChannel();
 			pendingCreate=false;
 		}
 		function disposeOldChannel(){
-			throw new Error('not implemented');
+			
 		}
 		function createNewChannel(){
 			channel = MysocketChannelFactory.create({id:getId(), urlWebsocket:urlWebsocket, url:url, mysocketAnalysis:mysocketAnalysis});

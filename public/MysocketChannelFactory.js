@@ -2,7 +2,7 @@ var MysocketChannelFactory = new (function(){
 	this.create = function(params){
 		var mysocketAnalysis = params.mysocketAnalysis;
 		var recommendedChannelTypes = mysocketAnalysis.getRecommendedTypes();
-		console.log('The recommended channel typesvwas: '+recommendedChannelTypes);
+		console.log('The recommended channel types was: '+recommendedChannelTypes);
 		switch(recommendedChannelTypes[0]){
 			case Mysocket.WEBSOCKET:
 				return new _Websocket(params.id, params.urlWebsocket);
@@ -15,7 +15,7 @@ var MysocketChannelFactory = new (function(){
 	function _Websocket(id, url){
 		console.log('websocket created');
 		var self = this;
-		var analysis = new MysocketChannelAnalysis(Mysocket.WEBSOCKET);
+		var analysis = new MysocketChannelAnalysis(ChannelType.WEBSOCKET);
 		var websocket;
 		this.send = function(msg){
 			console.log(msg);
@@ -34,6 +34,7 @@ var MysocketChannelFactory = new (function(){
 		websocket.onopen = onOpen;
 		websocket.onclose=onClose;
 		websocket.onerror = onError;
+		window.websocket = websocket;
 			console.log('created websocket');
 		function onMessage(e){
 			console.log('on message');
@@ -62,14 +63,15 @@ var MysocketChannelFactory = new (function(){
 		}*/
 	}
 	function _Longpoll(id, url){
-		console.log('_ID:'+id);
 		var self = this;
+		var closed=false;
+		var lastErrorAt;
 		var analysis = new MysocketChannelAnalysis(ChannelType.LONGPOLL);
 		var longpoll = new Longpoll({url:url, id:id});
 		longpoll.onMessage= onMessage;
 		longpoll.onError = onError;
 		longpoll.onSent = nothing;//onOpen
-		
+		longpoll.onDispose = onDispose;
 		this.send = longpoll.send;
 		this.getAnalysis= function(){
 			return analysis;
@@ -80,7 +82,11 @@ var MysocketChannelFactory = new (function(){
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(msg);
 		}
-		function onOpen(){onClose
+		function onDispose(){
+			console.log('on dispose');
+			close();
+		}
+		function onOpen(){
 			analysis.opened();
 			self.onOpen&&self.onOpen();
 		}
@@ -91,10 +97,25 @@ var MysocketChannelFactory = new (function(){
 		function onError(err){
 			analysis.error(err);
 			console.log(err);
+			var now = getTime();
+			if(secondErrorInTenSeconds)close();
+			else lastErrorAt= now;
 			self.onError&&self.onError(err);
 		}
+		function getTime(){
+			return new Date().getTime()-10000;
+		}
+		function close(){
+			if(closed)return;
+			closed=true;
+			longpoll.dispose();
+			onClose();
+		}
+		function secondErrorInTenSeconds(now){
+			return lastErrorAt&&lastErrorAt<now;
+		}
 		this.isOpen = function(){
-			return true;
+			return !closed;
 		};
 	}
 })();

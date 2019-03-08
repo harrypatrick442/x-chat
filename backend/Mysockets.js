@@ -25,19 +25,19 @@ module.exports = new (function(){
 		addEvents(mysocket);
 		dispatchAdd(mysocket);
 	};
-	this.getOrCreateLongpoll=function(id, longpoll){
+	this.getOrCreateLongpoll=function(id, createLongpoll){
 		var mysocket;
+		console.log(id);
 		if(id){
+			console.log('has an id and is getting by an id');
 			mysocket = getById(id);
-			if(mysocket)
-			{
-				mysocket.setToLongpoll(longpoll);
-				return mysocket;
-			}
+			if(!mysocket)return;
+			mysocket.setToLongpoll(createLongpoll(id));
+			return mysocket;
 		}
 		else
 			id=getNewId();
-		mysocket = Mysocket.fromLongpoll({longpoll:longpoll, id});
+		mysocket = Mysocket.fromLongpoll({longpoll:createLongpoll(id), id});
 		set.add(mysocket);
 		addEvents(mysocket);
 		dispatchAdd(mysocket);

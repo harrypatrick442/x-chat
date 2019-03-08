@@ -8,25 +8,31 @@ module.exports=new (function(){
 		var longpolls = new Longpolls();
 		app.post('/poll', function(req, res, next){
 			var data = req.body;
-			var mysocketId = data.id;
-			console.log('mysocket id is: '+mysocketId);
+			var mysocketId = data.id	
 			var msg = data.msg;
 			var longpoll;
-			if(mysocketId){console.log('getting by id');
+			if(mysocketId){
 				longpoll= longpolls.getById(mysocketId);
-			}
-			else
-			{
-				mysocketId = Mysockets.getNewId();
-				console.log('new id');
 			}
 			if(!longpoll)
 			{	
-				longpoll = new Longpoll({app:app, id:mysocketId, url:URL});
-				longpolls.add(longpoll);
-				var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, longpoll);
+				var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, function(id){
+					longpoll = new Longpoll({app:app, id:id, url:URL});
+					longpolls.add(longpoll);
+					setTimeout(function(){
+						
+						longpoll.dispose();
+					}, 10000);
+					return longpoll;
+				});
+				if(!mysocket)
+				{
+					res.json({disposed:true});
+					return;
+				}
 				mysocketId = mysocket.getId();
 			}
+			console.log(msg);
 			longpoll.incomingMessage(msg);
 			res.send({id:mysocketId});
 		});
