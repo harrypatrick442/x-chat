@@ -38,24 +38,19 @@ var MysocketChannelFactory = new (function(){
 		websocket.onclose=onClose;
 		websocket.onerror = onError;
 		window.websocket = websocket;
-			console.log('created websocket');
 		function onMessage(e){
-			console.log('on message');
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(JSON.parse(e.data));
 		}
 		function onOpen(){
-			console.log('Open');
 			analysis.opened();
 			self.onOpen&&self.onOpen();
 		}
 		function onClose(){
-			console.log('Close');
 			analysis.closed();
 			self.onClose&&self.onClose();
 		}
 		function onError(err){
-			console.log('onError');
 			analysis.error(err);
 			console.log(err);
 			self.onError&&self.onError(err);

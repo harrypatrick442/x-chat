@@ -15,7 +15,6 @@ var Mysocket = (function(){
 				channel.send(msg);
 				return;
 			}
-			console.log('added to tosend');
 			toSend.push(msg);
 		};
 		this.getUrl = function(){
@@ -56,6 +55,7 @@ var Mysocket = (function(){
 			mysocketAnalysis.add(channel.getAnalysis());
 		}
 		function onChannelMessage(msg){
+			console.log(msg);
 			if(msg.type==MYSOCKET_ID){
 				id=msg.id;
 				return;
@@ -63,20 +63,25 @@ var Mysocket = (function(){
 			dispatchMessage(msg);
 		}
 		function onChannelClose(){
-			console.log('MySocket.onClose');
 			channel = null;
+			setTimeout(getChannel,0);
 		}
 		function onChannelOpen(){
 			console.log('open');
 			if(toSend.length>0)
 				sendPending();
+			else
+				sayHiAgain();
 			dispatchOpen();
 		}
 		function onNewChannel(e){
 			channel = e.channel;
 			prepareChannel(channel);
 		}
-		function sendPending(){
+		function sayHiAgain(){
+					channel&&channel.isOpen()&&channel.send({type:'hi'});
+		}
+		function sendPending(){	
 			var iterator = new Iterator(toSend);
 			while(iterator.hasNext())
 			{
