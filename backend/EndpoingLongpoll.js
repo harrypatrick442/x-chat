@@ -19,10 +19,6 @@ module.exports=new (function(){
 				var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, function(id){
 					longpoll = new Longpoll({app:app, id:id, url:URL});
 					longpolls.add(longpoll);
-					setTimeout(function(){
-						
-						longpoll.dispose();
-					}, 10000);
 					return longpoll;
 				});
 				if(!mysocket)

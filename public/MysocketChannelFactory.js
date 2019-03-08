@@ -36,8 +36,9 @@ var MysocketChannelFactory = new (function(){
 		websocket.onmessage = onMessage;
 		websocket.onopen = onOpen;
 		websocket.onclose=onClose;
-		websocket.onerror = onError;
-		window.websocket = websocket;
+		websocket.onerror = onError
+		this.close = function(){websocket.close();};
+		window.channel = this;
 		function onMessage(e){
 			analysis.receivedMessage();
 			self.onMessage&&self.onMessage(JSON.parse(e.data));
@@ -70,6 +71,9 @@ var MysocketChannelFactory = new (function(){
 		longpoll.onError = onError;
 		longpoll.onSent = nothing;//onOpen
 		longpoll.onDispose = onDispose;
+		
+		window.channel = this;
+		this.close= close;
 		this.send = longpoll.send;
 		this.getAnalysis= function(){
 			return analysis;
