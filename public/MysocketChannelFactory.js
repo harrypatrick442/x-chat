@@ -116,9 +116,10 @@ var MysocketChannelFactory = new (function(){
 		function onError(err){
 			analysis.error(err);
 			console.log(err);
-			var now = getTime();
-			if(secondErrorInTenSeconds)close();
-			else lastErrorAt= now;
+			//var now = getTime();
+			//if(secondErrorInTenSeconds)        
+				close();
+			//else lastErrorAt= now;
 			self.onError&&self.onError(err);
 		}
 		function getTime(){
