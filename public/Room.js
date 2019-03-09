@@ -166,7 +166,7 @@ var Room = new (function(){
 				return user.getId();
 		}
 		function callbackPicked(emoticonInfo){
-			ui.appendToText(emoticonInfo.getStringRepresentation());
+			ui.insertIntoTextAtCurrentIndex(emoticonInfo.getStringRepresentation());
 		}
 		function keyPressed(e){
 			var keyCode = e.keyCode;
@@ -250,9 +250,19 @@ var Room = new (function(){
 		this.removeMessage = function(message){
 			feed.removeChild(message.getElement());
 		};
-		this.appendToText = function(str){
-			if(str)
+		this.insertIntoTextAtCurrentIndex = function(str){
+			var selectionStart=text.selectionStart;
+			if(!str)return;
+			if(selectionStart==undefined){
 				text.value+=str;
+			}
+			else {
+				var newIndex = selectionStart+str.length;
+				text.value=text.value.splice(selectionStart, 0, str);
+				text.selectionStart=text.selectionEnd = newIndex;
+			}
+			text.focus();
+			
 		};
 	    this.clearText = function(){text.value='';};
 		this.scrollFeedToBottom = function(){

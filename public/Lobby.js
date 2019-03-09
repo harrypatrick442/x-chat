@@ -21,6 +21,7 @@ var Lobby = (function(){
 		var nDevice;
 		var userMe;
 		var url = '/servlet';
+		var lastAttemptedAutomaticAuthentication;
 		var authenticate = new Authenticate({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
 		var users = new Users({});
 		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});
@@ -162,8 +163,17 @@ var Lobby = (function(){
 			roomUserIds_Leave(room, msg.userIds);
 		}
 		function authenticateAutomatically(){
+			var halfAMinuteAgo = getTime()-30000;
+			if(lastAttemptedAutomaticAuthentication&&lastAttemptedAutomaticAuthentication>halfAMinuteAgo){
+				showAuthentication();
+				return;
+			}
+			lastAttemptedAutomaticAuthentication = getTime();
 			if(!automaticAuthentication.authenticate()){showAuthentication();return;}
 			ui.setSpinnerAutomaticAuthenticationVisible(true);
+		}
+		function getTime(){
+			return new Date().getTime();
 		}
 		function showAuthentication(){
 			authenticate.show();
@@ -173,16 +183,17 @@ var Lobby = (function(){
 		}
 		function signOut(){
 			mysocket.send({type:'sign_out', sessionId:sessionId});
+			automaticAuthentication.clear();
 			setToSignedOutState();
 		}
 		function mysocketDisposedByServer(){
 			mysocket.reset();
 			setToSignedOutState();
+			authenticateAutomatically();
 		}
 		function setToSignedOutState(){
 			sessionId=null;
 			rooms.clear();
-			automaticAuthentication.clear();
 			users.clear();
 			notifications.clear();
 			pmsMenu.clear();

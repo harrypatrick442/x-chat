@@ -10,10 +10,7 @@ module.exports = new (function(){
 			return new Longpoll(params.longpoll);
 		throw new Error('Not implemented');
 	};
-	var count=0;
 	function Websocket(ws){
-		console.log(new Error().stack);
-		var c = count++;
 		var self = this;
 		var closed = false;
 		this.channelType = ChannelType.WEBSOCKET;
@@ -24,7 +21,6 @@ module.exports = new (function(){
 			try{ws.send(JSON.stringify(msg));}catch(ex){console.log(ex);}
 		};
 		ws.on('message', function(msg) {
-			console.log('Websocket.onMessage: '+c);
 			self.onMessage&&self.onMessage(JSON.parse(msg));
 		});
 		ws.on('close', function(){

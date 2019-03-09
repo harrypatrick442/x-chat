@@ -12,9 +12,5 @@ Then make cursor go back to after emoticon when select.
 
 check all images preloading.
 
-Seems to be ddosing rooms get.
-
-checkbox on sign in to remain signed in is not working properly on mobile.
-
 put xchat_guest_delete on server and update all.
 
