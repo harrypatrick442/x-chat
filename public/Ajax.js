@@ -68,6 +68,7 @@ var Ajax = (function(){
 			xhr.ontimeout = callbackTimeout;
 		xhr.onprogress = onProgress;
 		xhr.send(data);
+		xhr.onerror=onError;
 		this.getXhr = function(){
 			return xhr;
 		};
@@ -77,6 +78,10 @@ var Ajax = (function(){
 		};
 		function done(){
 			self.onDone&&self.onDone(self);
+		}
+		function onError(e){
+			console.log(e);
+			console.error(e);
 		}
 		function onProgress(e){
 			self.onProgress&&self.onProgress(e.total?(e.loaded/e.total):1);
