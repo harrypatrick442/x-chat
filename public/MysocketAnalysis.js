@@ -32,7 +32,7 @@ var MysocketAnalysis = (function(){
 			}
 			if(shouldUseWebsocket)
 			{
-				return [ChannelType.WEBSOCKET, ChannelType.LONGPOLL];
+				return [ChannelType.LONGPOLL];
 			}
 			return [ChannelType.LONGPOLL];
 		};

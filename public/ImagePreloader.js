@@ -50,11 +50,13 @@ var ImagePreloader = new (function(){
 		var url = params.url;
 		var img = E.IMG();
 		var successful = false;
+		console.log('preloading "'+url+'"');
 		img.onload = function(e){
 			successful = true;
 			dispatchDone();
 		};
-		img.onerror=function(e){
+		img.onerror=function(error){
+			console.log(error);
 			dispatchDone();
 		};
 		img.src=url;

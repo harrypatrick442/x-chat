@@ -4,12 +4,6 @@ In my case I had to manually set TCP Port property to 1433 in SQL Server Network
 
 connected image cleanup on mobile.
 
-
-
-Then debug disconnceting on mobile.
-
-Then make cursor go back to after emoticon when select.
-
 check all images preloading.
 
 put xchat_guest_delete on server and update all.

@@ -12,6 +12,7 @@ module.exports =(function() {
 		var currentRequest;
 		var sendScheduled=false;
 		var lastActive;
+		removeGet();
 		active();
 		app.get(getUrl(), function(req, res, next){
 			console.log('incoming get');
@@ -43,6 +44,7 @@ module.exports =(function() {
 		};
 		this.getId = function(){return id;};
 		function removeGet(){
+			if(!id)return;
 			var url = getUrl();
 			var stack = app._router.stack;
 			var i=0;
