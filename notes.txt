@@ -12,12 +12,6 @@ Then make cursor go back to after emoticon when select.
 
 check all images preloading.
 
-Seems to be ddosing rooms get.
-
-fix progress bar text
-
-
-
 improve mechanism for caching messages until they can be sent. sometimes when longpolling is disconnected on mobile the first message after reconnect is not sent
 probably cos the channel its held in gets thrown away 
 

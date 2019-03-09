@@ -6,14 +6,41 @@ var Lobby = (function(){
 	
 	ImagePreloader.preloadRange([
 	'/images/close.jpg', 
-	'/images/close-hover.jpg',
 	'/images/tickbox-unticked.gif',
-	'/images/tickbox-ticked.gif'
+	'/images/tickbox-ticked.gif',
+	'/images/menu.gif',
+	'/images/menu-hover.gif',
+	'/images/notifications.gif',
+	'/images/profile-picture.gif',
+	'/images/room-default.gif',
+	'/images/room-exit.gif',
+	'/images/smiley.gif',
+	'/images/tick.gif',
+	'/images/upload-file.gif',	
 	]);
 	if(!isMobile)
 		ImagePreloader.preloadRange([
 		'/images/tickbox-unticked-hover.gif',
-		'/images/tickbox-ticked-hover.gif'
+		'/images/tickbox-ticked-hover.gif',
+		'/images/close-hover.jpg',
+		'/images/profile-picture-hover.gif',
+		'/images/notifications-hover.gif',
+		'/images/pms-hide.gif',
+		'/images/pms-hide-hover.gif',
+		'/images/users-hide.gif',
+		'/images/users-hide-hover.gif',
+		'/images/users-show.gif',
+		'/images/users-show-hover.gif',
+		'/images/pms-show.gif',
+		'/images/pms-show-hover.gif',
+		'/images/room-exit-hover.gif',
+		'/images/smiley-hover.gif',
+		'/images/tick-hover.gif',	
+		]);
+	else	
+		ImagePreloader.preloadRange([
+		'/images/pms-mobile.gif',
+		'/images/users-mobile.gif',
 		]);
 	var _Lobby = function(){
 		var self = this;
