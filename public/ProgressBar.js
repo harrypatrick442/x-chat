@@ -14,6 +14,7 @@ var ProgressBar = (function(){
 		text.classList.add('text');
 		element.appendChild(text);
 		this.setPercent = function(percent){
+			percent=10;
 			console.log('set percent'+percent);
 			var str = String(percent)+'%';
 			progress.style.width=str;
@@ -24,7 +25,7 @@ var ProgressBar = (function(){
 				notDone();
 		};
 		this.setProportion = function(proportion){
-			self.setProportion(proportion*100);
+			self.setPrecentage(proportion*100);
 		};
 		this.getElement = function(){return element;};
 		function done(){
