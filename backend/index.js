@@ -56,6 +56,6 @@
 		,app: app,
 		debug:true
 		});
-		return greenlock.listen(80, 443);
+		return greenlock.listen(80, 443, 8080, 8443);
 	}
 })();
