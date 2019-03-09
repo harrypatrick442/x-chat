@@ -54,7 +54,7 @@ var Lobby = (function(){
 		var ignoreManager = new IgnoreManager({getUserById:getUserById, getUserMe:getUserMe});
 		var clickMenu = new ClickMenu({});
 		var mainMenu = new ClickMenu({});
-		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu});
+		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu, showUsersSearch:showUsersSearch});
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new Mysocket({url:'poll', urlWebsocket:getWebsocketUrl('endpoint')});
 		if(window.debug)debug.setMysocket(mysocket);
@@ -64,7 +64,7 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu,
-		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send});
+		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch});
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
@@ -226,6 +226,9 @@ var Lobby = (function(){
 			pmsMenu.clear();
 			showAuthentication();
 			setVisible(false);
+		}
+		function showUsersSearch(){
+			usersSearch.show();
 		}
 		function showNotifications(){
 			console.log('showing notifications');

@@ -3,12 +3,14 @@ var UsersMenu =(function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var id = params.id;
+		var showUsersSearch = params.showUsersSearch;
 		var buttonClose;
 		if(isMobile)
 		{
 			buttonClose = new Button({className:'button-close'});
 			buttonClose.addEventListener('click', dispatchHidePopup);
 		}
+		var buttonSearch = new Button({className:'button-search'});
 		var ui = new UI({name:params.name, buttonClose:buttonClose});
 		var getUserMe = params.getUserMe;
 		var users = params.users;
@@ -33,6 +35,7 @@ var UsersMenu =(function(){
 		};
 		this.resize = ui.resize;
 		this.dispose = ui.dispose;
+		buttonSearch.addEventListener('click', showUsersSearch);
 		loadIgnores();
 		function dispatchHidePopup(){
 			self.dispatchEvent({type:'hidepopup'});

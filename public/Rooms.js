@@ -10,6 +10,7 @@ var Rooms = new (function(){
 		var getNDevice = params.getNDevice;
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser = params.clickMenu;
+		var showUsersSearch = params.showUsersSearch;
 		var set = new Set({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
 		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll});
@@ -90,7 +91,7 @@ var Rooms = new (function(){
 		function loadRoom(roomInfo){
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
 			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice,
-			getSessionId:getSessionId, send:send});
+			getSessionId:getSessionId, send:send, showUsersSearch:showUsersSearch});
 			set.add(room);
 			var isPm = room.isPm();
 			overlappingEntries.add(room);

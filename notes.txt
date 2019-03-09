@@ -14,10 +14,11 @@ image uploader error handling.
 
 detected an unsupported browser alert and question if they want to proceed anyway.
 
-delete guest accounts upon signing out
 up to end of a E:\Videos\Movies\Seagate\Videos
+rotate button on image uploader
+test highlight 
 resend button on messages
-online indicator.
+online indicator to show browser is online.
 
 user search
 room creation
