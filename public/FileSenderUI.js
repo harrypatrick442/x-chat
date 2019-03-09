@@ -30,6 +30,7 @@ var FileSenderUI=(function(){
 		var element = E.DIV();
 		element.classList.add('sending');
 		var progressBar = new ProgressBar({showText:true, text:handle.getFileName()});
+		progressBar.setPercent(10);
 		element.appendChild(progressBar.getElement());
 		this.getElement = function(){
 			return element;
