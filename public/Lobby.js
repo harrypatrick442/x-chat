@@ -7,7 +7,16 @@ var Lobby = (function(){
 	ImagePreloader.preloadRange([
 	'/images/close.jpg', 
 	'/images/close-hover.jpg'
+	'/images/tickbox-unticked.gif',
+	'/images/tickbox-ticked.gif'
 	]);
+	if(!isMobile)
+		ImagePreloader.preloadRange([
+		'/images/close.jpg', 
+		'/images/close-hover.jpg'
+		'/images/tickbox-unticked-hover.gif',
+		'/images/tickbox-ticked-hover.gif'
+		]);
 	var _Lobby = function(){
 		var self = this;
 		var sessionId;
