@@ -80,8 +80,7 @@ var Ajax = (function(){
 			self.onDone&&self.onDone(self);
 		}
 		function onError(e){
-			console.log(e);
-			console.error(e);
+			callbackFailed&&callbackFailed(e);
 		}
 		function onProgress(e){
 			self.onProgress&&self.onProgress(e.total?(e.loaded/e.total):1);
