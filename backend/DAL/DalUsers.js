@@ -8,6 +8,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE='xchat_automatic_authenticate';
 	const STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE='xchat_authentication_tokens_delete';
 	const STORED_PROCEDURE_GUEST_DELETE='xchat_guest_delete';
+	const STORED_PROCEDURE_GUESTS_DELETE='xchat_guests_delete';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -19,9 +20,10 @@ exports.dalUsers= new (function(){
 	const IMAGE='image';
 	const TOKEN='token';
 	const ID ='id';
-    var dalXChat = require('./DalXChat').dalXChat;	
-	var sql = require('mssql');
-	var User = require('./../User').User;
+	const KEEP_WITH_TOKEN='keepWithToken';
+    const dalXChat = require('./DalXChat').dalXChat;	
+	const sql = require('mssql');
+	const User = require('./../User').User;
 	this.getHash = function(userId, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_HASH_GET, 
 			parameters:[
@@ -77,6 +79,13 @@ exports.dalUsers= new (function(){
 				{name:USER_ID, value:parseInt(userId), type:sql.Int}
 			]});
 			
+	};
+	this.deleteGuests = function(keepWithToken){
+		if(!keepWithToken)keepWithToken=false;
+		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_GUESTS_DELETE, 
+			parameters:[
+				{name:KEEP_WITH_TOKEN, value:keepWithToken, type:sql.Bit}
+			]});
 	};
 	this.usernameAndEmailAreAvailable = function(username, email, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN,

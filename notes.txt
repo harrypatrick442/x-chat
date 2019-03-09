@@ -22,5 +22,3 @@ online indicator.
 user search
 room creation
 room search
-
-https server port wss express-ws

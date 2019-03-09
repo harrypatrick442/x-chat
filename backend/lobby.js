@@ -22,6 +22,7 @@ exports.lobby = (function(){
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
+		dalUsers.deleteGuests(true);			
 		var lobbyId = new Date().getTime();
 		var self = this;
 		var nDeviceCount=0;
@@ -31,7 +32,7 @@ exports.lobby = (function(){
 		var pms = new Pms({users:users, rooms:rooms});
 		var sessions = new Sessions();
 		var temporalCallbackSendUserIds = new TemporalCallback({maxNDelays:SEND_USER_IDS_MAX_N_DELAYS/*if keeps being reset within delay, will wait up to this total amount of time*/
-																			, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
+												, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
 		this.getRooms = function(){return rooms;};
 		this.getPms = function(){return pms;};
 		this.getNotifications= function(){return notifications;};
