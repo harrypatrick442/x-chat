@@ -15,12 +15,8 @@ module.exports = new (function(){
 		var mysocket;
 		if(id)
 		{
-			console.log('in id if');
 			mysocket = getById(id);
-			console.log('mysocket was: ');
-			console.log(mysocket);
 			if(!mysocket)return;
-			console.log('channel type is: '+mysocket.getChannelType());
 			if(mysocket.getChannelType()!=ChannelType.WEBSOCKET)
 				mysocket.setWebsocket(params);
 			return mysocket;

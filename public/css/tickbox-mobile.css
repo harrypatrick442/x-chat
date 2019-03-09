@@ -1,0 +1,6 @@
+.tickbox .box:hover{
+background-image:url('/images/tickbox-unticked-hover.gif');
+}
+.tickbox .box.ticked:hover{
+background-image:url('/images/tickbox-ticked-hover.gif');
+}
