@@ -15,6 +15,12 @@ border-radius: 3px;
 box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
 transition: width .4s ease-in-out; 
 background-color:#777777;
+
+    -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
 }
 .progress-bar .text{
 position:absolute;
@@ -32,5 +38,5 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 .progress-bar-done .progress {
-background-color:#85CB34;
+background-color:#85CB34; 
 }
