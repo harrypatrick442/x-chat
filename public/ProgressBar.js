@@ -14,8 +14,6 @@ var ProgressBar = (function(){
 		text.classList.add('text');
 		element.appendChild(text);
 		this.setPercent = function(percent){
-			percent=10;
-			console.log('set percent'+percent);
 			var str = String(percent)+'%';
 			progress.style.width=str;
 			if(showText)text.innerHTML=(textContent?textContent:'')+' '+str;
