@@ -6,21 +6,20 @@
 'use strict';
 (function(){
 	var config = require('./configuration');
+	const dal = require('./dal');
+	const express = require('express');
+	const bodyParser = require('body-parser');
+	const path = require('path');
+	const servlet = require('./servlet').servlet;
+	const endpoint = require('./endpoint').endpoint;
+	const  endpointLongpoll = require('./EndpoingLongpoll');
 	var app = (function(){
 		const SIZE_LIMIT_MB=1.5;
-		var dal = require('./dal');
-		var express = require('express');
-		var bodyParser = require('body-parser');
-		var app = express();
-		var path = require('path');
-		var servlet = require('./servlet').servlet;
-		var endpoint = require('./endpoint').endpoint;
-		var endpointLongpoll = require('./EndpoingLongpoll');
+		const app = express();
 		var imageUploader = new (require('./ImageUploader').ImageUploader)();
 		app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 		app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
 		servlet(app);
-		endpoint(app);
 		app.post('/image_uploader', function(req, res){
 			res.send(imageUploader.process(req));
 		});
@@ -29,6 +28,7 @@
 		return app;
 	})();
 	var server = config.useHttps?useHttps(app):useHttp(app);
+	endpoint(app, server);
 	server.setTimeout(5000, function(r){
 		console.log('timed out');
 	});

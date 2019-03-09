@@ -1,8 +1,8 @@
-exports.endpoint = function(app){
-	var expressWs = require('express-ws')(app);
-	var ChannelType = require('./ChannelType');
-	var Mysockets = require('./Mysockets');
-	var url = require('url');
+exports.endpoint = function(app, server){
+	const expressWs = require('express-ws')(app, server);
+	const ChannelType = require('./ChannelType');
+	const Mysockets = require('./Mysockets');
+	const url = require('url');
 	app.get('/endpoint', function(req, res, next){
 	  console.log('get route', req.testing);
 	  res.end();
