@@ -6,11 +6,6 @@ connected image cleanup on mobile.
 
 
 
-Then debug disconnceting on mobile.
-
-Then make cursor go back to after emoticon when select.
-
-check all images preloading.
 
 improve mechanism for caching messages until they can be sent. sometimes when longpolling is disconnected on mobile the first message after reconnect is not sent
 probably cos the channel its held in gets thrown away 
@@ -23,3 +18,7 @@ detected an unsupported browser alert and question if they want to proceed anywa
 up to end of a E:\Videos\Movies\Seagate\Videos
 resend button on messages
 online indicator.
+
+user search
+room creation
+room search
