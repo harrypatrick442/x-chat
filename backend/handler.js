@@ -95,6 +95,17 @@ exports.handler = new (function(){
 						if(!user)return;
 						lobby.getNotifications().setPmNotificationsSeen(user, req.seenPmNotificationUserIds);
 					break;
+					case 'rooms_search':
+						var user = getUser(req);
+						if(!user)return;
+						console.log(req.text);
+						lobby.roomsSearch(user, req.text, callback);
+					break;
+					case 'users_search':
+						var user = getUser(req);
+						if(!user)return;
+						lobby.usersSearch(user, req.text, callback);
+					break;
 					case 'sign_out':
 						lobby.signOut(req, mysocket, callback);
 					break;

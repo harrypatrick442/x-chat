@@ -9,6 +9,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE='xchat_authentication_tokens_delete';
 	const STORED_PROCEDURE_GUEST_DELETE='xchat_guest_delete';
 	const STORED_PROCEDURE_GUESTS_DELETE='xchat_guests_delete';
+	const STORED_PROCEDURE_SEARCH_USERS = 'xchat_users_search';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -20,6 +21,7 @@ exports.dalUsers= new (function(){
 	const IMAGE='image';
 	const TOKEN='token';
 	const ID ='id';
+	const TEXT='text';
 	const KEEP_WITH_TOKEN='keepWithToken';
     const dalXChat = require('./DalXChat').dalXChat;	
 	const sql = require('mssql');
@@ -136,6 +138,15 @@ exports.dalUsers= new (function(){
 			{name:ID, value:id, type:sql.Int},
 			{name:IMAGE, value:image, type:sql.VarChar}
 		]});
+	};
+	this.search = function(text, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_SEARCH_USERS,
+		parameters:[
+			{name:TEXT, value:text, type:sql.Text}],
+			callback:function(result){
+				var rows = result.recordsets[0];
+				callback(rows);
+		}});
 	};
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;

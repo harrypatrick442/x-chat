@@ -4,8 +4,8 @@ var RoomsSearch = (function(){
 		var self = this;
 		var standardSearch = new StandardSearch({title:'Rooms Search', getEntryId:getEntryId, callbackSearch:dispatchSearch});
 		this.show = standardSearch.show;
-		this.incomingRooms = function(users){
-			
+		this.incomingRooms = function(rooms){
+			console.log(rooms);
 		};
 		function getEntryId(entry){
 			

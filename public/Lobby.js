@@ -109,6 +109,7 @@ var Lobby = (function(){
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		rooms.addEventListener('sendpm', sendPm);
+		roomsSearch.addEventListener('search', searchRooms);
 		usersMenues.addEventListener('showpm', showPm);
 		usersSearch.addEventListener('search', searchUsers);
 		notificationsMenu.addEventListener('showpm', showPm);
@@ -183,6 +184,12 @@ var Lobby = (function(){
 					var user = users.getById(msg.userId);
 					if(user)
 						user.setImage(msg.image);
+				break;
+				case 'rooms_search':
+					roomsSearch.incomingRooms(msg.rooms);
+				break;
+				case 'users_search':
+					usersSearch.incomingUsers(msg.users);
 				break;
 			}
 		}
@@ -394,10 +401,11 @@ var Lobby = (function(){
 			imageUploader.show();
 		}
 		function searchUsers(e){
-			mysocket.send({type:'users_search', text:e.text});
+		console.log(e);
+			mysocket.send({type:'users_search', text:e.text, sessionId:sessionId});
 		}
 		function searchRooms(e){
-			mysocket.send({type:'rooms_search', text:e.text});
+			mysocket.send({type:'rooms_search', text:e.text, sessionId:sessionId});
 		}
 		function getNDevice(){
 			return nDevice;

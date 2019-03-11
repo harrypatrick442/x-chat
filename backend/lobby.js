@@ -20,6 +20,7 @@ exports.lobby = (function(){
 	var Sessions = require('./Sessions').Sessions;
 	var Session = require('./Session').Session;
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
+	var dalRooms = require('./DAL/DalRooms').dalRooms;
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
 		dalUsers.deleteGuests(true);			
@@ -136,6 +137,17 @@ exports.lobby = (function(){
 			}
 			console.log('forwarded ice candidate');
 			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
+		};
+		this.roomsSearch = function(user, text, callback){
+			console.log('this.roomsSearch "'+text+'"');
+			dalRooms.search('%'+text+'%', function(roomInfos){
+				callback({type:'rooms_search', rooms:roomInfos});
+			});
+		};
+		this.usersSearch = function(user, text, callback){
+			dalUsers.search('%'+text+'%', function(userInfos){
+				callback({type:'users_search', users:userInfos});
+			});
 		};
 		function getUnavailableResponse(available){
 			var error;
