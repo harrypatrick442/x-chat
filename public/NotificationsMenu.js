@@ -64,20 +64,18 @@ var NotificationsMenu = (function(){
 		element.classList.add('notifications-menu');
 		var entries = E.DIV();
 		var entriesWrapper = E.DIV();
-		var heading = E.DIV();
+		var heading = new Heading({title:'&nbsp;PM Notifications'});
 		var headingWrapper = E.DIV();
 		var inner = E.DIV();
 		inner.classList.add('notifications-menu-inner');
 		entries.classList.add('entries');
-		heading.classList.add('heading');
 		entriesWrapper.classList.add('entries-wrapper');
 		headingWrapper.classList.add('heading-wrapper');
-		heading.innerHTML='PM Notifications';
 		
 		
-		heading.appendChild(buttonClose.getElement());
+		heading.getEntries().appendChild(buttonClose.getElement());
 		
-		headingWrapper.appendChild(heading);
+		headingWrapper.appendChild(heading.getElement());
 		
 		inner.appendChild(headingWrapper);
 		inner.appendChild(entriesWrapper);

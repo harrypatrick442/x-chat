@@ -5,12 +5,25 @@
 	background-color:rgb(44, 43, 43);
     color: #dddddd;
 	padding:4px;
+	padding-top:2px;
 	box-sizing:border-box;
 	border-left:1px solid #333333;
 	border-right:1px solid #333333;
+	height:30px;
+}
+.heading-title{
+	position:absolute;
+	left:2px;
+	right:0px;
     overflow: hidden;
+	padding-top:4px;
     text-overflow: ellipsis;
     white-space: nowrap;
+	box-sizing:border-box;
+}
+.heading-entries{
+	position:absolute;
+	right:0px;
 }
 .heading .button-close{
 	float:right;

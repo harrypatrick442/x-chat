@@ -4,6 +4,9 @@
 .users-menues{
 	
 }
+.standard-menu{
+	z-index:80;
+}
 .notifications-menu{
 	z-index:100;
 }

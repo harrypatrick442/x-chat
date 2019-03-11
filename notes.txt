@@ -23,3 +23,5 @@ online indicator to show browser is online.
 user search
 room creation
 room search
+clearing of password field.
+fix image not fully updating on upload.

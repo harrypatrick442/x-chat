@@ -17,7 +17,7 @@
  .notifications-menu  .notifications-menu-inner .entries-wrapper{
 	box-sizing:border-box;
 	 position:absolute;
-	 top:36px;
+	 top:32px;
 	 bottom:0px;
 	width:100%;
 	
@@ -34,9 +34,4 @@
 	width:100%;
 }
  .notifications-menu .notifications-menu-inner .heading-wrapper .heading{
-	box-sizing:border-box;
-	padding:4px;
-	margin-bottom:3px;
-	box-sizing:border-box;
-	width:100%;
 }

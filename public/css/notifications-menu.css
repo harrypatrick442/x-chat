@@ -21,5 +21,11 @@
 }
 .notifications-menu .heading{
 	width:100%;
-	height:32px;
+}
+.notifications-menu .heading-title{
+	right:30px;
+}
+.notifications-menu .heading-entries{
+	right:0px;
+	width:30px;
 }

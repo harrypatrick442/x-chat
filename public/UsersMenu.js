@@ -11,7 +11,7 @@ var UsersMenu =(function(){
 			buttonClose.addEventListener('click', dispatchHidePopup);
 		}
 		var buttonSearch = new Button({className:'button-search'});
-		var ui = new UI({name:params.name, buttonClose:buttonClose});
+		var ui = new UI({name:params.name, buttonClose:buttonClose, buttonSearch:buttonSearch});
 		var getUserMe = params.getUserMe;
 		var users = params.users;
 		var ignoreManager = params.ignoreManager;
@@ -82,23 +82,22 @@ var UsersMenu =(function(){
 	return _UsersMenu;
 	function UI(params){
 		var buttonClose = params.buttonClose;
+		var buttonSearch = params.buttonSearch;
 		var visible=false;
 		var element = E.DIV();
 		var entries = E.DIV();
 		var entriesWrapper = E.DIV();
-		var heading=E.DIV();
 		var headingWrapper = E.DIV();
-		var headingIgnored=E.DIV();
 		var entriesIgnored = E.DIV();
 		var entriesIgnoredWrapper = E.DIV();
 		var headingIgnoredWrapper = E.DIV();
 		var splitPane = new SplitPane({nPanelsWidth:1, nPanelsHeight:2, rowProfiles:[{height:'70%',minHeight:'60px'}, {minMeight:'60px'}]});
 		var top = splitPane.getPanelXY(0, 0).getElement();
 		var bottom = splitPane.getPanelXY(0, 1).getElement();
+		var heading = new Heading({title:'&nbsp;'+params.name});
+		var headingIgnored = new Heading({title:'&nbsp;Ignored '});
 		element.classList.add('users-menu');
-		heading.classList.add('heading');
 		entries.classList.add('users-menu-entries');
-		headingIgnored.classList.add('heading');
 		entriesIgnored.classList.add('users-menu-entries');
 		
 		
@@ -106,22 +105,20 @@ var UsersMenu =(function(){
 		entriesWrapper.classList.add('user-menu-entries-wrapper');
 		headingIgnoredWrapper.classList.add('heading-wrapper');
 		entriesIgnoredWrapper.classList.add('user-menu-entries-wrapper');
-		
-		headingWrapper.appendChild(heading);
+		headingWrapper.appendChild(heading.getElement());
 		entriesWrapper.appendChild(entries);
-		headingIgnoredWrapper.appendChild(headingIgnored);
+		headingIgnoredWrapper.appendChild(headingIgnored.getElement());
 		entriesIgnoredWrapper.appendChild(entriesIgnored);
 		
 		element.appendChild(splitPane.getElement());
 		top.appendChild(headingWrapper);
 		top.appendChild(entriesWrapper);
-		headingIgnored.innerHTML='&nbsp;Ignored ';
 		bottom.appendChild(headingIgnoredWrapper);
 		bottom.appendChild(entriesIgnoredWrapper);
-		heading.innerHTML='&nbsp;'+params.name;
-		heading.title = heading.innerHTML;
+		var headingEntries = heading.getEntries();
+		headingEntries.appendChild(buttonSearch.getElement());
 		if(buttonClose){
-			heading.appendChild(buttonClose.getElement());
+			headingEntries.appendChild(buttonClose.getElement());
 		}
 		
 		

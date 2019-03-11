@@ -93,13 +93,11 @@ var PmsMenu = new (function(){
 		else
 		{
 			document.body.appendChild(popup.getElement());
-			var heading=E.DIV();
+			var heading= new Heading({title:'&nbsp;Pms '});
 			var headingWrapper = E.DIV();
-			heading.innerHTML='&nbsp;Pms ';
 			headingWrapper.classList.add('heading-wrapper');
-			heading.classList.add('heading');
-			heading.appendChild(buttonClose.getElement());
-			headingWrapper.appendChild(heading);
+			heading.getEntries().appendChild(buttonClose.getElement());
+			headingWrapper.appendChild(heading.getElement());
 			inner.appendChild(headingWrapper);
 		}
 		inner.classList.add('pms-menu-inner');

@@ -37,3 +37,10 @@
 	margin-bottom:3px;
 	height:32px;
 }
+
+.users-menues .users-menues-entries .users-menu .heading-wrapper .heading-title{
+	right:36px;
+}
+.users-menues .users-menues-entries .users-menu .heading-wrapper .heading-entries{
+	width:36px;
+}
