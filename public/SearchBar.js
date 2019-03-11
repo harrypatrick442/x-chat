@@ -1,10 +1,23 @@
 var SearchBar = (function(){
 	var _SearchBar = function(params){
-		var ui = new UI();
+		EventEnabledBuilder(this);
+		var self = this;
+		var ui = new UI({callbackSearch:dispatchSearch});
 		this.getElement = ui.getElement;
+		var currentText;
+		function dispatchSearch(text){
+			self.dispatchEvent({type:'search', text:text});
+		}
 	};
 	return _SearchBar;
 	function UI(params){
+		var self = this;
+		var callbackSearch = params.callbackSearch;
+		var temporalCallback = new TemporalCallback({
+			callback:dispatchSearch,
+			maxTotalDelay:2000,
+			delay:700
+		});
 		var element = E.DIV();
 		var inputWrapper = E.DIV();
 		var buttonWrapper = E.DIV();
@@ -22,5 +35,12 @@ var SearchBar = (function(){
 		this.getElement = function(){
 			return element;
 		};
+		input.addEventListener('keydown', scheduleDispatchSearch);
+		function scheduleDispatchSearch(){
+			temporalCallback.trigger();
+		}
+		function dispatchSearch(){
+			callbackSearch(input.value);
+		}
 	}
 })();

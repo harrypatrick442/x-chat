@@ -1,10 +1,10 @@
-var UsersSearch = (function(){
-	var _UsersSearch = function(){
+var RoomsSearch = (function(){
+	var _RoomsSearch = function(){
 		EventEnabledBuilder(this);
 		var self = this;
-		var standardSearch = new StandardSearch({title:'Users Search', getEntryId:getEntryId, callbackSearch:dispatchSearch});
+		var standardSearch = new StandardSearch({title:'Rooms Search', getEntryId:getEntryId, callbackSearch:dispatchSearch});
 		this.show = standardSearch.show;
-		this.incomingUsers = function(users){
+		this.incomingRooms = function(users){
 			
 		};
 		function getEntryId(entry){
@@ -15,5 +15,5 @@ var UsersSearch = (function(){
 			self.dispatchEvent({type:'search', text:e.text});
 		}
 	};
-	return _UsersSearch;
+	return _RoomsSearch;
 })();

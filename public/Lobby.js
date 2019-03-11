@@ -64,8 +64,9 @@ var Lobby = (function(){
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
 		var usersSearch = new UsersSearch();
+		var roomsSearch = new RoomsSearch();
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu,
-		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch});
+		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch, showRoomsSearch:showRoomsSearch});
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
@@ -109,6 +110,7 @@ var Lobby = (function(){
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		rooms.addEventListener('sendpm', sendPm);
 		usersMenues.addEventListener('showpm', showPm);
+		usersSearch.addEventListener('search', searchUsers);
 		notificationsMenu.addEventListener('showpm', showPm);
 		pms.addEventListener('addnotification', addNotification);
 		mysocket.addEventListener('disposedbyserver', mysocketDisposedByServer);
@@ -230,6 +232,9 @@ var Lobby = (function(){
 		}
 		function showUsersSearch(){
 			usersSearch.show();
+		}
+		function showRoomsSearch(){
+			roomsSearch.show();
 		}
 		function showNotifications(){
 			console.log('showing notifications');
@@ -387,6 +392,12 @@ var Lobby = (function(){
 		}
 		function showImageUploaderForProfilePicture(){
 			imageUploader.show();
+		}
+		function searchUsers(e){
+			mysocket.send({type:'users_search', text:e.text});
+		}
+		function searchRooms(e){
+			mysocket.send({type:'rooms_search', text:e.text});
 		}
 		function getNDevice(){
 			return nDevice;

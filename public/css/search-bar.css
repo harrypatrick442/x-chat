@@ -37,7 +37,10 @@ outline: 0;
 border-radius: 2px;
 height:100%;
 width:100%;
+	font-family:verdana, geneva, sans-serif;
     border-right: 0;
+	font-size:16px;
+	padding-left:4px;
 }
 .search-bar-button{
 position:relative;

@@ -8,3 +8,21 @@ body{
 	padding-left:3px;
 	padding-top:3px;
 }
+.lobby .rooms-menu .button-search{
+	
+	background-color:rgb(32, 31, 30);
+	position:absolute;
+	bottom:0px;
+	right:0px;
+	height:20px;
+	width:22px;
+	background-image:url('/images/search.gif');
+	cursor:pointer;
+	background-repeat:no-repeat;
+	background-size:contain;
+	margin-top:2px;
+	
+}
+.lobby .rooms-menu .button-search:hover{
+	background-image:url('/images/search-hover.gif');
+}
