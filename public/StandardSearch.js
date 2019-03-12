@@ -12,6 +12,7 @@ var StandardSearch = (function(){
 		var ui = new UI({standardMenu:standardMenu, searchBar:searchBar, callbackSearch:callbackSearch, spinner:spinner});
 		var sortedFilteredEntries = new SortedFilteredEntries({element:ui.getEntries(), getEntryId:getEntryId});
 		this.show = standardMenu.show;
+		this.hide = standardMenu.hide;
 		this.getEntries = ui.getEntries;
 		this.showSpinner=spinner.show;
 		this.hideSpinner = spinner.hide;

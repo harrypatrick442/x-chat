@@ -15,6 +15,7 @@ var StandardMenu = new (function(){
 			console.log('show');
 			popup.show();
 		};
+		this.hide = hide;
 		if(buttonClose)buttonClose.addEventListener('click',hide);
 		function hide(){
 			popup.hide();

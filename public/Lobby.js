@@ -110,6 +110,7 @@ var Lobby = (function(){
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		rooms.addEventListener('sendpm', sendPm);
 		roomsSearch.addEventListener('search', searchRooms);
+		roomsSearch.addEventListener('showroom', showRoom);
 		usersMenues.addEventListener('showpm', showPm);
 		usersSearch.addEventListener('search', searchUsers);
 		usersSearch.addEventListener('showpm', showPm);
@@ -337,6 +338,9 @@ var Lobby = (function(){
 			getRooms();
 			pms.load(userMe.getId());
 			ignoreManager.load(userMe.getId());
+		}
+		function showRoom(e){
+			rooms.showRoom(e.roomInfo);
 		}
 		function getRooms(){
 			mysocket.send({type:'rooms_get', sessionId:sessionId});

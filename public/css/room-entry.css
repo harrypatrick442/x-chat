@@ -2,17 +2,24 @@ body{
 	
 }
 .lobby .rooms-menu .room-entry{
+	width:25%; 	
+}
+.rooms-search .room-entry{
+	width:50%;
+}
+.lobby .rooms-menu .room-entry,
+.rooms-search .room-entry{
 	display:inline-block;
 	position:relative;
 	float:left;
-	width:25%; 	
 	box-sizing:border-box;
 	padding:0px;
 	height:36px;
 	padding-right:3px;
 	padding-bottom:3px;
 }
-.lobby .rooms-menu .room-entry .inner{
+.lobby .rooms-menu .room-entry .inner,
+.rooms-search .room-entry .inner{
 	box-sizing:border-box;
 	height:100%;
 	background-color:#cccccc;
@@ -21,19 +28,22 @@ body{
 	border:2px solid #efefef;
 	width:100%;
 }
-.lobby .rooms-menu .room-entry .inner:hover{
+.lobby .rooms-menu .room-entry .inner:hover,
+.rooms-search .room-entry .inner:hover{
 	background-color:#dddddd;
 	cursor:pointer;
 }
-.lobby .rooms-menu .room-entry .inner .connected-image{
+.lobby .rooms-menu .room-entry .inner .connected-image,
+.rooms-search .room-entry .inner .connected-image{
 	float:left;
 	box-sizing:border-box;
 	height:30px;
-	width:30px;
+	width:30px;	
 	border-radius:2px;
     overflow: hidden;
 }
-.lobby .rooms-menu .room-entry .inner .connected-image img{
+.lobby .rooms-menu .room-entry .inner .connected-image img,
+.rooms-search .room-entry .inner .connected-image img{
 	box-sizing:border-box;
 	height:100%;
 	width:100%;
@@ -42,7 +52,8 @@ body{
     background-position: center; 
 	background-size:contain;*/
 }
-.lobby .rooms-menu .room-entry .inner .name{
+.lobby .rooms-menu .room-entry .inner .name,
+.rooms-search .room-entry .inner .name{
 	height:30px;
 	padding-top:5px;
 	padding-left:2px;
