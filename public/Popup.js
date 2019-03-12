@@ -3,6 +3,7 @@ var Popup= new (function(){
 	var _Popup = function(params){
 		params=params||{};
 		var self = this;
+		var clickedOffHandle;
 		var element = E.DIV();
 		var closeOnClickOff = params.closeOnClickOff==undefined?true:params.closeOnClickOff;
 		element.classList.add('popup');
@@ -10,13 +11,13 @@ var Popup= new (function(){
 			if(active)
 				active.hide();
 			if(closeOnClickOff)
-				ClickedOff.register(element, hide);
+				clickedOffHandle = ClickedOff.register(element, hide);
 			setVisible(true);
 			active = self;
 		};
 		this.hide = function(){
 			if(closeOnClickOff)
-				ClickedOff.remove(element);
+				clickedOffHandle.dispose();
 			hide();
 		};
 		this.setPosition=function(params){
@@ -31,7 +32,7 @@ var Popup= new (function(){
 		};
 		this.dispose = function(){
 			if(closeOnClickOff)
-				ClickedOff.remove(element);
+				ClickedOff.dispose();
 			element.parentNode.removeChild(element);
 		};
 		this.getElement = function(){return element;};
