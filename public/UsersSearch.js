@@ -29,7 +29,7 @@ var UsersSearch = (function(){
 					users.add(User.fromJSON(userInfo));
 				}
 			});
-			each(users.getEntries(), function(user){
+			each(users.getEntries().slice(), function(user){
 				if(idsShouldContain.indexOf(user.getId())<0)
 					users.remove(user);
 			});
