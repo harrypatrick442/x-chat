@@ -11,6 +11,7 @@ var UsersSearch = (function(){
 		this.show = standardSearch.show;
 		this.incomingUsers = function(userInfos){
 			setUsers(userInfos);
+			standardSearch.hideSpinner();
 		};
 		users.addEventListener('add', userAdd);
 		users.addEventListener('remove', userRemove);
@@ -49,6 +50,7 @@ var UsersSearch = (function(){
 		function dispatchSearch(e){
 			console.log('dispatching search');
 			self.dispatchEvent({type:'search', text:e.text});
+			standardSearch.showSpinner();
 		}
 	};
 	return _UsersSearch;

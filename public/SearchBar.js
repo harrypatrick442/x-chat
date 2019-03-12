@@ -15,8 +15,8 @@ var SearchBar = (function(){
 		var callbackSearch = params.callbackSearch;
 		var temporalCallback = new TemporalCallback({
 			callback:dispatchSearch,
-			maxTotalDelay:2000,
-			delay:700
+			maxTotalDelay:1200,
+			delay:400
 		});
 		var element = E.DIV();
 		var inputWrapper = E.DIV();
