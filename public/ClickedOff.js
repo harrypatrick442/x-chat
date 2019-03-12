@@ -56,6 +56,11 @@ var ClickedOff = new (function () {
 			if(additionalElements.indexOf(element)<0)
 				additionalElements.push(element);
 		};
+		this.removeAdditionalElement = function(element){
+			var index = additionalElements.indexOf(element);
+			if(index<0)return;
+			additionalElements.splice(index, 1);
+		};
 		this.getElement = function(){
 			return element;
 		};
