@@ -63,8 +63,8 @@ var Lobby = (function(){
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});
 		var usersMenues = new UsersMenues({ignoreManager:ignoreManager});
 		usersMenues.add(usersMenu);
-		var usersSearch = new UsersSearch();
-		var roomsSearch = new RoomsSearch();
+		var usersSearch = new UsersSearch({clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
+		var roomsSearch = new RoomsSearch({clickMenu:clickMenu});
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu,
 		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch, showRoomsSearch:showRoomsSearch});
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[

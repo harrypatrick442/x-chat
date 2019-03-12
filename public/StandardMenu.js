@@ -2,10 +2,11 @@ var StandardMenu = new (function(){
 	var _StandardMenu = function(params){
 		var self = this;
 		var title = params.title;
+		var classNames = params.classNames;
 		var popup = new Popup({});
 		var buttonClose = new Button({className:'button-close'});
 		var ui = new UI({popup:popup, buttonClose:buttonClose,
-		entries:[], title:title});
+		entries:[], title:title, classNames:classNames});
 		var pms = params.pms;
 		this.getElement = ui.getElement;
 		this.getEntries = ui.getEntries;
@@ -25,11 +26,15 @@ var StandardMenu = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var title = params.title;
+		var classNames = params.classNames;
 		var element = params.popup.getElement();
 		var inner = E.DIV();
 		var entries = E.DIV();
 		entries.classList.add('entries');
 		inner.classList.add('standard-menu-inner');
+		if(classNames)each(classNames, function(className){
+			element.classList.add(className);
+		});
 		var buttonClose = params.buttonClose;
 		var heading=E.DIV();
 		heading.innerHTML='&nbsp;'+title;
