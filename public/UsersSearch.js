@@ -37,10 +37,9 @@ var UsersSearch = (function(){
 		}
 		function userAdd(e){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
-				var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
-				sortedFilteredEntries.addEntry(userEntry);
-			userEntry.addEventListener('showpm', function(e){
-			console.log('a');self.dispatchEvent(e);});
+			var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
+			sortedFilteredEntries.addEntry(userEntry);
+			userEntry.addEventListener('showpm', function(e){self.dispatchEvent(e);});
 		}
 		function userRemove(e){
 			var userEntry = sortedFilteredEntries.getByEntryId(e.user.getId());

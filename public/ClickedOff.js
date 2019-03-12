@@ -1,53 +1,69 @@
 var ClickedOff = new (function () {
-    var entries = [];
+    var handles = [];
     this.register = function (element, callbackHide) {
-        new (function (element, callbackHide) {
-            setTimeout(function () {
-                if (!containsEntry(element)) {
-                    entries.push({ element: element, callbackHide: callbackHide });
-                }
-            },0);
-        })(element, callbackHide);
+		var handle =  new Handle(element, callbackHide, dispose);
+		setTimeout(function () {
+			if (!containsElement(element)) {
+				handles.push(handle);
+			}
+		},0);
+        return handle;
     };
 	this.remove = function(element){
-		var iterator = new Iterator(entries);
+		var iterator = new Iterator(handles);
 		while(iterator.hasNext()){
-			var entry = iterator.next();
-			if(entry.element==element)
+			var handle = iterator.next();
+			if(handle.getElement()==element)
 			{
-				iterator.remove();
+				handle.dispose();
 				break;
 			}
 				
 		}
 	};
     document.addEventListener('mousedown', clickedDocument);
+	function dispose(handle){
+		var index = handles.indexOf(handle);
+		if(index<0)return;
+		handles.splice(index, 1);
+	}
     function clickedDocument(e) {
         var x = e.pageX;
         var y = e.pageY;
-        var toRemove = [];
-        for (var i = 0, entry; entry = entries[i]; i++) {
-            var absolutePosition = getAbsolute(entry.element);
+		var handlesSnashot = handles.slice();
+        for (var i = 0, handle; handle = handlesSnashot[i]; i++) {
+			var element = handle.getElement();
+            var absolutePosition = getAbsolute(element);
             var xLeft = absolutePosition.left;
-            var xRight = xLeft + entry.element.offsetWidth;
+            var xRight = xLeft + element.offsetWidth;
             var yTop = absolutePosition.top;
-            var yBottom = yTop + entry.element.offsetHeight;
+            var yBottom = yTop + element.offsetHeight;
             if (x < xLeft || x > xRight || y < yTop || y > yBottom) {
-                toRemove.push(entry);
-                entry.callbackHide()
+                handle.hide();
             }
         }
-        for (var i = 0, entry; entry = toRemove[i]; i++) {
-            entries.splice(entries.indexOf(entry), 1);
-        }
     }
-    function containsEntry(element) {
-        for (var i = 0, entry; entry = entries[i]; i++) {
-            if (entry.element == element)
+    function containsElement(element) {
+        for (var i = 0, handle; handle = handles[i]; i++) {
+            if (handle.getElement() == element)
                 return true;
         }
         return false;
     }
-    
+    function Handle(element, callbackHide, callbackDispose){
+		var additionalElements =[];
+		this.addAdditionalElement= function(element){
+			if(additionalElements.indexOf(element)<0)
+				additionalElements.push(element);
+		};
+		this.getElement = function(){
+			return element;
+		};
+		this.hide = function(){
+			callbackDispose();
+			callbackHide();
+		};
+		this.dispose = callbackDispose;
+	}
 
 })();

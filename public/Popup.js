@@ -28,7 +28,6 @@ var Popup= new (function(){
 				element.style.right=String(params.right)+'px';
 			if(params.bottom)
 				element.style.bottom=String(params.bottom)+'px';
-			console.log(params);
 		};
 		this.dispose = function(){
 			if(closeOnClickOff)

@@ -112,6 +112,7 @@ var Lobby = (function(){
 		roomsSearch.addEventListener('search', searchRooms);
 		usersMenues.addEventListener('showpm', showPm);
 		usersSearch.addEventListener('search', searchUsers);
+		usersSearch.addEventListener('showpm', showPm);
 		notificationsMenu.addEventListener('showpm', showPm);
 		pms.addEventListener('addnotification', addNotification);
 		mysocket.addEventListener('disposedbyserver', mysocketDisposedByServer);
