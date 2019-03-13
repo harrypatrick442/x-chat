@@ -116,6 +116,7 @@ var Lobby = (function(){
 		usersSearch.addEventListener('showpm', showPm);
 		notificationsMenu.addEventListener('showpm', showPm);
 		pms.addEventListener('addnotification', addNotification);
+		pms.addEventListener('videoofferrejected', sendPmVideoOfferRejected);
 		mysocket.addEventListener('disposedbyserver', mysocketDisposedByServer);
 		this.getElement = ui.getElement;
 		function onOpen(){ }
@@ -165,6 +166,9 @@ var Lobby = (function(){
 				case 'pm_video_offer_fail':
 					pms.videoOfferFail(msg);
 					break;
+				case 'pm_video_offer_rejected':
+					pms.videoOfferRejected(msg);
+				break;
 				case 'pm_video_offer':
 					pms.videoOffer(msg);
 					break;
@@ -420,6 +424,9 @@ var Lobby = (function(){
 			if(value){
 				new Task(ui.resize).run();
 			}
+		}
+		function sendPmVideoOfferRejected(e){
+			mysocket.send({type:'pm_video_offer_rejected', userToId:e.userToId, reason:e.reason, sessionId:sessionId});
 		}
 	};
 	function UI(params){

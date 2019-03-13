@@ -28,7 +28,9 @@ var Pms=  (function(){
 		};
 		this.videoOfferFail = function(msg){
 			var room = rooms.getById(getRoomId(msg.userToId));
-			if(!room){return;}
+			if(!room){
+				dispatchVideoOfferRejectedResponse(msg.userToId, VideoOfferRejectedReasons.PmNotOpen);
+				return;}
 			room.videoOfferFail(msg);
 		};
 		this.videoOffer = function(msg){
@@ -64,6 +66,11 @@ var Pms=  (function(){
 			tabPortal.addEventListener('message', messageFromAnotherTab);
 			var userTos = openHistory.getUsers();
 			each(userTos, dispatchAddClosed);
+		};
+		this.videoOfferRejected= function(msg){
+			if(!rooms.getById(getRoomId(msg.userFromId)))return;
+			Dialog.show({message:msg.reason,
+			buttons:[{text:'OK'}]});
 		};
 		rooms.addEventListener('showpm', showPm);
 		rooms.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
@@ -153,6 +160,9 @@ var Pms=  (function(){
 		}
 		function dispatchRemove(userTo){
 			self.dispatchEvent({type:'remove', userTo:userTo});
+		}
+		function dispatchVideoOfferRejectedResponse(userToId, reason){
+			self.dispatchEvent({type:'videoofferrejected', userToId:userToId, reason:reason});
 		}
 	};
 	return _Pms;

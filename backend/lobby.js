@@ -138,6 +138,11 @@ exports.lobby = (function(){
 			console.log('forwarded ice candidate');
 			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
 		};
+		this.pmVideoOfferRejected = function(user, userToId, reason){
+			var userTo = users.getById(userToId);
+			if(!userTo)return;
+			userTo.sendMessage({type:'pm_video_offer_rejected', userFromId:user.getId(), reason:getVideoRejectionReasonString(reason, userTo)});
+		};
 		this.roomsSearch = function(user, text, callback){
 			console.log('this.roomsSearch "'+text+'"');
 			dalRooms.search('%'+text+'%', function(roomInfos){
@@ -149,6 +154,16 @@ exports.lobby = (function(){
 				callback({type:'users_search', users:userInfos});
 			});
 		};
+		function getVideoRejectionReasonString(reason, userTo){
+			switch(reason){
+				case VideoOfferRejectionReasons.PmNotOpen:
+					return 'User '+userTo.getUsername()+' does not have a pm open with you so you can video PM invite them. Try messaging them.';
+				case VideoOfferRejectionReasons.Rejected:
+					return 'User '+userTo.getUsername()+' rejected your video PM invite';
+				default:
+				return '';
+			}
+		}
 		function getUnavailableResponse(available){
 			var error;
 			switch(available)

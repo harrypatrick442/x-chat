@@ -98,7 +98,6 @@ exports.handler = new (function(){
 					case 'rooms_search':
 						var user = getUser(req);
 						if(!user)return;
-						console.log(req.text);
 						lobby.roomsSearch(user, req.text, callback);
 					break;
 					case 'users_search':
@@ -108,6 +107,11 @@ exports.handler = new (function(){
 					break;
 					case 'sign_out':
 						lobby.signOut(req, mysocket, callback);
+					break;
+					case 'pm_video_offer_rejected':
+						var user = getUser(req);
+						if(!user)return;
+						lobby.pmVideoOfferRejected(user, req.userToId, req.reason);
 					break;
 					case 'debug':
 						console.log(req.str);
