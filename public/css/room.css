@@ -137,6 +137,12 @@
 	background-image:url('/images/video-start.gif');	
 	cursor:pointer;
 }
+.lobby .rooms .entries .room .bottom .menu .button-video-pm-start.on{
+	background-image:url('/images/video-stop.gif');
+}
 .lobby .rooms .entries .room .bottom .menu .button-video-pm-start:hover{
 background-image:url('/images/video-start-hover.gif');	
+}
+.lobby .rooms .entries .room .bottom .menu .button-video-pm-start.on:hover{
+	background-image:url('/images/video-stop-hover.gif');
 }

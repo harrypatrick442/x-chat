@@ -47,7 +47,7 @@ var UsersSearch = (function(){
 			sortedFilteredEntries.removeEntry(userEntry);
 		}
 		function dispatchSearch(e){
-			console.log('dispatching search');
+			if(!e.text||e.text.length<1)return;
 			self.dispatchEvent({type:'search', text:e.text});
 			standardSearch.showSpinner();
 		}

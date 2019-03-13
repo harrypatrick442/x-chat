@@ -51,6 +51,7 @@ var RoomsSearch = (function(){
 			return entry.getId();
 		}
 		function dispatchSearch(e){
+			if(!e.text||e.text.length<1)return;
 			self.dispatchEvent({type:'search', text:e.text});
 		}
 	};

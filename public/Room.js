@@ -30,7 +30,7 @@ var Room = new (function(){
 		var buttonEmoticons = new Button({className:'button-emoticons'});
 		var buttonExit = new Button({className:'button-exit'});
 		var buttonClose = new Button({className:'button-close'});
-		var buttonVideoPmStart = isPm?new Button({className:'button-video-pm-start'}):undefined;
+		var buttonVideoPmStart = isPm?new VideoButton({className:'button-video-pm-start'}):undefined;
 		var spinner = new Spinner({});
 		spinner.show();
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose,
@@ -86,7 +86,9 @@ var Room = new (function(){
 		};
 		this.getVisible = ui.getVisible;
 		this.videoOfferFail = function(msg){
-			console.log(msg.message);
+			videoFeedPm.stop();
+			Dialog.show({message:'Starting video chat with '+userTo.getUsername()+" failed as they are offline!",
+			buttons:[{text:'OK'}]});
 		};
 		this.resize=ui.resize;
 		buttonSend.addEventListener('click', sendMessage);
@@ -282,9 +284,11 @@ var Room = new (function(){
 			splitPane&&splitPane.resize();
 		}
 		function showVideoFeed(value){
+			buttonVideoPmStart.setOn(true);
 			splitPanePanelVideoFeed.setVisible(true);
 		}
 		function hideVideoFeed(){
+			buttonVideoPmStart.setOn(false);
 			splitPanePanelVideoFeed.setVisible(false);
 		}
 		function onShowMessageToUser(e){
