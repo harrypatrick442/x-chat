@@ -109,6 +109,7 @@ exports.handler = new (function(){
 						lobby.signOut(req, mysocket, callback);
 					break;
 					case 'pm_video_offer_rejected':
+						console.log(req);
 						var user = getUser(req);
 						if(!user)return;
 						lobby.pmVideoOfferRejected(user, req.userToId, req.reason);

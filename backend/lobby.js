@@ -16,6 +16,7 @@ exports.lobby = (function(){
 	var Users = require('./Users').Users;
 	var Notifications = require('./Notifications').Notifications;
 	var TemporalCallback=require('./TemporalCallback').TemporalCallback;
+	var videoOfferRejectedReasons=require('./VideoOfferRejectedReasons');
 	var Device=require('./Device').Device;
 	var Sessions = require('./Sessions').Sessions;
 	var Session = require('./Session').Session;
@@ -139,8 +140,10 @@ exports.lobby = (function(){
 			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
 		};
 		this.pmVideoOfferRejected = function(user, userToId, reason){
+			console.log('in it');
 			var userTo = users.getById(userToId);
 			if(!userTo)return;
+			console.log('in it');
 			userTo.sendMessage({type:'pm_video_offer_rejected', userFromId:user.getId(), reason:getVideoRejectionReasonString(reason, userTo)});
 		};
 		this.roomsSearch = function(user, text, callback){
@@ -156,11 +159,12 @@ exports.lobby = (function(){
 		};
 		function getVideoRejectionReasonString(reason, userTo){
 			switch(reason){
-				case VideoOfferRejectionReasons.PmNotOpen:
-					return 'User '+userTo.getUsername()+' does not have a pm open with you so you can video PM invite them. Try messaging them.';
-				case VideoOfferRejectionReasons.Rejected:
-					return 'User '+userTo.getUsername()+' rejected your video PM invite';
+				case videoOfferRejectedReasons.PM_NOT_OPEN:
+					return userTo.getUsername()+' does not have a pm open with you so you can\'t video PM invite them. Try messaging them.';
+				case videoOfferRejectedReasons.DECLINED:
+					return userTo.getUsername()+' rejected your video PM invite!';
 				default:
+					return 'An error prevented '+userTo.getUsername()+' from accepting your video PM invite.';
 				return '';
 			}
 		}

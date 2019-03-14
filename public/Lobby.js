@@ -109,6 +109,7 @@ var Lobby = (function(){
 		rooms.addEventListener('destroyedroom', destroyedRoom);
 		rooms.addEventListener('roomsinchanged', callbackRoomsInChanged);
 		rooms.addEventListener('sendpm', sendPm);
+		rooms.addEventListener('videopmofferrejected', sendPmVideoOfferRejected);
 		roomsSearch.addEventListener('search', searchRooms);
 		roomsSearch.addEventListener('showroom', showRoom);
 		usersMenues.addEventListener('showpm', showPm);
@@ -167,6 +168,7 @@ var Lobby = (function(){
 					pms.videoOfferFail(msg);
 					break;
 				case 'pm_video_offer_rejected':
+					console.log('got video offer rejected');
 					pms.videoOfferRejected(msg);
 				break;
 				case 'pm_video_offer':
@@ -426,6 +428,7 @@ var Lobby = (function(){
 			}
 		}
 		function sendPmVideoOfferRejected(e){
+			console.log(e);
 			mysocket.send({type:'pm_video_offer_rejected', userToId:e.userToId, reason:e.reason, sessionId:sessionId});
 		}
 	};

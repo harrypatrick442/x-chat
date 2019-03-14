@@ -28,14 +28,15 @@ var Pms=  (function(){
 		};
 		this.videoOfferFail = function(msg){
 			var room = rooms.getById(getRoomId(msg.userToId));
-			if(!room){
-				dispatchVideoOfferRejectedResponse(msg.userToId, VideoOfferRejectedReasons.PmNotOpen);
-				return;}
+			if(!room){return;}
 			room.videoOfferFail(msg);
 		};
 		this.videoOffer = function(msg){
+			console.log(msg);
 			var room = rooms.getById(getRoomId(msg.userFromId));
-			if(!room)return;
+			if(!room){
+				dispatchVideoOfferRejectedResponse(msg.userFromId, VideoOfferRejectedReasons.PM_NOT_OPEN);
+				return;}
 			msg.userFrom = getUserById(msg.userFromId);
 			room.videoOffer(msg);
 		};
@@ -68,9 +69,9 @@ var Pms=  (function(){
 			each(userTos, dispatchAddClosed);
 		};
 		this.videoOfferRejected= function(msg){
-			if(!rooms.getById(getRoomId(msg.userFromId)))return;
-			Dialog.show({message:msg.reason,
-			buttons:[{text:'OK'}]});
+			var room = rooms.getById(getRoomId(msg.userFromId));
+			if(!room)return;
+			room.videoOfferRejected(msg);
 		};
 		rooms.addEventListener('showpm', showPm);
 		rooms.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});

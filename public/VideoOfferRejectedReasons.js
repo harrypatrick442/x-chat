@@ -1,4 +1,5 @@
 var VideoOfferRejectedReasons ={
-	PmNotOpen:1,
-	Declined:2
+	PM_NOT_OPEN:1,
+	DECLINED:2,
+	ERRORs:3,
 };

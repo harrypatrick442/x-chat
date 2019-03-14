@@ -105,6 +105,7 @@ var Rooms = new (function(){
 			}else{
 			room.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
 			room.addEventListener('getpms', function(e){self.dispatchEvent(e);});
+			room.addEventListener('videopmofferrejected', function(e){self.dispatchEvent(e);});
 			
 			}
 			//room.addEventListener('getuserids', self.dispatchEvent);

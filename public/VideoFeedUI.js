@@ -33,7 +33,7 @@ var VideoFeedUI = (function(){
 			videoFeed.acceptedOffer(latestWrappedOffer.offer);
 		}
 		function decline(){
-			
+			dispatchOfferRejected(VideoOfferRejectedReasons.DECLINED);
 		}
 		function onSetLocalStream(e){
 			console.log('setting stream');
@@ -57,7 +57,9 @@ var VideoFeedUI = (function(){
 		}
 		function onAcceptFailed(e){
 			var reason = e.error?e.error.message:undefined;
-			dispatchShowMessageToUser(reason?'Accept failed with reason: '+reason:'Offer failed');
+			dispatchShowMessageToUser(reason?'Accept failed with reason: '+reason:'Accept failed');
+			console.log(reason);
+			dispatchOfferRejected(VideoOfferRejectedReasons.ERROR);
 		}
 		function onOfferFailed(e){
 			var reason = e.error?e.error.message:undefined;
@@ -71,6 +73,10 @@ var VideoFeedUI = (function(){
 		}
 		function dispatchShowMessageToUser(message){
 			self.dispatchEvent({type:'showmessagetouser', message:message});
+		}
+		function dispatchOfferRejected(reason){
+			console.log(reason);
+			self.dispatchEvent({type:'offerrejected', reason:reason});
 		}
 	};
 	return _VideoFeedUI;

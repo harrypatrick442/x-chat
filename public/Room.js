@@ -34,7 +34,8 @@ var Room = new (function(){
 		var spinner = new Spinner({});
 		spinner.show();
 		var ui = new UI({buttonSend:buttonSend, buttonEmoticons:buttonEmoticons, buttonExit:buttonExit, buttonClose:buttonClose,
-		buttonVideoPmStart:buttonVideoPmStart, spinner:spinner, videoFeed:videoFeedPm, addMessage:addMessage});
+		buttonVideoPmStart:buttonVideoPmStart, spinner:spinner, videoFeed:videoFeedPm, addMessage:addMessage,
+		videoPmOfferRejected:dispatchVideoPmOfferRejected});
 		var messages = new Messages({getUserId:getUserIdMe, element:ui.getFeed(), maxNMessages:MAX_N_MESSAGES, ignoreManager:ignoreManager, getNDevice:getNDevice});
 		users.addEventListener('missingusers',self.dispatchEvent);
 		this.getId = function(){return params.id;};
@@ -88,6 +89,11 @@ var Room = new (function(){
 		this.videoOfferFail = function(msg){
 			videoFeedPm.stop();
 			Dialog.show({message:'Starting video chat with '+userTo.getUsername()+" failed as they are offline!",
+			buttons:[{text:'OK'}]});
+		};
+		this.videoOfferRejected = function(msg){
+			videoFeedPm.stop();
+			Dialog.show({message:msg.reason,
 			buttons:[{text:'OK'}]});
 		};
 		this.resize=ui.resize;
@@ -178,6 +184,10 @@ var Room = new (function(){
 			  return false;
 			}
 		}
+		function dispatchVideoPmOfferRejected(e){
+			console.log(e);
+			self.dispatchEvent({type:'videopmofferrejected', userToId:userTo.getId(), reason:e.reason});
+		}
 		
 	};
 	return _Room;
@@ -192,6 +202,7 @@ var Room = new (function(){
 		var buttonVideoPmStart = params.buttonVideoPmStart;
 		var addMessage = params.addMessage;
 		var videoFeed = params.videoFeed;
+		var videoPmOfferRejected = params.videoPmOfferRejected;
 		var spinner = params.spinner;
 		var element = E.DIV();
 		element.classList.add('room');
@@ -221,6 +232,7 @@ var Room = new (function(){
 			videoFeedUI.addEventListener('show', showVideoFeed);
 			videoFeedUI.addEventListener('hide', hideVideoFeed);
 			videoFeedUI.addEventListener('showmessagetouser', onShowMessageToUser);
+			videoFeedUI.addEventListener('offerrejected', videoPmOfferRejected);
 		}
 		else{
 			top.appendChild(feed);
