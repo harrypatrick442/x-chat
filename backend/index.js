@@ -5,7 +5,7 @@
 
 'use strict';
 (function(){
-	var config = require('./configuration');
+	const config = require('./configuration');
 	const dal = require('./dal');
 	const express = require('express');
 	const bodyParser = require('body-parser');
@@ -24,7 +24,12 @@
 			res.send(imageUploader.process(req));
 		});
 		endpointLongpoll.load(app);
-		app.use(express.static(path.join(__dirname, '../public')));
+		if(config.precompiledFrontend){
+			app.use(express.static(path.join(__dirname, '../precompiled')));
+		}
+		else{
+			app.use(express.static(path.join(__dirname, '../public')));
+		}
 		return app;
 	})();
 	var server = config.useHttps?useHttps(app):useHttp(app);
@@ -32,8 +37,6 @@
 	server.setTimeout(5000, function(r){
 		console.log('timed out');
 	});
-	
-	
 	
 	function useHttp(app){
 		return app.listen(80, function () {
