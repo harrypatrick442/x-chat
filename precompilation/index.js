@@ -20,50 +20,53 @@ const precompiledMCssFile = path.join(precompiledFolder, precompiledMCssFileName
 const precompiledIndexFile = path.join(precompiledFolder, '/index.html');
 const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
 const debuggingJs = path.join(precompiledFolder, '/debugging.js');
-const externs = ['Button', 'E', 'each', 'EventEnabledBuilder', 'Dialog',  'Message', 'Messages', 'Room', 'Spinner', 'SplitPane', 'Task', 'Users','UsersMenu','VideoButton','VideoFeedUI', 'VideoFeed', 'VideoFeedPm','users','params'];
-const externsFile = path.join(precompiledFolder, '/externs.js');
- const scriptsToCompress= ['/Room.js'];
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
-const foldersToCopyOver = ['/images/'];
+const foldersToCopyOver = ['/images/', '/emoji/'];
 const closureCompiler = new ClosureCompiler({
-  compilation_level: 'ADVANCED',
+  compilation_level: 'SIMPLE',
   language_in:'ECMASCRIPT6',
   warning_level:'QUIET',
-  jscomp_off:'strictCheckTypes',
-  jscomp_off :'suspiciousCode',
-  jscomp_off:'typeInvalidation',
-  jscomp_off:'unusedLocalVariables',
-  jscomp_off:'unusedPrivateMembers',
-  jscomp_off :'uselessCode',
-  externs:externsFile
 });
 emptyFolder(precompiledFolder, function(){
-	createExternsFile();
 	each(jsFilesToCopyOver, function(jsFileToCopyOver){
 		readFile(path.join(publicFolder, jsFileToCopyOver), function(data){
 				writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
 		});
 	});
+	copyFolders(function(){
+		concatenateScripts(indexHtmlFile, function(concatenatedScript){
+			compress(concatenatedScript, function(compressedConcatenatedScript){
+				writeFile(precompiledJsFile, compressedConcatenatedScript);
+				concatenateStyles(indexHtmlFile, function(concatenatedStyles){
+					writeFile(precompiledCssFile, concatenatedStyles);
+					console.log('desktop javascript compression ratio is: '+compressedConcatenatedScript.length/concatenatedScript.length);
+					createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
+				});
+			});
+		});
+		concatenateScripts(mIndexHtmlFile, function(concatenatedScript){
+			compress(concatenatedScript, function(compressedConcatenatedScript){
+				writeFile(precompiledMJsFile, concatenatedScript);
+				concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
+					writeFile(precompiledMCssFile, concatenatedStyles);
+						console.log('mobile javascript compression ratio is: '+compressedConcatenatedScript.length/concatenatedScript.length);
+					createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
+				});
+			});
+		});
+	});
+});
+function copyFolders(callback){
+	var pending=foldersToCopyOver.length;
+	if(!pending)callback();
 	each(foldersToCopyOver, function(folderToCopyOver){
 		fsExtra.copy(path.join(publicFolder, folderToCopyOver), path.join(precompiledFolder, folderToCopyOver), err =>{
 		  if(err) return console.error(err);
+		  if(!--pending)callback();
+		  console.log('copied '+folderToCopyOver);
 		});
 	});
-	concatenateScripts(indexHtmlFile, function(concatenatedScript){
-			writeFile(precompiledJsFile, concatenatedScript);
-			concatenateStyles(indexHtmlFile, function(concatenatedStyles){
-				writeFile(precompiledCssFile, concatenatedStyles);
-				createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
-			});
-	});
-	concatenateScripts(mIndexHtmlFile, function(concatenatedScript){
-			writeFile(precompiledMJsFile, concatenatedScript);
-			concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
-				writeFile(precompiledMCssFile, concatenatedStyles);
-				createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
-			});
-	});
-});
+}
 function compress(data, callback){
 	writeFile(debuggingJs, data);
 	const compilerProcess = closureCompiler.run([{
@@ -71,14 +74,15 @@ function compress(data, callback){
 		 src:data,
 		 sourceMap: null
 		}], (exitCode, stdOut, stdErr) => {
-			console.log('done');
-			console.log(stdOut);
 			if(stdErr)throw stdErr;
 			callback(stdOut[0].src);
 		});
 }
 function createIndex(indexPath, jsFile, cssFile, isMobile){
-	var str="<!DOCTYPE html>\n<html>\n<head>\n";
+	var str="<!DOCTYPE html>\n";
+	if(isMobile)
+		str+="<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />";
+	str+="<html>\n<head>\n";
 	if(!isMobile){
 	str+="<script type='text/javascript' src='/DetectMobileBrowsers.js'></script>";
 	}
@@ -141,13 +145,13 @@ function getFilesAndFolders(dir, done, subfolders) {
 }
 function concatenateScripts(htmlFile, callback){
 	var regExp = new RegExp('type *= *[\'|"]text/javascript[\'|"] *src *= *[\'|"](.+\.js)[\'|"] *> *</script *>','g');
-	concatenate(htmlFile, regExp, callback, scriptsToCompress);
+	concatenate(htmlFile, regExp, callback);
 }
 function concatenateStyles(htmlFile, callback){
 	var regExp = new RegExp('href *= *[\'|"](.+\.css).*\'> *</link *>','g');
 	concatenate(htmlFile, regExp, callback);
 }
-function concatenate(htmlFile, regExp, callback, filesToCompress){
+function concatenate(htmlFile, regExp, callback){
 	getFilePathsFromHtml(regExp, htmlFile, function(scriptFilePaths){
 		var concatenatedScript='';
 		var i=0;
@@ -157,22 +161,11 @@ function concatenate(htmlFile, regExp, callback, filesToCompress){
 				callback(concatenatedScript);
 				return;
 			}
-			var doCompress = filesToCompress&&filesToCompress.indexOf(scriptFilePath)>=0;
 			scriptFilePath = path.join(publicFolder, scriptFilePath);
 			readFile(scriptFilePath, function(data){
-				if(doCompress)
-					compress(data, function(compressedData){
-						console.log(compressedData);
-						concatenatedScript+=compressedData;
-						i++;
-						next();
-					});
-				else
-				{
 				concatenatedScript+=data;
 				i++;
 				next();
-				}
 			});
 		}
 		next();
@@ -205,7 +198,7 @@ function readFile(filePath, callback){
 }
 
 function copyFileSync( source, target ) {
-
+console.log(source);
     var targetFile = target;
 
     //if target is a directory a new file with the same name will be created
@@ -242,13 +235,4 @@ function copyFolderRecursiveSync( source, target ) {
 }
 function getUniqueString(){
 	return String(new Date().getTime());
-}
-function createExternsFile(){
-	var str='';
-	each(externs, function(extern){
-		str+='function '+extern+'(){}';
-	});
-	console.log('about to write to file'	+externsFile);
-	console.log(str);
-	writeFile(externsFile, str);
 }
