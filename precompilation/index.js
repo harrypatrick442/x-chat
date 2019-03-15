@@ -1,8 +1,12 @@
 const fs = require('fs');
+const fsExtra = require('fs-extra');
+const compressor = require('yuicompressor');
 const path = require('path');
 const each = require('./../backend/each');
+const minify = require('@node-minify/core');
+const gcc = require('@node-minify/google-closure-compiler');
 const publicFolder = path.join(__dirname , '../public');
-const precompiledFolder = path.join(__dirname, '../precompiled');
+const precompiledFolder = path.join(__dirname, '../precompiled/');
 const indexHtmlFile = path.join(publicFolder, 'index.html');
 const mIndexHtmlFile = path.join(publicFolder, 'm.index.html');
 const precompiledJsFileName = '/index_'+getUniqueString()+'.js';
@@ -15,18 +19,24 @@ const precompiledMCssFileName = '/m.styles_'+getUniqueString()+'.css';
 const precompiledMCssFile = path.join(precompiledFolder, precompiledMCssFileName);
 const precompiledIndexFile = path.join(precompiledFolder, '/index.html');
 const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
+ 
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
-const foldersToCopyOver = ['/images'];
+const foldersToCopyOver = ['/images/'];
 console.log('running');
 emptyFolder(precompiledFolder, function(){
 	each(jsFilesToCopyOver, function(jsFileToCopyOver){
 		readFile(path.join(publicFolder, jsFileToCopyOver), function(data){
-			writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
+			compress(data, function(compressedData){
+				writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
+			});
 		});
 	});
 	each(foldersToCopyOver, function(folderToCopyOver){
 		console.log(path.join(publicFolder, folderToCopyOver));
-	copyFileSync(path.join(publicFolder, folderToCopyOver), path.join(precompiledFolder, folderToCopyOver));
+		fsExtra.copy(path.join(publicFolder, folderToCopyOver), path.join(precompiledFolder, folderToCopyOver), err =>{
+		  if(err) return console.error(err);
+		  console.log('success!');
+		});
 	});
 	concatenateScripts(indexHtmlFile, function(concatenatedScript){
 			writeFile(precompiledJsFile, concatenatedScript);
@@ -44,6 +54,21 @@ emptyFolder(precompiledFolder, function(){
 			});
 	});
 });
+function compress(data, callback){
+	compressor.compress(data, {
+		//Compressor Options:
+		charset: 'utf8',
+		type: 'js',
+		nomunge: true,
+		'line-break': 80
+	}, function(err, data, extra) {
+		if(err) throw err;
+		callback(data);
+		//err   If compressor encounters an error, it's stderr will be here
+		//data  The compressed string, you write it out where you want it
+		//extra The stderr (warnings are printed here in case you want to echo them
+	});
+}
 function createIndex(indexPath, jsFile, cssFile, isMobile){
 	var str="<!DOCTYPE html>\n<html>\n<head>\n";
 	if(!isMobile){
@@ -60,20 +85,52 @@ function createIndex(indexPath, jsFile, cssFile, isMobile){
 	writeFile(indexPath, str);
 }
 function emptyFolder(directory, callback){
-	fs.readdir(directory, (err, files) => {
-	  if (err) throw err;
-	  var n = files.length;
-	  if(files.length<=0)
-			  callback();
-	  for (const file of files) {
-		fs.unlink(path.join(directory, file), err => {
-		  if (err) throw err;
-		  n--;
-		  if(n<=0)
-			  callback();
-		});
-	  }
-	});
+	var list = fs.readdirSync(directory);
+	var length = list.length;
+	if(length<1)callback();
+	var i=0;
+	var next;
+	next = function(){
+		if(i>=length)
+		{
+			callback();
+			return;
+		}
+		var curPath = directory + "/" + list[i++];
+		console.log(curPath);
+		if(fs.lstatSync(curPath).isDirectory()) { // recurse
+			emptyFolder(curPath, next);
+			fs.rmdirSync(curPath);
+		} else { // delete file
+			fs.unlinkSync(curPath);next();
+			
+		}
+	};
+	next();
+}
+
+
+function getFilesAndFolders(dir, done, subfolders) {
+  var results = [];
+  fs.readdir(dir, function(err, list) {
+    if (err) return done(err);
+    var pending = list.length;
+    if (!pending) return done(null, results);
+    list.forEach(function(file) {
+      file = path.resolve(dir, file);
+      fs.stat(file, function(err, stat) {
+        if (stat && stat.isDirectory()&&subfolders) {
+          walk(file, function(err, res) {
+            results = results.concat(res);
+            if (!--pending) done(null, results);
+          });
+        } else {
+          results.push(file);
+          if (!--pending) done(null, results);
+        }
+      });
+    });
+  });
 }
 function concatenateScripts(htmlFile, callback){
 	var regExp = new RegExp('type *= *[\'|"]text/javascript[\'|"] *src *= *[\'|"](.+\.js)[\'|"] *> *</script *>','g');
