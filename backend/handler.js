@@ -108,6 +108,10 @@ exports.handler = new (function(){
 					case 'sign_out':
 						lobby.signOut(req, mysocket, callback);
 					break;
+					case 'leaving':
+					console.log('leaving');
+						lobby.deviceLeaving(req, mysocket, callback);
+					break;
 					case 'pm_video_offer_rejected':
 						console.log(req);
 						var user = getUser(req);

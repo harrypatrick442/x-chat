@@ -119,6 +119,7 @@ var Lobby = (function(){
 		pms.addEventListener('addnotification', addNotification);
 		pms.addEventListener('videoofferrejected', sendPmVideoOfferRejected);
 		mysocket.addEventListener('disposedbyserver', mysocketDisposedByServer);
+		Leaving.add(leaving);
 		this.getElement = ui.getElement;
 		function onOpen(){ }
 		function onMessage(e){
@@ -230,6 +231,9 @@ var Lobby = (function(){
 			mysocket.send({type:'sign_out', sessionId:sessionId});
 			automaticAuthentication.clear();
 			setToSignedOutState();
+		}
+		function leaving(){
+			mysocket.send({type:'leaving', sessionId:sessionId});
 		}
 		function mysocketDisposedByServer(){
 			mysocket.reset();

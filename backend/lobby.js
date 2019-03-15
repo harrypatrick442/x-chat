@@ -76,6 +76,13 @@ exports.lobby = (function(){
 			user.dispose();
 			dalUsers.authenticationTokensDelete(user.getId());
 		};
+		this.deviceLeaving = function(req, mysocket, callback){
+			var user = getUserFromSessionId(req.sessionId);
+			if(!user)return;
+			var device = user.getDevices().getById(mysocket.getId());
+			if(!device)return;
+			device.close();
+		};
 		this.automaticAuthenticate= function(req, mysocket, callback){
 			var token = req.token;
 			if(!token){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
