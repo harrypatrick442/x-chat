@@ -5,7 +5,7 @@ var UsersMenu =(function(){
 		var id = params.id;
 		var showUsersSearch = params.showUsersSearch;
 		var buttonClose;
-		if(isMobile)
+		if(window.isMobile)
 		{
 			buttonClose = new Button({className:'button-close'});
 			buttonClose.addEventListener('click', dispatchHidePopup);

@@ -40,7 +40,7 @@ var Ajax = (function(){
 			if(first)first=false;else url+='&';
 			url+=key;
 			url+='=';
-			url+=value;
+			url+=parameters[key];
 		}
 		return url;
 	}

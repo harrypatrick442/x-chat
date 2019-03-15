@@ -6,8 +6,8 @@ var PmsMenu = new (function(){
 	var _PmsMenu = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var popup = isMobile?new Popup({}):undefined;
-		var buttonClose = isMobile?new Button({className:'button-close'}):undefined;
+		var popup = window.isMobile?new Popup({}):undefined;
+		var buttonClose = window.isMobile?new Button({className:'button-close'}):undefined;
 		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries, onResized:onResized});
 		var pms = params.pms;
 		var sortedFilteredEntries = new SortedFilteredEntries({getEntryId:getEntryId, element:ui.getEntries(), compare:compare});
@@ -77,7 +77,7 @@ var PmsMenu = new (function(){
 	function UI(params){
 		var self = this;
 		var popup = params.popup;
-		var element = isMobile?popup.getElement():E.DIV();
+		var element = window.isMobile?popup.getElement():E.DIV();
 		var buttonClose = params.buttonClose;
 		var onResized = params.onResized;
 		var getEntries = params.getEntries;
@@ -86,11 +86,7 @@ var PmsMenu = new (function(){
 		var inner = E.DIV();
 		var resizeWatched;
 		
-		if(!isMobile)
-		{
-			
-		}
-		else
+		if(window.isMobile)
 		{
 			document.body.appendChild(popup.getElement());
 			var heading= new Heading({title:'&nbsp;Pms '});

@@ -25,3 +25,4 @@ room creation
 room search
 clearing of password field.
 fix image not fully updating on upload.
+((,|\(\{) *[a-zA-Z]+ *: *[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))

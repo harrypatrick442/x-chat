@@ -1849,7 +1849,7 @@ var moment;
                 module && module.exports) {
             try {
                 oldLocale = globalLocale._abbr;
-                var aliasedRequire = require;
+                var aliasedRequire = window.require;
                 aliasedRequire('./locale/' + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}

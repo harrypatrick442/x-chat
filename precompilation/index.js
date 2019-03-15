@@ -5,17 +5,6 @@ const tmp = require('tmp');
 const each = require('./../backend/each');
 const ClosureCompiler = require('google-closure-compiler').jsCompiler;
 console.log(ClosureCompiler.CONTRIB_PATH); // absolute path to the contrib folder which contains externs
-const closureCompiler = new ClosureCompiler({
-  compilation_level: 'ADVANCED',
-  language_in:'ECMASCRIPT6',
-  warning_level:'QUIET',
-  jscomp_off:'strictCheckTypes',
-  jscomp_off :'suspiciousCode',
-  jscomp_off:'typeInvalidation',
-  jscomp_off:'unusedLocalVariables',
-  jscomp_off:'unusedPrivateMembers',
-  jscomp_off :'uselessCode'
-});
 const publicFolder = path.join(__dirname , '../public');
 const precompiledFolder = path.join(__dirname, '../precompiled/');
 const indexHtmlFile = path.join(publicFolder, 'index.html');
@@ -31,10 +20,25 @@ const precompiledMCssFile = path.join(precompiledFolder, precompiledMCssFileName
 const precompiledIndexFile = path.join(precompiledFolder, '/index.html');
 const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
 const debuggingJs = path.join(precompiledFolder, '/debugging.js');
- 
+const externs = ['Button', 'E', 'each', 'EventEnabledBuilder', 'Dialog',  'Message', 'Messages', 'Room', 'Spinner', 'SplitPane', 'Task', 'Users','UsersMenu','VideoButton','VideoFeedUI', 'VideoFeed', 'VideoFeedPm','users','params'];
+const externsFile = path.join(precompiledFolder, '/externs.js');
+ const scriptsToCompress= ['/Room.js'];
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
 const foldersToCopyOver = ['/images/'];
+const closureCompiler = new ClosureCompiler({
+  compilation_level: 'ADVANCED',
+  language_in:'ECMASCRIPT6',
+  warning_level:'QUIET',
+  jscomp_off:'strictCheckTypes',
+  jscomp_off :'suspiciousCode',
+  jscomp_off:'typeInvalidation',
+  jscomp_off:'unusedLocalVariables',
+  jscomp_off:'unusedPrivateMembers',
+  jscomp_off :'uselessCode',
+  externs:externsFile
+});
 emptyFolder(precompiledFolder, function(){
+	createExternsFile();
 	each(jsFilesToCopyOver, function(jsFileToCopyOver){
 		readFile(path.join(publicFolder, jsFileToCopyOver), function(data){
 				writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
@@ -46,22 +50,17 @@ emptyFolder(precompiledFolder, function(){
 		});
 	});
 	concatenateScripts(indexHtmlFile, function(concatenatedScript){
-		
-			//compress(concatenatedScript, function(compressedConcatenatedScript){
-				writeFile(precompiledJsFile, concatenatedScript);
-				concatenateStyles(indexHtmlFile, function(concatenatedStyles){
-					writeFile(precompiledCssFile, concatenatedStyles);
-					createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
-				});
-			//});
+			writeFile(precompiledJsFile, concatenatedScript);
+			concatenateStyles(indexHtmlFile, function(concatenatedStyles){
+				writeFile(precompiledCssFile, concatenatedStyles);
+				createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
+			});
 	});
 	concatenateScripts(mIndexHtmlFile, function(concatenatedScript){
-			compress(concatenatedScript, function(compressedConcatenatedScript){
-				writeFile(precompiledMJsFile, concatenatedScript);
-				concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
-					writeFile(precompiledMCssFile, concatenatedStyles);
-					createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
-				});
+			writeFile(precompiledMJsFile, concatenatedScript);
+			concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
+				writeFile(precompiledMCssFile, concatenatedStyles);
+				createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
 			});
 	});
 });
@@ -69,12 +68,13 @@ function compress(data, callback){
 	writeFile(debuggingJs, data);
 	const compilerProcess = closureCompiler.run([{
 		 path: 'file-one.js',
-		 src: data,
+		 src:data,
 		 sourceMap: null
 		}], (exitCode, stdOut, stdErr) => {
 			console.log('done');
+			console.log(stdOut);
 			if(stdErr)throw stdErr;
-			callback(stdOut.src);
+			callback(stdOut[0].src);
 		});
 }
 function createIndex(indexPath, jsFile, cssFile, isMobile){
@@ -141,13 +141,13 @@ function getFilesAndFolders(dir, done, subfolders) {
 }
 function concatenateScripts(htmlFile, callback){
 	var regExp = new RegExp('type *= *[\'|"]text/javascript[\'|"] *src *= *[\'|"](.+\.js)[\'|"] *> *</script *>','g');
-	concatenate(htmlFile, regExp, callback);
+	concatenate(htmlFile, regExp, callback, scriptsToCompress);
 }
 function concatenateStyles(htmlFile, callback){
 	var regExp = new RegExp('href *= *[\'|"](.+\.css).*\'> *</link *>','g');
 	concatenate(htmlFile, regExp, callback);
 }
-function concatenate(htmlFile, regExp, callback){
+function concatenate(htmlFile, regExp, callback, filesToCompress){
 	getFilePathsFromHtml(regExp, htmlFile, function(scriptFilePaths){
 		var concatenatedScript='';
 		var i=0;
@@ -157,11 +157,22 @@ function concatenate(htmlFile, regExp, callback){
 				callback(concatenatedScript);
 				return;
 			}
+			var doCompress = filesToCompress&&filesToCompress.indexOf(scriptFilePath)>=0;
 			scriptFilePath = path.join(publicFolder, scriptFilePath);
 			readFile(scriptFilePath, function(data){
+				if(doCompress)
+					compress(data, function(compressedData){
+						console.log(compressedData);
+						concatenatedScript+=compressedData;
+						i++;
+						next();
+					});
+				else
+				{
 				concatenatedScript+=data;
 				i++;
 				next();
+				}
 			});
 		}
 		next();
@@ -231,4 +242,13 @@ function copyFolderRecursiveSync( source, target ) {
 }
 function getUniqueString(){
 	return String(new Date().getTime());
+}
+function createExternsFile(){
+	var str='';
+	each(externs, function(extern){
+		str+='function '+extern+'(){}';
+	});
+	console.log('about to write to file'	+externsFile);
+	console.log(str);
+	writeFile(externsFile, str);
 }

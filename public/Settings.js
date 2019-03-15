@@ -18,7 +18,7 @@ var Settings = (function(){
 		{
 			try
 			{
-				localStorage.setItem(settingsName + '_' + name, JSON.stringify(obj));
+				window.localStorage.setItem(settingsName + '_' + name, JSON.stringify(obj));
 			}
 			catch(ex)
 			{

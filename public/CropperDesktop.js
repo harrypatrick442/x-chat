@@ -9,6 +9,7 @@ var Cropper = (function(){
 		var startPosition;
 		var minWidth = 50;
 		var minHeight = 50;
+		var startDimensions;
 		var element = E.DIV();
 		element.classList.add('cropper');
 		var middleCorners=[]

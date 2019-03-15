@@ -47,14 +47,14 @@ var Timer=(function(){
 		this.stop = _cancelInterval;
 		this.reset = function()
 		{
-			nTimesCount = 0;
+			nTicksCount = 0;
 			_cancelInterval();
 		};
 		this.start=function(){
 			if(isRunning)return;
 			_setInterval();
 		};
-		this.setDelay = function(){
+		this.setDelay = function(value){
 			self.reset();
 			delay = value;
 			_setInterval();

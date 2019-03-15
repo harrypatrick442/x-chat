@@ -11,6 +11,7 @@ var Longpoll = (function(){
 		var didFirstSend = false;
 		var disposedByServer = false;
 		var waitingToBeSent = [];
+		var urlPoll;
 		this.send = function(msg){//issue was caused by multiple sends in parallel before an id got returned.
 			if(disposed)return;
 			if(started||!didFirstSend){

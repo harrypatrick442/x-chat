@@ -18,7 +18,7 @@ var Lobby = (function(){
 	'/images/tick.gif',
 	'/images/upload-file.gif',	
 	]);
-	if(!isMobile)
+	if(!window.isMobile)
 		ImagePreloader.preloadRange([
 		'/images/tickbox-unticked-hover.gif',
 		'/images/tickbox-ticked-hover.gif',
@@ -76,8 +76,8 @@ var Lobby = (function(){
 		 //var mainMenu = new MainMenu({});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
-		var buttonUsers = new Button({toggle:!isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
-		var buttonPms = new Button({toggle:!isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
+		var buttonUsers = new Button({toggle:!window.isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
+		var buttonPms = new Button({toggle:!window.isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
 		var buttonProfilePicture = new Button({ classNames:['button-profile-picture']});
 		var buttonNotifications = new NotificationsButton({notifications:notifications});
 		var buttonMenu = new Button({classNames:['button-menu']});
@@ -91,7 +91,7 @@ var Lobby = (function(){
 		buttonMenu.addEventListener('click', showMenu);
 		users.addEventListener('add', userJoined);
 		users.addEventListener('remove', userLeft);
-		if(!isMobile)
+		if(!window.isMobile)
 		{
 			buttonPms.addEventListener('toggled', onToggleButtonPms);
 			buttonUsers.addEventListener('toggled', onToggleButtonUsers);
@@ -455,7 +455,7 @@ var Lobby = (function(){
 		rightInner.classList.add('right-inner');
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
 		var rightTopRow;
-		if(!isMobile){
+		if(!window.isMobile){
 			var left = E.DIV();
 			left.classList.add('left');
 			var leftInner = E.DIV();

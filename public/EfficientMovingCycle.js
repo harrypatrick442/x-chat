@@ -18,7 +18,7 @@ var EfficientMovingCycle = (function(){
 		this.onStart = doNothing;
 		this.onMove = doNothing;
 		this.onEnd = doNothing;
-		if (!isMobile)
+		if (!window.isMobile)
 		{
 			element.addEventListener(MOUSE_DOWN, mouseDown);
 			function mouseDown(e){
@@ -74,7 +74,7 @@ var EfficientMovingCycle = (function(){
 				addTouchMove();
 				addTouchEnd();
 			}
-			function touchStartAnywhere(){
+			function touchStartAnywhere(e){
 				if (!e)
 					e = window.event;
 				self.onStartAnywhere(e);

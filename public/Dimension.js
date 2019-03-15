@@ -43,7 +43,7 @@ var Dimension = (function(){
 		console.log(index);
 		if(index<=0) throw getInvalidStringError(str);
 		var value = str.substr(0, index);
-		if(value.length<=0) throw getInvalidStringError(tr);
+		if(value.length<=0) throw getInvalidStringError(str);
 		return {value:parseInt(value),unit:PX};
 	}
 	function getInvalidStringError(str){

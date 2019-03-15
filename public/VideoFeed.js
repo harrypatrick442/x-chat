@@ -81,9 +81,6 @@ var VideoFeed = (function(){
 		function dispatchSetLocalStream(stream){
 			self.dispatchEvent({type:'setlocalstream', stream:stream});
 		}
-		function dispatchLocalStream(stream){
-			self.dispatchEvent(e);
-		}
 		function dispatchGeneralFailure(e){
 			self.dispatchEvent({type:'generalfailure', error:e.error});
 		}
