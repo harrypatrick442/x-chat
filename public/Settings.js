@@ -5,7 +5,9 @@ var Settings = (function(){
 		{
 			try
 			{
-				return JSON.parse(localStorage.getItem(settingsName + '_' + name));
+				var item = window.localStorage.getItem(settingsName + '_' + name);
+				if(item==null||item==undefined)return;
+				return JSON.parse(item);
 			}
 			catch(ex)
 			{

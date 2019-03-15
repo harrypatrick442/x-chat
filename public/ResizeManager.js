@@ -17,7 +17,7 @@ var ResizeManager=new (function(){
 				resized();
 			};
 			if(window.ResizeObserver)
-				new ResizeObserver(staggered?scheduleResize:resized).observe(element);
+				new window.ResizeObserver(staggered?scheduleResize:resized).observe(element);
 			else
 				WindowResizeManager.addEventListener('resized', staggered?scheduleResize:resized);
 			function logSize(){loggedSize= element.getBoundingClientRect();}

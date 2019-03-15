@@ -35,7 +35,6 @@ function TabPanel(tabNames, autoHeight, styleNames)
             setActivePanel(panel);
         });
         this.close = function () {
-            Themes.remove(themesObject);
         };
         this.setActive = function () {
             this.div.style.height = '18px';
@@ -59,7 +58,6 @@ function TabPanel(tabNames, autoHeight, styleNames)
             self.div.style.display = 'none';
         };
         this.close = function () {
-            Themes.remove(themesObject);
         };
     }
     function setActivePanel(panel)
@@ -94,6 +92,5 @@ function TabPanel(tabNames, autoHeight, styleNames)
             self.panels[i].close();
             self.tabs[i].close();
         }
-        Themes.remove(themesObject);
     };
 }

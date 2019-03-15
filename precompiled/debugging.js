@@ -12095,7 +12095,7 @@ Genders.values =[{value: 0, txt: 'a man'},
 		}
 	};
 	return _Authenticate;
-})();MappedSets=(function (){
+})();var MappedSets=(function (){
 	var _MappedSets = function(){
 		var map ={};
 		this.add = function(id, item){
@@ -12622,7 +12622,7 @@ Genders.values =[{value: 0, txt: 'a man'},
 		}
 		function overflowChannelAnalysiss(){
 			while(channelAnalysiss.length>MAX_N_CHANNEL_ANALYSISS){
-				channelAnalysis.splice(0, 1);
+				channelAnalysiss.splice(0, 1);
 			}
 		}
 		function isCrossDomain(mysocketUrl){
@@ -13427,11 +13427,11 @@ var MIN_MIN_WIDTH=20;
 		var self = this;
 		var getPanelHeight = params.getPaneleHeight;
 		var getNextSiblingVisible= params.getNextSiblingVisible;
-		var topPanelRow=params.topPanelRow;
-		var topPanelColumnStartHeight;
+		var topPanelRow=params.topPanelRow;	
 		var bottomPanelRowStartHeight;
 		var bottomPanelRowStartTop;
 		var currentBottomPanelRow;
+		var topPanelRowStartHeight;
 		var startTop;
 		var element = E.DIV();
 		element.classList.add('slider');
@@ -19009,7 +19009,7 @@ if (typeof module === 'object') {
 			latestWrappedOffer = e.wrappedOffer;
 			console.log(e.offer);
 			if(currentDialog)currentDialog.dispose();
-			currnetDialog = Dialog.show({message:latestWrappedOffer.userFrom.getUsername()+" want's to video chat!",
+			currentDialog = Dialog.show({message:latestWrappedOffer.userFrom.getUsername()+" want's to video chat!",
 			buttons:[{text:'Accept', callback:accept},{text:'decline', callback:decline}]});
 		}
 		function accept(){
@@ -20657,7 +20657,7 @@ var ClickMenu = new (function () {
 		function send(){
 			console.log('sending seen notifications');
 			mysocket.send({type:'seen_notifications', seenPmNotificationUserIds:seenPmNotificationUserIds, sessionId:getSessionId()});
-			list=[];
+			seenPmNotificationUserIds=[];
 		}
     };
     return _SeenNotificationsManager;
@@ -20909,13 +20909,12 @@ var ClickMenu = new (function () {
 		this.addEntry = function(entry){
 			entries.appendChild(entry.getElement());
 		};
-		this.removeEntry = function(){
+		this.removeEntry = function(entry){
 			entries.removeChild(entry.getElement());
 		};
 		this.getElement = function(){return element;};
 		this.getEntries = function(){return entries;};
-		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
-		resizeWatched.manual(true);
+		ResizeManager.add({element:element, onResized:resized, staggered:true}).manual(true);
 	}
 })();var MessageComponents = new (function(){
 	var EMOTICON ='emoticon';

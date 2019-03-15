@@ -34,7 +34,7 @@ var Mysocket = (function(){
 		channelManager.addEventListener('newchannel', onNewChannel);
 		getChannel();
 		function callbackOnOpen(){
-			dispatchOnOpen();
+			dispatchOpen();
 		}
 		function callbackOnClose(){
 			dispatchClose();
