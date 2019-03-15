@@ -58,6 +58,8 @@ var Cropper = (function(){
 		var moveBounds;
 		var touch1;
 		var touch2;
+		var maxTimesFingerDistance;
+		var startFingerDistance;
 		twoFingerTouch.onStart= aspectRatio?onStartAspectRatioFixed:onStartAspectRatioNotFixed;
 		
 		twoFingerTouch.onStartFinger1= function(touch){

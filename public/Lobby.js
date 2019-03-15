@@ -183,9 +183,9 @@ var Lobby = (function(){
 				case 'pm_video_ice_candidate':
 					pms.videoIceCandidate(msg);
 					break;
-				case 'disconnected':
-					disconnected(msg);
-					break;
+				//case 'disconnected':
+					//disconnected(msg);
+					//break;
 				case 'user_image_set':
 					console.log(msg);
 					UserImage.update(msg.userId, msg.image);
@@ -462,7 +462,7 @@ var Lobby = (function(){
 			leftInner.classList.add('left-inner');
 			element.appendChild(left);
 			left.appendChild(leftInner);
-			var logo = new Logo();	
+			var logo = new window.Logo();	
 			leftInner.appendChild(logo.getElement());
 			leftInner.appendChild(usersMenues.getElement());
 			

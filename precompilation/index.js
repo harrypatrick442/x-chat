@@ -1,10 +1,21 @@
 const fs = require('fs');
 const fsExtra = require('fs-extra');
-const compressor = require('yuicompressor');
 const path = require('path');
+const tmp = require('tmp');
 const each = require('./../backend/each');
-const minify = require('@node-minify/core');
-const gcc = require('@node-minify/google-closure-compiler');
+const ClosureCompiler = require('google-closure-compiler').jsCompiler;
+console.log(ClosureCompiler.CONTRIB_PATH); // absolute path to the contrib folder which contains externs
+const closureCompiler = new ClosureCompiler({
+  compilation_level: 'ADVANCED',
+  language_in:'ECMASCRIPT6',
+  warning_level:'QUIET',
+  jscomp_off:'strictCheckTypes',
+  jscomp_off :'suspiciousCode',
+  jscomp_off:'typeInvalidation',
+  jscomp_off:'unusedLocalVariables',
+  jscomp_off:'unusedPrivateMembers',
+  jscomp_off :'uselessCode'
+});
 const publicFolder = path.join(__dirname , '../public');
 const precompiledFolder = path.join(__dirname, '../precompiled/');
 const indexHtmlFile = path.join(publicFolder, 'index.html');
@@ -19,55 +30,52 @@ const precompiledMCssFileName = '/m.styles_'+getUniqueString()+'.css';
 const precompiledMCssFile = path.join(precompiledFolder, precompiledMCssFileName);
 const precompiledIndexFile = path.join(precompiledFolder, '/index.html');
 const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
+const debuggingJs = path.join(precompiledFolder, '/debugging.js');
  
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
 const foldersToCopyOver = ['/images/'];
-console.log('running');
 emptyFolder(precompiledFolder, function(){
 	each(jsFilesToCopyOver, function(jsFileToCopyOver){
 		readFile(path.join(publicFolder, jsFileToCopyOver), function(data){
-			compress(data, function(compressedData){
 				writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
-			});
 		});
 	});
 	each(foldersToCopyOver, function(folderToCopyOver){
-		console.log(path.join(publicFolder, folderToCopyOver));
 		fsExtra.copy(path.join(publicFolder, folderToCopyOver), path.join(precompiledFolder, folderToCopyOver), err =>{
 		  if(err) return console.error(err);
-		  console.log('success!');
 		});
 	});
 	concatenateScripts(indexHtmlFile, function(concatenatedScript){
-			writeFile(precompiledJsFile, concatenatedScript);
-			concatenateStyles(indexHtmlFile, function(concatenatedStyles){
-				writeFile(precompiledCssFile, concatenatedStyles);
-				createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
-			});
+		
+			//compress(concatenatedScript, function(compressedConcatenatedScript){
+				writeFile(precompiledJsFile, concatenatedScript);
+				concatenateStyles(indexHtmlFile, function(concatenatedStyles){
+					writeFile(precompiledCssFile, concatenatedStyles);
+					createIndex(precompiledIndexFile, precompiledJsFileName, precompiledCssFileName, false);
+				});
+			//});
 	});
 	concatenateScripts(mIndexHtmlFile, function(concatenatedScript){
-			//console.log(concatenatedScript);
-			writeFile(precompiledMJsFile, concatenatedScript);
-			concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
-				writeFile(precompiledMCssFile, concatenatedStyles);
-				createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
+			compress(concatenatedScript, function(compressedConcatenatedScript){
+				writeFile(precompiledMJsFile, concatenatedScript);
+				concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
+					writeFile(precompiledMCssFile, concatenatedStyles);
+					createIndex(precompiledMIndexFile, precompiledMJsFileName, precompiledMCssFileName, true);
+				});
 			});
 	});
 });
 function compress(data, callback){
-	compressor.compress(data, {
-		//Compressor Options:
-		charset: 'utf8',
-		type: 'js',
-		nomunge: true,
-		'line-break': 80
-	}, function(err, data, extra) {
-		if(err) throw err;
-		callback(data);
-		//err   If compressor encounters an error, it's stderr will be here
-		//data  The compressed string, you write it out where you want it
-		//extra The stderr (warnings are printed here in case you want to echo them
-	});
+	writeFile(debuggingJs, data);
+	const compilerProcess = closureCompiler.run([{
+		 path: 'file-one.js',
+		 src: data,
+		 sourceMap: null
+		}], (exitCode, stdOut, stdErr) => {
+			console.log('done');
+			if(stdErr)throw stdErr;
+			callback(stdOut.src);
+		});
 }
 function createIndex(indexPath, jsFile, cssFile, isMobile){
 	var str="<!DOCTYPE html>\n<html>\n<head>\n";
@@ -97,7 +105,6 @@ function emptyFolder(directory, callback){
 			return;
 		}
 		var curPath = directory + "/" + list[i++];
-		console.log(curPath);
 		if(fs.lstatSync(curPath).isDirectory()) { // recurse
 			emptyFolder(curPath, next);
 			fs.rmdirSync(curPath);
@@ -161,11 +168,7 @@ function concatenate(htmlFile, regExp, callback){
 	});
 }
 function writeFile(path, data){
-	fs.writeFile(path, data, function(err) {
-		if(err) {
-			return console.log(err);
-		}
-	}); 
+	fs.writeFileSync(path, data);
 }
 function getFilePathsFromHtml(regExp, filePath, callback){
 	readFile(filePath, function(data){

@@ -47,7 +47,7 @@ var ImageProcessing= new (function(){
 		else{
 			if(profile.finalCroppedHeight){
 				finalCroppedHeight = profile.finalCroppedHeight;
-				if(aspectRatio){
+				if(profile.aspectRatio){
 					finalCroppedWidth = finalCroppedHeight * profile.aspectRatio;
 				}
 			}
