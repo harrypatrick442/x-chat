@@ -113,16 +113,13 @@ var MysocketAnalysis = (function(){
 		}
 		function overflowChannelAnalysiss(){
 			while(channelAnalysiss.length>MAX_N_CHANNEL_ANALYSISS){
-				channelAnalysis.splice(0, 1);
+				channelAnalysiss.splice(0, 1);
 			}
 		}
 		function isCrossDomain(mysocketUrl){
 			console.log(window.location.href);
 			console.log(mysocketUrl);
 			return mysocketUrl.indexOf(window.href)<0;
-		}
-		function getTime(){
-			return new Date().getTime();
 		}
 	};
 	return _MysocketAnalysis;

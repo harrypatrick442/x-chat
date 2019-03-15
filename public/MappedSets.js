@@ -1,4 +1,4 @@
-MappedSets=(function (){
+var MappedSets=(function (){
 	var _MappedSets = function(){
 		var map ={};
 		this.add = function(id, item){

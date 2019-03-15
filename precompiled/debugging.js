@@ -12630,9 +12630,6 @@ Genders.values =[{value: 0, txt: 'a man'},
 			console.log(mysocketUrl);
 			return mysocketUrl.indexOf(window.href)<0;
 		}
-		function getTime(){
-			return new Date().getTime();
-		}
 	};
 	return _MysocketAnalysis;
 })();var MysocketChannelFactory = new (function(){
