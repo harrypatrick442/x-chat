@@ -46,7 +46,7 @@ emptyFolder(precompiledFolder, function(){
 		});
 		concatenateScripts(mIndexHtmlFile, function(concatenatedScript){
 			compress(concatenatedScript, function(compressedConcatenatedScript){
-				writeFile(precompiledMJsFile, concatenatedScript);
+				writeFile(precompiledMJsFile, compressedConcatenatedScript);
 				concatenateStyles(mIndexHtmlFile, function(concatenatedStyles){
 					writeFile(precompiledMCssFile, concatenatedStyles);
 						console.log('mobile javascript compression ratio is: '+compressedConcatenatedScript.length/concatenatedScript.length);
