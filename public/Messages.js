@@ -84,7 +84,7 @@ var Messages = new (function(){
 			element.appendChild(message.getElement());
 		}
 		function addEventListener(message){
-			message.addEventListener('showpm', function(e){self.dispatchEvent(e);});
+			message.addEventListener('showpm', showPm);
 		}
 		function overflow(){
 			overflowManager.trigger();
@@ -98,6 +98,7 @@ var Messages = new (function(){
 			element.removeChild(message.getElement());
 			message.removeEventListener('showpm', showPm);
 		}
+		function showPm(e){self.dispatchEvent(e);}
 		function ignored(e){
 			messages.where(function(x){ return x.getUserId()==e.userId;}).each(function(x){ return x.setIgnored(true);});
 		}

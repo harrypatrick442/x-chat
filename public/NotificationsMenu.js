@@ -97,12 +97,11 @@ var NotificationsMenu = (function(){
 		this.addEntry = function(entry){
 			entries.appendChild(entry.getElement());
 		};
-		this.removeEntry = function(){
+		this.removeEntry = function(entry){
 			entries.removeChild(entry.getElement());
 		};
 		this.getElement = function(){return element;};
 		this.getEntries = function(){return entries;};
-		resizeWatched = ResizeManager.add({element:element, onResized:resized, staggered:true});
-		resizeWatched.manual(true);
+		ResizeManager.add({element:element, onResized:resized, staggered:true}).manual(true);
 	}
 })();

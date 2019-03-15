@@ -28,7 +28,7 @@ var ClickMenu = new (function () {
 	var _ClickMenu= function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		if(params.options)setOption(params.option);
+		if(params.options)setOptions(params.options);
 		console.log(new Error().stack);
 		var currentOptionEntries=[];
 		var popup = new Popup();

@@ -57,7 +57,7 @@ var Lobby = (function(){
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu, showUsersSearch:showUsersSearch});
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new Mysocket({url:'poll', urlWebsocket:getWebsocketUrl('endpoint')});
-		if(window.debug)debug.setMysocket(mysocket);
+		if(window.debug)window.debug.setMysocket(mysocket);
 		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
 		new Task(authenticateAutomatically).run();
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});

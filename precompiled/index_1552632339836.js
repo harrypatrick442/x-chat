@@ -5736,7 +5736,7 @@ var Dimension = (function(){
 	}
 	return _Dimension;
 })();//! moment.js
-
+var moment;
 ;(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -15927,7 +15927,7 @@ var ClickMenu = new (function () {
 			element.appendChild(message.getElement());
 		}
 		function addEventListener(message){
-			message.addEventListener('showpm', function(e){self.dispatchEvent(e);});
+			message.addEventListener('showpm', showPm);
 		}
 		function overflow(){
 			overflowManager.trigger();
@@ -15941,6 +15941,7 @@ var ClickMenu = new (function () {
 			element.removeChild(message.getElement());
 			message.removeEventListener('showpm', showPm);
 		}
+		function showPm(e){self.dispatchEvent(e);}
 		function ignored(e){
 			messages.where(function(x){ return x.getUserId()==e.userId;}).each(function(x){ return x.setIgnored(true);});
 		}
@@ -16759,9 +16760,6 @@ var ClickMenu = new (function () {
 		}
 		function dispatchShowRoom(roomInfo){
 			self.dispatchEvent({type:'showroom', roomInfo:roomInfo});
-		}
-		function getEntryId(entry){
-			return entry.getId();
 		}
 		function dispatchSearch(e){
 			if(!e.text||e.text.length<1)return;
@@ -17658,7 +17656,7 @@ var UserImage = new(function(){
 		else{
 			if(profile.finalCroppedHeight){
 				finalCroppedHeight = profile.finalCroppedHeight;
-				if(aspectRatio){
+				if(profile.aspectRatio){
 					finalCroppedWidth = finalCroppedHeight * profile.aspectRatio;
 				}
 			}
@@ -18265,7 +18263,7 @@ var Rooms = new (function(){
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu, showUsersSearch:showUsersSearch});
 		var missingUsersManager = new MissingUsersManager();
 		var mysocket = new Mysocket({url:'poll', urlWebsocket:getWebsocketUrl('endpoint')});
-		if(window.debug)debug.setMysocket(mysocket);
+		if(window.debug)window.debug.setMysocket(mysocket);
 		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
 		new Task(authenticateAutomatically).run();
 		var seenNotificationsManager = new SeenNotificationsManager({getSessionId:getSessionId, mysocket:mysocket});

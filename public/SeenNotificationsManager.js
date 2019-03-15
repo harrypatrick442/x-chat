@@ -14,7 +14,7 @@ var SeenNotificationsManager = new (function () {
 		function send(){
 			console.log('sending seen notifications');
 			mysocket.send({type:'seen_notifications', seenPmNotificationUserIds:seenPmNotificationUserIds, sessionId:getSessionId()});
-			list=[];
+			seenPmNotificationUserIds=[];
 		}
     };
     return _SeenNotificationsManager;

@@ -5611,7 +5611,7 @@ var Dimension = (function(){
 	}
 	return _Dimension;
 })();//! moment.js
-
+var moment;
 ;(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -19336,7 +19336,7 @@ var ClickMenu = new (function () {
 	var _ClickMenu= function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		if(params.options)setOption(params.option);
+		if(params.options)setOptions(params.options);
 		console.log(new Error().stack);
 		var currentOptionEntries=[];
 		var popup = new Popup();
@@ -22624,6 +22624,8 @@ var UserImage = new(function(){
 		var moveBounds;
 		var touch1;
 		var touch2;
+		var maxTimesFingerDistance;
+		var startFingerDistance;
 		twoFingerTouch.onStart= aspectRatio?onStartAspectRatioFixed:onStartAspectRatioNotFixed;
 		
 		twoFingerTouch.onStartFinger1= function(touch){

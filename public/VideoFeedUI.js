@@ -26,7 +26,7 @@ var VideoFeedUI = (function(){
 			latestWrappedOffer = e.wrappedOffer;
 			console.log(e.offer);
 			if(currentDialog)currentDialog.dispose();
-			currnetDialog = Dialog.show({message:latestWrappedOffer.userFrom.getUsername()+" want's to video chat!",
+			currentDialog = Dialog.show({message:latestWrappedOffer.userFrom.getUsername()+" want's to video chat!",
 			buttons:[{text:'Accept', callback:accept},{text:'decline', callback:decline}]});
 		}
 		function accept(){
