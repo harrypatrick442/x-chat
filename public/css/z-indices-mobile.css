@@ -4,6 +4,9 @@
 .users-menues{
 	z-index:100;
 }
+.standard-menu{
+	z-index:150;
+}
 .pms-menu{
 	z-index:100;
 }

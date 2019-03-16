@@ -5,6 +5,7 @@ In my case I had to manually set TCP Port property to 1433 in SQL Server Network
 connected image cleanup on mobile.
 
 
+the password of the account has expired sql server tedius.
 
 
 improve mechanism for caching messages until they can be sent. sometimes when longpolling is disconnected on mobile the first message after reconnect is not sent
@@ -22,15 +23,12 @@ online indicator to show browser is online.
 close on mobile usrs.
 room creation
 clearing of password field.
-fix image not fully updating on upload.
+wront user on rejection of video pm
 ((,|\(\{) *[a-zA-Z]+ *: *[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
 
 --max-old-space-size=6000
 
 create room menu
-
-delete image to go with guest account on exit.
-
 
 title moving text
 
