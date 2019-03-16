@@ -1,6 +1,5 @@
 exports.ImageUploader = (function(){
-	const SMALL='32_32';
-	const LARGE='128_128';
+	var ImageSizes = require('./ImageSizes');
 	var lobby = require('./lobby').lobby;
 	var each = require('./each');
 	var path = require('path');
@@ -15,7 +14,7 @@ exports.ImageUploader = (function(){
 			var fileName = getNextFileName();
 			each(images, function(image){
 				var name = image.profile.name;
-				if(name!=SMALL&&name!=LARGE)return;
+				if(name!=ImageSizes.SMALL&&name!=ImageSizes.LARGE)return;
 				var filePath = path.join(__dirname, '..', 'public/images/uploaded/',fileName+'_'+name);
 				console.log(filePath);
 				imageDataURI.outputFile(image.dataUrl, filePath)

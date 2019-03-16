@@ -18,10 +18,11 @@ exports.lobby = (function(){
 	var TemporalCallback=require('./TemporalCallback').TemporalCallback;
 	var videoOfferRejectedReasons=require('./VideoOfferRejectedReasons');
 	var Device=require('./Device').Device;
-	var Sessions = require('./Sessions').Sessions;
+	var Sessions = require('./Sessions').Sessions;	
 	var Session = require('./Session').Session;
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
 	var dalRooms = require('./DAL/DalRooms').dalRooms;
+	var ImageMaintenance = require('./ImageMaintenance');
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
 		dalUsers.deleteGuests(true);			
@@ -73,8 +74,9 @@ exports.lobby = (function(){
 		this.signOut = function(req, mysocket, callback){
 			var user = getUserFromSessionId(req.sessionId);
 			if(!user)return;
-			user.dispose();
 			dalUsers.authenticationTokensDelete(user.getId());
+			user.deleteToken();
+			user.dispose();
 		};
 		this.deviceLeaving = function(req, mysocket, callback){
 			var user = getUserFromSessionId(req.sessionId);
@@ -110,6 +112,7 @@ exports.lobby = (function(){
 		this.setImageForUser = function(sessionId, image){//image is the first part of the file name (without _32-32.jpeg).
 			var user = getUserFromSessionId(sessionId);
 			if(!user)return;
+			ImageMaintenance.deleteUserImageFiles(user.getId());
 			user.setImage(image);
 			dalUsers.setImage(user.getId(), image);
 			users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
@@ -243,8 +246,12 @@ exports.lobby = (function(){
 		}
 		function userDispose(e){
 			var user = e.user;
-			if(user.isGuest())
+			if(user.isGuest()&&!user.hasToken())
+			{
 				dalUsers.deleteGuest(user.getId());
+				console.log(ImageMaintenance);
+				ImageMaintenance.deleteUserImageFiles(user.getId());
+			}
 			sendUserIds();
 		}
 		function sendUserIds(){

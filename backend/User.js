@@ -18,6 +18,15 @@ exports.User = (function(){
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};
 		this.getBirthday = function(){return params.birthday;};
+		this.getToken = function(){
+			return params.token;
+		};
+		this.deleteToken = function(){
+			params.token = null;
+		};
+		this.hasToken = function(){
+			return params.token?true:false;
+		}
 		this.toJSON = function(){return params;};
 		var session;
 		this.getSession = function(){return session;};

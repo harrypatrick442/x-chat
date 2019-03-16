@@ -10,6 +10,7 @@ exports.dalUsers= new (function(){
 	const STORED_PROCEDURE_GUEST_DELETE='xchat_guest_delete';
 	const STORED_PROCEDURE_GUESTS_DELETE='xchat_guests_delete';
 	const STORED_PROCEDURE_SEARCH_USERS = 'xchat_users_search';
+	const STORED_PROCEDURE_USER_IMAGE_GET = 'xchat_user_image_get';
 	const USERNAME_OR_EMAIL= 'usernameOrEmail';
 	const USER_ID='userId';
 	const USERNAME='username';
@@ -138,6 +139,26 @@ exports.dalUsers= new (function(){
 			{name:ID, value:id, type:sql.Int},
 			{name:IMAGE, value:image, type:sql.VarChar}
 		]});
+	};
+	this.getImage = function(id, callback){
+		console.log(id);
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_IMAGE_GET,
+		parameters:[
+			{name:ID, value:parseInt(id), type:sql.Int}
+		],
+		callback:function(result){
+			console.log(result);
+			if(result.recordset)
+			{
+				var recordSet = result.recordset[0];
+				console.log(recordSet);
+				if(recordSet&&recordSet.image){
+					callback(result.recordset[0].image);
+					return;
+				}
+			}
+			callback();
+		}});
 	};
 	this.search = function(text, callback){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_SEARCH_USERS,

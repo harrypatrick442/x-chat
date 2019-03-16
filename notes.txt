@@ -29,7 +29,6 @@ fix image not fully updating on upload.
 
 create room menu
 
-pm change color on msg.
 delete image to go with guest account on exit.
 
 
