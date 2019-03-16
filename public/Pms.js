@@ -10,6 +10,7 @@ var Pms=  (function(){
 		this.showPmWithUser = function(user){
 			showPmWithUser(user);
 			sendAddToOtherTabs(user);
+			OnlineIndicators.setHasPm(user.getId(), false);
 		};
 		this.closePmWithUser=function(user){
 			closePmWithUser(user);
@@ -18,7 +19,11 @@ var Pms=  (function(){
 		this.incomingMessage = function(msg){
 			var roomId = getRoomId(msg.userId);
 			var room = rooms.getById(roomId);
-			if(!room){notify(msg);return;}
+			if(!room){
+				notify(msg);
+				OnlineIndicators.setHasPm(msg.userId, false);
+				return;
+			}
 			room.incomingMessage(msg.message);
 		};
 		this.incomingMessages = function(msg){

@@ -15,6 +15,10 @@ var OnlineIndicators  = (function(){
 				dispatchWentOffline();
 			online = value;
 		};
+		this.setHasPm = function(value){
+			if(value)dispatchHasPm();
+			else dispatchDoesntHavePm();
+		};
 		this.getOnline = function(){
 			return online;
 		};
@@ -23,6 +27,12 @@ var OnlineIndicators  = (function(){
 		}
 		function dispatchWentOffline(){
 			self.dispatchEvent({type:'wentoffline'});
+		}
+		function dispatchHasPm(){
+			self.dispatchEvent({type:'haspm'});
+		}
+		function dispatchDoesntHavePm(){
+			self.dispatchEvent({type:'doesnthavepm'});
 		}
 	};
 	var _OnlineIndicators={};
@@ -35,6 +45,9 @@ var OnlineIndicators  = (function(){
 	};
 	_OnlineIndicators.setOnline = function(userId, value){
 		_OnlineIndicators.get(userId).setOnline(value);
+	};
+	_OnlineIndicators.setHasPm = function(userId, value){
+		_OnlineIndicators.get(userId).setHasPm(value);
 	};
 	return _OnlineIndicators;
 })();

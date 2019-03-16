@@ -19,14 +19,13 @@ rotate button on image uploader
 test highlight 
 resend button on messages
 online indicator to show browser is online.
-
+close on mobile usrs.
 room creation
 clearing of password field.
 fix image not fully updating on upload.
-quicker leave as tab closes.
 ((,|\(\{) *[a-zA-Z]+ *: *[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
 
---max-old-space-size={size in MBs}
+--max-old-space-size=6000
 
 create room menu
 

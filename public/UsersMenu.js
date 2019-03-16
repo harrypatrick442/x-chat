@@ -60,7 +60,7 @@ var UsersMenu =(function(){
 			sortedFilteredEntriesIgnored.removeEntryById(e.ignored.getId());
 		}
 		function compare(userEntryA, userEntryB){
-			return userEntryA.getUsername()>userEntryB.getUsername();
+			return userEntryA.getUsername().toLowerCase()>userEntryB.getUsername().toLowerCase();
 		}
 		function getEntryId(userEntry){
 			return userEntry.getId();
