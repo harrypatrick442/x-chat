@@ -12,13 +12,14 @@ var NotificationEntry = (function(){
 		if(!isPm)return;
 		ui.addEventListener('click', dispatchShowPm);
 		buttonClose.addEventListener('click', dispatchDispose);
+		this.dispose = ui.dispose;
 		function dispatchShowPm(){
 			self.dispatchEvent({type:'showpm', user:User.fromPmNotification(notification), isNotification:true});
 			notification.seen();
 			dispatchDispose();
 		}
 		function dispatchDispose(){
-			self.dispatchEvent({type:'dispose', notification:notification});
+			self.dispatchEvent({type:'dispose', notification:notification, notificationEntry:self});
 		}
 	};
 	return _NotificationEntry;
@@ -58,6 +59,10 @@ var NotificationEntry = (function(){
 				return;
 			}
 			element.style.width = '25%';
+		};
+		this.dispose = function(){
+			userImage.dispose();
+			onlineIndicatorUI.dispose();
 		};
 		inner.addEventListener('click', dispatchClick);
 		function dispatchClick(){

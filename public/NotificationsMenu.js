@@ -52,6 +52,7 @@ var NotificationsMenu = (function(){
 			return notificationEntry.getId();
 		}
 		function dispose(e){
+			e.notificationEntry.dispose();
 			notifications.remove(e.notification);
 		}
 	};

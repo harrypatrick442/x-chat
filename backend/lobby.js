@@ -63,6 +63,7 @@ exports.lobby = (function(){
 					if(!req.staySignedIn){ callback(res);return;}
 					dalUsers.getAuthenticationToken(user.getId(), function(token){
 						res.token = token;
+						user.setToken(token);
 						callback(res);
 					});
 				});
@@ -75,7 +76,7 @@ exports.lobby = (function(){
 			var user = getUserFromSessionId(req.sessionId);
 			if(!user)return;
 			dalUsers.authenticationTokensDelete(user.getId());
-			user.deleteToken();
+			user.setToken(null);
 			user.dispose();
 		};
 		this.deviceLeaving = function(req, mysocket, callback){
@@ -104,6 +105,7 @@ exports.lobby = (function(){
 					if(!req.staySignedIn){ callback(res);return;}
 					dalUsers.getAuthenticationToken(user.getId(), function(token){
 						res.token = token;
+						user.setToken(token);
 						callback(res);
 					});
 				});
@@ -211,6 +213,7 @@ exports.lobby = (function(){
 					dalUsers.getAuthenticationToken(user.getId(), function(token){
 						console.log('got token');
 						res.token = token;
+						user.setToken(token);
 						callback(res);
 					});
 				});
@@ -235,6 +238,7 @@ exports.lobby = (function(){
 						if(!req.staySignedIn){ callback(res);return;}
 						dalUsers.getAuthenticationToken(user.getId(), function(token){
 							res.token = token;
+							user.setToken(token);
 							callback(res);
 						});
 					});
@@ -246,7 +250,8 @@ exports.lobby = (function(){
 		}
 		function userDispose(e){
 			var user = e.user;
-			if(user.isGuest()&&!user.hasToken())
+			console.log('user has token: '+user.getToken());
+			if(user.isGuest()&&!user.getToken())
 			{
 				dalUsers.deleteGuest(user.getId());
 				console.log(ImageMaintenance);

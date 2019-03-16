@@ -5,6 +5,7 @@ exports.User = (function(){
 	var Set = require('./Set');
 	var set = new Set({getEntryId:getEntryId});
 	var __User = function(params){
+		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
 		var devices = new Devices();
@@ -21,12 +22,9 @@ exports.User = (function(){
 		this.getToken = function(){
 			return params.token;
 		};
-		this.deleteToken = function(){
-			params.token = null;
+		this.setToken = function(value){
+			params.token=value;
 		};
-		this.hasToken = function(){
-			return params.token?true:false;
-		}
 		this.toJSON = function(){return params;};
 		var session;
 		this.getSession = function(){return session;};
