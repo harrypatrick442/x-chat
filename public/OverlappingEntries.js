@@ -15,7 +15,9 @@ var OverlappingEntries = new (function(){
 			var overlappingEntry = set.getById(entryToHide.getId());
 			overlappingEntry.setVisible(false);
 			overlappingEntry.setIsSetShow(false);
-			showNext(overlappingEntry)
+			var nextToShow = showNext(overlappingEntry);
+			if(!nextToShow)return;
+			bringToFront(nextToShow);
 		};
 		this.add = function(entry){
 			if(set.containsId(entry.getId()))return;
@@ -50,6 +52,7 @@ var OverlappingEntries = new (function(){
 			var overlappingEntryToShow = getNextToShow(entryToHide);
 			if(!overlappingEntryToShow)return;
 			overlappingEntryToShow.setVisible(true);
+			return overlappingEntryToShow;
 		}
 		function getEntryId(entry){
 			return entry.getId();

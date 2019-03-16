@@ -11,8 +11,12 @@
 	background-color:#00AFFF;
 	border:1px solid #55ee44;
 }
-.online-indicator.offline{
-	background-color:#333333;
+.online-indicator.online.pm{
+	background-color:#C653FF;
+	border:1px solid #55ee44;
+}
+.online-indicator.offline.pm{
+	background-color:#430064;
 	border:1px solid #555555;
 	
 }

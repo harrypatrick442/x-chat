@@ -5,6 +5,7 @@ var Pms=  (function(){
 		var rooms = params.rooms;
 		var getUserMe = params.getUserMe;
 		var getUserById= params.getUserById;
+		var getOpenRoom = params.getOpenRoom;
 		var openHistory;
 		var tabPortal;
 		this.showPmWithUser = function(user){
@@ -19,9 +20,15 @@ var Pms=  (function(){
 		this.incomingMessage = function(msg){
 			var roomId = getRoomId(msg.userId);
 			var room = rooms.getById(roomId);
+			console.log(msg);
+			var fromOtherUser = msg.message.userId!=getUserMe().getId();
+			console.log('fromOtherUser: '+fromOtherUser);
+			var roomNotOpen = ( !room ||room!= getOpenRoom());
+			console.log('roomNotOpen: '+roomNotOpen);
+			if(fromOtherUser/* other user*/ &&roomNotOpen)
+				OnlineIndicators.setHasPm(msg.userId, true);
 			if(!room){
 				notify(msg);
-				OnlineIndicators.setHasPm(msg.userId, false);
 				return;
 			}
 			room.incomingMessage(msg.message);

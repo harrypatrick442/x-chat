@@ -56,6 +56,10 @@ var Rooms = new (function(){
 		this.showPm=function(pm){
 			
 		};
+		this.getOpenRoom = function(){
+			console.log(overlappingEntries.getTopEntry().getEntry());
+			return overlappingEntries.getTopEntry().getEntry();
+		};
 		this.join = function(msg, user){
 			if(!user)return;
 			var room = set.getById(msg.roomId);

@@ -71,7 +71,7 @@ var Lobby = (function(){
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
 		], url:IMAGE_UPLOADER_URL});
-		var pms = new Pms({rooms:rooms, getUserById:users.getById});
+		var pms = new Pms({rooms:rooms, getUserById:users.getById, getUserMe:getUserMe, getOpenRoom:rooms.getOpenRoom});
 		var pmsMenu = new PmsMenu({pms:pms});
 		 //var mainMenu = new MainMenu({});
 		var notifications = new Notifications({});
@@ -370,6 +370,9 @@ var Lobby = (function(){
 		}
 		function getUserMe(){
 			return userMe;
+		}
+		function getOpenRoom(){
+			
 		}
 		function getSessionId(){
 			return sessionId;
