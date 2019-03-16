@@ -126,6 +126,9 @@ var Authenticate = (function(){
 			spinner.setVisible(false);	
 			element.style.display = 'none';
 			settings.set("username", textUsername.value);
+			textPasswordRegister.value = '';
+			textPasswordReenterRegister.value = '';
+			textPasswordSignIn.value = '';
 		};
 		function setLayoutStyle(element)
 		{
