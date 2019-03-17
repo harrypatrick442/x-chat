@@ -156,7 +156,7 @@ exports.lobby = (function(){
 			var userTo = users.getById(userToId);
 			if(!userTo)return;
 			console.log('in it');
-			userTo.sendMessage({type:'pm_video_offer_rejected', userFromId:user.getId(), reason:getVideoRejectionReasonString(reason, userTo)});
+			userTo.sendMessage({type:'pm_video_offer_rejected', userFromId:user.getId(), reason:getVideoRejectionReasonString(reason, user)});
 		};
 		this.roomsSearch = function(user, text, callback){
 			console.log('this.roomsSearch "'+text+'"');

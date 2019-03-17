@@ -4,17 +4,21 @@ var SeenNotificationsManager = new (function () {
 		var getSessionId = params.getSessionId;
 		var mysocket = params.mysocket;
 		var temporalCallback = new TemporalCallback({delay:4000, callback:send, maxNTriggers:5,maxTotalDelay:15000});
-		var seenPmNotificationUserIds=[];
+		var seens={};
 		this.seen=function(notification){
 			var seenPmUserId = notification.getId();
-			if(seenPmNotificationUserIds.indexOf(seenPmUserId)<0)
-				seenPmNotificationUserIds.push(seenPmUserId);
+			if(!seens[seenPmUserId])
+				seens[seenPmUserId]={userToId:seenPmUserId, seenAt:new Date().toISOString()};
 			temporalCallback.trigger();
 		};
 		function send(){
 			console.log('sending seen notifications');
-			mysocket.send({type:'seen_notifications', seenPmNotificationUserIds:seenPmNotificationUserIds, sessionId:getSessionId()});
-			seenPmNotificationUserIds=[];
+			var list=[];
+			for(var i in seens){
+				list.push(seens[i]);
+			}
+			mysocket.send({type:'seen_notifications', seens:list, sessionId:getSessionId()});
+			seens={};
 		}
     };
     return _SeenNotificationsManager;

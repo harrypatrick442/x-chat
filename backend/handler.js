@@ -93,7 +93,8 @@ exports.handler = new (function(){
 					case 'seen_notifications':
 						var user = getUser(req);
 						if(!user)return;
-						lobby.getNotifications().setPmNotificationsSeen(user, req.seenPmNotificationUserIds);
+						console.log(req);
+						lobby.getNotifications().setPmNotificationsSeen(user, req.seens);
 					break;
 					case 'rooms_search':
 						var user = getUser(req);

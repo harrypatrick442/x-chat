@@ -5,6 +5,7 @@ exports.dalNotifications= new (function(){
 	const USER_ID='userId';
 	const USER_ME_ID='userMeId';
 	const USER_TO_ID='userTOId';
+	const SEEN_AT= 'seenAt';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var Notification = require('./../Notification').Notification;
 	var each = require('./../each');
@@ -23,11 +24,12 @@ exports.dalNotifications= new (function(){
 				callback(notifications);
 		}});
 	};
-	this.setPmNotificationSeen=function(userMeId, userToId){
+	this.setPmNotificationSeen=function(userMeId, userToId, seenAt){
 		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_PM_NOTIFICATION_SEEN_SET, 
 			parameters:[
 				{name:USER_TO_ID, value:parseInt(userToId), type:sql.Int},
-				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int}
+				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
+				{name:SEEN_AT, value:new Date(seenAt), type:sql.DateTime}
 			]
 		});
 	};

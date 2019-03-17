@@ -16,14 +16,11 @@ detected an unsupported browser alert and question if they want to proceed anywa
 first time upload image on the user who uploads it it doesnt show.
 up to end of a E:\Videos\Movies\Seagate\Videos
 rotate button on image uploader
-test highlight 
 resend button on messages
 online indicator to show browser is online.
 room creation
-clearing of password field.
 when a pm which isnt at front has a new message, online indicator goes purple. however this goes back to blue if you reload the page without viewing message. 
 needs some mechanism to know its not been seen. needs to really be server side cos of multiple devices.
-wront user on rejection of video pm
 ((,|\(\{) *[a-zA-Z]+ *: *[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
 
 --max-old-space-size=6000

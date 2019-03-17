@@ -10,11 +10,13 @@ exports.Notifications = (function(){
 				callback(pmNotifications);
 			});
 		};
-		this.setPmNotificationsSeen=function(userMe, userToIds){
+		this.setPmNotificationsSeen=function(userMe, seens){
 			console.log('SET AS SEEN');
 			var userMeId = userMe.getId();
-			each(userToIds, function(userToId){
-				dalNotifications.setPmNotificationSeen(userMeId, userToId);
+			each(seens, function(seen){
+				var userToId = seen.userToId;
+				var seenAt = seen.seenAt;
+				dalNotifications.setPmNotificationSeen(userMeId, userToId, seenAt);
 			});
 		};
 		
