@@ -5,6 +5,10 @@ exports.lobby = (function(){
 	const EMAIL_NOT_AVAILABLE='Email Not Available';
 	const USERNAME_AND_EMAIL_NOT_AVAILABLE='Username and Email are Available';
 	const PASSWORD_MUST_BE_AT_LEAST_LONG = 'Password must be at least 7 characters long';
+	const MIN_USERNAME_LENGTH= 2;
+	const MAX_USERNAME_LENGTH= 40;
+	const USERNAME_TOO_SHORT='Username must be at least '+MIN_USERNAME_LENGTH+' characters long!';
+	const USERNAME_TOO_LONG='Username can be nomore than '+MAX_USERNAME_LENGTH+' characters long!';
 	const AUTHENTICATE= 'authenticate';
 	const AUTOMATIC_AUTHENTICATE='automatic_authenticate';
 	const REGISTER='register';
@@ -46,6 +50,7 @@ exports.lobby = (function(){
 			
 		};
 		this.register = function(req, mysocket, callback){
+			if(!usernameAcceptible(req.username, callback))return;
 			dalUsers.usernameAndEmailAreAvailable(req.username, req.email, function(available){
 				if(available!=''){ callback(getUnavailableResponse(available)); return; }					
 				if(req.password.length<7){ callback( {successful:false, error:PASSWORD_MUST_BE_AT_LEAST_LONG, type:REGISTER}); return;}
@@ -169,6 +174,11 @@ exports.lobby = (function(){
 				callback({type:'users_search', users:userInfos});
 			});
 		};
+		function usernameAcceptible(username, callback){
+			if(username.length<MIN_USERNAME_LENGTH){callback( {successful:false, error:USERNAME_TOO_SHORT, type:REGISTER}); return;}
+			if(username.length>MAX_USERNAME_LENGTH){callback( {successful:false, error:USERNAME_TOO_LONG, type:REGISTER}); return;}
+			return true;
+		}
 		function getVideoRejectionReasonString(reason, userTo){
 			switch(reason){
 				case videoOfferRejectedReasons.PM_NOT_OPEN:
@@ -197,6 +207,7 @@ exports.lobby = (function(){
 			return {successful:false, error:error, type:REGISTER}
 		}
 		function authenticateGuest(req, mysocket, callback){
+			if(!usernameAcceptible(req.username, callback))return;
 			dalUsers.usernameAndEmailAreAvailable(req.username, req.username, function(usernameIsAvailable){
 			if(usernameIsAvailable!=''){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
