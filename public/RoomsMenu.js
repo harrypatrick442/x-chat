@@ -3,9 +3,10 @@ var RoomsMenu = new (function(){
 		EventEnabledBuilder(this);
 		var self = this;
 		var showRoomsSearch = params.showRoomsSearch;
+		var showRoomCreationMenu= params.showRoomCreationMenu;
 		var mapIdToRoomEntry={};
 		var entries =[];
-		var ui = new UI({entries:entries, showRoomsSearch:showRoomsSearch});
+		var ui = new UI({entries:entries, showRoomsSearch:showRoomsSearch, showRoomCreationMenu:showRoomCreationMenu});
 		var usersMenu = params.usersMenu;
 		var spinner = new Spinner({});
 		//spinner.show();
@@ -73,12 +74,16 @@ var RoomsMenu = new (function(){
 	function UI(params){
 		var entries = params.entries;
 		var showRoomsSearch= params.showRoomsSearch;
+		var showRoomCreationMenu = params.showRoomCreationMenu;
 		var visible=false;
 		var element = E.DIV();
 		element.classList.add('rooms-menu');
 		var buttonSearch = new Button({className:'button-search'});
+		var buttonCreate = new Button({className:'button-create'});
+		element.appendChild(buttonCreate.getElement());
 		element.appendChild(buttonSearch.getElement());
 		buttonSearch.addEventListener('click', showRoomsSearch);
+		buttonCreate.addEventListener('click', showRoomCreationMenu);
 		this.getElement = function(){
 			return element;
 		};

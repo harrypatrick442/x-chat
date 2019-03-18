@@ -12,9 +12,10 @@ var Rooms = new (function(){
 		var ignoreManager = params.ignoreManager;
 		var clickMenuUser = params.clickMenu;
 		var showUsersSearch = params.showUsersSearch;
+		var showRoomCreationMenu = params.showRoomCreationMenu;
 		var set = new Set({getEntryId:getEntryId});var usersMenuAll = params.usersMenuAll;
 		var emoticonsParser = new EmoticonsParser({emoticonsLibrary:EmoticonsLibrary});
-		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll, showRoomsSearch:showRoomsSearch});
+		var roomsMenu = new RoomsMenu({usersMenu:usersMenuAll, showRoomsSearch:showRoomsSearch, showRoomCreationMenu:showRoomCreationMenu});
 		var emoticons = new Emoticons({emoticonsLibrary:EmoticonsLibrary});
 		var ui = new UI({emoticons:emoticons, getTopEntry:getTopEntry});
 		var overlappingEntries= new OverlappingEntries({element:ui.getEntries(), name:'rooms'});

@@ -15,13 +15,13 @@ image uploader error handling.
 detected an unsupported browser alert and question if they want to proceed anyway.
 first time upload image on the user who uploads it it doesnt show.
 up to end of a E:\Videos\Movies\Seagate\Videos
-rotate button on image uploader
+//rotate button on image uploader
 resend button on messages
-online indicator to show browser is online.
+connected to server status.
 room creation
-when a pm which isnt at front has a new message, online indicator goes purple. however this goes back to blue if you reload the page without viewing message. 
-needs some mechanism to know its not been seen. needs to really be server side cos of multiple devices.
-((,|\(\{) *[a-zA-Z]+ *: *[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
+delete previous authentication token when make new account. also delete any images to go with it.
+((,|\(\{) *[a-zA-Z]+ *: *
+[a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
 
 --max-old-space-size=6000
 

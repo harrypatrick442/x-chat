@@ -7,3 +7,9 @@
 	position:relative;
 	height:100%;
 }
+.users-menues .users-menues-entries .users-menu .heading-wrapper .heading-title{
+	right:28px;
+}
+.users-menues .users-menues-entries .users-menu .heading-wrapper .heading-entries{
+	width:28px;
+}

@@ -66,7 +66,7 @@ var Lobby = (function(){
 		var usersSearch = new UsersSearch({clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
 		var roomsSearch = new RoomsSearch({clickMenu:clickMenu});
 	    var rooms = new Rooms({getUserMe:getUserMe, getUserById:getUserById, ignoreManager:ignoreManager, clickMenu:clickMenu, usersMenuAll:usersMenu,
-		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch, showRoomsSearch:showRoomsSearch});
+		getNDevice:getNDevice, getSessionId:getSessionId, send:mysocket.send, showUsersSearch:showUsersSearch, showRoomsSearch:showRoomsSearch, showRoomCreationMenu:showRoomCreationMenu});
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
@@ -74,6 +74,7 @@ var Lobby = (function(){
 		var pms = new Pms({rooms:rooms, getUserById:users.getById, getUserMe:getUserMe, getOpenRoom:rooms.getOpenRoom});
 		var pmsMenu = new PmsMenu({pms:pms});
 		 //var mainMenu = new MainMenu({});
+		var roomCreationMenu = new RoomCreationMenu({sendMessage:sendMessage});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!window.isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
@@ -83,7 +84,7 @@ var Lobby = (function(){
 		var buttonMenu = new Button({classNames:['button-menu']});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture,
 		buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu,
-		buttonMenu:buttonMenu, mainMenu:mainMenu});
+		buttonMenu:buttonMenu, mainMenu:mainMenu, roomCreationMenu:roomCreationMenu});
 		mysocket.addEventListener('message', onMessage);
 		mysocket.addEventListener('open', onOpen);
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
@@ -254,6 +255,9 @@ var Lobby = (function(){
 		}
 		function showRoomsSearch(){
 			roomsSearch.show();
+		}
+		function showRoomCreationMenu(){
+			ui.showRoomCreationMenu();
 		}
 		function showNotifications(){
 			console.log('showing notifications');
@@ -451,8 +455,9 @@ var Lobby = (function(){
 		var notificationsMenu = params.notificationsMenu;
 		var spinnerAutomaticAuthentication = new Spinner({preventInterraction:true});
 		var divButtonShowHideWrapper = E.DIV();
-		
+		var roomCreationMenu = params.roomCreationMenu;
 		var usersMenues = params.usersMenues;
+		var roomCreationMenuUI = new RoomCreationMenuUI(roomCreationMenu);
 		var element = E.DIV();
 		var right = E.DIV();
 		var rightInner = E.DIV();
@@ -515,6 +520,7 @@ var Lobby = (function(){
 			mainMenu.show(options);
 			mainMenu.setPosition({right:6,top:getAbsolute(buttonProfilePicture.getElement()).bottom+3});
 		};
+		this.showRoomCreationMenu = roomCreationMenuUI.show;
 		this.setPmsMenuVisible= function(value){
 			console.log(value);
 			rightTopRow.setVisible(value);
