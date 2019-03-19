@@ -46,7 +46,6 @@ exports.lobby = (function(){
 			return sessions;
 		};
 		this.createRoom = function(user, msg, callback){
-			console.log('creating room');
 			dalRooms.createRoom(msg.name, function(res){
 				console.log(res);
 				if(typeof(res)=='string'){
@@ -103,7 +102,6 @@ exports.lobby = (function(){
 		this.automaticAuthenticate= function(req, mysocket, callback){
 			var token = req.token;
 			if(!token){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
-			console.log(token);
 			dalUsers.automaticAuthenticate(token, function(user){
 				if(!user){ callback({type:AUTOMATIC_AUTHENTICATE, successful:false}); return;}
 				user.addDevice(new Device({mysocket:mysocket, user:user}));
@@ -152,7 +150,6 @@ exports.lobby = (function(){
 				callback({type:'pm_video_accept_fail', userToId:req.userToId, successful:false, message:'The user is no longer online!'});
 				return;
 			}
-			console.log('PM VIDEO ACCEPT C');
 			userTo.sendMessage({type:'pm_video_accept', userFromId:userMe.getId(), accept:req.accept});
 		};
 		this.pmVideoIceCandidate = function(req, callback){
@@ -166,14 +163,11 @@ exports.lobby = (function(){
 			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
 		};
 		this.pmVideoOfferRejected = function(user, userToId, reason){
-			console.log('in it');
 			var userTo = users.getById(userToId);
 			if(!userTo)return;
-			console.log('in it');
 			userTo.sendMessage({type:'pm_video_offer_rejected', userFromId:user.getId(), reason:getVideoRejectionReasonString(reason, user)});
 		};
 		this.roomsSearch = function(user, text, callback){
-			console.log('this.roomsSearch "'+text+'"');
 			dalRooms.search('%'+text+'%', function(roomInfos){
 				callback({type:'rooms_search', rooms:roomInfos});
 			});

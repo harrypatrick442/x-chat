@@ -1,17 +1,22 @@
 module.exports = new (function(){
-	var mapIdToMethods = {};
+	var each = require('./each');
+	var mapIdToHandles = {};
 	this.add = function(method, id, callback){
 		var handles = mapIdToHandles[id];
 		if(!handles){
-			handles = [new Handle(id, method, callback)];
-			return 
+			var handle = new Handle(id, method, callback, remove);
+			handles = [handle];
+			mapIdToHandles[id]=handles;
+			return handle;
 		}
 		var handle = getHandleForMethod(handles, method);
 		if(handle){
 			handle.addCallback(callback);
 			return;
 		}
-		handles.push(new Handle(id, method, callback));
+		var handle = new Handle(id, method, callback, remove);
+		handles.push(handle);
+		return handle;
 	};
 	function remove(id, handle){
 		var handles = mapIdToHandles[id];
@@ -27,15 +32,17 @@ module.exports = new (function(){
 		}
 	}
 	function Handle(id, method, callback, remove){
-		var callbacks = [callback];
+		var self = this;
+		var callbacks = callback?[callback]:[];
 		this.getMethod = function(){return method;};
-		this.call= function(){
+		this.call= function(a, b, c){
+			remove(id, self);
 			each(callbacks, function(callback){
-				callback();
+				callback(a, b, c);
 			});
-			remove(id, handle);
 		};
 		this.addCallback = function(callback){
+			if(!callback)return;
 			if(callbacks.indexOf(callback)>=0)return;
 			callbacks.push(callback);
 		};

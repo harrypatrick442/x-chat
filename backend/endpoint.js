@@ -4,10 +4,8 @@ exports.endpoint = function(app, server){
 	const Mysockets = require('./Mysockets');
 	const url = require('url');
 	app.get('/endpoint', function(req, res, next){
-	  console.log('get route', req.testing);
 	  res.end();
 	});
-	console.log('REGISTERED');
 	app.ws('/endpoint', function(ws, req) {
 		try{
 			console.log('opened'); 	
@@ -19,7 +17,6 @@ exports.endpoint = function(app, server){
 			var mysocket = Mysockets.getOrCreateWebsocket(params);
 			if(!mysocket){
 				if(mysocketId){
-					console.log('sent it');
 					ws.send(JSON.stringify({disposed:true, callstack:new Error().stack}));
 				}
 				return;

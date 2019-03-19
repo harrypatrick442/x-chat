@@ -9,6 +9,7 @@ exports.Room = (function(){
 		var messages;
 		var devices = new Devices();
 		var id = params.id;
+		var keepListed=false;
 		this.getId= function(){return params.id;};
 		this.getName = function(){ return params.name;};
 		this.getMessages = function(callback){
@@ -32,6 +33,15 @@ exports.Room = (function(){
 		};
 		this.getInfo = function(){
 			return {id:String(params.id), name:params.name};
+		};
+		//set when a request to get the new list of rooms to show returns this room.
+		//if a subsequent return does not include this room, this property is set
+		//to false allowing the room to be disposed of if and when the last user leaves.
+		this.setKeepListed = function(value){
+			keepListed=value;
+		};
+		this.getKeepListed = function(){
+			return keepListed;
 		};
 		this.sendMessage = function(message){
 			message.setSentAt(new Date().toISOString());

@@ -40,7 +40,6 @@ exports.handler = new (function(){
 						lobby.getPms().sendMessage(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
 					break;
 					case 'room_messages_get':
-					console.log(req);
 						getRoom(req, function(room){
 							if(room.isPm()&&!room.userAllowed(getUser(req)))return;
 							room.getMessages(function(messages){
@@ -100,7 +99,6 @@ exports.handler = new (function(){
 					case 'seen_notifications':
 						var user = getUser(req);
 						if(!user)return;
-						console.log(req);
 						lobby.getNotifications().setPmNotificationsSeen(user, req.seens);
 					break;
 					case 'rooms_search':
@@ -122,11 +120,9 @@ exports.handler = new (function(){
 						lobby.signOut(req, mysocket, callback);
 					break;
 					case 'leaving':
-					console.log('leaving');
 						lobby.deviceLeaving(req, mysocket, callback);
 					break;
 					case 'pm_video_offer_rejected':
-						console.log(req);
 						var user = getUser(req);
 						if(!user)return;
 						lobby.pmVideoOfferRejected(user, req.userToId, req.reason);

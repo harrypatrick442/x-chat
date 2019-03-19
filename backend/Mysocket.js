@@ -14,7 +14,6 @@ module.exports = (function(){
 		EventEnabledBuilder(this);
 		
 		this.close=function(){
-			console.log('close called');
 			channel&&channel.close&&channel.close();
 			dispatchClose();
 		};
