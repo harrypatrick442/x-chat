@@ -29,9 +29,10 @@ exports.handler = new (function(){
 						lobby.getRooms().setRoomsDeviceIsIn(device, req.roomIds);
 						break;
 					case 'room_message_send':
-						var room = getRoom(req);
-						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
-						room.sendMessage(Message.fromRequest(req, getUser(req)));
+						getRoom(req, function(room){
+							if(room.isPm()&&!room.userAllowed(getUser(req)))return;
+							room.sendMessage(Message.fromRequest(req, getUser(req)));
+						});
 					break;
 					case 'room_pm_send':
 						var userMe = getUser(req);
@@ -40,11 +41,12 @@ exports.handler = new (function(){
 					break;
 					case 'room_messages_get':
 					console.log(req);
-						var room = getRoom(req);
-						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
-						room.getMessages(function(messages){
-							callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
-						});	
+						getRoom(req, function(room){
+							if(room.isPm()&&!room.userAllowed(getUser(req)))return;
+							room.getMessages(function(messages){
+								callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
+							});	
+						});
 					break;
 					case 'pm_messages_get':
 						var userMe = getUser(req);
@@ -73,23 +75,27 @@ exports.handler = new (function(){
 					case 'room_join':
 						var user = getUser(req);
 						if(!user)return;
-						var room = getRoom(req);
-						if(!room)return;
-						var device = user.getDevices().getById(mysocket.getId());
-						if(!device)return;
-						room.join(device);
+						getRoom(req, function(room){
+							if(!room)return;
+							var device = user.getDevices().getById(mysocket.getId());
+							if(!device)return;
+							room.join(device);
+						});
 					break;
 					case 'room_leave':
 						var user = getUser(req);
 						if(!user)return;
-						var room = getRoom(req);
-						if(!room)return;
-						var device = user.getDevices().getById(mysocket.getId());
-						if(!device)return;
-						room.leave(device);
+						getRoom(req, function(room){
+							if(!room)return;
+							var device = user.getDevices().getById(mysocket.getId());
+							if(!device)return;
+							room.leave(device);
+						});
 					break;
 					case 'room_users_get':
-						callback({type:'users', users:getRoom(req).getUsers()});
+						getRoom(req, function(room){
+							callback({type:'users', users:room.getUsers()});
+						});
 					break;
 					case 'seen_notifications':
 						var user = getUser(req);
@@ -139,5 +145,5 @@ exports.handler = new (function(){
 			if(!session)return;
 			return session.getUser();
 		}
-		function getRoom(req){return lobby.getRooms().getRoom(req.roomId);}
+		function getRoom(req, callback){return lobby.getRooms().getRoom(req.roomId, callback);}
 })();

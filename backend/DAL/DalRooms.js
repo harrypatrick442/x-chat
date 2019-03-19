@@ -4,8 +4,10 @@ exports.dalRooms= new (function(){
 	const STORED_PROCEDURE_GET_MESSAGES='xchat_rooms_messages_get';
 	const STORED_PROCEDURE_CREATE_ROOM ='xchat_room_create';
 	const STORED_PROCEDURE_SEARCH_ROOMS='xchat_rooms_search';
+	const STORED_PROCEDURE_GET_ROOM = 'xchat_room_get';
 	const TEXT='text';
 	const NAME ='name';
+	const ID='id';
     var dalXChat = require('./DalXChat').dalXChat;	
 	var Room = require('./../Room').Room;
 	console.log('ROOM IS: ');
@@ -24,6 +26,16 @@ exports.dalRooms= new (function(){
 				});
 				callback(rooms);
 		}});
+	};
+	this.getRoom = function(id, callback){
+		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOM,
+			parameters:[{name:ID, value:id, type:sql.Int}],
+			callback:function(result){
+				var rows = result.recordsets[0];
+				var roomInfo = rows?rows[0]:null;
+				callback(roomInfo?Room.fromSqlRow(roomInfo):null);
+			}
+		});
 	};
 	this.search = function(text, callback){
 		console.log({name:TEXT, value:text, type:sql.Text});

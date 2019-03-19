@@ -1,4 +1,4 @@
-var MappedSets=(function (){
+module.exports=(function (){
 	var _MappedSets = function(){
 		var map ={};
 		this.add = function(id, item){
