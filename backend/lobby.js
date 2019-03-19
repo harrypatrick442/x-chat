@@ -13,7 +13,6 @@ exports.lobby = (function(){
 	const AUTOMATIC_AUTHENTICATE='automatic_authenticate';
 	const REGISTER='register';
 	const SEND_USER_IDS_MAX_N_DELAYS=5;
-	console.log('created lobby');
 	const SEND_USER_IDS_DELAY=1000;
 	var Rooms = require('./Rooms').Rooms;
 	var Pms = require('./Pms').Pms;
@@ -46,8 +45,18 @@ exports.lobby = (function(){
 		this.getSessions=function(){
 			return sessions;
 		};
-		this.createRoom = function(){
-			
+		this.createRoom = function(user, msg, callback){
+			console.log('creating room');
+			dalRooms.createRoom(msg.name, function(res){
+				console.log(res);
+				if(typeof(res)=='string'){
+						callback({type:'create_room', successful:false, message:res});
+					return;
+				}
+				rooms.addNew(res);
+				callback({type:'create_room', successful:true});
+				users.sendMessage({type:'new_room', room:res.getInfo()});
+			});
 		};
 		this.register = function(req, mysocket, callback){
 			if(!usernameAcceptible(req.username, callback))return;

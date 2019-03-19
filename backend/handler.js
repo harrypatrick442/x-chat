@@ -39,6 +39,7 @@ exports.handler = new (function(){
 						lobby.getPms().sendMessage(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
 					break;
 					case 'room_messages_get':
+					console.log(req);
 						var room = getRoom(req);
 						if(room.isPm()&&!room.userAllowed(getUser(req)))return;
 						room.getMessages(function(messages){
@@ -105,6 +106,11 @@ exports.handler = new (function(){
 						var user = getUser(req);
 						if(!user)return;
 						lobby.usersSearch(user, req.text, callback);
+					break;
+					case 'create_room':
+						var user = getUser(req);
+						if(!user)return;
+						lobby.createRoom(user, req, callback);
 					break;
 					case 'sign_out':
 						lobby.signOut(req, mysocket, callback);

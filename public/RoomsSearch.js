@@ -7,6 +7,7 @@ var RoomsSearch = (function(){
 		this.show = standardSearch.show;
 		this.incomingRooms = function(roomInfos){
 			setRooms(roomInfos);
+			standardSearch.hideSpinner();
 		};
 		function setRooms(roomInfos){
 			var ids=[];
@@ -15,13 +16,15 @@ var RoomsSearch = (function(){
 				{
 					roomAdd(roomInfo);
 				}
+				ids.push(roomInfo.id);
 			});
-			for(var id in sortedFilteredEntries.getEntries().slice()){
+			each(sortedFilteredEntries.getEntries().slice(), function(entry){
+				var id = entry.getId();
 				if(ids.indexOf(id)<0)
 				{
 					roomRemove(id);
 				}
-			}
+			});
 		}
 		function getEntryId(roomEntry)
 		{
@@ -49,6 +52,7 @@ var RoomsSearch = (function(){
 		}
 		function dispatchSearch(e){
 			if(!e.text||e.text.length<1)return;
+			standardSearch.showSpinner();
 			self.dispatchEvent({type:'search', text:e.text});
 		}
 	};

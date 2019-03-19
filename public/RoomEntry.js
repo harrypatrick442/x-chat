@@ -2,9 +2,11 @@ var RoomEntry = new (function(){
 	var _RoomEntry = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
+		console.log(params);
 		var roomImage = new RoomImage();
 		var ui = new UI({name:params.name, roomImage:roomImage});
 		this.getId = function(){return params.id;};
+		this.getName = function(){return params.name;};
 		this.getElement = ui.getElement;
 		this.parentWidth=ui.parentWidth;
 		ui.getElement().addEventListener('click', dispatchSelected);

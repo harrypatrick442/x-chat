@@ -22,6 +22,8 @@ room creation
 delete previous authentication token when make new account. also delete any images to go with it.
 ((,|\(\{) *[a-zA-Z]+ *: *
 [a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
+run stored procedures and index tables.
+put in history table and code to periodically populate it.
 
 --max-old-space-size=6000
 

@@ -8,10 +8,8 @@ exports.Rooms = (function(){
 		this.getRoom=function(roomId){
 			return mapIdToRoom[roomId];
 		};
-		this.createRoom=function(name){
-			var room = new Room({name:name});
+		this.addNew = function(room){
 			mapIdToRoom[room.getId()]=room;
-			return room;
 		};
 		this.getInfos= function(callback){
 			if(!loaded){

@@ -23,7 +23,7 @@ var Rooms = new (function(){
 		emoticons.addEventListener('addemoticon', addEmoticon);
 		overlappingEntries.add(roomsMenu);
 		overlappingEntries.show(roomsMenu);
-		this.getElement = ui.getElement
+		this.getElement = ui.getElement;
 		this.resize = ui.resize;
 		this.showMenu = function(){
 			overlappingEntries.show(roomsMenu);
@@ -81,6 +81,9 @@ var Rooms = new (function(){
 				remove(entry);
 			});
 			roomsMenu.clear();
+		};
+		this.addNew = function(roomInfo){
+			roomsMenu.add(roomInfo);
 		};
 		function getTopEntry(){
 			return overlappingEntries.getTopEntry();

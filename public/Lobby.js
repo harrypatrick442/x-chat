@@ -74,7 +74,7 @@ var Lobby = (function(){
 		var pms = new Pms({rooms:rooms, getUserById:users.getById, getUserMe:getUserMe, getOpenRoom:rooms.getOpenRoom});
 		var pmsMenu = new PmsMenu({pms:pms});
 		 //var mainMenu = new MainMenu({});
-		var roomCreationMenu = new RoomCreationMenu({sendMessage:sendMessage});
+		var roomCreation = new RoomCreation({sendMessage:mysocket.send,getSessionId:getSessionId});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
 		var buttonUsers = new Button({toggle:!window.isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
@@ -84,7 +84,7 @@ var Lobby = (function(){
 		var buttonMenu = new Button({classNames:['button-menu']});
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture,
 		buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu,
-		buttonMenu:buttonMenu, mainMenu:mainMenu, roomCreationMenu:roomCreationMenu});
+		buttonMenu:buttonMenu, mainMenu:mainMenu, roomCreation:roomCreation});
 		mysocket.addEventListener('message', onMessage);
 		mysocket.addEventListener('open', onOpen);
 		buttonProfilePicture.addEventListener('click', showImageUploaderForProfilePicture);
@@ -185,6 +185,12 @@ var Lobby = (function(){
 				case 'pm_video_ice_candidate':
 					pms.videoIceCandidate(msg);
 					break;
+				case 'create_room':
+					roomCreation.incomingCreateRoom(msg);
+					break;
+				case 'new_room':
+					rooms.addNew(msg.room);
+					break;
 				//case 'disconnected':
 					//disconnected(msg);
 					//break;
@@ -196,7 +202,7 @@ var Lobby = (function(){
 						user.setImage(msg.image);
 				break;
 				case 'rooms_search':
-					roomsSearch.incomingRooms(msg.rooms);
+					roomsSearch.incomingRooms(msg.rooms);	
 				break;
 				case 'users_search':
 					usersSearch.incomingUsers(msg.users);
@@ -455,9 +461,9 @@ var Lobby = (function(){
 		var notificationsMenu = params.notificationsMenu;
 		var spinnerAutomaticAuthentication = new Spinner({preventInterraction:true});
 		var divButtonShowHideWrapper = E.DIV();
-		var roomCreationMenu = params.roomCreationMenu;
+		var roomCreation = params.roomCreation;
 		var usersMenues = params.usersMenues;
-		var roomCreationMenuUI = new RoomCreationMenuUI(roomCreationMenu);
+		var roomCreationMenuUI = new RoomCreationMenuUI(roomCreation);
 		var element = E.DIV();
 		var right = E.DIV();
 		var rightInner = E.DIV();

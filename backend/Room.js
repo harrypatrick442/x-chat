@@ -1,5 +1,4 @@
 exports.Room = (function(){
-	var dalRooms = require('./DAL/DalRooms').dalRooms;
 	var Messages = 	require('./Messages').Messages;
 	var Users = require('./Users').Users;
 	var Devices = require('./Devices').Devices;
