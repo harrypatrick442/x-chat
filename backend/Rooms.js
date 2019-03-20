@@ -5,7 +5,6 @@ exports.Rooms = (function(){
 	var _Rooms = function(){
 		var self = this;
 		var mapIdToRoom={};
-		var loaded=false;
 		this.getRoom=function(roomId, callback){
 			var room = mapIdToRoom[roomId];
 			if(room){
@@ -19,26 +18,24 @@ exports.Rooms = (function(){
 				handle.call(room);
 			});
 		};
+		this.getPublicRooms = function(){
+			var list =[];
+			for(var i in mapIdToRoom){
+				var room = mapIdToRoom[i];
+				if(room.isPm())continue;
+				list.push(room);
+			}
+			return list;
+		};
 		/* Rooms with most users show first...
+		
+		ListedRooms consumes Rooms and calls a method to get current public rooms.
 		If not already included, rooms which are set to alwaysshow
 		Finally rooms with the highest chat history. if a room has one or more user in it, it will for now remain in memory even if its no longer keeplisted..
 		Any room which is listed in the RoomsMenu will always be in memory while listed.
 		when to dispose a room 
 		Rooms have keeplisted property.
 		*/
-		this.addNew = function(room){
-			mapIdToRoom[room.getId()]=room;
-		};
-		this.getInfos= function(callback){
-			if(!loaded){
-				loadRooms(function(){
-					callback(_getInfos());
-					loaded=true;
-				});
-				return;
-			}
-			callback(_getInfos());
-		};
 		this.setRoomsDeviceIsIn=function (device, roomIds){
 			var roomIdsUserIsIn = device.getRoomIdsIsIn();
 			var roomIdsUserIsNotIn = roomIds.where(x=>roomIdsUserIsIn.indexOf(x)<0);
@@ -55,24 +52,6 @@ exports.Rooms = (function(){
 				});
 			});
 		};
-		function _getInfos(){
-			var list =[];
-			for(var id in mapIdToRoom){
-				var room = mapIdToRoom[id];
-				if(!room.isPm()){
-					list.push(room.getInfo());
-				}
-			}
-			return list;
-		}
-		function loadRooms(callback){
-			dalRooms.getRooms(function(rooms){
-				each(rooms, function(room){
-					mapIdToRoom[room.getId()]=room;
-				});
-				callback();
-			});
-		}
 	};
 	return _Rooms;
 })();

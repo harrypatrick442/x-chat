@@ -20,11 +20,7 @@ exports.dalRooms= new (function(){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_GET_ROOMS_TO_LIST,
 			callback:function(result){
 				var rows = result.recordsets[0];
-				var rooms=[];
-				each(rows, function(row){
-					rooms.push(Room.fromSqlRow(row));
-				});
-				callback(rooms);
+				callback(rows);
 		}});
 	};
 	this.getRoom = function(id, callback){

@@ -26,6 +26,7 @@ exports.lobby = (function(){
 	var dalUsers = require('./DAL/DalUsers').dalUsers;
 	var dalRooms = require('./DAL/DalRooms').dalRooms;
 	var ImageMaintenance = require('./ImageMaintenance');
+	var ListedRooms = require('./ListedRooms');
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
 		dalUsers.deleteGuests(true);			
@@ -33,6 +34,7 @@ exports.lobby = (function(){
 		var self = this;
 		var nDeviceCount=0;
 		var rooms = new Rooms();
+		var listedRooms = new ListedRooms({rooms:rooms});
 		var users = new Users();
 		var notifications = new Notifications();
 		var pms = new Pms({users:users, rooms:rooms});
@@ -40,6 +42,9 @@ exports.lobby = (function(){
 		var temporalCallbackSendUserIds = new TemporalCallback({maxNDelays:SEND_USER_IDS_MAX_N_DELAYS/*if keeps being reset within delay, will wait up to this total amount of time*/
 												, delay:SEND_USER_IDS_DELAY, callback:callbackSendUserIds});
 		this.getRooms = function(){return rooms;};
+		this.getListedRooms = function(){
+			return listedRooms;
+		};
 		this.getPms = function(){return pms;};
 		this.getNotifications= function(){return notifications;};
 		this.getSessions=function(){
@@ -52,7 +57,6 @@ exports.lobby = (function(){
 						callback({type:'create_room', successful:false, message:res});
 					return;
 				}
-				rooms.addNew(res);
 				callback({type:'create_room', successful:true});
 				users.sendMessage({type:'new_room', room:res.getInfo()});
 			});
