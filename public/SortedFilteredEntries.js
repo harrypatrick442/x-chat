@@ -38,6 +38,7 @@ var SortedFilteredEntries = new (function () {
                 var entry = entries.splice(0, 1)[0];
                 element.removeChild(entry.getElement());
             }
+			mapIdToEntry={};
         };
         function insertInPlace(entry) {
             map(entry);

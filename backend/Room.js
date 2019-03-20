@@ -12,10 +12,8 @@ exports.Room = (function(){
 		var keepListed=false;
 		this.getId= function(){return params.id;};
 		this.getName = function(){ return params.name;};
-		this.getMessages = function(callback){
-			getMessages(callback);
-		};
-		this.getUsers=function(){return devices.getUsers();};
+		this.getMessages = getMessages;
+		this.getNUsers=function(){return devices.getUserIds().length;};
 		this.isPm=function(){return params.isPm;};
 		this.getUserTo= function(){ return params.userTo;};
 		this.join = function(device){
@@ -32,7 +30,7 @@ exports.Room = (function(){
 			devices.sendMessage({type:'room_userids', roomId:self.getId(), userIds:devices.getUserIds()});
 		};
 		this.getInfo = function(){
-			return {id:String(params.id), name:params.name};
+			return {id:String(params.id), name:params.name, nUsers:self.getNUsers()};
 		};
 		//set when a request to get the new list of rooms to show returns this room.
 		//if a subsequent return does not include this room, this property is set

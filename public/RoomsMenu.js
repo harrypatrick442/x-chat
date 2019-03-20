@@ -11,7 +11,6 @@ var RoomsMenu = new (function(){
 		//spinner.show();
 		this.getId =function(){return 'RoomsMenu';};
 		this.set = function(roomInfos){
-			console.log(new Error().stack);
 			//spinner.hide();
 			var ids=[];
 			each(roomInfos, function(roomInfo){
@@ -21,6 +20,7 @@ var RoomsMenu = new (function(){
 				}
 				ids.push(roomEntry.getId());
 			});
+			console.log(ids);
 			each(sortedFilteredEntries.getEntries().slice(), function(entry){
 				var id = entry.getId();
 				if(ids.indexOf(id)<0)

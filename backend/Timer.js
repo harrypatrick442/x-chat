@@ -53,6 +53,7 @@ module.exports =(function(){
 		this.start=function(){
 			if(isRunning)return;
 			_setInterval();
+			return self;
 		};
 		this.setDelay = function(){
 			self.reset();

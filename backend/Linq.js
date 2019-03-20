@@ -41,6 +41,16 @@
 		}
 		return count;
 	};
+	Enumerable.prototype.toMap = function(funcKey, funcValue){
+		var map={};
+		while (this.moveNext()) {
+			var current = this.current();
+			map[funcKey(current)]= funcValue(current);
+		}
+		return map;
+	Array.prototype.toMap = function(funcKey, funcValue){
+		return Enumerable.fromArray(this).toMap(funcKey, funcValue);
+	};
 	Array.prototype.select = function (func) {
 		return Enumerable.fromArray(this).select(func);
 	};

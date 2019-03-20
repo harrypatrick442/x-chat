@@ -91,11 +91,6 @@ exports.handler = new (function(){
 							room.leave(device);
 						});
 					break;
-					case 'room_users_get':
-						getRoom(req, function(room){
-							callback({type:'users', users:room.getUsers()});
-						});
-					break;
 					case 'seen_notifications':
 						var user = getUser(req);
 						if(!user)return;

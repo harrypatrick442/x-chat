@@ -146,6 +146,8 @@ var Lobby = (function(){
 					registerResponse(msg);
 					break;
 				case 'rooms':
+				console.log('rooms is: ');
+				console.log(msg.rooms);
 					rooms.set(msg.rooms);
 					break;
 				case 'room_userids':
