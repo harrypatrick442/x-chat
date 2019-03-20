@@ -18,6 +18,9 @@ var RoomsMenu = new (function(){
 				if(!roomEntry){
 					roomEntry = add(roomInfo);
 				}
+				else{
+					roomEntry.update(roomInfo);
+				}
 				ids.push(roomEntry.getId());
 			});
 			console.log(ids);

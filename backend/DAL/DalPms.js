@@ -15,8 +15,8 @@ exports.dalPms= new (function(){
 		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGES_GET, 
 			parameters:[
 				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
-				{name:USER_TO_ID, value:parseInt(userToId),type :sql.Int},
-				{name:N_MESSAGES, value: nMessages, type:sql.Int}
+				{name:USER_TO_ID, value:parseInt(userToId), type:sql.Int},
+				{name:N_MESSAGES, value: parseInt(nMessages), type:sql.Int}
 			], 
 			callback:function(result){
 				var rows = result.recordsets[0];

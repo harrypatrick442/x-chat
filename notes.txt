@@ -24,6 +24,7 @@ delete previous authentication token when make new account. also delete any imag
 [a-zA-Z']+(,|\}\))|(= *E\.[a-zA-Z_]))
 run stored procedures and index tables.
 put in history table and code to periodically populate it.
+already present images not updating properly on users and pm.
 
 --max-old-space-size=6000
 

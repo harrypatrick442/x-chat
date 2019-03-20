@@ -98,6 +98,7 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
+			console.log(roomInfo);
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
 			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice,
 			getSessionId:getSessionId, send:send, showUsersSearch:showUsersSearch});
@@ -119,22 +120,25 @@ var Rooms = new (function(){
 			//room.addEventListener('getuserids', self.dispatchEvent);
 			dispatchCreatedRoom(room);
 			room.addEventListener('dispose',callbackRoomDispose);
-			dispatchRoomsInChanged();
 			if(!isPm)
 				room.addEventListener('missingusers', self.dispatchEvent);
+			else
+				dispatchRoomsInChanged();
 			return room;
 		}
 		function callbackRoomDispose(e){
 			var room = e.room;
 			remove(room);
-			dispatchRoomsInChanged();
+			if(!room.isPm())
+				dispatchRoomsInChanged();
 		}
 		function hideRoom(e){
 			var room = e.room;
 			overlappingEntries.hide(room);
 		}
 		function dispatchRoomsInChanged(){
-			self.dispatchEvent({type:'roomsinchanged', roomIds:set.getEntries().where(function(x){ return !x.isPm();}).select(function(x){ return x.getId();}).toList()});
+			var roomIds = set.getEntries().where(function(x){ return !x.isPm();}).select(function(x){ return x.getId();}).toList();console.log(roomIds);
+			self.dispatchEvent({type:'roomsinchanged', roomIds:roomIds});
 		}
 		function dispatchCreatedRoom(room){
 			self.dispatchEvent({type:'createdroom', room:room});

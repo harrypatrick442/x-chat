@@ -65,3 +65,15 @@ body{
 	white-space: nowrap;
     box-sizing: border-box;
 }
+.lobby .rooms-menu .room-entry .inner .n-users,
+.rooms-search .room-entry .inner .n-users{
+	position:relative;
+	display:inline-block;
+	height:30px;
+	top:-1px;
+	font-size:12px;
+	font-weight:500;
+	padding-left:2px;
+	font-family :verdana, geneva, sans-serif;
+	color:#3A3351;
+}

@@ -4,7 +4,7 @@ module.exports =(function() {
 	const CallbackGrouper=require('./CallbackGrouper');
 	const each=require('./each');
 	const Timer=require('./Timer');
-	const DELAY_UPDATE_MILLISECONDS = 120000;
+	const DELAY_UPDATE_MILLISECONDS = 10000;
 	var _ListedRooms = function(params){
 		var self = this;
 		var rooms = params.rooms;
@@ -25,19 +25,17 @@ module.exports =(function() {
 			if(!handle)return;
 			dalRooms.getRoomsToList(function(rInfos){
 			var mapIdToRoomInfo = rInfos.toMap(x=>x.id, y=>y);
-				addLiveRooms(roomInfos);
-				handle.call(rInfos);
-				roomInfos = rInfos;
+				addLiveRooms(mapIdToRoomInfo);
+				roomInfos = [];
+				for(var i in mapIdToRoomInfo){
+					roomInfos.push(mapIdToRoomInfo[i]);
+				}
+				handle.call(roomInfos);
 			});
 		}
-		function addLiveRooms(roomInfos){
-			var ids = roomInfos.select(x=>x.id).toList();
+		function addLiveRooms(mapIdToRoomInfo){
 			each(rooms.getPublicRooms(), function(room){
-				var roomId = room.getId();
-				var roomInfo = room.getInfo();
-				if(ids.indexOf(roomId)<0)
-					roomInfos.push();
-				
+				mapIdToRoomInfo[room.getId()]=room.getInfo();
 			});
 		}
 	};

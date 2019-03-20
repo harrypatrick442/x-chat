@@ -48,6 +48,7 @@
 			map[funcKey(current)]= funcValue(current);
 		}
 		return map;
+	};
 	Array.prototype.toMap = function(funcKey, funcValue){
 		return Enumerable.fromArray(this).toMap(funcKey, funcValue);
 	};

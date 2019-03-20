@@ -4,20 +4,24 @@ var RoomEntry = new (function(){
 		var self = this;
 		console.log(params);
 		var roomImage = new RoomImage();
-		var ui = new UI({name:params.name, roomImage:roomImage});
+		var ui = new UI({name:params.name, roomImage:roomImage, nUsers:params.nUsers});
 		this.getId = function(){return params.id;};
 		this.getName = function(){return params.name;};
 		this.getElement = ui.getElement;
 		this.parentWidth=ui.parentWidth;
 		ui.getElement().addEventListener('click', dispatchSelected);
 		this.dispose = roomImage.dispose;
+		this.update = ui.update;
 		function dispatchSelected(){
 			self.dispatchEvent({type:'selected',roomInfo:params});
 		}
 	};
 	return _RoomEntry;
 	function UI(params){
+		
+		
 		var element = E.DIV();
+		element.title = params.name;
 		element.classList.add('room-entry');
 		var inner = E.DIV();
 		inner.classList.add('inner');
@@ -27,8 +31,14 @@ var RoomEntry = new (function(){
 		name.classList.add('name');
 		name.innerHTML = params.name;
 		inner.appendChild(name);
-		element.title = params.name;
-		
+		var nUsers = E.DIV();
+		nUsers.classList.add('n-users');
+		name.appendChild(nUsers);
+		console.log(params);
+		setNUsers(params.nUsers);
+		this.update = function(roomInfo){
+			setNUsers(roomInfo.nUsers);
+		};
 		this.getElement = function(){return element;};
 		this.parentWidth = function(clientWidth){
 			if(clientWidth<200){
@@ -46,5 +56,8 @@ var RoomEntry = new (function(){
 			}
 			element.style.width = '25%';
 		};
+		function setNUsers(value){
+			nUsers.innerHTML = '('+(value?value:0)+')';
+		}
 	}
 })();

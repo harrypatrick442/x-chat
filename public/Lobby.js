@@ -315,6 +315,7 @@ var Lobby = (function(){
 			mysocket.send(obj);
 		}
 		function callbackRoomsInChanged(e){
+			console.log(new Error().stack);
 			mysocket.send({type:'rooms_in_changed', sessionId:sessionId, roomIds:e.roomIds});
 		}
 		function authenticateResponse(msg){
@@ -409,12 +410,15 @@ var Lobby = (function(){
 		function createdRoom(e){
 			var room = e.room;
 			usersMenues.add(room.getUsersMenu());
-			mysocket.send({type:'room_join', sessionId:sessionId, roomId:room.getId()});
+			if(!room.isPm())
+				mysocket.send({type:'room_join', sessionId:sessionId, roomId:room.getId()});
 		}
 		function destroyedRoom(e){
+			var room = e.room;
 			console.log('removing from user menues');
 			usersMenues.remove(e.room.getUsersMenu());
-			mysocket.send({type:'room_leave', sessionId:sessionId, roomId:e.room.getId()});
+			if(!room.isPm())
+				mysocket.send({type:'room_leave', sessionId:sessionId, roomId:room.getId()});
 		}
 		function join(msg){
 			var user = User.fromJSON(msg.user);
