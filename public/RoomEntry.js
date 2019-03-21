@@ -2,7 +2,6 @@ var RoomEntry = new (function(){
 	var _RoomEntry = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		console.log(params);
 		var roomImage = new RoomImage();
 		var ui = new UI({name:params.name, roomImage:roomImage, nUsers:params.nUsers});
 		this.getId = function(){return params.id;};
@@ -34,7 +33,6 @@ var RoomEntry = new (function(){
 		var nUsers = E.DIV();
 		nUsers.classList.add('n-users');
 		name.appendChild(nUsers);
-		console.log(params);
 		setNUsers(params.nUsers);
 		this.update = function(roomInfo){
 			setNUsers(roomInfo.nUsers);

@@ -3,7 +3,6 @@ var Dimension = (function(){
 	var PX='px';
 	var PERCENT='%';
 	var _Dimension = function(value, unit){
-		console.log(unit);
 		var self = this;
 		this.isDimension = true;
 		set(value, unit);
@@ -17,7 +16,6 @@ var Dimension = (function(){
 			if(!unitIn)
 			{
 				var valueAndUnit = seperateValueAndUnit(valueIn);
-				console.log(valueAndUnit);
 				value = valueAndUnit.value;
 				unit = valueAndUnit.unit;
 			}
@@ -40,7 +38,6 @@ var Dimension = (function(){
 			return {value:parseInt(value),unit:PERCENT};
 		}
 		var index = str.indexOf('px');
-		console.log(index);
 		if(index<=0) throw getInvalidStringError(str);
 		var value = str.substr(0, index);
 		if(value.length<=0) throw getInvalidStringError(str);

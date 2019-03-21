@@ -75,7 +75,6 @@ var Message = (function(){
 	_Message.ERROR=ERROR;
 	_Message.USER=USER;
 	_Message.fromJSON = function(params){
-		console.log(params);
 		return _from(params, params.content);
 	}
 	_Message.fromTypedString= function(params){

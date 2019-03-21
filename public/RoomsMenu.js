@@ -23,7 +23,6 @@ var RoomsMenu = new (function(){
 				}
 				ids.push(roomEntry.getId());
 			});
-			console.log(ids);
 			each(sortedFilteredEntries.getEntries().slice(), function(entry){
 				var id = entry.getId();
 				if(ids.indexOf(id)<0)
@@ -62,7 +61,6 @@ var RoomsMenu = new (function(){
 			
 		}
 		function add(roomInfo){
-			console.log('add');
 			var roomEntry = new RoomEntry(roomInfo);
 			sortedFilteredEntries.addEntry(roomEntry);
 			ui.add(roomEntry);

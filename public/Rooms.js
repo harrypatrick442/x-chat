@@ -109,13 +109,14 @@ var Rooms = new (function(){
 			room.addEventListener('hide', hideRoom);
 			room.addEventListener('showpm', function(e){ return self.dispatchEvent(e);});
 			if(!isPm){
-			room.addEventListener('sendmessage', function(e){ return self.dispatchEvent(e);});
-			room.addEventListener('getmessages', function(e){ return self.dispatchEvent(e);});
-			}else{
-			room.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
-			room.addEventListener('getpms', function(e){self.dispatchEvent(e);});
-			room.addEventListener('videopmofferrejected', function(e){self.dispatchEvent(e);});
-			
+				room.addEventListener('sendmessage', function(e){ return self.dispatchEvent(e);});
+				room.addEventListener('getmessages', function(e){ return self.dispatchEvent(e);});
+			}
+			else
+			{
+				room.addEventListener('sendpm', function(e){ return self.dispatchEvent(e);});
+				room.addEventListener('getpms', function(e){self.dispatchEvent(e);});
+				room.addEventListener('videopmofferrejected', function(e){self.dispatchEvent(e);});
 			}
 			//room.addEventListener('getuserids', self.dispatchEvent);
 			dispatchCreatedRoom(room);

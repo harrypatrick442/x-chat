@@ -1,10 +1,12 @@
 var PmEntry= new (function(){
 	var _PmEntry = function(params){
+		console.log(params);
+		console.log(new Error().stack);
 		EventEnabledBuilder(this);
 		var self = this;
 		var userTo = params.userTo;
 		var buttonClose = new Button({className:'button-close', preventPropagation:true});
-		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername()});
+		var userImage = new UserImage({userId:userTo.getId(), username:userTo.getUsername(), image:userTo.getImage()});
 		var ui = new UI({userImage:userImage, name:userTo.getUsername(), buttonClose:buttonClose, userId:userTo.getId()});
 		this.getId = function(){
 			return userTo.getId();

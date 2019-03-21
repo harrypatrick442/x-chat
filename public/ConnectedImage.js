@@ -2,6 +2,7 @@ var ConnectedImage = (function(){
 	var mapTypeToMapIdToInstances={};
 	var _ConnectedImage = function(params)
 	{
+		console.log(params);
 		var self = this;
 		var id = params.id;
 		var type = params.type;

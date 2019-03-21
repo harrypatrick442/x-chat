@@ -125,7 +125,6 @@ var Lobby = (function(){
 		function onOpen(){ }
 		function onMessage(e){
 			var msg = e.msg;
-			console.log(msg);
 			switch(msg.type){
 				case 'test':
 					console.log(msg);
@@ -146,8 +145,6 @@ var Lobby = (function(){
 					registerResponse(msg);
 					break;
 				case 'rooms':
-				console.log('rooms is: ');
-				console.log(msg.rooms);
 					rooms.set(msg.rooms);
 					break;
 				case 'room_userids':
@@ -172,7 +169,6 @@ var Lobby = (function(){
 					pms.videoOfferFail(msg);
 					break;
 				case 'pm_video_offer_rejected':
-					console.log('got video offer rejected');
 					pms.videoOfferRejected(msg);
 				break;
 				case 'pm_video_offer':
@@ -197,7 +193,6 @@ var Lobby = (function(){
 					//disconnected(msg);
 					//break;
 				case 'user_image_set':
-					console.log(msg);
 					UserImage.update(msg.userId, msg.image);
 					var user = users.getById(msg.userId);
 					if(user)
@@ -268,7 +263,6 @@ var Lobby = (function(){
 			ui.showRoomCreationMenu();
 		}
 		function showNotifications(){
-			console.log('showing notifications');
 			notificationsMenu.show();
 		}
 		function userLeft(e){
@@ -291,7 +285,6 @@ var Lobby = (function(){
 		function roomUserIds_Leave(room, userIds){
 			var usersToRemove = room.getUsers().getEntries().where(function(x){ return userIds.indexOf(x.getId())<0;}).toList();
 			each(usersToRemove, function(userToRemove){
-				console.log(userToRemove.getId());
 				room.leave(userToRemove);
 			});
 		}
@@ -315,7 +308,6 @@ var Lobby = (function(){
 			mysocket.send(obj);
 		}
 		function callbackRoomsInChanged(e){
-			console.log(new Error().stack);
 			mysocket.send({type:'rooms_in_changed', sessionId:sessionId, roomIds:e.roomIds});
 		}
 		function authenticateResponse(msg){
@@ -372,7 +364,6 @@ var Lobby = (function(){
 			mysocket.send({type:'room_messages_get', roomId:e.roomId, sessionId:sessionId});
 		}
 		function getPms(e){
-			console.log('get pms');
 			mysocket.send({type:'pm_messages_get', userToId:e.userToId, sessionId:sessionId});
 		}
 		function getUserIds(e){
@@ -415,7 +406,6 @@ var Lobby = (function(){
 		}
 		function destroyedRoom(e){
 			var room = e.room;
-			console.log('removing from user menues');
 			usersMenues.remove(e.room.getUsersMenu());
 			if(!room.isPm())
 				mysocket.send({type:'room_leave', sessionId:sessionId, roomId:room.getId()});
@@ -435,7 +425,6 @@ var Lobby = (function(){
 			imageUploader.show();
 		}
 		function searchUsers(e){
-		console.log(e);
 			mysocket.send({type:'users_search', text:e.text, sessionId:sessionId});
 		}
 		function searchRooms(e){
@@ -451,7 +440,6 @@ var Lobby = (function(){
 			}
 		}
 		function sendPmVideoOfferRejected(e){
-			console.log(e);
 			mysocket.send({type:'pm_video_offer_rejected', userToId:e.userToId, reason:e.reason, sessionId:sessionId});
 		}
 	};
@@ -528,13 +516,11 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.appendChild(buttonProfilePicture.getElement());
 		this.getElement = function(){return element;};
 		this.showMainMenu = function(options){
-			console.log(getAbsolute(buttonProfilePicture.getElement()).right);
 			mainMenu.show(options);
 			mainMenu.setPosition({right:6,top:getAbsolute(buttonProfilePicture.getElement()).bottom+3});
 		};
 		this.showRoomCreationMenu = roomCreationMenuUI.show;
 		this.setPmsMenuVisible= function(value){
-			console.log(value);
 			rightTopRow.setVisible(value);
 			resize();
 		};

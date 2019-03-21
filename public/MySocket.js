@@ -64,8 +64,6 @@ var Mysocket = (function(){
 			mysocketAnalysis.add(channel.getAnalysis());
 		}
 		function onChannelMessage(msg){
-			console.log(msg);
-			console.log(new Error().stack);
 			if(msg.type==MYSOCKET_ID){
 				id=msg.id;
 				return;
@@ -74,7 +72,6 @@ var Mysocket = (function(){
 		}
 		function onChannelClose(){
 			var disposedByServer = channel.getDisposedByServer();
-			console.log(disposedByServer);
 			channel = null;
 			if(disposedByServer)
 			{
@@ -85,7 +82,6 @@ var Mysocket = (function(){
 				setTimeout(getChannel,0);
 		}
 		function onChannelOpen(){
-			console.log('open');
 			if(toSend.length>0)
 				sendPending();
 			else
@@ -97,13 +93,10 @@ var Mysocket = (function(){
 			prepareChannel(channel);
 		}
 		function dispatchDisposedByServer(){
-			console.log(new Error().stack);
-			console.log('dispatchDisposedByServer');
 			self.dispatchEvent({type:'disposedbyserver'});
 		}
 		function sayHiAgain(){
-			console.log('sayHiAgain');
-					channel&&channel.isOpen()&&channel.send({type:'hi'});
+			channel&&channel.isOpen()&&channel.send({type:'hi'});
 		}
 		function sendPending(){	
 			var iterator = new Iterator(toSend);
