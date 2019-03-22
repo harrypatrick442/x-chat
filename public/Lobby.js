@@ -42,8 +42,7 @@ var Lobby = (function(){
 		'/images/pms-mobile.gif',
 		'/images/users-mobile.gif',
 		]);
-	var _Lobby = function(){
-		console.log('browser is: '+Sniff.browser.name);
+		var _Lobby = function(){
 		var self = this;
 		var sessionId;
 		var nDevice;
