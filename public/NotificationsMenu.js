@@ -10,6 +10,7 @@ var NotificationsMenu = (function(){
 		var ui = new UI({popup:popup, buttonClose:buttonClose, getEntries:getEntries});
 		var sortedFilteredEntries = new SortedFilteredEntries({compare:compare, getEntryId:getEntryId, element:ui.getEntries()});
 		this.show = ui.show;
+		this.hide = ui.hide;
 		this.getElement = ui.getElement
 		buttonClose.addEventListener('click', popup.hide);
 		notifications.addEventListener('added', added);
@@ -88,6 +89,7 @@ var NotificationsMenu = (function(){
 			popup.show();
 			resized();
 		};
+		this.hide = popup.hide;
 		function resized(){
 			var clientWidth = entries.clientWidth;
 			each(getEntries(), function(notificationEntry){

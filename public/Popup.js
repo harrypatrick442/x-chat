@@ -21,7 +21,7 @@ var Popup= new (function(){
 		};
 		this.hide = function(){
 			showing = false;
-			if(closeOnClickOff)
+			if(closeOnClickOff&&clickedOffHandle)
 				clickedOffHandle.dispose();
 			hide();
 		};

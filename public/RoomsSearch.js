@@ -5,6 +5,7 @@ var RoomsSearch = (function(){
 		var standardSearch = new StandardSearch({title:'Rooms Search', getEntryId:getEntryId, callbackSearch:dispatchSearch, classNames:['rooms-search']	});
 		var sortedFilteredEntries = new SortedFilteredEntries({element:standardSearch.getEntries(), getEntryId:getEntryId, compare:compare});
 		this.show = standardSearch.show;
+		this.hide = standardSearch.hide;
 		this.incomingRooms = function(roomInfos){
 			setRooms(roomInfos);
 			standardSearch.hideSpinner();

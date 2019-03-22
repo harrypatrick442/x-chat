@@ -9,6 +9,7 @@ var UsersSearch = (function(){
 		var standardSearch = new StandardSearch({title:'Users Search', getEntryId:getEntryId, callbackSearch:dispatchSearch, classNames:['users-search']});
 		var sortedFilteredEntries = new SortedFilteredEntries({element:standardSearch.getEntries(), getEntryId:getEntryId, compare:compare});
 		this.show = standardSearch.show;
+		this.hide = standardSearch.hide;
 		this.incomingUsers = function(userInfos){
 			setUsers(userInfos);
 			standardSearch.hideSpinner();

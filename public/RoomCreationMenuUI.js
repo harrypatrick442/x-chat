@@ -17,6 +17,7 @@ function RoomCreationMenuUI(roomCreationMenu){
 		entries.appendChild(error);
 		element.appendChild(spinner['getElement']());
 		this.show = standardMenu.show;
+		this.hide = standardMenu.hide;
 		buttonCreate.addEventListener('click', callbackCreate);
 		roomCreationMenu.addEventListener('created', callbackCreated);
 		roomCreationMenu.addEventListener('failed', callbackFailed);

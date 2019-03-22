@@ -28,7 +28,6 @@ already present images not updating properly on users and pm.
 
 --max-old-space-size=6000
 
-create room menu
 
 title moving text
 

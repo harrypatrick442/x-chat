@@ -19,9 +19,8 @@ var ImageUploader = new (function(){
 		fileUploader.addEventListener('file', gotFile);
 		croppingFrame.addEventListener('error', croppingFrameError);
 		fileSender.addEventListener('done', fileSenderDone);
-		this.show = function(){
-			popup.show();
-		};
+		this.show = ui.show;
+		this.hide = ui.hide;
 		buttonAccept.addEventListener('click', cropAndUpload);
 		buttonReject.addEventListener('click', showFileUploader);
 		function hide(){
@@ -60,6 +59,7 @@ var ImageUploader = new (function(){
 	};
 	return _ImageUploader;
 	function UI(params){
+		var popup = params.popup;
 		var buttonClose = params.buttonClose;
 		var buttonAccept = params.buttonAccept;
 		var buttonReject = params.buttonReject;
@@ -96,6 +96,8 @@ var ImageUploader = new (function(){
 		inner.appendChild(fileUploader.getElement());
 		inner.appendChild(croppingMenu);
 		inner.appendChild(fileSenderUI.getElement());
+		this.show = popup.show;
+		this.hide = popup.hide;
 		this.setHeading = function(text){
 			heading.innerHTML = text;
 		};

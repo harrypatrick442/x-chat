@@ -250,8 +250,13 @@ var Lobby = (function(){
 			rooms.clear();
 			users.clear();
 			notifications.clear();
+			notificationsMenu.hide();
 			pmsMenu.clear();
+			ui.clear();
 			showAuthentication();
+			imageUploader.hide();
+			roomsSearch.hide();
+			usersSearch.hide();
 			setVisible(false);
 		}
 		function showUsersSearch(){
@@ -542,6 +547,9 @@ var Lobby = (function(){
 			element.style.display=value?'block':'none';
 		};
 		this.resize = resize;
+		this.clear = function(){
+			roomCreationMenuUI.hide();
+		};
 		function resize(){
 			splitPane&&splitPane.resize();
 			usersMenues.resize();
