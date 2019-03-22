@@ -92,6 +92,7 @@ var Lobby = (function(){
 		buttonMenu.addEventListener('click', showMenu);
 		users.addEventListener('add', userJoined);
 		users.addEventListener('remove', userLeft);
+		roomCreation.addEventListener('created', roomCreationCreated);
 		if(!window.isMobile)
 		{
 			buttonPms.addEventListener('toggled', onToggleButtonPms);
@@ -403,6 +404,10 @@ var Lobby = (function(){
 			usersMenues.add(room.getUsersMenu());
 			if(!room.isPm())
 				mysocket.send({type:'room_join', sessionId:sessionId, roomId:room.getId()});
+		}
+		function roomCreationCreated(e){
+			var roomInfo = e.roomInfo;
+			rooms.showRoom(roomInfo);
 		}
 		function destroyedRoom(e){
 			var room = e.room;

@@ -13,12 +13,12 @@ window['RoomCreation']=function(params){
 				dispatchFailed(msg['message']);
 				return;
 			}
-			dispatchCreated();
+			dispatchCreated(msg.room);
 		};
 		function dispatchFailed(message){
 			self['dispatchEvent']({'type':'failed', 'message':message});
 		}
-		function dispatchCreated(){
-			self['dispatchEvent']({'type':'created'});
+		function dispatchCreated(roomInfo){
+			self['dispatchEvent']({'type':'created', roomInfo:roomInfo});
 		}
 };

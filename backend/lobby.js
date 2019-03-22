@@ -57,8 +57,9 @@ exports.lobby = (function(){
 						callback({type:'create_room', successful:false, message:res});
 					return;
 				}
-				callback({type:'create_room', successful:true});
-				users.sendMessage({type:'new_room', room:res.getInfo()});
+				var roomInfo = res.getInfo();
+				callback({type:'create_room', successful:true, room:roomInfo});
+				users.sendMessage({type:'new_room', room:roomInfo});
 			});
 		};
 		this.register = function(req, mysocket, callback){
