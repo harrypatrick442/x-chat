@@ -1,8 +1,8 @@
 var compatabilityCheck = function(callbackLoad){	
 	
-	if(browserSupported()){proceed();}
+	if(browserSupported()||true){proceed();}
 	else
-	Dialog.show({message:"Your browser may not be able to run this chat properly. We recommend you upgrade to a new version of Chrome, Opera, Safari or Edge.",
+	Dialog.show({message:"Your browser may not be able to run this chat properly. We recommend you upgrade to a new version of Chrome,  Edge, Firefox, Opera or Safar.",
 			buttons:[{text:'Try', callback:proceed}]
 	});
 	function proceed(){
@@ -16,14 +16,27 @@ var compatabilityCheck = function(callbackLoad){
 		console.log(version);
 		switch(browser){
 			case 'chrome':
-			
-			break;
-			case 'opera':
-			break;
-			case 'safari':
+				if(version>='10')return true;
 			break;
 			case 'edge':
 			break;
+			case 'firefox':
+			break;
+			case 'opera':
+			break;
+			case 'operamini':
+			break;
+			case 'safari':
+			break;
+			case 'ie':
+			break;
+			case 'nokiabrowser':
+			break;
+			case 'operamini':
+			break;
+			case 'sailfishbrowser':
+			case 'ovi':
+			case 'coast':
 			default:
 			return false;
 		}
