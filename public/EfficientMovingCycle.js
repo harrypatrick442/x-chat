@@ -20,7 +20,6 @@ var EfficientMovingCycle = (function(){
 		this.onEnd = doNothing;
 		if (!window.isMobile)
 		{
-			element.addEventListener(MOUSE_DOWN, mouseDown);
 			function mouseDown(e){
 				if (!e)
 					e = window.event;
@@ -60,11 +59,11 @@ var EfficientMovingCycle = (function(){
 				documentElement.addEventListener(MOUSE_UP, mouseUp);
 				currentMouseUp = mouseUp;
 			}
+			element.addEventListener(MOUSE_DOWN, mouseDown);
 			
 		}
 		else
 		{
-			element.addEventListener(TOUCH_START, touchStart);
 			function touchStart(e) {
 				if (!e)
 					e = window.event;
@@ -101,6 +100,7 @@ var EfficientMovingCycle = (function(){
 				documentElement.addEventListener(TOUCH_END, touchEnd);
 				currentTouchEnd = touchEnd;
 			}
+			element.addEventListener(TOUCH_START, touchStart);
 		}
     };
 	return _EfficientMovingCycle;	

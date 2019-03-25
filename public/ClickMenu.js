@@ -21,7 +21,7 @@ var ClickMenu = new (function () {
 		function UI(params){
 			var element = E.DIV();
 			element.classList.add('option-entry');
-			element.innerText = params.text;
+			element.innerHTML = params.text;
 			this.getElement = function(){return element;};
 		}
 	})();

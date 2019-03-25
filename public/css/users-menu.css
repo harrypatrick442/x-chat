@@ -24,6 +24,7 @@
 	padding:3px;
 	height:100%;
 	overflow-y:auto;
+	overflow-x:none;
 }
 .users-menues .users-menues-entries .users-menu .heading-wrapper{
 	box-sizing:border-box;
