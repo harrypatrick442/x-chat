@@ -21,7 +21,6 @@ var ClickedOff = new (function () {
 				
 		}
 	};
-    document.addEventListener('mousedown', clickedDocument);
 	function dispose(handle){
 		var index = handles.indexOf(handle);
 		if(index<0)return;
@@ -70,5 +69,6 @@ var ClickedOff = new (function () {
 		};
 		this.dispose = callbackDispose;
 	}
+    document.addEventListener('mousedown', clickedDocument);
 
 })();
