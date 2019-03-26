@@ -40,7 +40,8 @@ var UsersSearch = (function(){
 			if(sortedFilteredEntries.getByEntryId(e.user.getId()))return;
 			var userEntry = new UserEntry({user:e.user, clickMenu:clickMenu, ignoreManager:ignoreManager, getUserMe:getUserMe});
 			sortedFilteredEntries.addEntry(userEntry);
-			userEntry.addEventListener('showpm', function(e){self.dispatchEvent(e);});
+			userEntry.addEventListener('showpm', function(e){self.dispatchEvent(e);
+			self.hide();});
 		}
 		function userRemove(e){
 			var userEntry = sortedFilteredEntries.getByEntryId(e.user.getId());

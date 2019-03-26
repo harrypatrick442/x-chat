@@ -53,9 +53,10 @@ var ClientClientVideoAudio = new (function () {
 			});
 		};
 		function handleLocalStream(stream){
-				for (var track in/*was of*/ stream.getTracks()) {
+				var tracks = stream.getTracks();
+				each(tracks, function(track) {
 					rtcPeerConnection.addTrack(track, stream);
-				}
+				});
 				dispatchLocalStream(stream);
 		}
 		function sendAccept(){

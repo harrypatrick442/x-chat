@@ -43,6 +43,10 @@ float:right;
 	height:18px;
 	float:left;
 }
+.authenticate input[type="text"], .authenticate input[type="password"]{
+	padding-left:2px;
+	padding-right:2px;
+}
 .authenticate input[type="text"], .authenticate input[type="password"], .authenticate select{}
 .authenticate .tab-panel .panel{
 		border-radius:4px;	
@@ -124,8 +128,6 @@ float:right;
 	position:relative;
 	float:left;
 	box-sizing:border-box;
-	
-	
     background: #fff;
     color: #323232;
     font: inherit;

@@ -22,6 +22,7 @@ const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
 const debuggingJs = path.join(precompiledFolder, '/debugging.js');
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
 const foldersToCopyOver = ['/images/', '/emoji/'];
+const toPrecompileIndividuallyThenInclude = [{'/../public/Title', compilation_level:'ADVANCED', compiledFileName:'Title'}];
 const closureCompiler = new ClosureCompiler({
   compilation_level: 'SIMPLE',
   language_in:'ECMASCRIPT6',
