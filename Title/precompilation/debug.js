@@ -4,7 +4,7 @@ var MovingText = (function(){
 		var self = this;
 		var approximateLength = params['approximateLength'];
 		var movingTextClock = new MovingTextClock({'movingText':self});
-		movingTextClock.onTick = onTick;
+		movingTextClock['onTick'] = onTick;
 		var items=[];
 		var currentItem;
 		var currentStartIndexInItem=0;
@@ -65,7 +65,7 @@ var MovingText = (function(){
 	};
 	return _MovingText;
 })();var MovingTextClock = (function(){
-	var FREQUENCY=4;
+	var FREQUENCY=9;
 	var _MovingTextClock = function(params){
 		var self = this;
 		var movingText = params['movingText'];
@@ -74,7 +74,8 @@ var MovingText = (function(){
 		movingText['addEventListener']('removed', removedMovingText);
 		movingText['addEventListener']('added', addedMovingText);
 		function tick(){
-			self.onTick&&self.onTick();
+			var onTick = self['onTick'];
+			onTick&&onTick();
 		}
 		function removedMovingText(){
 			if(postponed)return;
@@ -91,11 +92,16 @@ var MovingText = (function(){
 	return _MovingTextClock;
 })();var MovingTextItem = window['MovingTextItem'] = (function(){
 	var _MovingTextItem = function(params){
+		console.log(params);
 		window['EventEnabledBuilder'](this);
 		var self = this;
 		var text = params['text'];
-		while(text.length<3||text.substr(text.length-3, 3)!='   ')
-			text+=' ';
+		var movingTextLifecycle = params['lifecycle'];
+		if(!movingTextLifecycle)
+			movingTextLifecycle= new MovingTextLifecycle['default']();
+		while(text.length>0&&text.substr(text.length-1, 1)==' ')
+			text = text.substr(0, text.length-2);
+		text+='\u205f\u205f\u205f';
 		var disposed = false;
 		this['getText']= function(length){
 			if(length<=text.length)
@@ -122,6 +128,32 @@ var MovingText = (function(){
 		}
 	};
 	return _MovingTextItem;
+})();var MovingTextLifecycle = window['MovingTextLifecycle'] = (function(){
+	var _MovingTextLifecycle = function(params){
+		var fromVisible = params['fromVisible'];
+		var duration = params['duration'];
+		var createdAt = getTime();
+		var setVisibleAt;
+		var timeoutAt;
+		if(!fromVisible&&duration)
+			timeoutAt = createdAt+duration;
+		this['getVisible']=function(){ return setVisibleAt?true:false;};
+		this['setVisible']=function(){
+			setVisibleAt = getTime();
+			if(fromVisible&&duration)
+				timeoutAt = setVisibleAt+duration;
+		};
+		this['getTimeoutAt']=function(){
+			return timeoutAt;
+		};
+		function getTime(){
+			return new Date().getTime();
+		}
+	};
+	_MovingTextLifecycle['default']=function(){
+		return new _MovingTextLifecycle({'fromVisible':true, 'duration':10000});
+	};
+	return _MovingTextLifecycle;
 })();window['Title'] = (function(){
 	var _Title = function(params){
 		window['EventEnabledBuilder'](this);
@@ -143,7 +175,7 @@ var MovingText = (function(){
 		}
 		function displayString(e){
 			console.log(e);
-			document.title = e['str'];
+			document.title = '|'+e['str'];
 		}
 	};
 	return _Title;

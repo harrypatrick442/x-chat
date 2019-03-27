@@ -1,5 +1,5 @@
 var MovingTextClock = (function(){
-	var FREQUENCY=4;
+	var FREQUENCY=9;
 	var _MovingTextClock = function(params){
 		var self = this;
 		var movingText = params['movingText'];
@@ -8,7 +8,8 @@ var MovingTextClock = (function(){
 		movingText['addEventListener']('removed', removedMovingText);
 		movingText['addEventListener']('added', addedMovingText);
 		function tick(){
-			self.onTick&&self.onTick();
+			var onTick = self['onTick'];
+			onTick&&onTick();
 		}
 		function removedMovingText(){
 			if(postponed)return;

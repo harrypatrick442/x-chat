@@ -4,7 +4,7 @@ var MovingText = (function(){
 		var self = this;
 		var approximateLength = params['approximateLength'];
 		var movingTextClock = new MovingTextClock({'movingText':self});
-		movingTextClock.onTick = onTick;
+		movingTextClock['onTick'] = onTick;
 		var items=[];
 		var currentItem;
 		var currentStartIndexInItem=0;
@@ -43,7 +43,9 @@ var MovingText = (function(){
 			if(currentItemIndex<0||currentItemIndex>=items.length)
 				currentItemIndex=0;
 			currentStartIndexInItem=0;
-			return items[currentItemIndex];
+			var item = items[currentItemIndex];
+			item['setVisible']();
+			return item;
 		}
 		function movingTextItemDispose(movingTextItem){
 			var index = items.indexOf(movingTextItem);

@@ -22,14 +22,12 @@ var Pms=  (function(){
 			var room = rooms.getById(roomId);
 			console.log(msg);
 			var fromOtherUser = msg.message.userId!=getUserMe().getId();
-			console.log('fromOtherUser: '+fromOtherUser);
 			var roomNotOpen = ( !room ||room!= getOpenRoom());
-			console.log('roomNotOpen: '+roomNotOpen);
 			if(fromOtherUser/* other user*/ &&roomNotOpen)
 			{
 				OnlineIndicators.setHasPm(msg.userId, true);
+				Notifier.show('Pm from '+msg.message.username);
 			}
-			Notifier.show('Pm from '+msg.message.username);
 			if(!room){
 				notify(msg);
 				return;

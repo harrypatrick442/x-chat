@@ -3,10 +3,12 @@ var MovingTextItem = window['MovingTextItem'] = (function(){
 		window['EventEnabledBuilder'](this);
 		var self = this;
 		var text = params['text'];
+		var movingTextLifecycle = params['lifecycle'];
+		if(!movingTextLifecycle)
+			movingTextLifecycle= new MovingTextLifecycle['default']();
 		while(text.length>0&&text.substr(text.length-1, 1)==' ')
 			text = text.substr(0, text.length-2);
-		while(text.length<3||text.substr(text.length-3, 3)!='   ')
-			text+='&nbsp;';
+		text+='\u205f\u205f\u205f';
 		var disposed = false;
 		this['getText']= function(length){
 			if(length<=text.length)
@@ -18,7 +20,7 @@ var MovingTextItem = window['MovingTextItem'] = (function(){
 			if(length+startIndex<=text.length)
 				return text.substr(startIndex, length);
 			return text.substr(startIndex, text.length - startIndex);
-			
+				
 		};
 		this['dispose']=function(){
 			disposed = true;
