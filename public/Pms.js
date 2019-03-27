@@ -26,7 +26,10 @@ var Pms=  (function(){
 			var roomNotOpen = ( !room ||room!= getOpenRoom());
 			console.log('roomNotOpen: '+roomNotOpen);
 			if(fromOtherUser/* other user*/ &&roomNotOpen)
+			{
 				OnlineIndicators.setHasPm(msg.userId, true);
+			}
+			Notifier.show('Pm from '+msg.message.username);
 			if(!room){
 				notify(msg);
 				return;

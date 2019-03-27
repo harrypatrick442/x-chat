@@ -1,3 +1,6 @@
+/* arguments: raw*/
+const args = parseArgs();
+console.log(args);
 const fs = require('fs');
 const fsExtra = require('fs-extra');
 const path = require('path');
@@ -7,6 +10,8 @@ const ClosureCompiler = require('google-closure-compiler').jsCompiler;
 console.log(ClosureCompiler.CONTRIB_PATH); // absolute path to the contrib folder which contains externs
 const publicFolder = path.join(__dirname , '/../../public');
 const precompiledJsFileName = '/Title.js';
+
+console.log(process.argv)
 const precompiledJsFile = path.join(publicFolder, precompiledJsFileName);
 const debugFileName ='debug.js';
 const thisFolder = __dirname;
@@ -14,15 +19,19 @@ const folderToPrecompile = path.join(thisFolder, '/../');
 const debugFile = path.join(thisFolder, debugFileName);
 const closureCompiler = new ClosureCompiler({
   compilation_level: 'ADVANCED',
-  language_in:'ECMASCRIPT6',
-  warning_level:'QUIET',
+  language_in:'ECMASCRIPT5',
+  warning_level:'QUIET'
 });
 
 concatenateScripts(function(concatenatedScript){
 	writeFile(debugFile, concatenatedScript);
-	compress(concatenatedScript, function(compressedConcatenatedScript){
-		writeFile(precompiledJsFile, compressedConcatenatedScript);
-	});
+	if(!args.raw){
+		compress(concatenatedScript, function(compressedConcatenatedScript){
+			writeFile(precompiledJsFile, '(function(){'+compressedConcatenatedScript+'})();');
+		});
+		return;
+	}
+	writeFile(precompiledJsFile, '(function(){'+concatenatedScript+'})();');
 });
 function compress(data, callback){
 	const compilerProcess = closureCompiler.run([{
@@ -117,4 +126,26 @@ function copyFolderRecursiveSync( source, target ) {
 }
 function getUniqueString(){
 	return String(new Date().getTime());
+}
+function parseArgs(){
+	return process.argv.slice(2).reduce((acc,arg,cur,arr)=>{
+     if(arg.match(/^--/)){
+       acc[arg.substring(2)] = true
+       acc['_lastkey'] = arg.substring(2)
+     } else
+     if(arg.match(/^-[^-]/)){
+       for(key of arg.substring(1).split('')){
+         acc[key] = true
+         acc['_lastkey'] = key
+       }
+     } else
+       if(acc['_lastkey']){
+         acc[acc['_lastkey']] = arg
+         delete acc['_lastkey']
+       } else
+         acc[arg] = true
+     if(cur==arr.length-1)
+       delete acc['_lastkey']
+     return acc;
+   },{});
 }
