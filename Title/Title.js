@@ -18,7 +18,7 @@ window['Title'] = (function(){
 			movingText.append(movingTextItem);
 		}
 		function displayString(e){
-			document.title = '|'+e['str'];
+			document.title = '	'+e['str'];
 		}
 	};
 	return _Title;

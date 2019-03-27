@@ -9,19 +9,25 @@ var MovingTextLifecycle = window['MovingTextLifecycle'] = (function(){
 			timeoutAt = createdAt+duration;
 		this['getVisible']=function(){ return setVisibleAt?true:false;};
 		this['setVisible']=function(){
+			console.log('setVisible');
 			if(setVisibleAt)return;
 			setVisibleAt = getTime();
+			console.log(setVisibleAt);
 			if(fromVisible&&duration)
 				timeoutAt = setVisibleAt+duration;
 		};
 		this['getTimeoutAt']=function(){
+			console.log('getTimeoutAt');
 			return timeoutAt;
 		};
 		this['updateTimeout']=function(now){
+			console.log('updateTimeout');
+			console.log(timeoutAt);
 			if(!timeoutAt)return;
 			return now>=timeoutAt;
 		};
 		function getTime(){
+			console.log('getTime');
 			return new Date().getTime();
 		}
 	};
