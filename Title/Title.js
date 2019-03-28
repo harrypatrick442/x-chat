@@ -2,7 +2,7 @@ window['Title'] = (function(){
 	var _Title = function(params){
 		window['EventEnabledBuilder'](this);
 		var self = this;
-		var movingText = new MovingText({'approximateLength':50});
+		var movingText = new MovingText({'approximateLength':70});
 		this['add']= function(a){
 			if(typeof(a)=='string')
 				showString(a);
@@ -18,7 +18,7 @@ window['Title'] = (function(){
 			movingText.append(movingTextItem);
 		}
 		function displayString(e){
-			document.title = '	'+e['str'];
+			document.title = '\u2063'+e['str'];
 		}
 	};
 	return _Title;

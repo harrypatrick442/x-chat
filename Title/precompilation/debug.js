@@ -9,12 +9,13 @@
 		window['EventEnabledBuilder'](this);
 		var self = this;
 		var approximateLength = params['approximateLength'];
-		var movingTextClock = new MovingTextClock({'movingText':self, 'extraTicksBeforeStop':approximateLength*2});
+		var movingTextClock = new MovingTextClock({'movingText':self, 'extraTicksBeforeStop':approximateLength});
 		movingTextClock['onTick'] = onTick;
 		var items=[];
 		var currentItem;
 		var currentStartIndexInItem=0;
 		var currentStr='';
+		fillCurrentString();
 		var currentItemIndex=0;
 		this['append']=function(movingTextItem){
 			if(items.indexOf(movingTextItem)>=0)return;
@@ -25,19 +26,21 @@
 		this['count']=function(){return items.length;};
 		function onTick(){
 			var str = getNextStringToDisplay();
+			console.log(str);
+			console.log(str.length);
 			currentStr=str;
 			dispatchDisplayString(str);
 		}
 		function getNextStringToDisplay(){
 			var str=currentStr.length>0?currentStr.substr(1, currentStr.length-1):'';
 			if(!currentItem)nextItem();
-			if(!currentItem)return str+' ';
+			if(!currentItem)return str+'\u205f';
 			while(str.length<approximateLength){
 				var lengthLeft = approximateLength - str.length;
 				var itemTextLength = currentItem['getLength']();
 				if(itemTextLength<=currentStartIndexInItem){
 					nextItem();
-					if(!currentItem)break;
+					if(!currentItem)return str+'\u205f';
 					itemTextLength = currentItem['getLength']();
 				}
 				var strNew = currentItem['getTextRange'](currentStartIndexInItem, lengthLeft);
@@ -47,21 +50,29 @@
 			return str;
 		}
 		function nextItem(){
-			var item ;
+			var item;
 			var i=0;
 			var length= items.length;
 			while(i<length){
 				if(currentItemIndex<0||currentItemIndex>=items.length)currentItemIndex=0;
-				item = items[currentItemIndex];
-				var timedOut = item['updateTimeout'](getTime());
-				if(!timedOut)break;//if item has timed out it will have just been removed from the items with its dispose event.
+				var itemBeingConsidered = items[currentItemIndex];
+				var timedOut = itemBeingConsidered['updateTimeout'](getTime());//if item has timed out it will have just been removed from the items with its dispose event.
+				if(!timedOut){
+					item = itemBeingConsidered;
+					break;
+				}
 				i++;
 			}
 			currentStartIndexInItem=0;
 			currentItem = item;
 			return item;
 		}
+		/* upon reading end of the current item, nextItem is called. NextItem calls updateTimeout on any item it considers and in doing so times the item out
+		if necessary
+		If the item is timed out and none are left currentItem is set to null.
+		*/
 		function movingTextItemDispose(e){
+			console.log('movingTextItemDispose');
 			var movingTextItem = e['movingTextItem'];
 			var index = items.indexOf(movingTextItem);
 			if(index<0)return;
@@ -72,6 +83,10 @@
 			}
 			items.splice(index, 1);
 			dispatchRemoved(movingTextItem);
+		}
+		function fillCurrentString(){
+			for(var i=0; i<approximateLength; i++)
+				currentStr+='\u205f';
 		}
 		function getTime(){
 			return new Date().getTime();
@@ -132,30 +147,24 @@
 		var movingTextLifecycle = params['lifecycle'];
 		if(!movingTextLifecycle)
 			movingTextLifecycle= new MovingTextLifecycle['default']();
-		while(text.length>0&&text.substr(text.length-1, 1)==' ')
-			text = text.substr(0, text.length-2);
-		text+='\u205f\u205f\u205f';
+		prepareTextSpaces();
 		var disposed = false;
 		this['getText']= function(length){
-			console.log('getText');
 			if(length<=text.length)
 				return text;
 			return text.substr(0, text.length);
 			
 		};
 		this['getTextRange']= function(startIndex, length){
-			console.log('getTextRange');
 			if(length+startIndex<=text.length)
 				return text.substr(startIndex, length);
 			return text.substr(startIndex, text.length - startIndex);
 				
 		};
 		this['getLength'] = function(){
-			console.log('getLength');
 			return text.length;
 		};
 		this['updateTimeout']=function(now){
-			console.log('updateTimeout');
 			movingTextLifecycle['setVisible']();
 			var timedOut = movingTextLifecycle['updateTimeout'](now);
 			if(timedOut){
@@ -164,29 +173,19 @@
 			return timedOut;
 		};
 		this['dispose']=function(){
-			console.log('dispose');
 			if(disposed)return;
 			disposed = true;
 			dispatchDispose();
 		};
 		this['getDisposed']= function(){return disposed;};
 		function prepareTextSpaces(){
-			var nSpacesAtEnd=-1;
-			var i = text.length-1;
 			var c;
-			do{
-				if(i<0)break;
-				nSpacesAtEnd++;
-				c = text.substr(i, 1);
-			}while(c==' '||c=='\u205f');
-			while(nSpacesAtEnd<3){
-				text+='\u205f';
-				nSpacesAtEnd++;
-			}
-			
+			while((c = text.substr(text.length-1, 1))==' '||c =='\u2063')
+				text=text.substr(0, text.length-1);
+			text+='\u205f\u205f\u205f';
+			text = text.replaceAll(' ', '\u205f');
 		}
 		function dispatchDispose(){
-			console.log('dispatchDispose');
 			self['dispatchEvent']({'type':'dispose', 'movingTextItem':self});
 		}
 	};
@@ -202,7 +201,6 @@
 			timeoutAt = createdAt+duration;
 		this['getVisible']=function(){ return setVisibleAt?true:false;};
 		this['setVisible']=function(){
-			console.log('setVisible');
 			if(setVisibleAt)return;
 			setVisibleAt = getTime();
 			console.log(setVisibleAt);
@@ -210,17 +208,13 @@
 				timeoutAt = setVisibleAt+duration;
 		};
 		this['getTimeoutAt']=function(){
-			console.log('getTimeoutAt');
 			return timeoutAt;
 		};
 		this['updateTimeout']=function(now){
-			console.log('updateTimeout');
-			console.log(timeoutAt);
 			if(!timeoutAt)return;
 			return now>=timeoutAt;
 		};
 		function getTime(){
-			console.log('getTime');
 			return new Date().getTime();
 		}
 	};
@@ -232,7 +226,7 @@
 	var _Title = function(params){
 		window['EventEnabledBuilder'](this);
 		var self = this;
-		var movingText = new MovingText({'approximateLength':50});
+		var movingText = new MovingText({'approximateLength':70});
 		this['add']= function(a){
 			if(typeof(a)=='string')
 				showString(a);
@@ -248,7 +242,7 @@
 			movingText.append(movingTextItem);
 		}
 		function displayString(e){
-			document.title = '	'+e['str'];
+			document.title = '\u2063'+e['str'];
 		}
 	};
 	return _Title;
