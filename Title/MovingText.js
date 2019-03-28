@@ -20,8 +20,6 @@ var MovingText = (function(){
 		this['count']=function(){return items.length;};
 		function onTick(){
 			var str = getNextStringToDisplay();
-			console.log(str);
-			console.log(str.length);
 			currentStr=str;
 			dispatchDisplayString(str);
 		}
@@ -66,7 +64,6 @@ var MovingText = (function(){
 		If the item is timed out and none are left currentItem is set to null.
 		*/
 		function movingTextItemDispose(e){
-			console.log('movingTextItemDispose');
 			var movingTextItem = e['movingTextItem'];
 			var index = items.indexOf(movingTextItem);
 			if(index<0)return;
