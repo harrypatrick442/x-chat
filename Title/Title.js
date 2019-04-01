@@ -2,7 +2,7 @@ window['Title'] = (function(){
 	var _Title = function(params){
 		window['EventEnabledBuilder'](this);
 		var self = this;
-		var movingText = new MovingText({'approximateLength':70});
+		var movingText = new MovingText({'approximateLength':70,'default':params['default']});
 		this['add']= function(a){
 			if(typeof(a)=='string')
 				showString(a);

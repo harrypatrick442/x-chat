@@ -15,10 +15,15 @@ var MovingTextClock = (function(){
 			if(stopping){
 				if((ticksBeforeStop--)<=0){
 					timer['stop']();
+					dispatchStopped();
 					return;
 				}
 			}
 			onTick&&onTick();
+		}
+		function dispatchStopped(){
+			var onStopped = self['onStopped'];
+			onStopped&&onStopped();
 		}
 		function removedMovingText(){
 			if(postponed)return;

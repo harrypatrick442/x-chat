@@ -1,5 +1,5 @@
 var Notifier = new (function(){
-	var title = new Title({});
+	var title = new Title({'default':/*FancyTextTranslator.smallBold(*/'x-chat'/*)*/});
 	this.show = function(a){
 		if(typeof(a)=='string'){
 			showInTitle(a);
@@ -14,7 +14,7 @@ var Notifier = new (function(){
 		}
 	};
 	function showInTitle(str){
-		title.add(str);
+		title.add(str/*FancyTextTranslator.smallBold(str)*/);
 	}
 	function showAsNotification(str){
 		
