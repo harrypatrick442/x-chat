@@ -178,6 +178,13 @@ vertical-align:middle;
 	.brexit-chat .logo-sign-in{
 		max-width:300px;
 	}
+	.cookie-warning{
+		bottom:10px;
+		top:auto;
+     -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+     transform: translateY(0);
+	}
 .lobby .right .button-show-hide-wrapper .button-notifications .count .text{
 position:relative;
 vertical-align:top;

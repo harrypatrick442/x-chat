@@ -10,7 +10,7 @@ var TrafficLights = new (function(){
 			if(now - sent.at<2000){
 				nWithinFrame++;
 			}
-			if(nWithinFrame>1){
+			if(nWithinFrame>1){	
 				return "Slow down!";
 			}
 		}

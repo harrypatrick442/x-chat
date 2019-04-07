@@ -3,8 +3,12 @@ var Dialog = (function(){
 		var self = this;
 		var disposeOnHide=params.disposeOnHide;
 		var message = params.message;
+		var classNames = params.classNames;
 		var popup = new Popup({closeOnClickOff:false});
 		var element = popup.getElement();
+		if(classNames)each(classNames, function(className){
+			element.classList.add(className);
+		});
 		var inner = E.DIV();
 		var message = E.DIV();
 		element.classList.add('dialog');
