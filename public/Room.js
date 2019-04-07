@@ -151,6 +151,12 @@ var Room = new (function(){
 		function sendMessage(){
 			var text = ui.getTextValue();
 			if(text=='')return;
+			var isSpam = TrafficLights.isSpam(text);
+			if(isSpam){
+				addMessage(Message.error({message:isSpam}));
+				ui.clearText();
+				return;
+			}
 			var userMe = getUserMe();
 			var messageSending = Message.fromTypedString({str:text, userId:userMe.getId(), username:userMe.getUsername(), uniqueId:messages.nextUniqueId() 
 			, emoticonsParser:emoticonsParser, pending:true, clickMenuUser:clickMenuUser, getUserMe:getUserMe, image:userMe.getImage()});
