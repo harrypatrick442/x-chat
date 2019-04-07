@@ -42,7 +42,7 @@ var Lobby = (function(){
 		'/images/pms-mobile.gif',
 		'/images/users-mobile.gif',
 		]);
-		if(true)//location.href.indexOf('brexit')>=0)
+		if(location.href.indexOf('brexit')>=0)
 			window.isBrexitChat=true;
 		var _Lobby = function(){
 		var self = this;
