@@ -6,4 +6,5 @@
 	});
 	function thatsOk(){
 		settings.set('accepted', true);
-	}})();
+	}
+})();
