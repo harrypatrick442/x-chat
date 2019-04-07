@@ -18,7 +18,10 @@ exports.Users = (function(){
 			return set.getEntryIds();
 		};
 		this.sendMessage=function(msg){
+			console.log('doing each');
 			set.each(function(user){
+				console.log('sending for user: '+user.getUsername());
+				console.log(msg);
 				user.sendMessage(msg);
 			});
 		};	

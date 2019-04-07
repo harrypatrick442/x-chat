@@ -55,7 +55,7 @@
 		, configDir: '~/.config/acme/'      // Writable directory where certs will be saved
 		, communityMember: true             // Join the community to get notified of important updates
 		, telemetry: true                   // Contribute telemetry data to the project
-		,approvedDomains: [ 'x-chat.co' ]
+		,approvedDomains: [ 'x-chat.co', 'www.x-chat.co', 'brexitchat.co.uk', 'www.brexitchat.co.uk' ]
 		  // Using your express app:
 		  // simply export it as-is, then include it here
 		,app: app,
