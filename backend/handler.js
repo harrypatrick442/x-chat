@@ -17,6 +17,7 @@ exports.handler = new (function(){
 						lobby.automaticAuthenticate(req, mysocket, callback);
 					break;
 					case 'rooms_get':
+						if(!getUser(req))return;
 						lobby.getListedRooms().getInfos(function(infos){
 							callback({type:'rooms', rooms:infos});
 						});
@@ -30,7 +31,13 @@ exports.handler = new (function(){
 						break;
 					case 'room_message_send':
 						getRoom(req, function(room){
-							if(room.isPm()&&!room.userAllowed(getUser(req)))return;
+							if(!room||room.isPm())return;
+							var user = getUser(req);
+							if(!user)return;
+							if(user.getSpamFilter().isSpam(req.content)){//This means they evaided the spam filter
+								user.dispose();
+								return;
+							}
 							room.sendMessage(Message.fromRequest(req, getUser(req)));
 						});
 					break;
@@ -40,8 +47,10 @@ exports.handler = new (function(){
 						lobby.getPms().sendMessage(userMe.getId(), req.userToId, Message.fromRequest(req, getUser(req)));
 					break;
 					case 'room_messages_get':
+						var user = getUser(req);
+						if(!user)return;
 						getRoom(req, function(room){
-							if(room.isPm()&&!room.userAllowed(getUser(req)))return;
+							if(room.isPm()&&!room.userAllowed(user))return;
 							room.getMessages(function(messages){
 								callback({type:'messages', roomId:room.getId(), messages:messages.toJSON()});
 							});	

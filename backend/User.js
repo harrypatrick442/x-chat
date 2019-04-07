@@ -2,12 +2,14 @@ exports.User = (function(){
 	const DISPOSE='dispose';
 	var EventEnabledBuilder = require('./EventEnabledBuilder');
 	var Devices = require('./Devices').Devices;
+	var SpamFilter = require('./SpamFilter');
 	var Set = require('./Set');
 	var set = new Set({getEntryId:getEntryId});
 	var __User = function(params){
 		console.log(params);
 		EventEnabledBuilder(this);
 		var self = this;
+		var spamFilter = new SpamFilter();
 		var devices = new Devices();
 		//var roomsSet = new Set({getEntryId:getEntryId});
 		this.getDevices = function(){ return devices;};
@@ -19,6 +21,7 @@ exports.User = (function(){
 		this.isGuest= function(){return params.isGuest;};
 		this.getGender = function(){return params.gender;};
 		this.getBirthday = function(){return params.birthday;};
+		this.getSpamFilter = function(){return spamFilter;};
 		this.getToken = function(){
 			return params.token;
 		};
