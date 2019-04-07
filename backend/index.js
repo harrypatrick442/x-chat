@@ -26,8 +26,8 @@
 		endpointLongpoll.load(app);
 		if(config.precompiledFrontend){
 			app.use(express.static(path.join(__dirname, '../precompiled')));
-			app.use('/public',express.static(path.join(__dirname, '../public/images/')));
-			app.use('/public',express.static(path.join(__dirname, '../public/emoji/')));
+			app.use('/images',express.static(path.join(__dirname, '../public/images/')));
+			app.use('/emoji',express.static(path.join(__dirname, '../public/emoji/')));
 		}
 		else{
 			app.use(express.static(path.join(__dirname, '../public')));
