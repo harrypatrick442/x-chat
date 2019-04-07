@@ -5,7 +5,7 @@ module.exports = new (function(){const fs = require('fs');
 	const ImageSizes = require('./ImageSizes');
 	const uploaded = path.join(__dirname, '../public/images/uploaded');
 	const JPEG='.jpeg';
-	this.deleteUserImageFiles = function(userId){
+	this.deleteUserImageFiles = function(userId, callback){
 		dalUsers.getImage(userId, function(image){
 			var smallImage=image+'_'+ImageSizes.SMALL+JPEG;
 			var largeImage = image+'_'+ImageSizes.LARGE+JPEG;
@@ -13,6 +13,7 @@ module.exports = new (function(){const fs = require('fs');
 			var pathLargeImage = path.join(uploaded, largeImage);
 			deleteIfExists(pathSmallImage);
 			deleteIfExists(pathLargeImage);
+			callback&&callback();
 			
 		});
 	};

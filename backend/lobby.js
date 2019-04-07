@@ -131,10 +131,11 @@ exports.lobby = (function(){
 		this.setImageForUser = function(sessionId, image){//image is the first part of the file name (without _32-32.jpeg).
 			var user = getUserFromSessionId(sessionId);
 			if(!user)return;
-			ImageMaintenance.deleteUserImageFiles(user.getId());
-			user.setImage(image);
-			dalUsers.setImage(user.getId(), image);
-			users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
+			ImageMaintenance.deleteUserImageFiles(user.getId(), function(){
+				user.setImage(image);
+				dalUsers.setImage(user.getId(), image);
+				users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
+			});
 		};
 		this.pmVideoOffer= function(req, callback){
 			var userMe = getUserFromSessionId(req.sessionId);
