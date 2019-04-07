@@ -42,6 +42,8 @@ var Lobby = (function(){
 		'/images/pms-mobile.gif',
 		'/images/users-mobile.gif',
 		]);
+		if(true)//location.href.indexOf('brexit')>=0)
+			window.isBrexitChat=true;
 		var _Lobby = function(){
 		var self = this;
 		var sessionId;
@@ -469,6 +471,8 @@ var Lobby = (function(){
 		var usersMenues = params.usersMenues;
 		var roomCreationMenuUI = new RoomCreationMenuUI(roomCreation);
 		var element = E.DIV();
+		if(window.isBrexitChat)
+			document.body.classList.add('brexit-chat');
 		var right = E.DIV();
 		var rightInner = E.DIV();
 		var divButtonShowHideWrapper = E.DIV();
@@ -517,7 +521,7 @@ var Lobby = (function(){
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
 		var logoSignIn= E.IMG();
 		logoSignIn.classList.add('logo-sign-in');
-		logoSignIn.src='/images/logo.gif';
+		logoSignIn.src=window.isBrexitChat?'/images/logo-brexit-chat-sign-in.gif':'/images/logo.gif';
 		document.body.appendChild(logoSignIn);
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());
