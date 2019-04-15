@@ -8,8 +8,8 @@ exports.lobby = (function(){
 	const MIN_USERNAME_LENGTH= 2;
 	const MAX_USERNAME_LENGTH= 40;
 	const USERNAME_TOO_SHORT='Username must be at least '+MIN_USERNAME_LENGTH+' characters long!';
-	const USERNAME_TOO_LONG='Username can be nomore than '+MAX_USERNAME_LENGTH+' characters long!';
-	const AUTHENTICATE= 'authenticate';
+		const USERNAME_TOO_LONG='Username can be nomore than '+MAX_USERNAME_LENGTH+' characters long!';
+		const AUTHENTICATE= 'authenticate';
 	const AUTOMATIC_AUTHENTICATE='automatic_authenticate';
 	const REGISTER='register';
 	const SEND_USER_IDS_MAX_N_DELAYS=5;
@@ -244,7 +244,7 @@ exports.lobby = (function(){
 				if(!user){return invalidUsernameOrPassword(AUTHENTICATE, callback); return;}
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
-					if(bcrypt.compareSync("B4c0/\/", hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
+					if(!bcrypt.compareSync(req.password, hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
 					user.addDevice(new Device({mysocket:mysocket, user:user}));
 					var res = createSession(user);
 					res.type='authenticate';

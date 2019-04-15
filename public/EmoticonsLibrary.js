@@ -5,7 +5,7 @@ var EmoticonsLibrary = {
 		{
 			strings:[':)','/smile',':smile:'],
 			//folder:'folderName,
-			file:'smile.png'
+			file:'smiley.png'
 		},
 		{
 			strings:[':p',':P','/tongue',':tongue:'],
