@@ -244,7 +244,7 @@ exports.lobby = (function(){
 				if(!user){return invalidUsernameOrPassword(AUTHENTICATE, callback); return;}
 				dalUsers.getHash(user.getId(), function(hash){
 					if(!hash){callback({successful:false, error:UNKNOWN_EXCEPTION, type:AUTHENTICATE}); return;}
-					if(!bcrypt.compareSync(req.password, hash)){callback( invalidUsernameOrPassword(AUTHENTICATE));return;}
+					if(!bcrypt.compareSync(req.password, hash)){invalidUsernameOrPassword(AUTHENTICATE, callback);return;}
 					user.addDevice(new Device({mysocket:mysocket, user:user}));
 					var res = createSession(user);
 					res.type='authenticate';
