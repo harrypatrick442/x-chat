@@ -5,7 +5,9 @@ background-size:contain;
 position:relative;
 display:inline-block;
 background-image:url('/images/tickbox-unticked.gif');
+background-color:#DDDDDD;
 }
 .tickbox .box.ticked{
 background-image:url('/images/tickbox-ticked.gif');
+background-color:#111111;
 }
