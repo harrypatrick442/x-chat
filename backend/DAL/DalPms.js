@@ -1,5 +1,6 @@
 exports.dalPms= new (function(){
-	var Message = require('./../Message');
+	const fs = require('fs');
+	const Message = require('./../Message');
 	const MAX_N_PMS= 300;
 	const mapLowestUserIdToMapHighestUserIdToMessages = new Map();
 	this.getMessages = function(userMeId, userToId, nMessages, callbackGotMessages){

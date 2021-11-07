@@ -1,174 +1,114 @@
 exports.dalUsers= new (function(){
-	const STORED_PROCEDURE_REGISTER='xchat_register';
-	const STORED_PROCEDURE_HASH_GET ='xchat_hash_get';
-	const STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN = 'xchat_username_or_email_taken';
-	const STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL='xchat_user_get_from_username_or_email';
-	const STORED_PROCEDURE_USER_IMAGE_SET='xchat_user_image_set'
-	const STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET = 'xchat_authentication_token_get';
-	const STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE='xchat_automatic_authenticate';
-	const STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE='xchat_authentication_tokens_delete';
-	const STORED_PROCEDURE_GUEST_DELETE='xchat_guest_delete';
-	const STORED_PROCEDURE_GUESTS_DELETE='xchat_guests_delete';
-	const STORED_PROCEDURE_SEARCH_USERS = 'xchat_users_search';
-	const STORED_PROCEDURE_USER_IMAGE_GET = 'xchat_user_image_get';
-	const USERNAME_OR_EMAIL= 'usernameOrEmail';
-	const USER_ID='userId';
-	const USERNAME='username';
-	const BIRTHDAY='birthday';
-	const IS_GUEST='isGuest';
-	const GENDER='gender';
-	const HASH='hash';
-	const EMAIL='email';
-	const IMAGE='image';
-	const TOKEN='token';
-	const ID ='id';
-	const TEXT='text';
-	const KEEP_WITH_TOKEN='keepWithToken';
-    const dalXChat = require('./DalXChat').dalXChat;	
-	const sql = require('mssql');
+	const fs = require('fs');
 	const User = require('./../User').User;
+	const mapUserIdToUser = new Map();
+	const mapTokenToUserId = new Map();
+	const mapUserIdToToken = new Map();
+	const mapUsernameNormalizedToUser = new Map();
+	const mapEmailNormalizedToUser = new Map();
+	load();
 	this.getHash = function(userId, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_HASH_GET, 
-			parameters:[
-				{name:USER_ID, value:parseInt(userId), type:sql.Int},
-			],
-			callback:function(result){
-				var rows = result.recordsets[0];
-				var hash;
-				if(rows.length>0){
-					hash = rows[0].hash;
-				}
-				callback(hash);
-		}});
+		const user =mapUserIdToUser.get(userId);
+		if(!user)return null;
+		return user.getHash();
 	};
 	this.getAuthenticationToken = function(userId, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKEN_GET, 
-			parameters:[
-				{name:USER_ID, value:parseInt(userId), type:sql.Int},
-			],
-			callback:function(result){
-				var rows = result.recordsets[0];
-				var token;
-				if(rows.length>0){
-					token= rows[0].token;
-				}
-				callback(token);
-		}});
+		callback(mapUserIdToToken(userId));
 	};
 	this.automaticAuthenticate= function(token, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_AUTOMATIC_AUTHENTICATE,
-			parameters:[
-				{name:TOKEN, value:token, type:sql.VarChar},
-			],
-			callback:function(result){
-				var rows = result.recordsets[0];
-				var user;	
-				if(rows.length>0){
-					user = User.fromSqlRow(rows[0]);
-				}
-				callback(user);
-		}});
+		const user = mapTokenToUserId.get(token);
+		callback(user);
 	};
 	this.authenticationTokensDelete = function(userId){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_AUTHENTICATION_TOKENS_DELETE, 
-			parameters:[
-				{name:USER_ID, value:parseInt(userId), type:sql.Int}
-			]});
-			
+		const token = mapUserIdToToken.get(token);
+		if(token===undefined&&token===null)return;
+		mapUserIdToToken.delete(userId);
+		mapTokenToUserId.delete(token);
 	};
 	this.deleteGuest = function(userId){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_GUEST_DELETE, 
-			parameters:[
-				{name:USER_ID, value:parseInt(userId), type:sql.Int}
-			]});
-			
+		const user = mapUserIdToUser.get(userId);
+		if(!user)return;
+		if(!user.isGuest())return;
+		deleteUser(user);
 	};
 	this.deleteGuests = function(keepWithToken){
-		if(!keepWithToken)keepWithToken=false;
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_GUESTS_DELETE, 
-			parameters:[
-				{name:KEEP_WITH_TOKEN, value:keepWithToken, type:sql.Bit}
-			]});
+		mapUserIdToUser.values().filter(user=>user.isGuest()).forEach(deleteUser);
 	};
 	this.usernameAndEmailAreAvailable = function(username, email, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_USERNAME_OR_EMAIL_TAKEN,
-			parameters:[
-				{name:USERNAME, value:username, type:sql.VarChar(45)},
-				{name:EMAIL, value:email, type:sql.VarChar(200)}
-			],
-			callback:function(result){
-				callback(result.recordset[0].available);
-		}});
+		const normalizedUsername = normalize(username);
+		const normalizedEmail = normalize(email);
+		callback(normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail));
 	};
 	this.register = function(params, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_REGISTER,parameters:
-		[
-			{name:EMAIL, value:params.email, type:sql.VarChar(200)},
-			{name:USERNAME, value:params.username, type:sql.VarChar(45)},
-			{name:HASH,value: params.hash, type:sql.VarChar(100)},
-			{name:GENDER, value: params.gender, type:sql.Bit},
-			{name:BIRTHDAY, value:formatBirthday(params.birthday), type:sql.DateTime},
-			{name:IS_GUEST, value:params.isGuest, type:sql.Bit}
-		],
-		callback:function(result){
-			var rows = result.recordsets[0];
-			var user;	
-			if(rows.length>0){
-				user = User.fromSqlRow(rows[0]);
-			}
-			callback(user);
-		}});
+		const {username, email}= params;
+		const normalizedUsername = normalize(username);
+		const normalizedEmail = normalize(email);
+		if(!normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmai))
+			return;
+		const user = new User(params);
+		user.setId(nextId());
+		mapEmailNormalizedToUser.set(emailNormalized, user);
+		mapUsernameNormalizedToUser.set(normalizedUsername, user);
+		mapUserIdToUser.set(user.getId(), user);
 	};
 	this.getByUsernameOrEmail=function(usernameOrEmail, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_GET_FROM_USERNAME_OR_EMAIL, 
-		parameters:[
-			{name:USERNAME_OR_EMAIL, value:usernameOrEmail, type:sql.VarChar(45)}
-		], 
-		callback:function(result){
-			var rows = result.recordsets[0];
-			var user;	
-			if(rows.length>0){
-				user = User.fromSqlRow(rows[0]);
-			}
+		const normalizedUsernameOrEmail = normalize(usernameOrEmail);
+		let user = mapEmailNormalizedToUser.has(normalizedUsernameOrEmail)
+		if(user){
 			callback(user);
-		}});
+			return;
+		}
+		user = mapUsernameNormalizedToUser.get(normalizedUsernameOrEmail);
+		callback(user);
 	};
-	this.setImage = function(id, image){
-		dalXChat.nonQuery({storedProcedure:STORED_PROCEDURE_USER_IMAGE_SET, 
-		parameters:[
-			{name:ID, value:id, type:sql.Int},
-			{name:IMAGE, value:image, type:sql.VarChar}
-		]});
+	this.setImage = function(userId, image){
+		const user = mapUserIdToUser.get(userId);
+		if(!user)return;
+		user.setImage(image);
 	};
-	this.getImage = function(id, callback){
-		console.log(id);
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_USER_IMAGE_GET,
-		parameters:[
-			{name:ID, value:parseInt(id), type:sql.Int}
-		],
-		callback:function(result){
-			console.log(result);
-			if(result.recordset)
-			{
-				var recordSet = result.recordset[0];
-				console.log(recordSet);
-				if(recordSet&&recordSet.image){
-					callback(result.recordset[0].image);
-					return;
-				}
-			}
-			callback();
-		}});
+	this.getImage = function(userId, callback){
+		const user = mapUserIdToUser.get(userId);
+		if(!user)return;
+		callback(user.getImage());
 	};
 	this.search = function(text, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_SEARCH_USERS,
-		parameters:[
-			{name:TEXT, value:text, type:sql.Text}],
-			callback:function(result){
-				var rows = result.recordsets[0];
-				callback(rows);
-		}});
+		callback([]);
 	};
+	this.save = save;
+	function save(){
+		const jArray = mapUserIdToUser.values().map(user=>user.toJSON());
+		fs.writeFileSync(FilePaths.getUsers(), JSON.stringify(jArray));
+	}
+	function load(){
+		try{
+			const jArray = JSON.parse(fs.readFileSync(FilePaths.getUsers()));
+			const users= jArray.map(jObjectUser=>User.fromJSON(jObjectUser));
+			users.forEach(user=>{
+				 mapUserIdToUser.set(user.getId(), user);
+				 const token = user.getToken();
+				 mapUsernameNormalizedToUser.set(normalize(user.getUsername()), user);
+				 mapEmailNormalizedToUser.set(normalize(user.getEmail()), user);
+				 if(token===undefined&&token===null)return;
+				 mapTokenToUserId.set(token, user.getId());
+				 mapUserIdToToken.set(user.getId(), token);
+			});
+		}
+		catch{
+			throw new Error('something went wrong loading users');
+		}
+	}
+	function deleteUser(user){
+		mapEmailNormalizedToUser.delete(normalize(user.getEmail()));
+		mapUsernameNormalizedToUser.delete(normalize(user.getUsername()));
+		mapUserIdToToken.delete(user.getId());
+		this.authenticationTokensDelete(user.getId());
+	}
+	function normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail){
+		return mapEmailNormalizedToUser.has(normalizedUsername)
+			||mapUsernameNormalizedToUser.has(normalizedUsername)
+			||mapEmailNormalizedToUser.has(normalizedEmail)
+			||mapUsernameNormalizedToUser.has(normalizedEmail)
+	}
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;
 		return new Date(birthday.year, birthday.month, birthday.day, 0, 0, 0);
