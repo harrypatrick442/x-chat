@@ -29,7 +29,7 @@ exports.dalMessages= new (function(){
 		const jObject = {entries:{}, serverAssignedNMessage:serverAssignedNMessage};
 		mapRoomIdToMessages.keys().forEach(
 			roomId=>{
-				jObject.entries[roomId]=mapRoomIdToMessages[roomId].map(message=>message.toJSON());
+				jObject.entries[roomId]=mapRoomIdToMessages.get(roomId).map(message=>message.toJSON());
 			}
 		);
 		fs.writeFileSync(FilePaths.getMessages(), JSON.stringify(jObject));
