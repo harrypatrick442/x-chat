@@ -1,5 +1,6 @@
 module.exports = (function(){
 	var _Message = function(params){
+		this.setUniqueId = function(value){params.uniqueId = value;};
 		this.getUserId = function(){return params.userId;};
 		this.getContent = function(){return params.content;};
 		this.getServerAssignedNMessage=function(){return params.serverAssignedNMessage;};
@@ -10,6 +11,9 @@ module.exports = (function(){
 		this.toJSON= function(){
 			return params;
 		};
+	};
+	_Message.fromJSON = function(jObject)}{
+		return _Message(jObject);
 	};
 	_Message.fromSqlRow = function(row){
 		row.userId = String(row.userId);
