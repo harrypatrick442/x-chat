@@ -46,6 +46,9 @@ exports.Room = (function(){
 			getMessages(function(messages){messages.add(message);});
 			devices.sendMessage({type:'message', roomId:id, message:message.toJSON()});
 		};
+		this.toJSON = function(){
+			return params;
+		};
 		initialize();
 		function initialize(){
 		}
@@ -59,6 +62,9 @@ exports.Room = (function(){
 		function dispatchDispose(){
 			self.dispatchEvent({type:'dispose', room:room});
 		}
+	};
+	_Room.fromJSON = function(jObject){
+		return new _Room({name:jObject.name, id:String(jObject.id), isPm:jObject.isPm});
 	};
 	_Room.fromSqlRow = function(row){
 		return new _Room({name:row.name, id:String(row.id), isPm:row.isPm});

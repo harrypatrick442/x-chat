@@ -1,43 +1,80 @@
 exports.dalPms= new (function(){
-	console.log('DalPms loaded');
-	const STORED_PROCEDURE_PM_MESSAGE_ADD='xchat_pm_message_add';
-	const STORED_PROCEDURE_PM_MESSAGES_GET='xchat_pm_messages_get';
-	const N_MESSAGES='nMessages';
-	const USER_ME_ID='userMeId';
-	const USER_TO_ID='userToId';
-	const CONTENT='content';
-	const SERVER_ASSIGNED_N_MESSAGE='serverAssignedNMessage';
-    var dalXChat = require('./DalXChat').dalXChat;	
 	var Message = require('./../Message');
-	var each = require('./../each');
-	var sql = require('mssql');
+	const MAX_N_PMS= 300;
+	const mapLowestUserIdToMapHighestUserIdToMessages = new Map();
 	this.getMessages = function(userMeId, userToId, nMessages, callbackGotMessages){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGES_GET, 
-			parameters:[
-				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
-				{name:USER_TO_ID, value:parseInt(userToId), type:sql.Int},
-				{name:N_MESSAGES, value: parseInt(nMessages), type:sql.Int}
-			], 
-			callback:function(result){
-				var rows = result.recordsets[0];
-				var messages=[];
-				each(rows, function(row){
-					messages.push(Message.fromSqlRow(row));
-				});
-				callbackGotMessages(messages);
-		}});
+		loadPmIntoMemoryForUserPair().then(messages=>{
+			callbackGotMessages(messages);
+		});
 	};
 	
 	this.addMessage= function(userMeId, userToId, message, callback){
-		dalXChat.query({storedProcedure:STORED_PROCEDURE_PM_MESSAGE_ADD, 
-			parameters:[
-				{name:USER_ME_ID, value:parseInt(userMeId), type:sql.Int},
-				{name:USER_TO_ID, value:parseInt(userToId), type:sql.Int},
-				{name:CONTENT,value: message.getContent(), type:sql.Text},
-				{name:SERVER_ASSIGNED_N_MESSAGE, value:message.getServerAssignedNMessage(), type:sql.Int, out:true}
-				], callback:function(result){
-					message.setServerAssignedNMessage(result.output.serverAssignedNMessage);
-					callback();
-				}});
+		loadPmIntoMemoryForUserPair(userMeId, userToId).then(messages=>{
+			messages.push(message);
+			while(messages.length>MAX_N_PMS){
+				messages.splice(0, 1);
+			}
+			callback();
+		});
 	};
+	loadPmIntoMemoryForUserPair(userMeId, userToId){
+		return new Promise((resolve, reject)=>{
+			userMeId = parseInt(userMeId);
+			userToId = parseInt(userToId);
+			let lowestUserId, highestUserId;
+			if(userMeId<userToId){
+				lowestUserId = userMeId;
+				highestUserId = userToId;
+			}
+			else{
+				highestUserId = userMeId;
+				lowestUserId = userToId;
+			}
+			const path = getPmPath(lowestUserId, highestUserId);
+			let mapHighestUserIdToMessages = mapLowestUserIdToMapHighestUserIdToMessages.get(lowestUserId);
+			let messages;
+			if(mapHighestUserIdToMessages){
+				messages = mapHighestUserIdToMessages.get(highestUserId);
+				if(messages){
+					resolve(messages);
+					return;
+				}
+				messages = loadPmFromFile(lowestUserId, highestUserId);
+				mapHighestUserIdToMessages.set(highestUserId, messages);
+				resolve(messages);
+				return;
+			}
+			mapHighestUserIdToMessages= new Map();
+			messages = loadPmFromFile(lowestUserId, highestUserId)
+			mapHighestUserIdToMessages.set(highestUserId, messages);
+			mapLowestUserIdToMapHighestUserIdToMessages.set(lowestUserId, mapHighestUserIdToMessages);
+			resolve(messages);
+		});
+	}
+	this.save = save;
+	save(){
+		for (const [lowestUserId, mapHighestUserIdToMessages] of mapLowestUserIdToMapHighestUserIdToMessages.entries()) {
+			for (const [highestUserId, messages] of mapHighestUserIdToMessages.entries()) {
+				savePmToFile(lowestUserId, highestUserId, messages);
+			}
+		}
+	}
+	loadPmFromFile(lowestUserId, highestUserId){
+		try{
+			const jArray = JSON.parse(fs.readFileSync(getPmPath(lowestUserId, highestUserId)));
+			const messages = jArray.map(jObjectMessage=>Message.fromJSON(jObjectMessage));
+			return messages;
+		}
+		catch{
+			return [];
+		}
+	}
+	savePmToFile(lowestUserId, highestUserId, messages){
+		const path = getPmPath(lowestUserId, highestUserId);
+		const jArray = messages.map(message=>message.toJSON());
+		fs.writeFileSync(path, JSON.stringify(jArray));
+	}
+	getPmPath(lowestUserId, highestUserId){
+		return `${FilePaths.pmsRoot}/${String(lowestUserId)}/${String(highestUserId)}.json`;
+	}
 })();
