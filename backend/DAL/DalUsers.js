@@ -1,6 +1,7 @@
 exports.dalUsers= new (function(){
 	const fs = require('fs');
 	const User = require('./../User').User;
+	const FilePaths = require('./FilePaths');
 	const mapUserIdToUser = new Map();
 	const mapTokenToUserId = new Map();
 	const mapUserIdToToken = new Map();
@@ -9,8 +10,7 @@ exports.dalUsers= new (function(){
 	load();
 	this.getHash = function(userId, callback){
 		const user =mapUserIdToUser.get(userId);
-		if(!user)return null;
-		return user.getHash();
+		callback(user?user.getHash():null);
 	};
 	this.getAuthenticationToken = function(userId, callback){
 		callback(mapUserIdToToken(userId));
@@ -32,24 +32,30 @@ exports.dalUsers= new (function(){
 		deleteUser(user);
 	};
 	this.deleteGuests = function(keepWithToken){
-		mapUserIdToUser.values().filter(user=>user.isGuest()).forEach(deleteUser);
+		Array.from(mapUserIdToUser.values()).filter(user=>user.isGuest()).forEach(deleteUser);
 	};
-	this.usernameAndEmailAreAvailable = function(username, email, callback){
+	this.usernameAndEmailAreAvailable = function(username, email,
+		callback){
 		const normalizedUsername = normalize(username);
 		const normalizedEmail = normalize(email);
 		callback(normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail));
 	};
 	this.register = function(params, callback){
+		console.log(params);
 		const {username, email}= params;
 		const normalizedUsername = normalize(username);
 		const normalizedEmail = normalize(email);
-		if(!normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmai))
+		/*if(!normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail))
+		{
+			callback(null);
 			return;
+		}*/
 		const user = new User(params);
 		user.setId(nextId());
 		mapEmailNormalizedToUser.set(emailNormalized, user);
 		mapUsernameNormalizedToUser.set(normalizedUsername, user);
 		mapUserIdToUser.set(user.getId(), user);
+		callback(user);
 	};
 	this.getByUsernameOrEmail=function(usernameOrEmail, callback){
 		const normalizedUsernameOrEmail = normalize(usernameOrEmail);
@@ -68,8 +74,7 @@ exports.dalUsers= new (function(){
 	};
 	this.getImage = function(userId, callback){
 		const user = mapUserIdToUser.get(userId);
-		if(!user)return;
-		callback(user.getImage());
+		callback(user?user.getImage():null);
 	};
 	this.search = function(text, callback){
 		callback([]);
@@ -81,7 +86,10 @@ exports.dalUsers= new (function(){
 	}
 	function load(){
 		try{
-			const jArray = JSON.parse(fs.readFileSync(FilePaths.getUsers()));
+			const path = FilePaths.getUsers();
+			if(!fs.existsSync(path))
+				return [];
+			const jArray = JSON.parse(fs.readFileSync(path));
 			const users= jArray.map(jObjectUser=>User.fromJSON(jObjectUser));
 			users.forEach(user=>{
 				 mapUserIdToUser.set(user.getId(), user);
@@ -93,7 +101,8 @@ exports.dalUsers= new (function(){
 				 mapUserIdToToken.set(user.getId(), token);
 			});
 		}
-		catch{
+		catch(err){
+			console.log(err);
 			throw new Error('something went wrong loading users');
 		}
 	}
@@ -112,5 +121,10 @@ exports.dalUsers= new (function(){
 	function formatBirthday(birthday){
 		if(!birthday) return undefined;
 		return new Date(birthday.year, birthday.month, birthday.day, 0, 0, 0);
+	}
+	function normalize(str){
+		if(str===undefined)return null;
+		if(str===null)return null;
+		return str.toLowerCase();
 	}
 })();

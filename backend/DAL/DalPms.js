@@ -1,5 +1,6 @@
 exports.dalPms= new (function(){
 	const fs = require('fs');
+	const FilePaths = require('./FilePaths');
 	const Message = require('./../Message');
 	const MAX_N_PMS= 300;
 	const mapLowestUserIdToMapHighestUserIdToMessages = new Map();
@@ -18,7 +19,7 @@ exports.dalPms= new (function(){
 			callback();
 		});
 	};
-	loadPmIntoMemoryForUserPair(userMeId, userToId){
+	function loadPmIntoMemoryForUserPair(userMeId, userToId){
 		return new Promise((resolve, reject)=>{
 			userMeId = parseInt(userMeId);
 			userToId = parseInt(userToId);
@@ -53,14 +54,14 @@ exports.dalPms= new (function(){
 		});
 	}
 	this.save = save;
-	save(){
+	function save(){
 		for (const [lowestUserId, mapHighestUserIdToMessages] of mapLowestUserIdToMapHighestUserIdToMessages.entries()) {
 			for (const [highestUserId, messages] of mapHighestUserIdToMessages.entries()) {
 				savePmToFile(lowestUserId, highestUserId, messages);
 			}
 		}
 	}
-	loadPmFromFile(lowestUserId, highestUserId){
+	function loadPmFromFile(lowestUserId, highestUserId){
 		try{
 			const jArray = JSON.parse(fs.readFileSync(getPmPath(lowestUserId, highestUserId)));
 			const messages = jArray.map(jObjectMessage=>Message.fromJSON(jObjectMessage));
@@ -70,12 +71,12 @@ exports.dalPms= new (function(){
 			return [];
 		}
 	}
-	savePmToFile(lowestUserId, highestUserId, messages){
+	function savePmToFile(lowestUserId, highestUserId, messages){
 		const path = getPmPath(lowestUserId, highestUserId);
 		const jArray = messages.map(message=>message.toJSON());
 		fs.writeFileSync(path, JSON.stringify(jArray));
 	}
-	getPmPath(lowestUserId, highestUserId){
+	function getPmPath(lowestUserId, highestUserId){
 		return `${FilePaths.pmsRoot}/${String(lowestUserId)}/${String(highestUserId)}.json`;
 	}
 })();

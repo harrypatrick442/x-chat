@@ -12,7 +12,7 @@ module.exports = (function(){
 			return params;
 		};
 	};
-	_Message.fromJSON = function(jObject)}{
+	_Message.fromJSON = function(jObject){
 		return _Message(jObject);
 	};
 	_Message.fromSqlRow = function(row){

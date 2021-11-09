@@ -6,7 +6,6 @@
 'use strict';
 (function(){
 	const config = require('./configuration');
-	const dal = require('./dal');
 	const express = require('express');
 	const bodyParser = require('body-parser');
 	const path = require('path');

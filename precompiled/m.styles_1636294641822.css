@@ -263,6 +263,16 @@ vertical-align:middle;
 	position:absolute;
 	top:0px;
 	}
+	.brexit-chat .logo-sign-in{
+		max-width:300px;
+	}
+	.cookie-warning{
+		bottom:10px;
+		top:auto;
+     -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+     transform: translateY(0);
+	}
 .lobby .right .button-show-hide-wrapper .button-notifications .count .text{
 position:relative;
 vertical-align:top;
@@ -394,9 +404,11 @@ background-size:contain;
 position:relative;
 display:inline-block;
 background-image:url('/images/tickbox-unticked.gif');
+background-color:#DDDDDD;
 }
 .tickbox .box.ticked{
 background-image:url('/images/tickbox-ticked.gif');
+background-color:#111111;
 }.lobby .pms-menu{
 	float:left;
 	width:100%;
@@ -533,6 +545,9 @@ background-image:url('/images/tickbox-ticked.gif');
 	width:100%;
 	box-sizing:border-box;
 	background-color:rgb(32, 31, 31);
+}
+.brexit-chat .users-menues{
+	top:100px;
 }
 .users-menues .users-menues-entries{
 	box-sizing:border-box;

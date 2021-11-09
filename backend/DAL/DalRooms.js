@@ -1,6 +1,7 @@
 exports.dalRooms= new (function(){
 	const fs = require('fs');
 	const Room = require('./../Room').Room;
+	const FilePaths = require('./FilePaths');
 	const rooms = load();
 	this.getRoomsToList = function(callback){
 		return rooms;
@@ -17,7 +18,7 @@ exports.dalRooms= new (function(){
 	this.save = save;
 	
 	function save(){
-		const jArray rooms.map(room=>room.toJSON());
+		const jArray = rooms.map(room=>room.toJSON());
 		fs.writeFileSync(FilePaths.getRooms(), JSON.stringify(jArray));
 	}
 	function load(){

@@ -1,5 +1,4 @@
 exports.servlet=function(app){
-	var dal = require('./dal');
 	var path = require('path');
 	var bodyParser = require('body-parser');
 	var handler = require('./handler').handler;
