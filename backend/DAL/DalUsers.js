@@ -1,12 +1,14 @@
+
 exports.dalUsers= new (function(){
 	const fs = require('fs');
-	const User = require('./../User').User;
+	const User = require('./../User');
 	const FilePaths = require('./FilePaths');
 	const mapUserIdToUser = new Map();
 	const mapTokenToUserId = new Map();
 	const mapUserIdToToken = new Map();
 	const mapUsernameNormalizedToUser = new Map();
 	const mapEmailNormalizedToUser = new Map();
+	let id = 0;
 	load();
 	this.getHash = function(userId, callback){
 		const user =mapUserIdToUser.get(userId);
@@ -52,7 +54,7 @@ exports.dalUsers= new (function(){
 		}*/
 		const user = new User(params);
 		user.setId(nextId());
-		mapEmailNormalizedToUser.set(emailNormalized, user);
+		mapEmailNormalizedToUser.set(normalizedEmail, user);
 		mapUsernameNormalizedToUser.set(normalizedUsername, user);
 		mapUserIdToUser.set(user.getId(), user);
 		callback(user);
@@ -80,6 +82,9 @@ exports.dalUsers= new (function(){
 		callback([]);
 	};
 	this.save = save;
+	function nextId(){
+		return id++;
+	}
 	function save(){
 		const jArray = mapUserIdToUser.values().map(user=>user.toJSON());
 		fs.writeFileSync(FilePaths.getUsers(), JSON.stringify(jArray));

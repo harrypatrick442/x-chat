@@ -3,15 +3,17 @@ exports.dalPms= new (function(){
 	const FilePaths = require('./FilePaths');
 	const Message = require('./../Message');
 	const MAX_N_PMS= 300;
+	let serverAssignedNMessage=0;
 	const mapLowestUserIdToMapHighestUserIdToMessages = new Map();
 	this.getMessages = function(userMeId, userToId, nMessages, callbackGotMessages){
-		loadPmIntoMemoryForUserPair().then(messages=>{
+		loadPmIntoMemoryForUserPair(userMeId, userToId).then(messages=>{
 			callbackGotMessages(messages);
 		});
 	};
 	
 	this.addMessage= function(userMeId, userToId, message, callback){
 		loadPmIntoMemoryForUserPair(userMeId, userToId).then(messages=>{
+			message.setServerAssignedNMessage(serverAssignedNMessage++);
 			messages.push(message);
 			while(messages.length>MAX_N_PMS){
 				messages.splice(0, 1);
