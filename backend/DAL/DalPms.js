@@ -1,4 +1,4 @@
-exports.dalPms= new (function(){
+module.exports= new (function(){
 	const fs = require('fs');
 	const FilePaths = require('./FilePaths');
 	const Message = require('./../Message');

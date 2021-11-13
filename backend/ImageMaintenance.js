@@ -1,7 +1,8 @@
-module.exports = new (function(){const fs = require('fs');
+module.exports = new (function(){
+	const fs = require('fs');
 	const fsExtra = require('fs-extra');
 	const path = require('path');
-	const dalUsers = require('./DAL/DalUsers').dalUsers;
+	const dalUsers = require('./DAL/DalUsers');
 	const ImageSizes = require('./ImageSizes');
 	const uploaded = path.join(__dirname, '../public/images/uploaded');
 	const JPEG='.jpeg';

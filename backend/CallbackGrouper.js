@@ -1,5 +1,4 @@
 module.exports = new (function(){
-	var each = require('./each');
 	var mapIdToHandles = {};
 	this.add = function(method, id, callback){
 		var handles = mapIdToHandles[id];
@@ -37,7 +36,7 @@ module.exports = new (function(){
 		this.getMethod = function(){return method;};
 		this.call= function(a, b, c){
 			remove(id, self);
-			each(callbacks, function(callback){
+			callbacks.forEach(function(callback){
 				callback(a, b, c);
 			});
 		};

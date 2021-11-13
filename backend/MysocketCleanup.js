@@ -3,7 +3,6 @@ module.exports = (function(){
 		const DELAY_CLEANUP_MINUTES = 1;
 		var Set = require('./Set');
 		var Timer = require('./Timer');
-		var each = require('./each');
 		var set = new Set({getEntryId:getEntryId});
 		var timerCleanup = new Timer({delay:DELAY_CLEANUP_MINUTES*60000, callback:cleanupRoutine});
 		mysockets.addEventListener('add', onAdd);
@@ -27,9 +26,9 @@ module.exports = (function(){
 			timerCleanup.stop();
 		}
 		function cleanupRoutine(){
-			console.log('cleanupRoutine running');
+			//console.log('cleanupRoutine running');
 			var mysockets = set.getEntries().slice();
-			each(mysockets, function(mysocket){
+			mysockets.forEach(function(mysocket){
 				if(mysocket.isActive(new Date().getTime()))return;
 				mysocket.close();
 			});

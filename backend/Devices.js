@@ -1,6 +1,5 @@
-exports.Devices = (function(){
+module.exports = (function(){
 	var EventEnabledBuilder = require('./EventEnabledBuilder');
-	var each = require('./each');
 	var Set = require('./Set');
 	var _Devices = function(params){
 		EventEnabledBuilder(this);

@@ -1,4 +1,4 @@
-exports.dalMessages= new (function(){
+exports= new (function(){
 	const fs = require('fs');
 	const MAX_N_ROOM_MESSAGES=100;
 	const Message = require('./../Message');

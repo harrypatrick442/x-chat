@@ -1,4 +1,4 @@
-exports.dalNotifications= new (function(){
+module.exports= new (function(){
 	var Notification = require('./../Notification').Notification;
 	this.getPmNotificationsForUser = function(userId, callback){
 		callback([]);

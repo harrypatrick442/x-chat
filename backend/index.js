@@ -9,13 +9,18 @@
 	const express = require('express');
 	const bodyParser = require('body-parser');
 	const path = require('path');
-	const servlet = require('./servlet').servlet;
-	const endpoint = require('./endpoint').endpoint;
+	const servlet = require('./servlet');
+	const endpoint = require('./endpoint');
+	const dalNotifications = require('./DAL/DalNotifications');
+	const dalRooms = require('./DAL/DalRooms');
+	const dalMessages = require('./DAL/DalMessages');
+	const dalUsers = require('./DAL/DalUsers');
+	const dalPms = require('./DAL/DalPms');
 	const  endpointLongpoll = require('./EndpoingLongpoll');
 	var app = (function(){
 		const SIZE_LIMIT_MB=1.5;
 		const app = express();
-		var imageUploader = new (require('./ImageUploader').ImageUploader)();
+		var imageUploader = new (require('./ImageUploader'))();
 		app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 		app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
 		servlet(app);
@@ -33,12 +38,25 @@
 		}
 		return app;
 	})();
-	var server = config.useHttps?useHttps(app):useHttp(app);
+	const server = config.useHttps?useHttps(app):useHttp(app);
 	endpoint(app, server);
 	server.setTimeout(5000, function(r){
 		console.log('timed out');
 	});
-	
+	process.on('SIGTERM', function(){
+        try{
+			console.log('exiting');
+			server.close();
+			dalUsers.save();
+			dalRooms.save();
+			dalMessages.save();
+			dalPms.save();
+			dalNotifications.save();
+		}
+		catch(err){console.error(err);}
+		return {exit:true};
+	});
+		
 	function useHttp(app){
 		return app.listen(80, function () {
 			console.log('Server is running...');

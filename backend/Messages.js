@@ -1,7 +1,6 @@
-exports.Messages = (function(){
+module.exports = (function(){
 	const N_MESSAGES_HISTORY=50;
-	var dalMessages = require('./Dal/DalMessages').dalMessages;
-	var each = require('./each');
+	var dalMessages = require('./Dal/DalMessages');
 	var _Messages = function(params, callbackLoaded)
 	{
 		var self = this;
@@ -16,7 +15,7 @@ exports.Messages = (function(){
 		};
 		this.toJSON = function(){
 			var jArray=[];
-			each(list, function(message){
+			list.forEach(function(message){
 				jArray.push(message.toJSON());
 			});
 			return jArray;
@@ -32,7 +31,7 @@ exports.Messages = (function(){
 		}
 		function getMaxServerAssignedNMessage(messages){
 			var max =0;
-			each(messages, function(message){
+			messages.forEach(function(message){
 				var serverAssignedNMessage = message.getServerAssignedNMessage();
 				if(serverAssignedNMessage>max)
 					max=serverAssignedNMessage;

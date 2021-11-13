@@ -1,4 +1,4 @@
-exports.endpoint = function(app, server){
+module.exports= function(app, server){
 	const expressWs = require('express-ws')(app, server);
 	const ChannelType = require('./ChannelType');
 	const Mysockets = require('./Mysockets');

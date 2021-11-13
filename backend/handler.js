@@ -1,5 +1,5 @@
-exports.handler = new (function(){
-		var lobby =require('./lobby').lobby;
+module.exports = new (function(){
+		var lobby =require('./lobby');
 		var Message = require('./Message');
 		var sessions = lobby.getSessions();
 		this.process = function(req, mysocket, callback){

@@ -13,7 +13,7 @@ box-sizing: border-box;
 .lobby .right{
 }
 .lobby .right .button-show-hide-wrapper{
-	border-top:1px solid #2592E9;
+	border-top:0px solid #2592E9;
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
 background-image:url('/images/pms-show.gif');	

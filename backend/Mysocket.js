@@ -1,6 +1,6 @@
 module.exports = (function(){
 	const TIMEOUT_CLOSED_CHANNEL_MINUTES = 2;
-	var handler = require('./handler').handler;
+	var handler = require('./handler');
 	var ChannelType = require('./ChannelType');
 	var channelFactory = require('./MysocketChannelFactory');
 	var EventEnabledBuilder=require('./EventEnabledBuilder');

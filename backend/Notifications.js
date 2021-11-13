@@ -1,7 +1,6 @@
-exports.Notifications = (function(){
+module.exports = (function(){
 	const N_MESSAGES_HISTORY=50;
-	var dalNotifications = require('./Dal/DalNotifications').dalNotifications;
-	var each = require('./each');
+	var dalNotifications = require('./Dal/DalNotifications');
 	var _Notifications = function(params)
 	{
 		var self = this;
@@ -13,7 +12,7 @@ exports.Notifications = (function(){
 		this.setPmNotificationsSeen=function(userMe, seens){
 			console.log('SET AS SEEN');
 			var userMeId = userMe.getId();
-			each(seens, function(seen){
+			seens.forEach(function(seen){
 				var userToId = seen.userToId;
 				var seenAt = seen.seenAt;
 				dalNotifications.setPmNotificationSeen(userMeId, userToId, seenAt);

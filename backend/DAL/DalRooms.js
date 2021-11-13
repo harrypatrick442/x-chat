@@ -1,6 +1,6 @@
-exports.dalRooms= new (function(){
+module.exports= new (function(){
 	const fs = require('fs');
-	const Room = require('./../Room').Room;
+	const Room = require('./../Room');
 	const FilePaths = require('./FilePaths');
 	const rooms = load();
 	this.getRoomsToList = function(callback){

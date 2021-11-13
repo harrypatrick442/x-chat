@@ -1,4 +1,4 @@
-exports.TemporalCallback = (function(){
+module.exports = (function(){
 	var Timer = require('./Timer');
 	var _TemporalCallback = function(params){
 		var self = this;

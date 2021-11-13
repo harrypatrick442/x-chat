@@ -1,4 +1,4 @@
-exports.Device = (function(){
+module.exports = (function(){
 	const DISPOSE='dispose';
 	var EventEnabledBuilder=require('./EventEnabledBuilder');
 	var Set = require('./Set');

@@ -1,5 +1,4 @@
 module.exports = (function(){
-	var each = require('./each');
 	var _Set = function(params){
 		var self = this;
 		var getEntryId = params.getEntryId;
@@ -34,7 +33,7 @@ module.exports = (function(){
 			return list.length;
 		};
 		this.each = function(func){
-			each(list, func);
+			list.forEach(func);
 		};
 		this.clear = function(){
 			list =[];

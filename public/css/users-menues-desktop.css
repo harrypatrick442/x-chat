@@ -1,7 +1,7 @@
 
 .lobby .users-menues{
 	box-sizing:border-box;
-	border-right:1px solid #2592E9;
+	border-right:0px solid #2592E9;
 }
 .lobby .users-menues .users-menues-entries{
 	position:relative;

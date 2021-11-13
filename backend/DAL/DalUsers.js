@@ -1,13 +1,13 @@
-exports.dalUsers= new (function(){
-	const fs = require('fs');
-	const User = require('./../User').User;
-	const FilePaths = require('./FilePaths');
-	const mapUserIdToUser = new Map();
-	const mapTokenToUserId = new Map();
-	const mapUserIdToToken = new Map();
-	const mapUsernameNormalizedToUser = new Map();
-	const mapEmailNormalizedToUser = new Map();
-	load();
+const fs = require('fs');
+const User = require('./../User');
+const FilePaths = require('./FilePaths');
+const mapUserIdToUser = new Map();
+const mapTokenToUserId = new Map();
+const mapUserIdToToken = new Map();
+const mapUsernameNormalizedToUser = new Map();
+const mapEmailNormalizedToUser = new Map();
+module.exports = new (function(){
+	var currentId;
 	this.getHash = function(userId, callback){
 		const user =mapUserIdToUser.get(userId);
 		callback(user?user.getHash():null);
@@ -52,7 +52,7 @@ exports.dalUsers= new (function(){
 		}*/
 		const user = new User(params);
 		user.setId(nextId());
-		mapEmailNormalizedToUser.set(emailNormalized, user);
+		mapEmailNormalizedToUser.set(normalizedEmail, user);
 		mapUsernameNormalizedToUser.set(normalizedUsername, user);
 		mapUserIdToUser.set(user.getId(), user);
 		callback(user);
@@ -80,17 +80,24 @@ exports.dalUsers= new (function(){
 		callback([]);
 	};
 	this.save = save;
+    currentId=load();
+	function nextId(){
+		return currentId++;
+	}
 	function save(){
-		const jArray = mapUserIdToUser.values().map(user=>user.toJSON());
-		fs.writeFileSync(FilePaths.getUsers(), JSON.stringify(jArray));
+		const jArrayUsers = mapUserIdToUser.values().map(user=>user.toJSON());
+		fs.writeFileSync(FilePaths.getUsers(),
+			JSON.stringify({users:jArrayUsers, currentId:currentId})
+		);
 	}
 	function load(){
 		try{
 			const path = FilePaths.getUsers();
 			if(!fs.existsSync(path))
-				return [];
-			const jArray = JSON.parse(fs.readFileSync(path));
-			const users= jArray.map(jObjectUser=>User.fromJSON(jObjectUser));
+				return 0;
+			const jObject = JSON.parse(fs.readFileSync(path));
+			const users= jObject.users.map(jObjectUser=>User.fromJSON(jObjectUser));
+			currentId = jObject.currentId;
 			users.forEach(user=>{
 				 mapUserIdToUser.set(user.getId(), user);
 				 const token = user.getToken();
