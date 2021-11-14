@@ -85,8 +85,10 @@ module.exports = new (function(){
 		return currentId++;
 	}
 	function save(){
-		const jArrayUsers = mapUserIdToUser.values().map(user=>user.toJSON());
-		fs.writeFileSync(FilePaths.getUsers(),
+		const jArrayUsers = Array.from(mapUserIdToUser.values()).map(user=>user.toJSON());
+		const path = FilePaths.getUsers();
+		console.log(`Saving users to ${path}`);
+		fs.writeFileSync(path,
 			JSON.stringify({users:jArrayUsers, currentId:currentId})
 		);
 	}

@@ -6,16 +6,12 @@
 'use strict';
 (function(){
 	const config = require('./configuration');
+	const ShutdownManager = require('./shutdown/ShutdownManager');
 	const express = require('express');
 	const bodyParser = require('body-parser');
 	const path = require('path');
 	const servlet = require('./servlet');
 	const endpoint = require('./endpoint');
-	const dalNotifications = require('./DAL/DalNotifications');
-	const dalRooms = require('./DAL/DalRooms');
-	const dalMessages = require('./DAL/DalMessages');
-	const dalUsers = require('./DAL/DalUsers');
-	const dalPms = require('./DAL/DalPms');
 	const  endpointLongpoll = require('./EndpoingLongpoll');
 	var app = (function(){
 		const SIZE_LIMIT_MB=1.5;
@@ -43,20 +39,9 @@
 	server.setTimeout(5000, function(r){
 		console.log('timed out');
 	});
-	process.on('SIGTERM', function(){
-        try{
-			console.log('exiting');
-			server.close();
-			dalUsers.save();
-			dalRooms.save();
-			dalMessages.save();
-			dalPms.save();
-			dalNotifications.save();
-		}
-		catch(err){console.error(err);}
-		return {exit:true};
+	ShutdownManager.initialize({
+		server
 	});
-		
 	function useHttp(app){
 		return app.listen(80, function () {
 			console.log('Server is running...');

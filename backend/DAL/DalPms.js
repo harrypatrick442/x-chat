@@ -74,6 +74,7 @@ module.exports= new (function(){
 	function savePmToFile(lowestUserId, highestUserId, messages){
 		const path = getPmPath(lowestUserId, highestUserId);
 		const jArray = messages.map(message=>message.toJSON());
+		console.log(`Saving pms to ${path}`);
 		fs.writeFileSync(path, JSON.stringify(jArray));
 	}
 	function getPmPath(lowestUserId, highestUserId){

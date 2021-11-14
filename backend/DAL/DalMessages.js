@@ -1,7 +1,8 @@
-exports= new (function(){
+const Message = require('./../Message');
+const FilePaths = require('./FilePaths');
+	module.exports= new (function(){
 	const fs = require('fs');
 	const MAX_N_ROOM_MESSAGES=100;
-	const Message = require('./../Message');
 	const mapRoomIdToMessages = new Map();
 	let serverAssignedNMessage=0;
 	load();
@@ -27,12 +28,14 @@ exports= new (function(){
 	
 	function save(){
 		const jObject = {entries:{}, serverAssignedNMessage:serverAssignedNMessage};
-		mapRoomIdToMessages.keys().forEach(
+		Array.from(mapRoomIdToMessages.keys()).forEach(
 			roomId=>{
 				jObject.entries[roomId]=mapRoomIdToMessages.get(roomId).map(message=>message.toJSON());
 			}
 		);
-		fs.writeFileSync(FilePaths.getMessages(), JSON.stringify(jObject));
+		const path = FilePaths.getMessages();
+		console.log(`Saving messages to ${path}`);
+		fs.writeFileSync(path, JSON.stringify(jObject));
 	}
 	function load(){
 		try{

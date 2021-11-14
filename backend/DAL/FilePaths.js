@@ -1,23 +1,27 @@
 const path = require('path');
+const PathHelper = require('../PathHelper');
+const DirectoryHelper = require('../DirectoryHelper');
 module.exports = new (function FilePaths(){
+	DirectoryHelper.makeDirectoryIfDoesntExist(getDataDirectoryPath());;
 	this.getUsers= function(){
-		console.log(getRootDirectory());
-		return getRootDirectory()+'users.json';
+		console.log(getDataDirectoryPath());
+		return getDataDirectoryPath()+'users.json';
 	};
 	this.getRooms = function(){
-		return getRootDirectory()+'rooms.json';
+		return getDataDirectoryPath()+'rooms.json';
 		
 	};
 	this.getNotifications = function(){
-		return getRootDirectory()+'notifications.json';
+		return getDataDirectoryPath()+'notifications.json';
 	};
 	this.getPms = function(){
-		return getRootDirectory()+'pms.json';
+		return getDataDirectoryPath()+'pms.json';
 	};
 	this.getMessages = function(){
-		return getRootDirectory()+'messages.json';
+		return getDataDirectoryPath()+'messages.json';
 	};
-	function getRootDirectory(){
-		return path.resolve("./");
+	function getDataDirectoryPath(){
+		const splits = PathHelper.split(path.resolve("./"));
+		return `${splits[0]}${path.sep}data${path.sep}`;
 	}
 })();
