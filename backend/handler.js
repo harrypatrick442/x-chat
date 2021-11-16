@@ -4,7 +4,6 @@ module.exports = new (function(){
 		var sessions = lobby.getSessions();
 		this.process = function(req, mysocket, callback){
 			var res = {};
-			console.log('type: '+req.type);
 			try{
 				switch(req.type){
 					case 'register':
@@ -132,11 +131,12 @@ module.exports = new (function(){
 						lobby.pmVideoOfferRejected(user, req.userToId, req.reason);
 					break;
 					case 'debug':
+						console.log('debug');
 						console.log(req.str);
 					break;
 				}
 			}
-			catch(ex){console.log(ex);}
+			catch(ex){console.error(ex);}
 			return JSON.stringify(res);
 		};
 		this.setImageForUser = lobby.setImageForUser;

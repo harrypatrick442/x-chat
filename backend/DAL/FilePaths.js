@@ -4,7 +4,6 @@ const DirectoryHelper = require('../DirectoryHelper');
 module.exports = new (function FilePaths(){
 	DirectoryHelper.makeDirectoryIfDoesntExist(getDataDirectoryPath());;
 	this.getUsers= function(){
-		console.log(getDataDirectoryPath());
 		return getDataDirectoryPath()+'users.json';
 	};
 	this.getRooms = function(){
@@ -14,8 +13,8 @@ module.exports = new (function FilePaths(){
 	this.getNotifications = function(){
 		return getDataDirectoryPath()+'notifications.json';
 	};
-	this.getPms = function(){
-		return getDataDirectoryPath()+'pms.json';
+	this.getPmsRoot = function(){
+		return getDataDirectoryPath()+'pms';
 	};
 	this.getMessages = function(){
 		return getDataDirectoryPath()+'messages.json';

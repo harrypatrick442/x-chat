@@ -7,7 +7,7 @@ module.exports = (function(){
 			var self = this;
 			var users = params.users;
 		this.sendMessage = function(userMeId, userToId, message){
-			console.log('send pm message');
+			
 			dalPms.addMessage(userMeId, userToId, message, function(){
 				var userTo = users.getById(userToId);
 				if(userTo)

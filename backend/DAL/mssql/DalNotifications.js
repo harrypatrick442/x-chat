@@ -1,5 +1,4 @@
 exports.dalNotifications= new (function(){
-	console.log('DalPms loaded');
 	const STORED_PROCEDURE_PM_NOTIFICATIONS_GET_FOR_USER='xchat_pm_notifications_get_for_user';
 	const STORED_PROCEDURE_PM_NOTIFICATION_SEEN_SET = 'xchat_pm_notification_seen_set';
 	const USER_ID='userId';

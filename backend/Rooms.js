@@ -1,4 +1,4 @@
-var dalRooms = require('./Dal/DalRooms');
+var dalRooms = require('./DAL/DalRooms');
 var CallbackGrouper = require('./CallbackGrouper');
 var Rooms = function(){
 	var self = this;

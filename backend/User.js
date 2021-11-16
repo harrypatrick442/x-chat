@@ -27,7 +27,10 @@ const User = function(params){
 	this.setToken = function(value){
 		params.token=value;
 	};
-	this.toJSON = function(){return params;};
+	this.toJSON = function(){
+		delete params.type;
+		return params;
+	};
 	var session;
 	this.getSession = function(){return session;};
 	this.setSession=function(value){session = value;};
@@ -71,7 +74,7 @@ User.fromSqlRow = function(row){
 	return user;
 };
 User.fromJSON= function(jObject){
-	var user = getExiting(jObject.id);
+	var user = getExisting(jObject.id);
 	if(user)return user;
 	user = new User(jObject);
 	set.add(user);

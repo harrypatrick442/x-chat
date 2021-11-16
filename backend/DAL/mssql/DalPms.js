@@ -1,5 +1,4 @@
 exports.dalPms= new (function(){
-	console.log('DalPms loaded');
 	const STORED_PROCEDURE_PM_MESSAGE_ADD='xchat_pm_message_add';
 	const STORED_PROCEDURE_PM_MESSAGES_GET='xchat_pm_messages_get';
 	const N_MESSAGES='nMessages';

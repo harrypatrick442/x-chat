@@ -16,6 +16,8 @@ var Messages = new (function(){
 			overflow();
 		};
 		this.addReceived=function(message){
+			console.log(mapUniqueIdToMessage);
+			console.log(message.getUniqueId());
 			var mappedMessage = mapUniqueIdToMessage[message.getUniqueId()];
 			if(mappedMessage){
 				mappedMessage.confirm(message);
@@ -59,9 +61,14 @@ var Messages = new (function(){
 			var reverseIterator = new ReverseIterator(messages);
 			while(reverseIterator.hasNext()){
 				var placedMessage = reverseIterator.next();
+				console.log('placedMessage.getServerAssignedNMessage() '+placedMessage.getServerAssignedNMessage());
+				console.log('serverAssignedNMessage '+serverAssignedNMessage);
+
 				if(placedMessage.getServerAssignedNMessage()<serverAssignedNMessage){
+					console.log('placing');
 					if(reverseIterator.hasPrevious())
 					{
+						console.log('reverseIterator.hasPrevious()');
 						var nextSibling = reverseIterator.previous().getElement().nextSibling;
 						if(nextSibling){
 							element.insertBefore(message.getElement(), nextSibling);
@@ -69,11 +76,13 @@ var Messages = new (function(){
 							return;
 						}
 					}
+					console.log('element.appendChild(message.getElement());');
 					element.appendChild(message.getElement());
 					reverseIterator.append(message);
 					return;
 				}
 			}
+			console.log('element.insertBefore(message.getElement(), messages[0].getElement());');
 			element.insertBefore(message.getElement(), messages[0].getElement());
 			reverseIterator.insert(message);
 		}

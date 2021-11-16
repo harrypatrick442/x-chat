@@ -1,6 +1,5 @@
 (function(){
 	var Enumerable = require('./Enumerable');
-	console.log(Enumerable);
 	Enumerable.prototype.toList = function () {
 		var list = [];
 		var self = this;
@@ -19,7 +18,6 @@
 	};
 	Enumerable.prototype.where = function (func) {
 		var self = this;
-		console.log('where');
 		return new Enumerable(function () {
 				do {
 					if (!self.moveNext()) return false;

@@ -15,7 +15,6 @@ module.exports =(function() {
 		removeGet();
 		active();
 		app.get(getUrl(), function(req, res, next){
-			console.log('incoming get');
 			active();
 			endPreviousRequest();
 			currentRequest = new CurrentRequest(req, res);

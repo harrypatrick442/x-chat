@@ -52,7 +52,6 @@ module.exports = (function(){
 			self.dispatchEvent({type:'close', mysocket:self});
 		}
 		function onMessage(msg){
-			console.log(msg);
 			handler.process(msg, self, sendMessage);
 		}
 		function onOpen(){

@@ -18,8 +18,6 @@ var Users = function(){
 	};
 	this.sendMessage=function(msg){
 		set.each(function(user){
-			console.log('sending for user: '+user.getUsername());
-			console.log(msg);
 			user.sendMessage(msg);
 		});
 	};	

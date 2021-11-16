@@ -1,4 +1,4 @@
-const dalRooms=require('./Dal/DalRooms');
+const dalRooms=require('./DAL/DalRooms');
 const CallbackGrouper=require('./CallbackGrouper');
 const Timer=require('./Timer');
 const DELAY_UPDATE_MILLISECONDS = 10000;
@@ -31,7 +31,7 @@ module.exports =function(params) {
 		});
 	}
 	function addLiveRooms(mapIdToRoomInfo){
-		each(rooms.getPublicRooms(), function(room){
+		rooms.getPublicRooms().forEach(function(room){
 			mapIdToRoomInfo[room.getId()]=room.getInfo();
 		});
 	}

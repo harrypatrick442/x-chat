@@ -2,16 +2,19 @@ module.exports= new (function(){
 	const fs = require('fs');
 	const FilePaths = require('./FilePaths');
 	const Message = require('./../Message');
+	const DirectoryHelper = require('./../DirectoryHelper');
 	const MAX_N_PMS= 300;
+	let serverAssignedNMessage=0;
 	const mapLowestUserIdToMapHighestUserIdToMessages = new Map();
 	this.getMessages = function(userMeId, userToId, nMessages, callbackGotMessages){
-		loadPmIntoMemoryForUserPair().then(messages=>{
+		loadPmIntoMemoryForUserPair(userMeId, userToId).then(messages=>{
 			callbackGotMessages(messages);
 		});
 	};
 	
 	this.addMessage= function(userMeId, userToId, message, callback){
 		loadPmIntoMemoryForUserPair(userMeId, userToId).then(messages=>{
+			message.setServerAssignedNMessage(serverAssignedNMessage++);
 			messages.push(message);
 			while(messages.length>MAX_N_PMS){
 				messages.splice(0, 1);
@@ -32,7 +35,8 @@ module.exports= new (function(){
 				highestUserId = userMeId;
 				lowestUserId = userToId;
 			}
-			const path = getPmPath(lowestUserId, highestUserId);
+			const atomicDirectoryPath={};
+			const path = getPmPath(lowestUserId, highestUserId, atomicDirectoryPath);
 			let mapHighestUserIdToMessages = mapLowestUserIdToMapHighestUserIdToMessages.get(lowestUserId);
 			let messages;
 			if(mapHighestUserIdToMessages){
@@ -72,12 +76,17 @@ module.exports= new (function(){
 		}
 	}
 	function savePmToFile(lowestUserId, highestUserId, messages){
-		const path = getPmPath(lowestUserId, highestUserId);
+		const atomicDirectoryPath={};
+		const path = getPmPath(lowestUserId, highestUserId,
+			atomicDirectoryPath);
 		const jArray = messages.map(message=>message.toJSON());
 		console.log(`Saving pms to ${path}`);
+		DirectoryHelper.makeDirectoryIfDoesntExist(atomicDirectoryPath.value);
 		fs.writeFileSync(path, JSON.stringify(jArray));
 	}
-	function getPmPath(lowestUserId, highestUserId){
-		return `${FilePaths.pmsRoot}/${String(lowestUserId)}/${String(highestUserId)}.json`;
+	function getPmPath(lowestUserId, highestUserId,
+		atomicDirectoryPath){
+		atomicDirectoryPath.value = `${FilePaths.getPmsRoot()}/${String(lowestUserId)}/`;
+		return `${atomicDirectoryPath.value}${String(highestUserId)}.json`;
 	}
 })();

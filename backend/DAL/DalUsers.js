@@ -7,7 +7,8 @@ const mapUserIdToToken = new Map();
 const mapUsernameNormalizedToUser = new Map();
 const mapEmailNormalizedToUser = new Map();
 module.exports = new (function(){
-	var currentId;
+	const self = this;
+	var currentId = 0;
 	this.getHash = function(userId, callback){
 		const user =mapUserIdToUser.get(userId);
 		callback(user?user.getHash():null);
@@ -20,7 +21,7 @@ module.exports = new (function(){
 		callback(user);
 	};
 	this.authenticationTokensDelete = function(userId){
-		const token = mapUserIdToToken.get(token);
+		const token = mapUserIdToToken.get(userId);
 		if(token===undefined&&token===null)return;
 		mapUserIdToToken.delete(userId);
 		mapTokenToUserId.delete(token);
@@ -80,7 +81,7 @@ module.exports = new (function(){
 		callback([]);
 	};
 	this.save = save;
-    currentId=load();
+    load();
 	function nextId(){
 		return currentId++;
 	}
@@ -96,10 +97,11 @@ module.exports = new (function(){
 		try{
 			const path = FilePaths.getUsers();
 			if(!fs.existsSync(path))
-				return 0;
+				return;
 			const jObject = JSON.parse(fs.readFileSync(path));
 			const users= jObject.users.map(jObjectUser=>User.fromJSON(jObjectUser));
-			currentId = jObject.currentId;
+			if(jObject.currentId!==undefined||jObject.currentI!==null)
+				currentId = jObject.currentId;
 			users.forEach(user=>{
 				 mapUserIdToUser.set(user.getId(), user);
 				 const token = user.getToken();
@@ -119,7 +121,7 @@ module.exports = new (function(){
 		mapEmailNormalizedToUser.delete(normalize(user.getEmail()));
 		mapUsernameNormalizedToUser.delete(normalize(user.getUsername()));
 		mapUserIdToToken.delete(user.getId());
-		this.authenticationTokensDelete(user.getId());
+		self.authenticationTokensDelete(user.getId());
 	}
 	function normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail){
 		return mapEmailNormalizedToUser.has(normalizedUsername)

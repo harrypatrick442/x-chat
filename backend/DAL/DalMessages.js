@@ -3,17 +3,22 @@ const FilePaths = require('./FilePaths');
 	module.exports= new (function(){
 	const fs = require('fs');
 	const MAX_N_ROOM_MESSAGES=100;
+	const Messages = require('./../Messages');
 	const mapRoomIdToMessages = new Map();
 	let serverAssignedNMessage=0;
 	load();
 	this.getMessages = function(roomId, nMessages, callbackGotMessages){
-		const roomMessages = mapRoomIdToMessages.get(roomId);
-		if(!roomMessages)return [];
-		return roomMessages;//.slice((roomMessages.length - 5), roomMessages.length);
+		let roomMessages = mapRoomIdToMessages.get(roomId);
+		if(!roomMessages){
+			roomMessages = [];
+			mapRoomIdToMessages.set(roomId, roomMessages);
+			callbackGotMessages(roomMessages);
+			return;
+		}
+		callbackGotMessages( roomMessages);//.slice((roomMessages.length - 5), roomMessages.length);
 	};
 	this.addMessage= function(roomId, message){
-		message.setServerAssignedNMessage(serverAssignedNMessage);
-		message.setUniqueId(serverAssignedNMessage++);//todo might have to check if userId is string or int was a cast to string in message.,
+		//todo might have to check if userId is string or int was a cast to string in message.,
 		let roomMessages = mapRoomIdToMessages.get(roomId);
 		if(!roomMessages){
 			mapRoomIdToMessages.set(roomId, [message]);

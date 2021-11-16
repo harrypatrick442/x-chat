@@ -28,7 +28,6 @@ module.exports=new (function(){
 				}
 				mysocketId = mysocket.getId();
 			}
-			console.log(msg);
 			longpoll.incomingMessage(msg);
 			res.send({id:mysocketId});
 		});

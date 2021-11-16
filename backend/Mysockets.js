@@ -29,9 +29,7 @@ module.exports = new (function(){
 	};
 	this.getOrCreateLongpoll=function(id, createLongpoll){
 		var mysocket;
-		console.log(id);
 		if(id){
-			console.log('has an id and is getting by an id');
 			mysocket = getById(id);
 			if(!mysocket)return;
 			mysocket.setToLongpoll(createLongpoll(id));

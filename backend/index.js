@@ -5,6 +5,7 @@
 
 'use strict';
 (function(){
+	require('./CaseSensitiveRequire');
 	const config = require('./configuration');
 	const ShutdownManager = require('./shutdown/ShutdownManager');
 	const express = require('express');
@@ -37,7 +38,7 @@
 	const server = config.useHttps?useHttps(app):useHttp(app);
 	endpoint(app, server);
 	server.setTimeout(5000, function(r){
-		console.log('timed out');
+		console.log('timed out a connection');
 	});
 	ShutdownManager.initialize({
 		server

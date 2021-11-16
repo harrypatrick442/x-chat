@@ -52,7 +52,6 @@ module.exports = new (function(){
 		};
 		this.createRoom = function(user, msg, callback){
 			dalRooms.createRoom(msg.name, function(res){
-				console.log(res);
 				if(typeof(res)=='string'){
 						callback({type:'create_room', successful:false, message:res});
 					return;
@@ -148,7 +147,6 @@ module.exports = new (function(){
 			userTo.sendMessage({type:'pm_video_offer', userFromId:userMe.getId(), offer:req.offer});
 		};
 		this.pmVideoAccept = function(req, callback){
-			console.log(req);
 			var userMe = getUserFromSessionId(req.sessionId);
 			if(!userMe)return;
 			var userTo = users.getById(req.userToId);
@@ -165,7 +163,6 @@ module.exports = new (function(){
 			if(!userTo){
 				return;
 			}
-			console.log('forwarded ice candidate');
 			userTo.sendMessage({type:'pm_video_ice_candidate', userFromId:userMe.getId(), candidate:req.candidate});
 		};
 		this.pmVideoOfferRejected = function(user, userToId, reason){
@@ -221,7 +218,6 @@ module.exports = new (function(){
 			if(usernameIsAvailable!=''){ callback( {successful:false, error:USERNAME_NOT_AVAILABLE, type:AUTHENTICATE}); return;}
 				dalUsers.register(req, function(user){
 					user.addDevice(new Device({mysocket:mysocket, user:user}));
-					console.log(user);
 					var res = createSession(user);
 					res.type='authenticate';
 					res.users = users.toJSON();
@@ -231,7 +227,6 @@ module.exports = new (function(){
 					user.addEventListener('dispose', userDispose);
 					if(!req.staySignedIn){ callback(res);return;}
 					dalUsers.getAuthenticationToken(user.getId(), function(token){
-						console.log('got token');
 						res.token = token;
 						user.setToken(token);
 						callback(res);
@@ -270,11 +265,9 @@ module.exports = new (function(){
 		}
 		function userDispose(e){
 			var user = e.user;
-			console.log('user has token: '+user.getToken());
 			if(user.isGuest()&&!user.getToken())
 			{
 				dalUsers.deleteGuest(user.getId());
-				console.log(ImageMaintenance);
 				ImageMaintenance.deleteUserImageFiles(user.getId());
 			}
 			sendUserIds();
@@ -300,7 +293,6 @@ module.exports = new (function(){
 		}
 		function getUserFromSessionId(sessionId){
 			var session = sessions.getById(sessionId);
-			console.log(session);
 			if(!session) return;
 			return session.getUser();
 		}

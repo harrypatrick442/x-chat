@@ -43,7 +43,6 @@ module.exports = (function(){
 			dispatchAllClose();
 		}
 		function dispatchAllClose(){
-			console.log('dispatchAllClosed');
 			self.dispatchEvent({type:'allclosed'});
 		}
 		function contains(device){

@@ -8,12 +8,9 @@ module.exports= function(app, server){
 	});
 	app.ws('/endpoint', function(ws, req) {
 		try{
-			console.log('opened'); 	
 			var parameters = url.parse(req.url, true).query;
 			var mysocketId = parameters.mysocketId;
 			var params = {id:mysocketId, ws:ws};
-			console.log('params was: ');
-			console.log(mysocketId);
 			var mysocket = Mysockets.getOrCreateWebsocket(params);
 			if(!mysocket){
 				if(mysocketId){

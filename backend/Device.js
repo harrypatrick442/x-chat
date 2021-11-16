@@ -32,7 +32,6 @@ module.exports = (function(){
 			roomsSet.remove(e.room);
 		}
 		function dispatchClose(){
-			console.log('dispatching close');
 			self.dispatchEvent({type:'close', device:self});
 		}
 		function getEntryId(room){

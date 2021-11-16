@@ -55,6 +55,7 @@ var Message = (function(){
 			return ui;
 		}
 		function updateVisibility(){
+			console.log('updateVisibility'+ignored);
 			getUI().setVisible(!ignored);
 		}
 		function showUserMenu(e){

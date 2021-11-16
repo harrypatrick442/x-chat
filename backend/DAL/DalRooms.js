@@ -4,14 +4,15 @@ module.exports= new (function(){
 	const FilePaths = require('./FilePaths');
 	const rooms = load();
 	this.getRoomsToList = function(callback){
-		return rooms;
+		callback(rooms);
 	};
 	this.getRoom = function(id, callback){
-		return  rooms.filter(room=>room.id===id)[0];
+		callback(rooms.filter(room=>room.getId()===id)[0]);
 	};
 	this.search = function(text, callback){
 		const normalizedText = text.toLowerCase();
-		return rooms.filter(room.getName().toLowerCase().indexOf(normalizedText)>=0);
+		const matchingRooms =  rooms.filter(room.getName().toLowerCase().indexOf(normalizedText)>=0);
+		callback(matchingRooms);
 	};
 	this.createRoom = function(name, callback){
 	};
@@ -26,8 +27,9 @@ module.exports= new (function(){
 			const jArray = JSON.parse(fs.readFileSync(FilePaths.getRooms()));
 			return jArray.map(jObjectRoom=>Room.fromJSON(jObjectRoom));
 		}
-		catch{
-			return [];
+		catch(err){
+			console.error(err);
+			return [Room.fromJSON({name:"Lounge", isPm:false, id:1})];
 		}
 	}
 })();
