@@ -5,12 +5,12 @@ var SortedFilteredEntries = new (function () {
         var getEntryId = params.getEntryId;
         var self = this;
         var entries = [];
-        var mapIdToEntry = {};
+        var mapIdToEntry = new Map();
         this.containsEntryId = function (entryId) {
             return containsEntryId(entryId);
         };
         this.getByEntryId = function (entryId) {
-            return mapIdToEntry[entryId];
+            return mapIdToEntry.get(entryId);
         };
         this.getEntries = function () {
             return entries;
@@ -26,7 +26,7 @@ var SortedFilteredEntries = new (function () {
             if (index < 0) return;
             entries.splice(index, 1);
             element.removeChild(entry.getElement());
-            delete mapIdToEntry[getEntryId(entry)];
+            mapIdToEntry.delete(getEntryId(entry));
         };
         this.removeEntryById = function (entryId) {
 			var entry = self.getByEntryId(entryId);
@@ -38,7 +38,7 @@ var SortedFilteredEntries = new (function () {
                 var entry = entries.splice(0, 1)[0];
                 element.removeChild(entry.getElement());
             }
-			mapIdToEntry={};
+			mapIdToEntry.clear();
         };
         function insertInPlace(entry) {
             map(entry);
@@ -59,7 +59,7 @@ var SortedFilteredEntries = new (function () {
             element.appendChild(entry.getElement());
         }
         function map(entry) {
-            mapIdToEntry[getEntryId(entry)] = entry;
+            mapIdToEntry.set(getEntryId(entry), entry);
         }
         function _findInsertPosition(fromIndex, toIndex, entry) {
             var n = toIndex - fromIndex;
@@ -81,7 +81,7 @@ var SortedFilteredEntries = new (function () {
             return toIndex+1;
         }
         function containsEntry(entry) { return containsEntryId(getEntryId(entry)); }
-        function containsEntryId(entryId) { return mapIdToEntry[entryId] ? true : false; }
+        function containsEntryId(entryId) { return mapIdToEntry.get(entryId) ? true : false; }
     };
     return _SortedFilteredEntries;
 })();

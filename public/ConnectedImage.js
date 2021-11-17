@@ -1,5 +1,5 @@
 var ConnectedImage = (function(){
-	var mapTypeToMapIdToInstances={};
+	var mapTypeToMapIdToInstances=new Map();
 	var _ConnectedImage = function(params)
 	{
 		console.log(params);
@@ -37,20 +37,22 @@ var ConnectedImage = (function(){
 	};
 	return _ConnectedImage;
 	function getInstances(type, id){
-		var mapIdToInstances = mapTypeToMapIdToInstances[type];
+		var mapIdToInstances = mapTypeToMapIdToInstances.get(type);
 		if(!mapIdToInstances) return;
-		return mapIdToInstances[id];
+		return mapIdToInstances.get(id);
 	}
 	function map(type, id, instance){
-		var mapIdToInstances = mapTypeToMapIdToInstances[type];
+		var mapIdToInstances = mapTypeToMapIdToInstances.get(type);
 		if(!mapIdToInstances) 
 		{
-			mapTypeToMapIdToInstances[type]={id:[instance]};
+			mapIdToInstances = new Map();
+			mapIdToInstances.set(id, instances);
+			mapTypeToMapIdToInstances.set(type, mapIdToInstances);
 			return;
 		}
-		var instances = mapIdToInstances[id];
+		var instances = mapIdToInstances.get(id);
 		if(!instances){
-			mapIdToInstances[id]=[instance];
+			mapIdToInstances.set(id, [instance]);
 			return;
 		}
 		if(instances.indexOf(instance)<0)
@@ -63,8 +65,9 @@ var ConnectedImage = (function(){
 		if(index<0) return;
 		instances.splice(index, 1);
 		if(instances.length>0) return;
-		delete mapTypeToMapIdToInstances[type][id];
-		if(Object.keys(mapTypeToMapIdToInstances[type]).length<2)
-		delete mapTypeToMapIdToInstances[type];
+		const mapIdToInstances = mapTypeToMapIdToInstances.get(type);
+		mapIdToInstances.delete(id);
+		if(mapIdToInstances.size<2)
+		mapTypeToMapIdToInstances.delete(type);
 	}
 })();

@@ -1,4 +1,6 @@
 const Message = function(params){
+	delete params.sessionId;
+	delete params.type;
 	this.setUniqueId = function(value){params.uniqueId = value;};
 	this.getUserId = function(){return params.userId;};
 	this.getContent = function(){return params.content;};
@@ -15,7 +17,6 @@ Message.fromJSON = function(jObject){
 	return new Message(jObject);
 };
 Message.fromSqlRow = function(row){
-	row.userId = String(row.userId);
 	row.uniqueId = row.serverAssignedNMessage;
 	return new Message(row);
 };

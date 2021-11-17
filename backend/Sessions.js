@@ -1,16 +1,16 @@
 var Session = require('./Session');
 module.exports = function(){
-	var mapSessionIdToSession=[];
+	var mapSessionIdToSession=new Map();
 	var self = this;
 	this.getById=function(sessionId){
-		return mapSessionIdToSession[sessionId];
+		return mapSessionIdToSession.get(sessionId);
 	};
 	this.add=function(session){
-		mapSessionIdToSession[session.getId()]=session;
+		mapSessionIdToSession.set(session.getId(), session);
 		session.addEventListener('dispose', onDispose);
 	};
 	function onDispose(e){
 		console.log('SESSION BEING DISPOSED');
-		delete mapSessionIdToSession[e.session.getId()];
+		mapSessionIdToSession.delete(e.session.getId());
 	}
 };

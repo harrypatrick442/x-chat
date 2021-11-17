@@ -9,21 +9,20 @@ var Messages = new (function(){
 		var element = params.element;
 		var maxNMessages = params.maxNMessages;
 		var messages=[];
-		var mapUniqueIdToMessage={};
+		var mapUniqueIdToMessage=new Map();
 		var overflowManager = new OverflowManager({getMessages:getMessages, remove:remove, maxNMessages:maxNMessages});
 		this.addSending = function(message){
 			append(message);
 			overflow();
 		};
 		this.addReceived=function(message){
-			console.log(mapUniqueIdToMessage);
 			console.log(message.getUniqueId());
-			var mappedMessage = mapUniqueIdToMessage[message.getUniqueId()];
+			var mappedMessage = mapUniqueIdToMessage.get(message.getUniqueId());
 			if(mappedMessage){
 				mappedMessage.confirm(message);
 			}
 			else{
-				mapUniqueIdToMessage[message.getUniqueId()]=message;
+				mapUniqueIdToMessage.set(message.getUniqueId(), message);
 				insertInPlace(message);
 			}
 			if(ignoreManager.userIdIsIgnored(message.getUserId()))
@@ -31,7 +30,7 @@ var Messages = new (function(){
 			overflow();
 		};
 		this.add= function(message){
-				mapUniqueIdToMessage[message.getUniqueId()]=message;
+				mapUniqueIdToMessage.set(message.getUniqueId(), message);
 				append(message);
 		};
 		this.remove = function(message){
@@ -89,7 +88,7 @@ var Messages = new (function(){
 		function append(message){
 			addEventListener(message);
 			messages.push(message);
-			mapUniqueIdToMessage[message.getUniqueId()]=message;
+			mapUniqueIdToMessage.set(message.getUniqueId(), message);
 			element.appendChild(message.getElement());
 		}
 		function addEventListener(message){
@@ -103,7 +102,7 @@ var Messages = new (function(){
 			var index = messages.indexOf(message);
 			if(index<0)return;
 			messages.splice(index, 1);
-			delete mapUniqueIdToMessage[message.getUniqueId()];
+			mapUniqueIdToMessage.delete(message.getUniqueId());
 			element.removeChild(message.getElement());
 			message.removeEventListener('showpm', showPm);
 		}

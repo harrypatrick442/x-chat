@@ -30,7 +30,7 @@ const Room = function(params){
 		devices.sendMessage({type:'room_userids', roomId:self.getId(), userIds:devices.getUserIds()});
 	};
 	this.getInfo = function(){
-		return {id:String(params.id), name:params.name, nUsers:self.getNUsers()};
+		return {id:params.id, name:params.name, nUsers:self.getNUsers()};
 	};
 	//set when a request to get the new list of rooms to show returns this room.
 	//if a subsequent return does not include this room, this property is set
@@ -61,9 +61,9 @@ const Room = function(params){
 	}
 };
 Room.fromJSON = function(jObject){
-	return new Room({name:jObject.name, id:String(jObject.id), isPm:jObject.isPm});
+	return new Room({name:jObject.name, id:jObject.id, isPm:jObject.isPm});
 };
 Room.fromSqlRow = function(row){
-	return new Room({name:row.name, id:String(row.id), isPm:row.isPm});
+	return new Room({name:row.name, id:row.id, isPm:row.isPm});
 };
 module.exports = Room;

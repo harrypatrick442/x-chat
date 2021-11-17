@@ -44,7 +44,7 @@ function MessageUI(params){
 	element.appendChild(inner);
 	this.getElement = function(){return element;};
 	this.getUsername = function(){return usernameAndTimestamp;};
-	this.setVisible=function(value){element.style.display=value?'inline-block':'none';};
+	this.setVisible=function(value){ console.log(new Error().stack);element.style.display=value?'inline-block':'none';};
 	this.hidePending = function(){
 		if(pending){element.removeChild(pending);}
 	};

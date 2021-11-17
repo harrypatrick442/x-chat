@@ -1,11 +1,11 @@
 module.exports = new (function(){
-	var mapIdToHandles = {};
+	var mapIdToHandles = new Map();
 	this.add = function(method, id, callback){
-		var handles = mapIdToHandles[id];
+		var handles = mapIdToHandles.get(id);
 		if(!handles){
 			var handle = new Handle(id, method, callback, remove);
 			handles = [handle];
-			mapIdToHandles[id]=handles;
+			mapIdToHandles.set(id, handles);
 			return handle;
 		}
 		var handle = getHandleForMethod(handles, method);
@@ -18,7 +18,7 @@ module.exports = new (function(){
 		return handle;
 	};
 	function remove(id, handle){
-		var handles = mapIdToHandles[id];
+		var handles = mapIdToHandles.get(id);
 		if(!handles)return;
 		var index = handles.indexOf(handle);
 		if(index<0)return;

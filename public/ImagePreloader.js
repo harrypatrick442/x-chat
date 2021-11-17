@@ -1,12 +1,12 @@
 var ImagePreloader = new (function(){
 	var self = this;
 	var preloaded={};
-	var mapUrlToPreloaderPreloading={};
+	var mapUrlToPreloaderPreloading=new Map();
 	this.preloadRange = function(urls, callback){
 		var rangePreloader;
 		each(urls, function(url){
 			if(preloaded[url])return;
-			var preloader = mapUrlToPreloaderPreloading[url];
+			var preloader = mapUrlToPreloaderPreloading.get(url);
 			if(!rangePreloader)rangePreloader = new RangePreloader({callback:callback});
 			rangePreloader.addPreloader(preloader?preloader:createPreloader(url));
 		});
@@ -17,12 +17,12 @@ var ImagePreloader = new (function(){
 	function preloaderDone(e){
 		var preloader = e.preloader;
 		var url = preloader.getUrl();
-		delete mapUrlToPreloaderPreloading[url];
+		mapUrlToPreloaderPreloading.delete(url);
 		preloaded[url]=true;
 	}
 	function createPreloader(url){
 		var preloader = new Preloader({url:url});
-		mapUrlToPreloaderPreloading[url]=preloader;
+		mapUrlToPreloaderPreloading.set(url, preloader);
 		return preloader;
 	}
 	function RangePreloader(params){
