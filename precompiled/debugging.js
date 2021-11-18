@@ -24757,7 +24757,7 @@ var Rooms = new (function(){
 		var sessionId;
 		var nDevice;
 		var userMe;
-		var url = '/servlet';
+		var url = Configuration.getBackendUrl()+'/servlet';
 		var lastAttemptedAutomaticAuthentication;
 		var authenticate = new Authenticate({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
 		var users = new Users({});

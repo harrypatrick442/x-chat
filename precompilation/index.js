@@ -2,7 +2,6 @@ const fs = require('fs');
 const fsExtra = require('fs-extra');
 const path = require('path');
 const tmp = require('tmp');
-const each = require('./../backend/each');
 const ClosureCompiler = require('google-closure-compiler').jsCompiler;
 console.log(ClosureCompiler.CONTRIB_PATH); // absolute path to the contrib folder which contains externs
 const publicFolder = path.join(__dirname , '../public');
@@ -28,7 +27,7 @@ const closureCompiler = new ClosureCompiler({
   warning_level:'QUIET',
 });
 emptyFolder(precompiledFolder, function(){
-	each(jsFilesToCopyOver, function(jsFileToCopyOver){
+	jsFilesToCopyOver.forEach(function(jsFileToCopyOver){
 		readFile(path.join(publicFolder, jsFileToCopyOver), function(data){
 				writeFile(path.join(precompiledFolder, jsFileToCopyOver), data);
 		});
@@ -59,7 +58,7 @@ emptyFolder(precompiledFolder, function(){
 function copyFolders(callback){
 	var pending=foldersToCopyOver.length;
 	if(!pending)callback();
-	each(foldersToCopyOver, function(folderToCopyOver){
+	foldersToCopyOver.forEach(function(folderToCopyOver){
 		fsExtra.copy(path.join(publicFolder, folderToCopyOver), path.join(precompiledFolder, folderToCopyOver), err =>{
 		  if(err) return console.error(err);
 		  if(!--pending)callback();
@@ -88,7 +87,7 @@ function createIndex(indexPath, jsFile, cssFile, isMobile){
 	}
 	str+="<script type='text/javascript'>\nwindow.isMobile=";
 	str+=isMobile;
-	str+="\n</script>\n";
+	str+=";window.environment='production';\n</script>\n";
 	str+="<link rel='stylesheet' href='";
 	str+=cssFile;
 	str+="'></link>\n</head>\n<body>\n<script type='text/javascript' src='";
