@@ -1,4 +1,4 @@
 module.exports={
-	useHttps:false,
+	useHttps:true,
 	precompiledFrontend:false
 };

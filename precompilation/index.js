@@ -20,7 +20,7 @@ const precompiledIndexFile = path.join(precompiledFolder, '/index.html');
 const precompiledMIndexFile = path.join(precompiledFolder, '/m.index.html');
 const debuggingJs = path.join(precompiledFolder, '/debugging.js');
 const jsFilesToCopyOver = ['/DetectMobileBrowsers.js'];
-const foldersToCopyOver = [/*'/images/', '/emoji/'*/];
+const foldersToCopyOver = ['/images/', '/emoji/'];
 const closureCompiler = new ClosureCompiler({
   compilation_level: 'SIMPLE',
   language_in:'ECMASCRIPT6',

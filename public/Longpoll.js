@@ -28,6 +28,7 @@ var Longpoll = (function(){
 			dispatchOnDispose();
 		};
 		function poll(){
+			console.log(urlPoll);
 			ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
 		}
 		function getUniqueParameter(){
