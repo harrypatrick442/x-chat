@@ -6290,19 +6290,33 @@ if (typeof module === 'object') {
 }
 
 },{}]},{},[1])(1)
-});String.prototype.splice = function(idx, rem, str) {
+});const Configuration = new (function(){
+	const self = this;
+	this.isProduction=function(){
+		return window.environment=='production';
+	};
+	this.getBackendDomain=function(){
+		if(true||self.isProduction())
+			return 'backend.spaz.chat';
+		return 'localhost';
+	};
+	this.getBackendUrl=function(){
+		return 'http://'+self.getBackendDomain();
+	};
+	this.getWebsocketUrl=function(surfix){
+		var loc = window.location, new_uri;
+		const protocol =(loc.protocol === "https:")
+			? "wss:"
+			: "ws:";
+		return `${protocol}//${self.getBackendDomain()}/${surfix}`;
+	};
+	this.getLongpollUrl=function(){
+		console.log(`${self.getBackendUrl()}/poll`);
+		return `${self.getBackendUrl()}/poll`;
+	};
+})();String.prototype.splice = function(idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
-};function getWebsocketUrl(surfix){
-	var loc = window.location, new_uri;
-	if (loc.protocol === "https:") {
-		new_uri = "wss:";
-	} else {
-		new_uri = "ws:";
-	}
-	new_uri += "//" + loc.host;
-	new_uri += /*loc.pathname +*/'/'+ surfix;
-	return new_uri;
-}
+};
 var Dimension = (function(){
 	var PX='px';
 	var PERCENT='%';
@@ -24757,7 +24771,7 @@ var Rooms = new (function(){
 		var sessionId;
 		var nDevice;
 		var userMe;
-		var url = '/servlet';
+		var url = Configuration.getBackendUrl()+'/servlet';
 		var lastAttemptedAutomaticAuthentication;
 		var authenticate = new Authenticate({callbackRegister:callbackRegister, callbackSignIn:callbackSignIn, callbackGuest:callbackGuest});
 		var users = new Users({});
@@ -24766,7 +24780,8 @@ var Rooms = new (function(){
 		var mainMenu = new ClickMenu({});
 		var usersMenu= new UsersMenu({name:'All Users (Lobby)', users:users, id:'UsersMenuLobby', ignoreManager:ignoreManager, getUserMe:getUserMe, clickMenu:clickMenu, showUsersSearch:showUsersSearch});
 		var missingUsersManager = new MissingUsersManager();
-		var mysocket = new Mysocket({url:'poll', urlWebsocket:getWebsocketUrl('endpoint')});
+		var mysocket = new Mysocket({url:Configuration.getLongpollUrl(), 
+			urlWebsocket:Configuration.getWebsocketUrl('endpoint')});
 		if(window.debug)window.debug.setMysocket(mysocket);
 		var automaticAuthentication = new AutomaticAuthentication({send:mysocket.send});
 		new Task(authenticateAutomatically).run();

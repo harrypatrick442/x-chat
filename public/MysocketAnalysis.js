@@ -17,7 +17,7 @@ var MysocketAnalysis = (function(){
 			var nRecentWebsocketsFailedQuickly = getNRecentWebsocketsFailedQuickly();
 			var supportsWebsocket=window.WebSocket?true:false;
 			var websocketFailedQuickly;
-			var shouldUseWebsocket=supportsWebsocket&&!(websocketFailedQuickly= nRecentWebsocketsFailedQuickly>0);
+			var shouldUseWebsocket=false&&supportsWebsocket&&!(websocketFailedQuickly= nRecentWebsocketsFailedQuickly>0);
 			console.log('nRecentWebsocketsFailedQuickly'+nRecentWebsocketsFailedQuickly);
 			console.log('shouldUseWebsocket'+shouldUseWebsocket);
 			console.log('websocket failed quickly'+websocketFailedQuickly);
