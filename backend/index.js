@@ -14,6 +14,19 @@
 	const servlet = require('./servlet');
 	const endpoint = require('./endpoint');
 	const  endpointLongpoll = require('./EndpoingLongpoll');
+	const cors = require('cors');
+	
+	const whitelist = ['https://spaz.chat', 'http://spaz.chat', 'http://127.0.0.1', 'http://localhost', 'https://localhost' ]
+	/*const corsOptions = {
+	  origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1) {
+		  callback(null, true)
+		} else {
+		  callback(new Error('Not allowed by CORS'))
+		}
+	  }
+	}*/
+	var corsFunction;// = cors(corsOptions);
 	var app = (function(){
 		const SIZE_LIMIT_MB=1.5;
 		const app = express();
@@ -24,7 +37,7 @@
 		app.post('/image_uploader', function(req, res){
 			res.send(imageUploader.process(req));
 		});
-		endpointLongpoll.load(app);
+		endpointLongpoll.load(app, corsFunction);
 		if(config.getUsePrecompiledFrontend()){
 			app.use(express.static(path.join(__dirname, '../precompiled')));
 			app.use('/images',express.static(path.join(__dirname, '../public/images/')));

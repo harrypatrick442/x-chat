@@ -12,14 +12,22 @@ var Longpoll = (function(){
 		var disposedByServer = false;
 		var waitingToBeSent = [];
 		var urlPoll;
+		const currentAjaxHandles = [];
 		this.send = function(msg){//issue was caused by multiple sends in parallel before an id got returned.
 			if(disposed)return;
 			if(started||!didFirstSend){
+				console.log('started is '+started);
+				console.log('started is '+started);
 				didFirstSend = true;
-				ajax.post({data:JSON.stringify({id:id, msg:msg}), callbackSuccessful:callbackSendSuccessful, callbackFailed:callbackSendError});
+				const ajaxHandle = ajax.post({data:JSON.stringify({id:id, msg:msg})});
+				ajaxHandle.then(pollSuccessful)
+					.catch(pollFailed);
 			}
-			else
+			else{
+				console.log('adding to waiting to be sent');
+				console.log(msg);
 				waitingToBeSent.push(msg);
+			}
 		};
 		this.getDisposedByServer = function(){return disposedByServer;};
 		this.dispose=function(){
@@ -28,8 +36,12 @@ var Longpoll = (function(){
 			dispatchOnDispose();
 		};
 		function poll(){
+			console.log(new Error().stack);
 			console.log(urlPoll);
-			ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/, callbackSuccessful:callbackPollSuccessful, callbackFailed:callbackPollError, callbackTimeout:callbackPollTimeout});
+			const ajaxHandle = ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/});
+			addAjaxHandle(ajaxHandle);
+			ajaxHandle.then(pollSuccessful)
+				.catch(pollFailed);
 		}
 		function getUniqueParameter(){
 			return '?t='+count++ +'_'+getTime();
@@ -37,9 +49,11 @@ var Longpoll = (function(){
 		function getTime(){
 			return new Date().getTime();
 		}
-		function callbackSendSuccessful(res){
-			console.log(res);
+		function pollSuccessful(ajaxHandle){
+			removeAjaxHandle(ajaxHandle);
+			let res = ajaxHandle.getResponse();
 			res = JSON.parse(res);
+			console.log(res);
 			if(res.disposed)
 			{
 				disposedByServer = true;
@@ -54,7 +68,7 @@ var Longpoll = (function(){
 			each(waitingToBeSent, function(msg){
 				self.send(msg);
 			});
-			waitingToBeSent=null;
+			waitingToBeSent=[];
 			poll();
 		}
 		function callbackSendError(err){
@@ -64,11 +78,21 @@ var Longpoll = (function(){
 		function callbackPollTimeout(){
 			poll();
 		}
-		function callbackPollError(err){
+		function pollFailed(ajaxHandle){
+			removeAjaxHandle(ajaxHandle);
+			const err = ajaxHandle.getError();
 			console.error(err);
 			dispatchOnError(err);
 			if(disposed)return;
 			poll();
+		}
+		function addAjaxHandle(ajaxHandle){
+			currentAjaxHandles.push(ajaxHandle);
+		}
+		function removeAjaxHandle(ajaxHandle){
+			const index = currentAjaxHandles.indexOf(ajaxHandle);
+			if(index<0)return;
+			currentAjaxHandles.splice(index, 1);
 		}
 		function callbackPollSuccessful(res){
 			poll();

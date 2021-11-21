@@ -37,6 +37,7 @@ module.exports = (function(){
 			return getTimeSinceChannelClosedMinutes()<TIMEOUT_CLOSED_CHANNEL_MINUTES;
 		};
 		function updateChannel(params){
+			console.log('CALLED UPDATE CAHNNEL');
 			channel = channelFactory.create(params);
 			channel.onClose=onClose;
 			channel.onMessage=onMessage;

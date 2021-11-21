@@ -11,7 +11,4 @@ module.exports=new (function(){
 	this.getUsePrecompiledFrontend = function(){
 		return jObject.usePrecompiledFrontend;
 	};
-	this.getBackendRootUrl = function(){
-		return jObject.backendRootUrl;
-	};
 })();

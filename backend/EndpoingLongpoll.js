@@ -4,9 +4,10 @@ module.exports=new (function(){
 	var url = require('url');
 	var Longpolls = require("./Longpolls");
 	var Longpoll = require("./Longpoll");
-	this.load = function(app){
+	this.load = function(app, corsFunction){
 		var longpolls = new Longpolls();
 		app.post('/poll', function(req, res, next){
+			console.log('got post to poll');
 			var data = req.body;
 			var mysocketId = data.id	
 			var msg = data.msg;
@@ -17,7 +18,7 @@ module.exports=new (function(){
 			if(!longpoll)
 			{	
 				var mysocket = Mysockets.getOrCreateLongpoll(mysocketId, function(id){
-					longpoll = new Longpoll({app:app, id:id, url:URL});
+					longpoll = new Longpoll({app:app, id:id, url:URL, corsFunction});
 					longpolls.add(longpoll);
 					return longpoll;
 				});

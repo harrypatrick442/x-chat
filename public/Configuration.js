@@ -4,12 +4,12 @@ const Configuration = new (function(){
 		return window.environment=='production';
 	};
 	this.getBackendDomain=function(){
-		if(true||self.isProduction())
-			return 'backend.spaz.chat';
-		return 'localhost';
+		if(self.isProduction())
+			return 'spaz.chat';
+		return '127.0.0.1';
 	};
 	this.getBackendUrl=function(){
-		return 'https://'+self.getBackendDomain();
+		return  ((window.location.protocol==='https:')?'https:':'http:')+'//'+self.getBackendDomain();
 	};
 	this.getWebsocketUrl=function(surfix){
 		var loc = window.location, new_uri;
