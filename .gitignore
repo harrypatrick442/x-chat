@@ -5,4 +5,5 @@ precompilation/index.js
 precompilation/index.js
 backend/configuration.js
 node_modules
+precompiled/
 precompiled
