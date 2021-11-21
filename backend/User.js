@@ -66,7 +66,6 @@ const User = function(params){
 	}
 };
 User.fromSqlRow = function(row){
-	row.id = String(row.id);
 	var user = getExisting(row.id);
 	if(user)return user;
 	user = new User(row);

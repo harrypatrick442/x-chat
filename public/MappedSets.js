@@ -1,39 +1,38 @@
 var MappedSets=(function (){
 	var _MappedSets = function(){
-		var map ={};
+		var map =new Map();
 		this.add = function(id, item){
 			if(!item)return false;
-			var items = map[id];
+			var items = map.get(id);
 			if(!items){
-				map[id]=new Items(item);
+				map.set(id, new Items(item));
 				return true;
 			}
 			return items.add(item);
 		};
 		this.remove= function(id, item){
-			var items = map[id];
+			var items = map.get(id);
 			if(!items){
 				return false;
 			}
 			if(!item){
-				delete map[id];
+				map.delete(id);
 				return true;
 			}
 			var removed = items.remove(item);
 			if(!removed) return false;
 			if(items.count()<1)
-				delete map[id];
+				map.delete(id);
 			return true;
 		};
 		this.contains=function(id, item){
-			var items = map[id];
+			var items = map.get(id);
 			if(!items)return false;
 			if(!item)return true;
 			return items.contains(item);
 		};
 		this.getList = function(id){
-			console.log(map);
-			var items = map[id];
+			var items = map.get(id);
 			if(!items)return;
 			return items.getList();
 		};

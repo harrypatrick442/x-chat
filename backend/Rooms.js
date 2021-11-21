@@ -2,9 +2,9 @@ var dalRooms = require('./DAL/DalRooms');
 var CallbackGrouper = require('./CallbackGrouper');
 var Rooms = function(){
 	var self = this;
-	var mapIdToRoom={};
+	var mapIdToRoom=new Map();
 	this.getRoom=function(roomId, callback){
-		var room = mapIdToRoom[roomId];
+		var room = mapIdToRoom.get(roomId);
 		if(room){
 			callback(room);
 			return;
@@ -12,17 +12,19 @@ var Rooms = function(){
 		var handle = CallbackGrouper.add(roomId, self.getRoom, callback);
 		if(!handle)return;/* already called*/
 		dalRooms.getRoom(roomId, function(room){
-			mapIdToRoom[room.getId()]=room;
+			mapIdToRoom.set(room.getId(), room);
 			handle.call(room);
 		});
 	};
 	this.getPublicRooms = function(){
 		var list =[];
-		for(var i in mapIdToRoom){
-			var room = mapIdToRoom[i];
-			if(room.isPm())continue;
+		Array.from(mapIdToRoom.keys()).forEach(i=>{
+			console.log('i');
+			console.log(i);
+			var room = mapIdToRoom.get(i);
+			if(room.isPm())return;
 			list.push(room);
-		}
+		});
 		return list;
 	};
 	/* Rooms with most users show first...
