@@ -1,8 +1,11 @@
 const path = require('path');
-const PathHelper = require('../PathHelper');
-const DirectoryHelper = require('../DirectoryHelper');
+const PathHelper = require('./PathHelper');
+const DirectoryHelper = require('./DirectoryHelper');
 module.exports = new (function FilePaths(){
-	DirectoryHelper.makeDirectoryIfDoesntExist(getDataDirectoryPath());;
+	DirectoryHelper.makeDirectoryIfDoesntExist(getDataDirectoryPath());
+	this.getConfiguration= function(){
+		return getDataDirectoryPath()+'configuration.json';
+	};
 	this.getUsers= function(){
 		return getDataDirectoryPath()+'users.json';
 	};

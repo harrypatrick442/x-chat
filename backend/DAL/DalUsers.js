@@ -1,6 +1,6 @@
 const fs = require('fs');
 const User = require('./../User');
-const FilePaths = require('./FilePaths');
+const FilePaths = require('./../FilePaths');
 const mapUserIdToUser = new Map();
 const mapTokenToUserId = new Map();
 const mapUserIdToToken = new Map();

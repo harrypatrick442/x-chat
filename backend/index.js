@@ -6,7 +6,7 @@
 'use strict';
 (function(){
 	require('./CaseSensitiveRequire');
-	const config = require('./configuration');
+	const config = require('./Configuration');
 	const ShutdownManager = require('./shutdown/ShutdownManager');
 	const express = require('express');
 	const bodyParser = require('body-parser');
@@ -25,7 +25,7 @@
 			res.send(imageUploader.process(req));
 		});
 		endpointLongpoll.load(app);
-		if(config.precompiledFrontend){
+		if(config.getUsePrecompiledFrontend()){
 			app.use(express.static(path.join(__dirname, '../precompiled')));
 			app.use('/images',express.static(path.join(__dirname, '../public/images/')));
 			app.use('/emoji',express.static(path.join(__dirname, '../public/emoji/')));
@@ -35,7 +35,7 @@
 		}
 		return app;
 	})();
-	const server = config.useHttps?useHttps(app):useHttp(app);
+	const server = config.getUseHttps()?useHttps(app):useHttp(app);
 	endpoint(app, server);
 	server.setTimeout(5000, function(r){
 		console.log('timed out a connection');

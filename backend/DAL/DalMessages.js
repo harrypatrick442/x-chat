@@ -1,5 +1,5 @@
 const Message = require('./../Message');
-const FilePaths = require('./FilePaths');
+const FilePaths = require('./../FilePaths');
 	module.exports= new (function(){
 	const fs = require('fs');
 	const MAX_N_ROOM_MESSAGES=100;

@@ -1,7 +1,7 @@
 module.exports= new (function(){
 	const fs = require('fs');
 	const Room = require('./../Room');
-	const FilePaths = require('./FilePaths');
+	const FilePaths = require('./../FilePaths');
 	const rooms = load();
 	this.getRoomsToList = function(callback){
 		callback(rooms);

@@ -1,6 +1,6 @@
 module.exports= new (function(){
 	const fs = require('fs');
-	const FilePaths = require('./FilePaths');
+	const FilePaths = require('./../FilePaths');
 	const Message = require('./../Message');
 	const DirectoryHelper = require('./../DirectoryHelper');
 	const MAX_N_PMS= 300;
