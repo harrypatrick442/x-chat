@@ -3,7 +3,6 @@ var Lobby = (function(){
 	var IMAGE_WIDTH_LARGE=256;
 	var IMAGE_UPLOADER_URL='/image_uploader';
 	
-	
 	ImagePreloader.preloadRange([
 	'/images/close.jpg', 
 	'/images/tickbox-unticked.gif',
@@ -16,7 +15,7 @@ var Lobby = (function(){
 	'/images/room-exit.gif',
 	'/images/smiley.gif',
 	'/images/tick.gif',
-	'/images/upload-file.gif',	
+	'/images/upload-file.gif'
 	]);
 	if(!window.isMobile)
 		ImagePreloader.preloadRange([
@@ -80,11 +79,45 @@ var Lobby = (function(){
 		var roomCreation = new RoomCreation({sendMessage:mysocket.send,getSessionId:getSessionId});
 		var notifications = new Notifications({});
 		var notificationsMenu = new NotificationsMenu({notifications:notifications, pms:pms, seenNotificationsManager:seenNotificationsManager});
-		var buttonUsers = new Button({toggle:!window.isMobile, classNames:['button-users'], classNameToggled:'button-users-hide'});
-		var buttonPms = new Button({toggle:!window.isMobile, classNames:['button-pms'], classNameToggled:'button-pms-hide'});
-		var buttonProfilePicture = new Button({ classNames:['button-profile-picture']});
+		
+		const isMobile = window.isMobile;
+		console.log('isMobile');
+		console.log(isMobile);
+		var buttonUsers = new Button({
+			toggle:!isMobile, 
+			toggled:!isMobile,
+			classNames:['menu-button', 'button-users'],
+			classNameToggled:'button-users-hide',
+			imgUrl:isMobile?'/images/users-mobile.gif':'/images/users-show.gif',
+			imgUrlHover:isMobile?'/images/users-mobile-hover.gif':'/images/users-show-hover.gif',
+			imgUrlToggled:'/images/users-hide.gif',
+			imgUrlToggledHover:'/images/users-hide-hover.gif'
+		});
+			
+		var buttonPms = new Button({
+			toggle:!isMobile,
+			classNames:['menu-button', 'button-pms'],
+			toggled:!isMobile,
+			classNameToggled:'button-pms-hide',
+			imgUrl:isMobile?'/images/pms-mobile.gif':'/images/pms-show.gif', 
+			imgUrlHover:isMobile?'/images/pms-mobile-hover.gif':'/images/pms-show-hover.gif',
+			imgUrlToggled:'/images/pms-hide.gif',
+			imgUrlToggledHover:'/images/pms-hide-hover.gif'
+		});
+			
+		var buttonProfilePicture = new Button({ 
+		classNames:['menu-button', 'button-profile-picture'],
+		imgUrl:'/images/profile-picture.gif',
+		imgUrlHover:'/images/profile-picture.gif'});
+			
 		var buttonNotifications = new NotificationsButton({notifications:notifications});
-		var buttonMenu = new Button({classNames:['button-menu']});
+		
+		var buttonMenu = new Button({
+			classNames:['menu-button', 'button-menu'],
+			imgUrl:'/images/menu.gif',
+			imgUrlHover:'/images/menu-hover.gif'
+		});
+		
 		var ui = new UI({rooms:rooms, buttonUsers:buttonUsers, buttonPms:buttonPms, buttonProfilePicture: buttonProfilePicture,
 		buttonNotifications:buttonNotifications, pmsMenu:pmsMenu, usersMenues:usersMenues, notificationsMenu:notificationsMenu,
 		buttonMenu:buttonMenu, mainMenu:mainMenu, roomCreation:roomCreation});
@@ -483,6 +516,7 @@ var Lobby = (function(){
 		divButtonShowHideWrapper.classList.add('button-show-hide-wrapper');
 		var rightTopRow;
 		if(!window.isMobile){
+			element.classList.add('mobile');
 			var left = E.DIV();
 			left.classList.add('left');
 			var leftInner = E.DIV();
@@ -522,7 +556,7 @@ var Lobby = (function(){
 		document.documentElement.appendChild(spinnerAutomaticAuthentication.getElement());
 		var logoSignIn= E.IMG();
 		logoSignIn.classList.add('logo-sign-in');
-		logoSignIn.src=window.isBrexitChat?'/images/logo-brexit-chat-sign-in.gif':'/images/logo.gif';
+		logoSignIn.src=window.isBrexitChat?'/images/logo-brexit-chat-sign-in.gif':'/images/logo.png';
 		document.body.appendChild(logoSignIn);
 		divButtonShowHideWrapper.appendChild(buttonUsers.getElement());
 		divButtonShowHideWrapper.appendChild(buttonPms.getElement());

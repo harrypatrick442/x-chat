@@ -16,40 +16,34 @@ box-sizing: border-box;
 	border-top:0px solid #2592E9;
 }
 .lobby .right .button-show-hide-wrapper .button-pms{
-background-image:url('/images/pms-show.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms:hover{
-background-image:url('/images/pms-show-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide{
-background-image:url('/images/pms-hide.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-pms-hide:hover{
 
-background-image:url('/images/pms-hide-hover.gif');	
 }
 
 .lobby .right .button-show-hide-wrapper .button-users{
 width:40px;
-background-image:url('/images/users-show.gif');	
+border-radius:0px;
+border-top-right-radius:4px;
+border-bottom-right-radius:4px;
+overflow:hidden;
 }
 .lobby .right .button-show-hide-wrapper .button-users:hover{
 
-background-image:url('/images/users-show-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide{
 
-background-image:url('/images/users-hide.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
-background-image:url('/images/users-hide-hover.gif');	
 }
 .lobby .right .button-show-hide-wrapper .button-notifications{
-background-image:url('/images/notifications.gif');	
 margin-right:10px;
 }
 .lobby .right .button-show-hide-wrapper .button-notifications:hover{
 
-background-image:url('/images/notifications-hover.gif');	
 }

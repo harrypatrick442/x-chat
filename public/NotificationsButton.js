@@ -1,6 +1,6 @@
 var NotificationsButton = (function(){
 	var _NotificationsButton = function(params){
-		var self = new Button({classNames:['button-notifications']});
+		var self = new Button({classNames:['button-notifications'], imgUrl:'/images/notifications.gif'});
 		var notifications = params.notifications;
 		var ui = new UI({button:self});
 		notifications.addEventListener('added', countChanged);

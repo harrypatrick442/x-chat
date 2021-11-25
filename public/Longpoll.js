@@ -17,7 +17,6 @@ var Longpoll = (function(){
 			if(disposed)return;
 			if(started||!didFirstSend){
 				console.log('started is '+started);
-				console.log('started is '+started);
 				didFirstSend = true;
 				const ajaxHandle = ajax.post({data:JSON.stringify({id:id, msg:msg})});
 				ajaxHandle.then(pollSuccessful)
@@ -38,6 +37,7 @@ var Longpoll = (function(){
 		function poll(){
 			console.log(new Error().stack);
 			console.log(urlPoll);
+			if(currentAjaxHandles.length>0)return;
 			const ajaxHandle = ajax.get({url:urlPoll+getUniqueParameter()/*, timeout:TIMEOUT*/});
 			addAjaxHandle(ajaxHandle);
 			ajaxHandle.then(pollSuccessful)
@@ -54,13 +54,17 @@ var Longpoll = (function(){
 			let res = ajaxHandle.getResponse();
 			res = JSON.parse(res);
 			console.log(res);
+			handleMessages(res);
 			if(res.disposed)
 			{
 				disposedByServer = true;
 				self.dispose();
 				return;
 			}
-			if(started)return;
+			if(started){
+				poll();
+				return;
+			}
 			started=true;
 			id = res.id;
 			urlPoll = url+'/'+id;

@@ -2,10 +2,10 @@ function Logo(){
 	EventEnabledBuilder(this);
 	var self = this;
 	var element = E.DIV();
-	element.classList.add(!window.isBrexitChat?'logo':'logo-brexit-chat');
+	element.classList.add('logo');
 	var inner = E.DIV();
 	element.appendChild(inner);
-		ImagePreloader.preloadRange(!window.isBrexitChat?['/logo.gif', '/logo-hover.gif']:['/logo-brex-chat-logo.gif', '/logo-brexit-chat-hover.gif']);
+		ImagePreloader.preloadRange(['/images/logo.png', '/images/logo-hover.png']);
 	this.getElement = function(){
 		return element;
 	};

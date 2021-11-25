@@ -12,7 +12,10 @@ var UsersMenues = (function(){
 		this.setVisible = ui.setVisible;
 		this.add=function(usersMenu){
 			overlappingEntries.add(usersMenu);
-			usersMenu.addEventListener('showpm',function(e){ return self.dispatchEvent(e);});
+			usersMenu.addEventListener('showpm',function(e){
+				if(window.isMobile)hidePopup();
+				return self.dispatchEvent(e);
+			});
 			usersMenu.addEventListener('show',show);
 			usersMenu.addEventListener('hide',hide);
 			if(window.isMobile)
@@ -29,6 +32,7 @@ var UsersMenues = (function(){
 			console.log(overlappingEntries.getTopEntry().getEntry());
 			overlappingEntries.getTopEntry().getEntry().resize();
 		};
+		this.hide = hide;
 		this.resize = ui.resize;
 		function getTopEntry(){
 			return overlappingEntries.getTopEntry();

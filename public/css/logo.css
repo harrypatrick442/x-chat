@@ -27,25 +27,8 @@
 -o-background-size: contain;
 	background-size:contain;
     border-right: 0px solid #2592E9;
-	background-image:url('/images/logo.gif');	
-}
-.logo-brexit-chat div{
-	width:100%;
-	height:100%;
-	background-position:center;	
-	box-sizing:border-box;
-	cursor:pointer;
-	background-repeat:no-repeat;
-	-webkit-background-size: contain;
--moz-background-size: contain;
--o-background-size: contain;
-	background-size:contain;
-    border-right: 1px solid #2592E9;
-	background-image:url('/images/logo-brexit-chat.gif');	
+	background-image:url('/images/logo.png');	
 }
 .logo div:hover{
-	background-image:url('/images/logo-hover.gif');
-}
-.logo-brexit-chat div:hover{
-	background-image:url('/images/logo-brexit-chat-hover.gif');
+	background-image:url('/images/logo-hover.png');
 }
