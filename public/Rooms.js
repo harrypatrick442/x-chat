@@ -58,7 +58,6 @@ var Rooms = new (function(){
 			
 		};
 		this.getOpenRoom = function(){
-			console.log(overlappingEntries.getTopEntry().getEntry());
 			return overlappingEntries.getTopEntry().getEntry();
 		};
 		this.join = function(msg, user){
@@ -98,7 +97,6 @@ var Rooms = new (function(){
 			return room.getId();
 		}
 		function loadRoom(roomInfo){
-			console.log(roomInfo);
 			var room = new Room({id:roomInfo.id, name:roomInfo.name, isPm:roomInfo.isPm, getUserMe:getUserMe, emoticonsParser:emoticonsParser,
 			userTo:roomInfo.userTo, getUserById:getUserById, ignoreManager:ignoreManager, clickMenuUser :clickMenuUser, getNDevice:getNDevice,
 			getSessionId:getSessionId, send:send, showUsersSearch:showUsersSearch});
@@ -191,8 +189,7 @@ var Rooms = new (function(){
 		this.getElement = function(){return element;};
 		var resizeOnce = new Once(resize);
 		this.resize = resizeOnce.trigger;
-		function resize(){
-			console.log('rooms.resize'); 	
+		function resize(){	
 			var topEntry = getTopEntry();
 			if(!topEntry)return;
 			topEntry = topEntry.getEntry();

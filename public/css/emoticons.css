@@ -9,6 +9,9 @@
 	padding:6px;
 	background-color:rgb(44, 43, 43);
 }
+.lobby.mobile .rooms .emoticons{
+	
+}
 .lobby .rooms .emoticons .entries{
 	position:relative;
 	width:100%;

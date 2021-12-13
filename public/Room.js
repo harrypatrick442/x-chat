@@ -1,6 +1,6 @@
 var Room = new (function(){
 	var _Room = function(params){
-		console.log(params);
+		((typeof(params.id)==='string')&&params.id.indexOf('pm')<0)&&shouldBeInt(params.id);
 		EventEnabledBuilder(this);
 		var MAX_N_MESSAGES=100;
 		var self = this;

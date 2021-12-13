@@ -13,6 +13,8 @@ const User = function(params){
 	this.getDevices = function(){ return devices;};
 	this.getId = function(){return params.id;};
 	this.setId = function(value){params.id = value;};
+	this.getHash=function(){return params.hash;};
+	this.setHash=function(value){ params.hash=value;}
 	this.getUsername = function(){return params.username;};
 	this.getImage = function(){return params.image;};
 	this.setImage = function(value){params.image=value;};

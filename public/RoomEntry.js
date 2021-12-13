@@ -1,5 +1,6 @@
 var RoomEntry = new (function(){
 	var _RoomEntry = function(params){
+		shouldBeInt(params.id);
 		EventEnabledBuilder(this);
 		var self = this;
 		var roomImage = new RoomImage();
@@ -17,8 +18,6 @@ var RoomEntry = new (function(){
 	};
 	return _RoomEntry;
 	function UI(params){
-		
-		
 		var element = E.DIV();
 		element.title = params.name;
 		element.classList.add('room-entry');

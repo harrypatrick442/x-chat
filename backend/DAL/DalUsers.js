@@ -11,10 +11,12 @@ module.exports = new (function(){
 	var currentId = 0;
 	this.getHash = function(userId, callback){
 		const user =mapUserIdToUser.get(userId);
+		console.log('user is ');
+		console.log(user);
 		callback(user?user.getHash():null);
 	};
 	this.getAuthenticationToken = function(userId, callback){
-		callback(mapUserIdToToken(userId));
+		callback(mapUserIdToToken.get(userId));
 	};
 	this.automaticAuthenticate= function(token, callback){
 		const user = mapTokenToUserId.get(token);

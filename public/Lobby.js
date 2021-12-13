@@ -181,7 +181,7 @@ var Lobby = (function(){
 				case 'register':
 					registerResponse(msg);
 					break;
-				case 'rooms':
+				case 'rooms':console.log(msg.rooms);
 					rooms.set(msg.rooms);
 					break;
 				case 'room_userids':

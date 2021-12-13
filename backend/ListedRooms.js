@@ -21,7 +21,7 @@ module.exports =function(params) {
 		var handle = CallbackGrouper.add('ListedRooms.update', update, callback);
 		if(!handle)return;
 		dalRooms.getRoomsToList(function(rInfos){
-		var mapIdToRoomInfo = rInfos.toMap(x=>x.id, y=>y);
+		var mapIdToRoomInfo = rInfos.toMap(x=>x.getId(), y=>y.toJSON());
 			addLiveRooms(mapIdToRoomInfo);
 			roomInfos = [];
 			for(var i in mapIdToRoomInfo){

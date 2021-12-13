@@ -18,6 +18,7 @@ var Mysocket = (function(){
 			mysocketAnalysis.clear();
 		};
 		this.send = function(msg){
+			console.log(msg);
 			resetting=false;
 			var channel = getChannel();
 			if(channel&&channel.isOpen()){

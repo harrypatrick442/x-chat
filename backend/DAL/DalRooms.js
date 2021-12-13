@@ -5,7 +5,7 @@ module.exports= new (function(){
 	const rooms = load();
 	this.getRoomsToList = function(callback){
 		callback(rooms);
-	};
+	}
 	this.getRoom = function(id, callback){
 		callback(rooms.filter(room=>room.getId()===id)[0]);
 	};
