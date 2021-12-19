@@ -5,12 +5,13 @@ var FileSender = (function(){
 	var _FileSender = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var url = params.url;
-		var sequentially = params.sequentially;
+		var {url, sequentially, data, fileName}= params;
 		var ajax = new Ajax({url:url});
 		var queue = [];
 		this.queue = function(params){
-			var sender = new Sender({data:params.data, fileName:params.fileName, ajax:ajax});
+		    var {data, urlParameters}=params;
+			var sender = new Sender({data, 
+				fileName:fileName, ajax:ajax, urlParameters});
 			var handle = new Handle(sender);
 			if(sequentially){
 				queue.push(sender);
@@ -59,12 +60,11 @@ var FileSender = (function(){
 	function Sender(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var ajax = params.ajax;
-		var data = params.data;
-		var fileName = params.fileName;
+		var {ajax, data, fileName, urlParameters}= params;
 		var ajaxHandle;
 		this.send= function(){
-			ajaxHandle = ajax.post({data:data});
+			ajaxHandle = ajax.post({data, 
+				parameters:urlParameters});
 			sending(ajaxHandle);
 		};
 		this.abort = function(){
@@ -94,7 +94,6 @@ var FileSender = (function(){
 		}
 	}
 	function Handle(sender){
-		console.log('handle');
 		EventEnabledBuilder(this);
 		var self = this;
 		this.abort = sender.abort;

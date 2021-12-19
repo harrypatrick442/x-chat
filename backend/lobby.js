@@ -25,7 +25,6 @@ module.exports = new (function(){
 	var Session = require('./Session');
 	var dalUsers = require('./DAL/DalUsers');
 	var dalRooms = require('./DAL/DalRooms');
-	var ImageMaintenance = require('./ImageMaintenance');
 	var ListedRooms = require('./ListedRooms');
 	var bcrypt = require('bcryptjs');
 	var _Lobby = function(){
@@ -127,6 +126,7 @@ module.exports = new (function(){
 				});
 			});
 		};
+		/*
 		this.setImageForUser = function(sessionId, image){//image is the first part of the file name (without _32-32.jpeg).
 			var user = getUserFromSessionId(sessionId);
 			if(!user)return;
@@ -135,7 +135,7 @@ module.exports = new (function(){
 				dalUsers.setImage(user.getId(), image);
 				users.sendMessage({type:'user_image_set', userId:user.getId(), image:image});
 			});
-		};
+		};*/
 		this.pmVideoOffer= function(req, callback){
 			var userMe = getUserFromSessionId(req.sessionId);
 			if(!userMe)return;

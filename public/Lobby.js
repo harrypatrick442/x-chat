@@ -1,7 +1,6 @@
 var Lobby = (function(){
 	var IMAGE_WIDTH_SMALL=32;
 	var IMAGE_WIDTH_LARGE=256;
-	var IMAGE_UPLOADER_URL='/image_uploader';
 	
 	ImagePreloader.preloadRange([
 	'/images/close.jpg', 
@@ -72,7 +71,10 @@ var Lobby = (function(){
 		var imageUploader = new ImageUploader({getSessionId:getSessionId, aspectRatio:1, profiles:[
 		{desiredWidth:IMAGE_WIDTH_SMALL, aspectRatio:1, name:UserImage.SMALL}, 
 		{desiredWidth:IMAGE_WIDTH_LARGE, aspectRatio:1, name:UserImage.LARGE}
-		], url:IMAGE_UPLOADER_URL});
+		],
+		requestUploadUrl:Configuration.getRequestUploadImageUrl(),
+		url:Configuration.getUploadImageUrl()
+		});
 		var pms = new Pms({rooms:rooms, getUserById:users.getById, getUserMe:getUserMe, getOpenRoom:rooms.getOpenRoom});
 		var pmsMenu = new PmsMenu({pms:pms});
 		 //var mainMenu = new MainMenu({});

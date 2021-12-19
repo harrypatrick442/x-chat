@@ -2,10 +2,9 @@ var ImageUploader = new (function(){
 	var _ImageUploader = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var aspectRatio = params.aspectRatio;
-		var profiles = params.profiles;
-		var getSessionId = params.getSessionId;
-		var desiredSizes = params.desiredSizes;
+		var {aspectRatio, profiles, getSessionId, desiredSizes'
+			requestUploadUrl, url}
+			= params;
 		var buttonClose = new Button({ className:'button-close'});
 		var buttonAccept = new Button({className:'button-accept'});
 		var buttonReject = new Button({className:'button-reject'});
@@ -13,6 +12,7 @@ var ImageUploader = new (function(){
 		var fileSender = new FileSender({url:params.url});
 		var popup = new Popup({});
 		var fileName;
+		var dataUrl = null;
 		var croppingFrame = new CroppingFrame({aspectRatio:aspectRatio});
 		var ui = new UI({popup:popup, buttonClose:buttonClose, buttonAccept:buttonAccept, buttonReject:buttonReject, croppingFrame:croppingFrame, fileUploader:fileUploader, fileSender:fileSender});
 		buttonClose.addEventListener('click', hide);
@@ -29,6 +29,7 @@ var ImageUploader = new (function(){
 		}
 		function gotFile(e){
 			fileName = e.file.name;
+			dataUrl = e.dataUrl;
 			showCroppingFrame(e.dataUrl);
 		}
 		function croppingFrameError(e){
@@ -37,13 +38,39 @@ var ImageUploader = new (function(){
 			fileUploader.setVisible(false);
 		}
 		function cropAndUpload(){
-			var list =[];
-			each(profiles, function(profile){
-				var dataUrl = croppingFrame.getCroppedImage({ profile:profile});
-				list.push({dataUrl:dataUrl, profile:profile});
+			const cropValues = croppingFrame.getValues();
+			console.log('cropValues is ');
+			console.log(cropValues);
+			requestUploadImage({cropValues}).then((uniqueToken)=>{				
+				fileSender.queue({
+					data:dataUrl, 
+					fileName,
+					urlParameters:{uniqueToken}
+				});
+				showUploading();
+			}).catch((err)=>{
+				console.error(err);
 			});
-			fileSender.queue({data:JSON.stringify({images:list, sessionId:getSessionId()}), fileName:fileName});
-			showUploading();
+		}
+		function requestUploadImage({cropValues}){
+			return new Promise((resolve, reject)=>{
+				const handle = Ajax.post({
+					url:requestUploadImage,
+					timeout:5000
+					data:JSON.stringify({
+						sessionId:getSessionId(),
+						cropValuesa
+					})
+				});
+				handle.onDone=()=>{
+					const res = JSON.parse(handle.getResponse());
+					console.log(res);
+					resolve(res.uniqueToken);
+				};
+				handle.onError=()=>{
+					reject(handle.getError());
+				};
+			});
 		}
 		function fileSenderDone(){
 			console.log('fileSenderDone');
@@ -54,7 +81,12 @@ var ImageUploader = new (function(){
 			, delay:1000, nTicks:1}).start();
 		}
 		function showFileUploader(){fileUploader.setVisible(true);croppingFrame.hide();ui.setCroppingMenuVisible(false);ui.setFileSenderVisible(false);}
-		function showCroppingFrame(imgDataUrl){fileUploader.setVisible(false);croppingFrame.load(imgDataUrl);ui.setCroppingMenuVisible(true); ui.setFileSenderVisible(false);}
+		function showCroppingFrame(imgDataUrl){
+			fileUploader.setVisible(false);
+			croppingFrame.load(imgDataUrl);
+			ui.setCroppingMenuVisible(true); 
+			ui.setFileSenderVisible(false);
+		}
 		function showUploading(){fileUploader.setVisible(false); croppingFrame.hide(); ui.setCroppingMenuVisible(false); ui.setFileSenderVisible(true);}
 	};
 	return _ImageUploader;

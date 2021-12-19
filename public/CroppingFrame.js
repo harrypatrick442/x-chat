@@ -23,6 +23,16 @@ var CroppingFrame = new (function () {
 			element.style.display='none';
 		};
 		this.load = load;
+		this.getValues=function(){
+			const position = cropper.getPosition();
+			const dimensions = cropper.getDimensions();
+			return {
+				width:dimensions.width, 
+				height:dimensions.height, 
+				left:position.left,
+				top:position.top
+			};
+		};
 		this.getCroppedImage = function(params){
 			console.log(params);
 			var position = cropper.getPosition();
@@ -30,8 +40,14 @@ var CroppingFrame = new (function () {
 			var format = params.format?params.format:"image/jpeg";
 			var quality = params.quality?params.quality:1;
 			var dataUrl = ImageProcessing.crop({
-				img:img, imgWidthRaw:imageWidthRaw, imgHeightRaw:imageHeightRaw, cropperWidth:dimensions.width, cropperHeight:dimensions.height, 
-			cropperLeft:position.left, cropperTop:position.top, format:format, profile:params.profile});
+				img:img, imgWidthRaw:imageWidthRaw, 
+				imgHeightRaw:imageHeightRaw, 
+				cropperWidth:dimensions.width, 
+				cropperHeight:dimensions.height, 
+				cropperLeft:position.left, 
+				cropperTop:position.top, 
+				format:format, 
+				profile:params.profile});
 			return dataUrl;
 		};
 		function getImageWidth(){

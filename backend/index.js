@@ -1,12 +1,10 @@
 
-const Arguments = require('./Arguments');
-
+const MultimediaHandler = require('./multimedia/MultimediaHandler');
 
 
 'use strict';
-const isMultimediaBackend = Arguments.has('--multimedia');
 require('./CaseSensitiveRequire');
-const config = require('./Configuration');
+const Configuration = require('./Configuration');
 const ShutdownManager = require('./shutdown/ShutdownManager');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -39,7 +37,7 @@ function setupAppForMainBackend(){
 		res.send(imageUploader.process(req));
 	});*/
 	endpointLongpoll.load(app, corsFunction);
-	if(config.getUsePrecompiledFrontend()){
+	if(Configuration.getUsePrecompiledFrontend()){
 		app.use(express.static(path.join(__dirname, '../precompiled')));
 		app.use('/images',express.static(path.join(__dirname, '../public/images/')));
 		app.use('/emoji',express.static(path.join(__dirname, '../public/emoji/')));
@@ -53,15 +51,16 @@ function setupAppForMultimediaBackend(){
 	//var imageUploader = new (require('./ImageUploader'))();
 	app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 	app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
-	app.post('/upload_image', function(req, res){
-		res.send(imageUploader.process(req));
-	});
+	app.post('/request_upload_image', MultimediaHandler.handleRequestUploadImage);
+	app.post('/upload_image', MultimediaHandler.handleUploadImage);
 }
 
-if(isMultimediaBackend) setupAppForMultimediaBackend()
-else setupAppForMainBackend();
+if(Configuration.isMultimediaBackend())
+	setupAppForMultimediaBackend()
+if(Configuration.isMainBackend())
+	setupAppForMainBackend();
 
-const server = config.getUseHttps()?useHttps(app):useHttp(app);
+const server = Configuration.getUseHttps()?useHttps(app):useHttp(app);
 endpoint(app, server);
 server.setTimeout(5000, function(r){
 	console.log('timed out a connection');
@@ -71,7 +70,8 @@ ShutdownManager.initialize({
 });
 function useHttp(app){
 	return app.listen(80, function () {
-		console.log('Server is running...');
+		const withStr = Configuration.isMultimediaBackend()?' as multimedia server':' as main backend';
+		console.log('Server is running'+withStr+'...');
 	});
 }
 function useHttps(app){
@@ -83,7 +83,6 @@ function useHttps(app){
 	, agreeTos: true                    // You must accept the ToS as the host which handles the certs
 	, configDir: '~/.config/acme/'      // Writable directory where certs will be saved
 	, communityMember: true             // Join the community to get notified of important updates
-	, telemetry: true                   // Contribute telemetry data to the project
 	,approvedDomains: [ 'backend.spaz.chat']
 	  // Using your express app:
 	  // simply export it as-is, then include it here
