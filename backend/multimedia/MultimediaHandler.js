@@ -1,8 +1,10 @@
-
+const fetch = require('node-fetch');
 const WaitingForFileUpload_Queue = require('./WaitingForFileUpload_Queue');
 const ImagesWaitingToBePushedIntoCloud_Queue = require('./ImagesWaitingToBePushedIntoCloud_Queue');
 const FilesWaitingToBePushedIntoCloud_Queue = require('./FilesWaitingToBePushedIntoCloud_Queue');
 const UploadedFilesWaitingForModeration_Queue = require('./UploadedFilesWaitingForModeration_Queue');
+const Configuration = require('../Configuration');
+const MIN_DELAY_BETWEEN_UPLOADS_MILLISECONDS =10000;
 module.exports = new (function(){
 	const filesWaitingToBePushedIntoCloud_Queue =
 		new FilesWaitingToBePushedIntoCloud_Queue({
@@ -16,17 +18,15 @@ module.exports = new (function(){
 	const waitingForFileUpload_Queue = new WaitingForFileUpload_Queue({
 		uploadedFileHandler:uploadedFilesWaitingForModeration_Queue
 	});
+	
+	const mapUserIdToLastUploadedUTCMilliseconds= new Map();
+	waitingForFileUpload_Queue.addEventListener('userUploadedFile', handleUserUploadedFile);
 	this.handleRequestUploadImage=function(req, res){
 		return new Promise((resolve, reject)=>{
 			const {sessionId}=req.body;
 			getUserIdAndValidateAllowedToUpload(sessionId)
 			.then(({userId, allowedToUpload, 
 				reasonNotAllowedToUpload})=>{
-				if(userId===null)
-				{
-					resolve(createInvalidUserResponse());
-					return;
-				}
 				if(!allowedToUpload){
 					resolve(createNotAllowedToUploadResponse(
 						reasonNotAllowedToUpload));
@@ -42,13 +42,62 @@ module.exports = new (function(){
 		console.log('got req');
 		console.log(req);
 	};
-	function getUserIdAndValidateAllowedToUpload(){
+	function getUserIdAndValidateAllowedToUpload(sessionId){
 		return new Promise((resolve, reject)=>{
-			
+			console.log(sessionId);
+			getUserIdFromMainBackend(sessionId).then((userId)=>{
+				if(userId===undefined||userId===null){
+					resolve({
+						userId:null, 
+						allowedToUpload:false, 
+						reasonNotAllowedToUpload:'Invalid session'
+					});
+					return;
+				}
+				const abusingMessage = checkIfUserIsAbusing();
+				resolve({
+					userId:null, 
+					allowedToUpload:true
+				});
+			}).catch(reject);
 		});
 	}
-	function createInvalidUserResponse(){
-		
+	function getUserIdFromMainBackend(sessionId){
+		return new Promise((resolve, reject)=>{
+			fetch(Configuration.getBackendUrl()+'/get_user_id_from_session_id', 
+				{
+					method: 'POST', 
+					body: JSON.stringify({
+						sessionId
+					}),
+					headers: {'Content-Type': 'application/json'}
+				}
+			).then((response)=>{
+				response.json().then(jObjectResponse=>{
+					const { userId } = jObjectResponse;
+					resolve(userId);
+				}).catch(reject);
+			}).catch(reject);
+		});
+	}
+	function checkIfUserIsAbusing(){
+		const lastUploadedUTCMilliseconds = mapUserIdToLastUploadedUTCMilliseconds.get(userId);
+		if(lastUploadedUTCMilliseconds===undefined||lastUploadedUTCMilliseconds===null)
+			return null;
+		const maxTimeUTCMillisecondsLastUploadCanBe = new Date().getTime() - MIN_DELAY_BETWEEN_UPLOADS_MILLISECONDS;
+		if(maxTimeUTCMillisecondsLastUploadCanBe<lastUploadedUTCMilliseconds){
+			const intSecondsLeftToWait = 1+parseInt((
+				MIN_DELAY_BETWEEN_UPLOADS_MILLISECONDS- (
+					lastUploadedUTCMilliseconds - maxTimeUTCMillisecondsLastUploadCanBe
+					)
+					
+				)/1000);
+			return `Please wait an additional ${intSecondsLeftToWait} seconds before upload`);
+		}
+		return null;
+	}
+	function handleUserUploadedFile(e){
+		mapUserIdToLastUploadedUTCMilliseconds.set(e.userId, new Date().getTime());
 	}
 	function createNotAllowedToUploadResponse(){
 		
