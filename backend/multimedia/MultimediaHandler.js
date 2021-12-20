@@ -46,17 +46,22 @@ module.exports = new (function(){
 		return new Promise((resolve, reject)=>{
 			console.log(sessionId);
 			getUserIdFromMainBackend(sessionId).then((userId)=>{
-				if(userId===undefined||userId===null){
-					resolve({
-						userId:null, 
+				const resolveNotAllowed =(message)=>resolve({
+						userId:userId, 
 						allowedToUpload:false, 
-						reasonNotAllowedToUpload:'Invalid session'
+						reasonNotAllowedToUpload:message
 					});
+				if(userId===undefined||userId===null){
+					resolveNotAllowed('Invalid session');
 					return;
 				}
 				const abusingMessage = checkIfUserIsAbusing();
+				if(abusingMessage!==null){
+					resolveNotAllowed(abusingMessage);
+					return;
+				}
 				resolve({
-					userId:null, 
+					userId:userId, 
 					allowedToUpload:true
 				});
 			}).catch(reject);
@@ -85,16 +90,15 @@ module.exports = new (function(){
 		if(lastUploadedUTCMilliseconds===undefined||lastUploadedUTCMilliseconds===null)
 			return null;
 		const maxTimeUTCMillisecondsLastUploadCanBe = new Date().getTime() - MIN_DELAY_BETWEEN_UPLOADS_MILLISECONDS;
-		if(maxTimeUTCMillisecondsLastUploadCanBe<lastUploadedUTCMilliseconds){
-			const intSecondsLeftToWait = 1+parseInt((
+		if(maxTimeUTCMillisecondsLastUploadCanBe>=lastUploadedUTCMilliseconds)
+			return null;
+		const intSecondsLeftToWait = 1+parseInt((
 				MIN_DELAY_BETWEEN_UPLOADS_MILLISECONDS- (
 					lastUploadedUTCMilliseconds - maxTimeUTCMillisecondsLastUploadCanBe
-					)
-					
-				)/1000);
-			return `Please wait an additional ${intSecondsLeftToWait} seconds before upload`);
-		}
-		return null;
+				)
+				
+			)/1000);
+		return `Please wait an additional ${intSecondsLeftToWait} seconds before upload`;
 	}
 	function handleUserUploadedFile(e){
 		mapUserIdToLastUploadedUTCMilliseconds.set(e.userId, new Date().getTime());
