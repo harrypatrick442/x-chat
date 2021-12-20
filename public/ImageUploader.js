@@ -2,9 +2,11 @@ var ImageUploader = new (function(){
 	var _ImageUploader = function(params){
 		EventEnabledBuilder(this);
 		var self = this;
-		var {aspectRatio, profiles, getSessionId, desiredSizes'
+		var {aspectRatio, profiles, getSessionId, desiredSizes,
 			requestUploadUrl, url}
 			= params;
+			console.log('requestUploadUrl');
+			console.log(requestUploadUrl);
 		var buttonClose = new Button({ className:'button-close'});
 		var buttonAccept = new Button({className:'button-accept'});
 		var buttonReject = new Button({className:'button-reject'});
@@ -55,14 +57,15 @@ var ImageUploader = new (function(){
 		function requestUploadImage({cropValues}){
 			return new Promise((resolve, reject)=>{
 				const handle = Ajax.post({
-					url:requestUploadImage,
-					timeout:5000
+					url:requestUploadUrl,
+					timeout:5000,
 					data:JSON.stringify({
 						sessionId:getSessionId(),
-						cropValuesa
+						cropValues
 					})
 				});
 				handle.onDone=()=>{
+					console.log(handle.getResponse());
 					const res = JSON.parse(handle.getResponse());
 					console.log(res);
 					resolve(res.uniqueToken);

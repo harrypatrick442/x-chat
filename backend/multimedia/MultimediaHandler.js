@@ -19,20 +19,23 @@ module.exports = new (function(){
 	this.handleRequestUploadImage=function(req, res){
 		return new Promise((resolve, reject)=>{
 			const {sessionId}=req.body;
-			const {userId, allowedToUpload, reasonNotAllowedToUpload} = 
-				getUserIdAndValidateAllowedToUpload(sessionId);
-			if(userId===null)
-			{
-				resolve(createInvalidUserResponse());
-				return;
-			}
-			if(!allowedToUpload){
-				resolve(createNotAllowedToUploadResponse(
-					reasonNotAllowedToUpload));
-				return;
-			}
-			const queueToken = waitingForUploadQueue.queue({userId});
-			resolve(createUploadImageRequestAcceptedResponse(queueToken));
+			getUserIdAndValidateAllowedToUpload(sessionId)
+			.then(({userId, allowedToUpload, 
+				reasonNotAllowedToUpload})=>{
+				if(userId===null)
+				{
+					resolve(createInvalidUserResponse());
+					return;
+				}
+				if(!allowedToUpload){
+					resolve(createNotAllowedToUploadResponse(
+						reasonNotAllowedToUpload));
+					return;
+				}
+				const queueToken = waitingForFileUpload_Queue.queue({userId});
+				resolve(createUploadImageRequestAcceptedResponse(queueToken));
+
+				}).catch(reject);		
 		});
 	};
 	this.handleUploadImage=function(req, res){
@@ -40,7 +43,9 @@ module.exports = new (function(){
 		console.log(req);
 	};
 	function getUserIdAndValidateAllowedToUpload(){
-		
+		return new Promise((resolve, reject)=>{
+			
+		});
 	}
 	function createInvalidUserResponse(){
 		

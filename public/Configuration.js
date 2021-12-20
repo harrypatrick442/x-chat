@@ -14,10 +14,13 @@ const Configuration = new (function(){
 		return '127.0.0.1';
 	};
 	this.getBackendUrl=function(){
-		return  ((window.location.protocol==='https:')?'https:':'http:')+'//'+self.getBackendDomain();
+		return  ((window.location.protocol==='https:')
+		?'https:':'http:')+'//'+self.getBackendDomain();
 	};
 	this.getMultimediaBackendUrl=function(){
-		return  ((window.location.protocol==='https:')?'https:':'http:')+'//'+self.getMultimediaBackendDomain();
+		return  ((window.location.protocol==='https:')
+			?'https:'
+			:'http:')+'//'+self.getMultimediaBackendDomain();
 	};
 	this.getWebsocketUrl=function(surfix){
 		var loc = window.location, new_uri;
