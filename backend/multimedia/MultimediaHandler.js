@@ -20,28 +20,29 @@ module.exports = new (function(){
 	});
 	
 	const mapUserIdToLastUploadedUTCMilliseconds= new Map();
-	waitingForFileUpload_Queue.addEventListener('userUploadedFile', handleUserUploadedFile);
+	waitingForFileUpload_Queue.addEventListener('userUploadedFile',
+		handleUserUploadedFile);
 	this.handleRequestUploadImage=function(req, res){
-		return new Promise((resolve, reject)=>{
-			const {sessionId}=req.body;
-			getUserIdAndValidateAllowedToUpload(sessionId)
-			.then(({userId, allowedToUpload, 
-				reasonNotAllowedToUpload})=>{
-				if(!allowedToUpload){
-					resolve(createNotAllowedToUploadResponse(
-						reasonNotAllowedToUpload));
-					return;
-				}
-				const queueToken = waitingForFileUpload_Queue.queue({userId});
-				resolve(createUploadImageRequestAcceptedResponse(queueToken));
-
-				}).catch(reject);		
-		});
+		const {sessionId, cropValues, fileName}=req.body;
+		getUserIdAndValidateAllowedToUpload(sessionId)
+		.then(({userId, allowedToUpload, 
+			reasonNotAllowedToUpload})=>{
+			if(!allowedToUpload){
+				res.json(createErrorResponse(
+					reasonNotAllowedToUpload));
+				return;
+			}
+			const uniqueToken = waitingForFileUpload_Queue.queue({
+				userId, cropValues, fileName});
+			res.json(createUploadImageRequestAcceptedResponse(
+				uniqueToken));
+		}).catch((err)=>{
+			console.log(err);
+			createErrorResponse(null);
+		});		
 	};
-	this.handleUploadImage=function(req, res){
-		console.log('got req');
-		console.log(req);
-	};
+	this.handleUploadImage=
+		waitingForFileUpload_Queue.handleFileUpload;	
 	function getUserIdAndValidateAllowedToUpload(sessionId){
 		return new Promise((resolve, reject)=>{
 			console.log(sessionId);
@@ -55,7 +56,7 @@ module.exports = new (function(){
 					resolveNotAllowed('Invalid session');
 					return;
 				}
-				const abusingMessage = checkIfUserIsAbusing();
+				const abusingMessage = checkIfUserIsAbusing(userId);
 				if(abusingMessage!==null){
 					resolveNotAllowed(abusingMessage);
 					return;
@@ -85,7 +86,7 @@ module.exports = new (function(){
 			}).catch(reject);
 		});
 	}
-	function checkIfUserIsAbusing(){
+	function checkIfUserIsAbusing(userId){
 		const lastUploadedUTCMilliseconds = mapUserIdToLastUploadedUTCMilliseconds.get(userId);
 		if(lastUploadedUTCMilliseconds===undefined||lastUploadedUTCMilliseconds===null)
 			return null;
@@ -103,10 +104,12 @@ module.exports = new (function(){
 	function handleUserUploadedFile(e){
 		mapUserIdToLastUploadedUTCMilliseconds.set(e.userId, new Date().getTime());
 	}
-	function createNotAllowedToUploadResponse(){
-		
+	function createErrorResponse(reasonNotAllowedToUpload){
+		if(reasonNotAllowedToUpload===undefined||reasonNotAllowedToUpload===null)
+				reasonNotAllowedToUpload='Generic Error';
+		return {error:reasonNotAllowedToUpload};
 	}
-	function createUploadImageRequestAcceptedResponse(){
-		
+	function createUploadImageRequestAcceptedResponse(uniqueToken){
+		return {uniqueToken};
 	}
 })();

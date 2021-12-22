@@ -5,8 +5,6 @@ var ImageUploader = new (function(){
 		var {aspectRatio, profiles, getSessionId, desiredSizes,
 			requestUploadUrl, url}
 			= params;
-			console.log('requestUploadUrl');
-			console.log(requestUploadUrl);
 		var buttonClose = new Button({ className:'button-close'});
 		var buttonAccept = new Button({className:'button-accept'});
 		var buttonReject = new Button({className:'button-reject'});
@@ -43,28 +41,30 @@ var ImageUploader = new (function(){
 			const cropValues = croppingFrame.getValues();
 			console.log('cropValues is ');
 			console.log(cropValues);
-			requestUploadImage({cropValues}).then((uniqueToken)=>{				
+			requestUploadImage({cropValues, fileName}).then((uniqueToken)=>{				
 				fileSender.queue({
-					data:dataUrl, 
-					fileName,
-					urlParameters:{uniqueToken}
+					data:dataUrl,
+					urlParameters:{uniqueToken},
+					contentType:'text/plain'
 				});
 				showUploading();
 			}).catch((err)=>{
 				console.error(err);
 			});
 		}
-		function requestUploadImage({cropValues}){
+		function requestUploadImage({cropValues, fileName}){
 			return new Promise((resolve, reject)=>{
 				const handle = Ajax.post({
 					url:requestUploadUrl,
 					timeout:5000,
 					data:JSON.stringify({
 						sessionId:getSessionId(),
-						cropValues
+						cropValues,
+						fileName
 					})
 				});
 				handle.onDone=()=>{
+					console.log('onDone');
 					console.log(handle.getResponse());
 					const res = JSON.parse(handle.getResponse());
 					console.log(res);
@@ -76,7 +76,6 @@ var ImageUploader = new (function(){
 			});
 		}
 		function fileSenderDone(){
-			console.log('fileSenderDone');
 			new Timer({callback:function(){
 					ui.clearFileSender();
 					hide();

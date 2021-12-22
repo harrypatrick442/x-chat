@@ -49,6 +49,7 @@ function setupAppForMainBackend(){
 function setupAppForMultimediaBackend(){
 	const SIZE_LIMIT_MB=3;
 	//var imageUploader = new (require('./ImageUploader'))();
+	app.use(bodyParser.text({ type: 'text/*' }))
 	app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 	app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
 	app.post('/request_upload_image', MultimediaHandler.handleRequestUploadImage);

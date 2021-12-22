@@ -22,7 +22,7 @@
 		var {parameters, timeout}= params;
 		var contentType = params.contentType?params.contentType:DEFAULT_CONTENT_TYPE;
 		var xhr = new XMLHttpRequest();
-		addUrlParameters(url, parameters);
+		url = addUrlParameters(url, parameters);
 		xhr.open(isPost?'POST':'GET', url, true);
 		if(timeout) xhr.timeout=timeout;
 		xhr.setRequestHeader('Content-Type', contentType);
@@ -31,8 +31,12 @@
 	function addUrlParameters(url, parameters){
 		if(!parameters)return url;
 		var first=true, timedOut=false;
-		for(var key in Object.keys(parameters)){
-			if(first)first=false;else url+='&';
+		console.log(parameters);
+		for(var key of Object.keys(parameters)){
+			if(first){
+				url+='?';
+				first=false;
+			}else url+='&';
 			url+=key;
 			url+='=';
 			url+=parameters[key];

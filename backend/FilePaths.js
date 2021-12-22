@@ -22,8 +22,12 @@ module.exports = new (function FilePaths(){
 	this.getMessages = function(){
 		return getDataDirectoryPath()+'messages.json';
 	};
+	this.getUploadedImagesDirectory = function(){
+		return getDataDirectoryPath()+'uploaded_images/';
+	};
 	function getDataDirectoryPath(){
 		const splits = PathHelper.split(path.resolve("./"));
 		return `${splits[0]}${path.sep}data${path.sep}`;
 	}
+	
 })();
