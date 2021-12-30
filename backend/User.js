@@ -7,33 +7,36 @@ var set = new Set({getEntryId:getEntryId});
 const User = function(params){
 	EventEnabledBuilder(this);
 	var self = this;
-	var spamFilter = new SpamFilter();
-	var devices = new Devices();
+	let {id, hash, username, image, email, isGuest,
+		gender, birthday, token, moderator}=params;
+		
+	let session = null;
+	const spamFilter = new SpamFilter();
+	const devices = new Devices();
 	//var roomsSet = new Set({getEntryId:getEntryId});
-	this.getDevices = function(){ return devices;};
-	this.getId = function(){return params.id;};
-	this.setId = function(value){params.id = value;};
-	this.getHash=function(){return params.hash;};
-	this.setHash=function(value){ params.hash=value;}
-	this.getUsername = function(){return params.username;};
-	this.getImage = function(){return params.image;};
-	this.setImage = function(value){params.image=value;};
-	this.getEmail = function(){return params.email;};
-	this.isGuest= function(){return params.isGuest;};
-	this.getGender = function(){return params.gender;};
-	this.getBirthday = function(){return params.birthday;};
+	this.getId = function(){return id;};
+	this.setId = function(value){id = value;};
+	this.getHash=function(){return hash;};
+	this.setHash=function(value){ hash=value;}
+	this.getUsername = function(){return username;};
+	this.getImage = function(){return image;};
+	this.setImage = function(value){image=value;};
+	this.getEmail = function(){return email;};
+	this.isGuest= function(){return isGuest;};
+	this.getGender = function(){return gender;};
+	this.getBirthday = function(){return birthday;};
+	this.getModerator=function(){return moderator;};
+	this.getToken = function(){ return token;};
+	this.setToken = function(value){token=value;};
+	
+	
 	this.getSpamFilter = function(){return spamFilter;};
-	this.getToken = function(){
-		return params.token;
-	};
-	this.setToken = function(value){
-		params.token=value;
-	};
+	this.getDevices = function(){ return devices;};
+	
 	this.toJSON = function(){
-		delete params.type;
-		return params;
+		return {id, hash, username, image, email, isGuest,
+			gender, birthday, token, moderator};
 	};
-	var session;
 	this.getSession = function(){return session;};
 	this.setSession=function(value){session = value;};
 	/*this.joinedRoom = function(room){

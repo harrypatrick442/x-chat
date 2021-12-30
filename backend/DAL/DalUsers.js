@@ -88,12 +88,18 @@ module.exports = new (function(){
 		return currentId++;
 	}
 	function save(){
-		const jArrayUsers = Array.from(mapUserIdToUser.values()).map(user=>user.toJSON());
-		const path = FilePaths.getUsers();
-		console.log(`Saving users to ${path}`);
-		fs.writeFileSync(path,
-			JSON.stringify({users:jArrayUsers, currentId:currentId})
-		);
+		return new Promise((resolve, reject)=>{
+			const jArrayUsers = Array.from(mapUserIdToUser.values())
+			.map(user=>user.toJSON());
+			const path = FilePaths.getUsers();
+			console.log(`Saving users to ${path}`);
+			fs.writeFile(path,
+				JSON.stringify({users:jArrayUsers, currentId:currentId}),
+				(err)=>{
+					if(err) return reject(err);
+					resolve();
+			});
+		});
 	}
 	function load(){
 		try{

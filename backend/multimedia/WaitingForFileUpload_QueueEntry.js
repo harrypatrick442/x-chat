@@ -4,7 +4,7 @@ module.exports = function WaitingForFileUpload_QueueEntry({
 }){
 	if(userId===undefined||userId===null)
 		throwArgumentError('userId', userId);
-	if(userId===undefined||userId===null)
+	if(cropValues===undefined||cropValues===null)
 		throwArgumentError('cropValues', cropValues);
 	if(fileName===undefined||fileName===null)
 		throwArgumentError('fileName', fileName);

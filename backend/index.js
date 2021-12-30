@@ -13,6 +13,7 @@ const servlet = require('./servlet');
 const endpoint = require('./endpoint');
 const endpointLongpoll = require('./EndpoingLongpoll');
 const cors = require('cors');
+const FilePaths = require('./FilePaths');
 
 //const whitelist = ['https://spaz.chat', 'http://spaz.chat', 'http://127.0.0.1', 'http://localhost', 'https://localhost' ]
 /*const corsOptions = {
@@ -52,8 +53,13 @@ function setupAppForMultimediaBackend(){
 	app.use(bodyParser.text({ type: 'text/*' }))
 	app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
 	app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
+	console.log(FilePaths.getUploadedImagesFolderName());
+	console.log(FilePaths.getUploadedImagesDirectory());
+	app.use('/'+FilePaths.getUploadedImagesFolderName(),express.static(FilePaths.getUploadedImagesDirectory()));
 	app.post('/request_upload_image', MultimediaHandler.handleRequestUploadImage);
 	app.post('/upload_image', MultimediaHandler.handleUploadImage);
+	app.get('/user_images_for_moderation', MultimediaHandler.handleGetUserImagesForModerator);
+	app.get('/moderation', MultimediaHandler.handleModeration);
 }
 
 if(Configuration.isMultimediaBackend())

@@ -8,7 +8,6 @@ const FilePaths = require('./../FilePaths');
 	let serverAssignedNMessage=0;
 	load();
 	this.getMessages = function(roomId, nMessages, callbackGotMessages){
-		console.log('get messages room id bis '+roomId+' '+typeof(roomId));
 		let roomMessages = mapRoomIdToMessages.get(roomId);
 		if(!roomMessages){
 			roomMessages = [];
@@ -33,17 +32,23 @@ const FilePaths = require('./../FilePaths');
 	this.save = save;
 	
 	function save(){
-		const jObject = {entries:{}, serverAssignedNMessage:serverAssignedNMessage};
-		Array.from(mapRoomIdToMessages.keys()).forEach(
-			roomId=>{
-				const messages = mapRoomIdToMessages.get(roomId).map(message=>message.toJSON());
-				console.log(messages);
-				jObject.entries[roomId]=messages;
-			}
-		);
-		const path = FilePaths.getMessages();
-		console.log(`Saving messages to ${path}`);
-		fs.writeFileSync(path, JSON.stringify(jObject));
+		return new Promise((resolve, reject)=>{
+			const jObject = {entries:{}, serverAssignedNMessage:serverAssignedNMessage};
+			Array.from(mapRoomIdToMessages.keys()).forEach(
+				roomId=>{
+					const messages = mapRoomIdToMessages.get(roomId).map(message=>message.toJSON());
+					console.log(messages);
+					jObject.entries[roomId]=messages;
+				}
+			);
+			const path = FilePaths.getMessages();
+			fs.writeFile(path, JSON.stringify(jObject), (err)=>{
+				if(err){
+					return reject(err);
+				}
+				resolve();
+			});
+		});
 	}
 	function load(){
 		try{

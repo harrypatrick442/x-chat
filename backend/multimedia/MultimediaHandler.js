@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const path = require('path');
 const WaitingForFileUpload_Queue = require('./WaitingForFileUpload_Queue');
 const ImagesWaitingToBePushedIntoCloud_Queue = require('./ImagesWaitingToBePushedIntoCloud_Queue');
 const FilesWaitingToBePushedIntoCloud_Queue = require('./FilesWaitingToBePushedIntoCloud_Queue');
@@ -22,6 +23,19 @@ module.exports = new (function(){
 	const mapUserIdToLastUploadedUTCMilliseconds= new Map();
 	waitingForFileUpload_Queue.addEventListener('userUploadedFile',
 		handleUserUploadedFile);
+	this.handleGetUserImagesForModerator=function(req, res){
+		const {sessionId}=req.body;
+		let jArrayUserImages;
+		try{
+			jArrayUserImages = uploadedFilesWaitingForModeration_Queue
+				.getUserImagesJsonForClientModerator();
+			res.json({userImages:jArrayUserImages});
+		}
+		catch(err){
+			console.error(err);
+			res.json({userImages:null, error:'An Error occured'});
+		}
+	}
 	this.handleRequestUploadImage=function(req, res){
 		const {sessionId, cropValues, fileName}=req.body;
 		getUserIdAndValidateAllowedToUpload(sessionId)
@@ -43,9 +57,11 @@ module.exports = new (function(){
 	};
 	this.handleUploadImage=
 		waitingForFileUpload_Queue.handleFileUpload;	
+	this.handleModeration=function(req, res){
+		res.sendFile(path.join(__dirname, '/../public/moderation.html'));
+	};
 	function getUserIdAndValidateAllowedToUpload(sessionId){
 		return new Promise((resolve, reject)=>{
-			console.log(sessionId);
 			getUserIdFromMainBackend(sessionId).then((userId)=>{
 				const resolveNotAllowed =(message)=>resolve({
 						userId:userId, 

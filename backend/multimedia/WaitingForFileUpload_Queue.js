@@ -1,4 +1,5 @@
 var uuid = require('uuid');
+const UserImage = require('./UserImage');
 const WaitingForFileUpload_QueueEntry = require('./WaitingForFileUpload_QueueEntry');
 const EventEnabledBuilder = require('../EventEnabledBuilder');
 const ImageDataURI = require('image-data-uri');
@@ -33,14 +34,25 @@ module.exports = function WaitingForFileUpload_Queue({
 			entry.getFileName());
 		ImageDataURI.outputFile(req.body, filePathToSaveImage)
 		.then((filePathWithExtension)=>{
-			console.log('saved');
-			dispatchUserUploadedFile(userId);
 			res.json({});
+			try{
+				const userId=entry.getUserId();
+				dispatchUserUploadedFile(userId);
+				uploadedFileHandler.queue(new UserImage({
+					rawFilePath:filePathWithExtension,
+					userId,
+					cropValues: entry.getCropValues()
+				}));
+			}
+			catch(err){
+				console.error(err);
+			}
+			return;
 		})
 		.catch((err)=>{
+			console.error(err);
 			res.json({error:'Internal error'});
-			return;
-		});
+		});;
 	};
 	function getFilePathToSaveImage(fileName){
 		const fileNameWithoutExtension = fileName.split('.')[0];

@@ -14,6 +14,6 @@ module.exports= new (function(){
 	};
 	this.save=save;
 	function save(){
-		
+		return Promise.resolve();
 	}
 })();

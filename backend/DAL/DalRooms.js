@@ -19,8 +19,15 @@ module.exports= new (function(){
 	this.save = save;
 	
 	function save(){
-		const jArray = rooms.map(room=>room.toJSON());
-		fs.writeFileSync(FilePaths.getRooms(), JSON.stringify(jArray));
+		return new Promise((resolve, reject)=>{
+			const jArray = rooms.map(room=>room.toJSON());
+			fs.writeFile(FilePaths.getRooms(), JSON.stringify(jArray), 
+				(err)=>{
+					if(err)
+						return reject(err);
+					resolve();
+			});
+		});
 	}
 	function load(){
 		try{

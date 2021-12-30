@@ -59,11 +59,14 @@ module.exports= new (function(){
 	}
 	this.save = save;
 	function save(){
-		for (const [lowestUserId, mapHighestUserIdToMessages] of mapLowestUserIdToMapHighestUserIdToMessages.entries()) {
-			for (const [highestUserId, messages] of mapHighestUserIdToMessages.entries()) {
-				savePmToFile(lowestUserId, highestUserId, messages);
+		return new Promise((resolve, reject)=>{
+			for (const [lowestUserId, mapHighestUserIdToMessages] of mapLowestUserIdToMapHighestUserIdToMessages.entries()) {
+				for (const [highestUserId, messages] of mapHighestUserIdToMessages.entries()) {
+					savePmToFile(lowestUserId, highestUserId, messages);
+				}
 			}
-		}
+			resolve();
+		});
 	}
 	function loadPmFromFile(lowestUserId, highestUserId){
 		try{

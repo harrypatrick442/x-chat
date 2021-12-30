@@ -8,20 +8,32 @@ const ShutdownManager = function(params){
 	const self = this;
 	const {server} = params;
 	process.on('SIGINT', function(){
-		self.shutdown();
-		process.exit();
+		const whenShutEverythingDown = (err)=>{
+			if(err)console.error(err);
+			process.exit();
+		};
+		self.shutdown().then(whenShutEverythingDown)
+		.catch(whenShutEverythingDown);
 	});
 	this.shutdown = function(){
-        try{
-			console.log('Shutting down');
-			server.close();
-			dalUsers.save();
-			dalRooms.save();
-			dalMessages.save();
-			dalPms.save();
-			dalNotifications.save();
-		}
-		catch(err){console.error(err);}
+		return new Promise((resolve, reject)=>{
+			try{
+				const promises = [];
+				console.log('Shutting down');
+				server.close();
+				promises.push(dalUsers.save());
+				promises.push(dalRooms.save());
+				promises.push(dalMessages.save());
+				promises.push(dalPms.save());
+				promises.push(dalNotifications.save());
+				Promise.allSettled(promises)
+				.then(()=>{
+					console.log('Successfully saved everything');
+					resolve();
+				}).catch(reject);
+			}
+			catch(err){reject(err);};
+		});
 	};
 	
 };

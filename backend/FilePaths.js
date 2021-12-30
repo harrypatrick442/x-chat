@@ -2,6 +2,7 @@ const path = require('path');
 const PathHelper = require('./PathHelper');
 const DirectoryHelper = require('./DirectoryHelper');
 module.exports = new (function FilePaths(){
+	const self = this;
 	DirectoryHelper.makeDirectoryIfDoesntExist(getDataDirectoryPath());
 	this.getConfiguration= function(){
 		return getDataDirectoryPath()+'configuration.json';
@@ -11,7 +12,6 @@ module.exports = new (function FilePaths(){
 	};
 	this.getRooms = function(){
 		return getDataDirectoryPath()+'rooms.json';
-		
 	};
 	this.getNotifications = function(){
 		return getDataDirectoryPath()+'notifications.json';
@@ -22,12 +22,17 @@ module.exports = new (function FilePaths(){
 	this.getMessages = function(){
 		return getDataDirectoryPath()+'messages.json';
 	};
+	this.getUploadedImagesFolderName=function(){
+		return 'uploaded_images';
+	};
 	this.getUploadedImagesDirectory = function(){
-		return getDataDirectoryPath()+'uploaded_images/';
+		return getDataDirectoryPath()+self.getUploadedImagesFolderName()+'/';
+	};
+	this.getUploadedFilesWattingForModerationJSON = function(){
+		return getDataDirectoryPath()+'uploaded_images_waiting_for_moderation.json';
 	};
 	function getDataDirectoryPath(){
 		const splits = PathHelper.split(path.resolve("./"));
 		return `${splits[0]}${path.sep}data${path.sep}`;
 	}
-	
 })();
