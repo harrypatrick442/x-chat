@@ -1,56 +1,42 @@
 var uuid = require('uuid');
+const ShutdownManager = require('../shutdown/ShutdownManager');
 const FilePaths = require('../FilePaths');
+const UserImages = require('./UserImages');
 module.exports = function UploadedFilesWaitingForModeration_Queue({
 }){
-	const mapUserIdToUserImage= new Map();
+	const userImages= new UserImages({
+		filePath:FilePaths.getUploadedFilesWaitingForModerationJSON(),
+		throwErrorLoadingSaving:false
+	});
 	this.queue=function(userImage){
-		return addUserImage(userImage);
+		addUserImage(userImage);
 	};
 	this.getUserImagesJsonForClientModerator=function(){
-		return Array.from(mapUserIdToUserImage.values())
+		return userImages.getEntries()
 				.map(userImage=>userImage.toJSONForModeration());
 	};
-	this.save=function(){
-		return new Promise((resolve, reject)=>{
-			const jArrayUserImages=
-				Array.from(mapUserIdToUserImage.values())
-				.map(userImage=>userImage.toJSON());
-				fs.writeFile(FilePaths
-					.getUploadedFilesWattingForModerationJSON(),
-					JSON.stringify(jArrayUserImages), (err)=>{
-						if(err){
-							reject(err);
-							return;
-						}
-						resolve();
-				});
-		});
-	};
-	this.load=function(){
-		return new Promise((resolve, reject)=>{
-			fs.readFile(FilePaths
-				.getUploadedFilesWattingForModerationJSON(), (content, err)=>{
-						const jArrayUserImages=JSON.parse(content);
-						jArrayUserImages.forEach(jObjectUserImage=>{
-							const userImage = UserImage.fromJSON(jObjectUserImage);
-							addUserImage(userImage);
-				});
-			});
-		});
-	};
+	this.save=userImages.save;
+	this.load=userImages.load;
+	ShutdownManager.getInstance().register(this.save);
+	
 	function addUserImage(userImage){
 		return new Promise((resolve, reject)=>{
 			const userId=userImage.getUserId();
-			const existingUserImageForUser = mapUserIdToUserImage
-				.get(userId);
+			const existingUserImagesForUser = userImages
+				.getForUserId(userId);
 			const afterDeletedExistingImage=()=>{
-				mapUserIdToUserImage.set(userId, userImage);
+				userImages.add(userId, userImage);
 				resolve();
 			};
-			if(!existingUserImageForUser)
+			if(existingUserImagesForUser.length<1)
 				afterDeletedExistingImage();
 			else{
-				existingUserImageForUser.delete()
+				userImages.removeAll(existingUserImagesForUser);
+				const deletePromises = existingUserImagesForUser
+					.map(existingUserImageForUser=>
+						existingUserImageForUser.delete());
+				
+				Promise.allSettled(deletePromises)
 				.then(afterDeletedExistingImage).catch(reject);
 			}
 		});

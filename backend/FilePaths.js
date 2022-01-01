@@ -28,7 +28,10 @@ module.exports = new (function FilePaths(){
 	this.getUploadedImagesDirectory = function(){
 		return getDataDirectoryPath()+self.getUploadedImagesFolderName()+'/';
 	};
-	this.getUploadedFilesWattingForModerationJSON = function(){
+	this.getImagesWaitingToBePushedIntoCloudJSON = function(){
+		return getDataDirectoryPath()+'images_waiting_to_be_pushed_into_cloud.json';
+	};
+	this.getUploadedFilesWaitingForModerationJSON = function(){
 		return getDataDirectoryPath()+'uploaded_images_waiting_for_moderation.json';
 	};
 	function getDataDirectoryPath(){

@@ -2,6 +2,7 @@ const throwArgumentError = require('../errors/throwArgumentError');
 const path = require('path');
 const FilePaths = require('../FilePaths');
 const Configuration=require('../Configuration');
+const EventEnabledBuilder = require('../EventEnabledBuilder');
 const UserImage = function({
 	userId, cropValues, rawFilePath
 }){
@@ -31,7 +32,7 @@ const UserImage = function({
 		return {userId, cropValues, url:getUploadedImagesUrlPath()};
 	};
 	this.delete=function(){
-		return Promise.all(self.deleteRawFile());
+		return Promise.allSettled(self.deleteRawFile());
 	};
 	this.deleteRawFile=function(){
 		if(!rawFilePath){
@@ -46,7 +47,7 @@ const UserImage = function({
 	function getUploadedImagesUrlPath(){
 		return `${Configuration.getMultimediaBackendUrl()}/${FilePaths.getUploadedImagesFolderName()}/${self.getRawFileName()}`;
 	}
-}
+};
 UserImage.fromJSON=function(jObject){ 
 	return new UserImage(jObject);
 };

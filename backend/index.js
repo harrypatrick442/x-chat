@@ -14,6 +14,11 @@ const endpoint = require('./endpoint');
 const endpointLongpoll = require('./EndpoingLongpoll');
 const cors = require('cors');
 const FilePaths = require('./FilePaths');
+const dalNotifications = require('./DAL/DalNotifications');
+const dalRooms = require('./DAL/DalRooms');
+const dalMessages = require('./DAL/DalMessages');
+const dalUsers = require('./DAL/DalUsers');
+const dalPms = require('./DAL/DalPms');
 
 //const whitelist = ['https://spaz.chat', 'http://spaz.chat', 'http://127.0.0.1', 'http://localhost', 'https://localhost' ]
 /*const corsOptions = {
@@ -70,11 +75,9 @@ if(Configuration.isMainBackend())
 const server = Configuration.getUseHttps()?useHttps(app):useHttp(app);
 endpoint(app, server);
 server.setTimeout(5000, function(r){
-	console.log('timed out a connection');
+	console.log('timed out a connectionq');
 });
-ShutdownManager.initialize({
-	server
-});
+registerShutdowns();
 function useHttp(app){
 	return app.listen(80, function () {
 		const withStr = Configuration.isMultimediaBackend()?' as multimedia server':' as main backend';
@@ -97,4 +100,24 @@ function useHttps(app){
 	debug:true
 	});
 	return greenlock.listen(80, 443, 8080, 8443);//adding the last two ports fixed issue with wss. Probably used 8443.
+}
+function registerShutdowns(){
+	const shutdownMethods = [
+		shutdownServer,
+		dalUsers.save,
+		dalRooms.save,
+		dalMessages.save,
+		dalPms.save,
+		dalNotifications.save
+	];
+	const shutdownManager = ShutdownManager.getInstance();
+	shutdownMethods.forEach(
+		shutdownMethod=>shutdownManager.register(shutdownMethod)
+	);
+}
+function shutdownServer(){
+	return new Promise((resolve, reject)=>{
+		server.close();
+		resolve();
+	});
 }
