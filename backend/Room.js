@@ -61,7 +61,8 @@ const Room = function(params){
 	}
 };
 Room.fromJSON = function(jObject){
-	return new Room({name:jObject.name, id:jObject.id, isPm:jObject.isPm});
+	return new Room({name:jObject.name, id:jObject.id,
+		isPm:jObject.isPm});
 };
 Room.fromSqlRow = function(row){
 	return new Room({name:row.name, id:row.id, isPm:row.isPm});

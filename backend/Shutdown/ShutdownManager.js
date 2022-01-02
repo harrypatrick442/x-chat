@@ -1,3 +1,4 @@
+const throwArgumentError = require('../errors/throwArgumentError');
 let instance = null;
 const ShutdownManager = function(){
 	const self = this;
@@ -11,8 +12,11 @@ const ShutdownManager = function(){
 		.catch(whenShutEverythingDown);
 	});
 	this.register = function(func){
+		const funcType=typeof(func);
+		if(funcType!=='function')
+			throwArgumentError(`func was of type ${funcType}`);
 		registereds.push(func);
-	};
+};
 	this.shutdown = function(){
 		return new Promise((resolve, reject)=>{
 			try{

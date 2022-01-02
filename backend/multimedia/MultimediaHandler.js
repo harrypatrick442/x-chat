@@ -23,6 +23,12 @@ module.exports = new (function(){
 	const mapUserIdToLastUploadedUTCMilliseconds= new Map();
 	waitingForFileUpload_Queue.addEventListener('userUploadedFile',
 		handleUserUploadedFile);
+	this.initialize=function(){
+		return new Promise((resolve, reject)=>{
+			uploadedFilesWaitingForModeration_Queue.load()
+			.then(resolve).catch(reject);
+		});
+	};
 	this.handleGetUserImagesForModerator=function(req, res){
 		const {sessionId}=req.body;
 		let jArrayUserImages;

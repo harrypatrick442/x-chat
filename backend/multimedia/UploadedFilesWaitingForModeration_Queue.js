@@ -25,7 +25,7 @@ module.exports = function UploadedFilesWaitingForModeration_Queue({
 			const existingUserImagesForUser = userImages
 				.getForUserId(userId);
 			const afterDeletedExistingImage=()=>{
-				userImages.add(userId, userImage);
+				userImages.add(userImage);
 				resolve();
 			};
 			if(existingUserImagesForUser.length<1)

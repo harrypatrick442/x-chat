@@ -33,51 +33,66 @@ const dalPms = require('./DAL/DalPms');
 var corsFunction;// = cors(corsOptions);
 const app = express();
 function setupAppForMainBackend(){
-	console.log('setupAppForMainBackend');
 	const SIZE_LIMIT_MB=0.5;
-	//var imageUploader = new (require('./ImageUploader'))();
-	app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
-	app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
-	servlet(app);
-	/*app.post('/image_uploader', function(req, res){
-		res.send(imageUploader.process(req));
-	});*/
-	endpointLongpoll.load(app, corsFunction);
-	if(Configuration.getUsePrecompiledFrontend()){
-		app.use(express.static(path.join(__dirname, '../precompiled')));
-		app.use('/images',express.static(path.join(__dirname, '../public/images/')));
-		app.use('/emoji',express.static(path.join(__dirname, '../public/emoji/')));
-	}
-	else{
-		app.use(express.static(path.join(__dirname, '../public')));
-	}
+	return new Promise((resolve, reject)=>{
+		//var imageUploader = new (require('./ImageUploader'))();
+		app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
+		app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
+		servlet(app);
+		endpointLongpoll.load(app, corsFunction);
+		if(Configuration.getUsePrecompiledFrontend()){
+			app.use(express.static(path.join(__dirname, '../precompiled')));
+			app.use('/images',express.static(path.join(__dirname, '../public/images/')));
+			app.use('/emoji',express.static(path.join(__dirname, '../public/emoji/')));
+		}
+		else{
+			app.use(express.static(path.join(__dirname, '../public')));
+		}
+		resolve();
+	});
 }
 function setupAppForMultimediaBackend(){
 	const SIZE_LIMIT_MB=3;
-	//var imageUploader = new (require('./ImageUploader'))();
-	app.use(bodyParser.text({ type: 'text/*' }))
-	app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
-	app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
-	console.log(FilePaths.getUploadedImagesFolderName());
-	console.log(FilePaths.getUploadedImagesDirectory());
-	app.use('/'+FilePaths.getUploadedImagesFolderName(),express.static(FilePaths.getUploadedImagesDirectory()));
-	app.post('/request_upload_image', MultimediaHandler.handleRequestUploadImage);
-	app.post('/upload_image', MultimediaHandler.handleUploadImage);
-	app.get('/user_images_for_moderation', MultimediaHandler.handleGetUserImagesForModerator);
-	app.get('/moderation', MultimediaHandler.handleModeration);
+	return new Promise((resolve, reject)=>{
+		//var imageUploader = new (require('./ImageUploader'))();
+		app.use(bodyParser.text({ type: 'text/*' }))
+		app.use(bodyParser.json({ limit: String(SIZE_LIMIT_MB)+'mb' }));
+		app.use(bodyParser.urlencoded({ limit: String(SIZE_LIMIT_MB)+'mb', extended: true, parameterLimit: 50000 }));
+		MultimediaHandler.initialize().then(()=>{
+			app.use('/'+FilePaths.getUploadedImagesFolderName(),express.static(FilePaths.getUploadedImagesDirectory()));
+			app.post('/request_upload_image', MultimediaHandler.handleRequestUploadImage);
+			app.post('/upload_image', MultimediaHandler.handleUploadImage);
+			app.get('/user_images_for_moderation', MultimediaHandler.handleGetUserImagesForModerator);
+			app.get('/moderation', MultimediaHandler.handleModeration);
+			resolve();
+		}).catch(reject);
+	});
 }
 
+const setupAppPromises=[];
 if(Configuration.isMultimediaBackend())
-	setupAppForMultimediaBackend()
+	setupAppPromises.push(setupAppForMultimediaBackend());
 if(Configuration.isMainBackend())
-	setupAppForMainBackend();
+	setupAppPromises.push(setupAppForMainBackend());
+Promise.allSettled(setupAppPromises).then((results)=>{
+	let hadError = false;
+	results.forEach(result=>{
+		if(result.status!=='rejected')return;
+		console.error(result.reason);
+		hadError=true;
+	});
+	if(hadError)return;
+	afterSetupApp();
+}).catch(console.error);
 
-const server = Configuration.getUseHttps()?useHttps(app):useHttp(app);
-endpoint(app, server);
-server.setTimeout(5000, function(r){
-	console.log('timed out a connectionq');
-});
-registerShutdowns();
+function afterSetupApp(){
+	const server = Configuration.getUseHttps()?useHttps(app):useHttp(app);
+	endpoint(app, server);
+	server.setTimeout(5000, function(r){
+		console.log('timed out a connectionq');
+	});
+	registerShutdowns(server);
+}
 function useHttp(app){
 	return app.listen(80, function () {
 		const withStr = Configuration.isMultimediaBackend()?' as multimedia server':' as main backend';
@@ -101,9 +116,9 @@ function useHttps(app){
 	});
 	return greenlock.listen(80, 443, 8080, 8443);//adding the last two ports fixed issue with wss. Probably used 8443.
 }
-function registerShutdowns(){
+function registerShutdowns(server){
 	const shutdownMethods = [
-		shutdownServer,
+		get_shutdownServer(server),
 		dalUsers.save,
 		dalRooms.save,
 		dalMessages.save,
@@ -115,9 +130,12 @@ function registerShutdowns(){
 		shutdownMethod=>shutdownManager.register(shutdownMethod)
 	);
 }
-function shutdownServer(){
-	return new Promise((resolve, reject)=>{
-		server.close();
-		resolve();
-	});
+function get_shutdownServer(server){
+	
+	return ()=>{
+		return new Promise((resolve, reject)=>{
+			server.close();
+			resolve();
+		});
+	};
 }

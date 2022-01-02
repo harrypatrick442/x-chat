@@ -37,7 +37,6 @@ const FilePaths = require('./../FilePaths');
 			Array.from(mapRoomIdToMessages.keys()).forEach(
 				roomId=>{
 					const messages = mapRoomIdToMessages.get(roomId).map(message=>message.toJSON());
-					console.log(messages);
 					jObject.entries[roomId]=messages;
 				}
 			);
@@ -57,12 +56,10 @@ const FilePaths = require('./../FilePaths');
 			if(serverAssignedNMessage===undefined||serverAssignedNMessage===null)serverAssignedNMessage=0;
 			for (const [roomId, jArrayMessages] of Object.entries(jObject.entries)) {
 				mapRoomIdToMessages.set(parseInt(roomId), jArrayMessages.map(jObjectMessage=>Message.fromJSON(jObjectMessage)));
-				console.log(roomId);
-				console.log(jArrayMessages);
 			}
 		}
 		catch(err){
-			console.log(err);
+			console.error(err);
 		}
 	}
 })();

@@ -21,7 +21,8 @@ module.exports= new (function(){
 	function save(){
 		return new Promise((resolve, reject)=>{
 			const jArray = rooms.map(room=>room.toJSON());
-			fs.writeFile(FilePaths.getRooms(), JSON.stringify(jArray), 
+			fs.writeFile(FilePaths.getRooms(),
+				JSON.stringify(jArray), 
 				(err)=>{
 					if(err)
 						return reject(err);
@@ -32,11 +33,15 @@ module.exports= new (function(){
 	function load(){
 		try{
 			const jArray = JSON.parse(fs.readFileSync(FilePaths.getRooms()));
-			return jArray.map(jObjectRoom=>Room.fromJSON(jObjectRoom));
+			const rooms =  jArray.map(jObjectRoom=>Room.fromJSON(jObjectRoom));
+			return rooms.length<1?createDefaultRoom():rooms;
 		}
 		catch(err){
 			console.error(err);
-			return [Room.fromJSON({name:"Lounge", isPm:false, id:1})];
+			return creatDefaultRoom();
 		}
+	}
+	function createDefaultRoom(){
+		return [Room.fromJSON({name:"Lounge", isPm:false, id:1})];
 	}
 })();

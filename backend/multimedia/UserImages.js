@@ -7,7 +7,6 @@ const UserImages = function({filePath, throwErrorLoadingSaving}){
 		return entries;
 	};
 	this.add = function(userImage){
-		userImage.addEventListener('deleted', userImageDeleted);
 		entries.push(userImage);
 	};
 	this.remove=function(userImage){
@@ -37,10 +36,5 @@ const UserImages = function({filePath, throwErrorLoadingSaving}){
 				.catch(reject);
 		});
 	};
-	function userImageDeleted(e){
-		const image = entries.indexOf(e.userImage);
-		if(index<0)return;
-		entries.splice(index, 1);
-	}
 }
 module.exports = UserImages;
