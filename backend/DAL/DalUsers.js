@@ -131,7 +131,8 @@ module.exports = new (function(){
 		mapUserIdToToken.delete(user.getId());
 		self.authenticationTokensDelete(user.getId());
 	}
-	function normalizedUsernameAndNormalizedEmailAreAvailable(normalizedUsername, normalizedEmail){
+	function normalizedUsernameAndNormalizedEmailAreAvailable(
+		normalizedUsername, normalizedEmail){
 		return mapEmailNormalizedToUser.has(normalizedUsername)
 			||mapUsernameNormalizedToUser.has(normalizedUsername)
 			||mapEmailNormalizedToUser.has(normalizedEmail)

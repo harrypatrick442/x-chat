@@ -98,6 +98,21 @@
 	text-align:center;
 	vertical-align:middle;
 }
+.lobby .rooms .entries .room .bottom .menu .button-moderate{
+	float:right;
+	width:48px;
+	height:20px;
+	margin-top:1px;
+	line-height:19px;
+	background-color:#2592E9;
+	border:1px solid purple;
+	border-radius:2px;
+	cursor:pointer;
+	font-family:Arial;
+	text-align:center;
+	vertical-align:middle;
+	color:purple;
+}
 .lobby .rooms .entries .room .bottom .menu .button-send:hover{
 	background-color:#8092E9;
 }

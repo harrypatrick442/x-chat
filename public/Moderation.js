@@ -8,12 +8,20 @@ function Moderation(params){
 	element.classList.add('moderation');
 	const imgWrapperElement = E.DIV();
 	imgWrapperElement.classList.add('img-wrapper');
-	const imgElement = E.DIV();
+	const imgElement = E.IMG();
 	const buttonAccept = E.BUTTON();
 	const buttonReject= E.BUTTON();
+	const buttonClose = E.BUTTON();
+	buttonAccept.classList.add('accept');
+	buttonReject.classList.add('reject');
+	buttonClose.classList.add('close');
+	buttonClose.addEventListener('click', this.hide);
 	const buttonsWrapperElement = E.DIV();
 	buttonsWrapperElement.classList.add('buttons-wrapper');
+	element.appendChild(imgWrapperElement);
+	imgWrapperElement.appendChild(imgElement);
 	element.appendChild(buttonsWrapperElement);
+	element.appendChild(buttonClose);
 	buttonAccept.innerHTML='Accept';
 	buttonReject.innerHTML='Reject';
 	buttonsWrapperElement.appendChild(buttonAccept);
@@ -21,10 +29,25 @@ function Moderation(params){
 	buttonAccept.addEventListener('click', accept);
 	buttonReject.addEventListener('click', reject);
 	
+	let clickedOffHandle = null;
+	this.show = function(){
+		clickedOffHandle&&clickedOffHandle.dispose();
+		clickedOffHandle = ClickedOff.register(element, hide);
+		setVisible(true);
+	};
+	this.hide = function(){
+		clickedOffHandle&&clickedOffHandle.dispose();
+		clickedOffHandle = null;
+		setVisible(false);
+	};
 	this.getElement=function(){
 		return element;
 	};
 	nextImage();
+	function setVisible(value){
+		if(value)element.classList.add('visible');
+		else element.classList.remove('visible');
+	}
 	function accept(){
 		if(!currentImage)return;
 	}
@@ -42,7 +65,14 @@ function Moderation(params){
 	}
 	function _nextImage(){
 		currentImage = imagesAwaitingModeration[0];
+		if(currentImage===undefined){
+			noMoreImages();
+			return;
+		}
 		imgElement.src = currentImage.url;
+	}
+	function noMoreImages(){
+		
 	}
 	function fetchImagesAwaitingModeration(){
 		return new Promise((resolve, reject)=>{

@@ -63,7 +63,10 @@ module.exports = new (function(){
 		this.register = function(req, mysocket, callback){
 			if(!usernameAcceptible(req.username, callback))return;
 			dalUsers.usernameAndEmailAreAvailable(req.username, req.email, function(available){
-				if(available!=''){ callback(getUnavailableResponse(available)); return; }					
+				if(available!=''){ 
+					callback(getUnavailableResponse(available));
+					return;
+				}					
 				if(req.password.length<7){ callback( {successful:false, error:PASSWORD_MUST_BE_AT_LEAST_LONG, type:REGISTER}); return;}
 				var salt = bcrypt.genSaltSync(10);
 				var hash = bcrypt.hashSync(req.password, salt);

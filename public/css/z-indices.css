@@ -19,6 +19,9 @@
 .authenticate{
 	z-index:300;
 }
+.moderation{
+	z-index:350;
+}
 .dialog{
 	z-index:400;
 }

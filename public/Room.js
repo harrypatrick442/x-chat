@@ -248,6 +248,7 @@ var Room = new (function(){
 		element.appendChild(spinner.getElement());
 		bottom.appendChild(text);
 		bottom.appendChild(menu);
+		menu.appendChild(buttonModerate.getElement());
 		menu.appendChild(buttonEmoticons.getElement());
 		menu.appendChild(buttonSend.getElement());
 		menu.appendChild(buttonExit.getElement());

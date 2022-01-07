@@ -1,19 +1,71 @@
 .moderation{
-	display:flex;
+	display:none;
 	flex-direction:column;
+	position:fixed;
+	width:90%;
+	height:90%;
+	left:5%;
+	top:5%;
+	width:calc(100% - 20px);
+	height:calc(100% - 20px);
+	width:calc(100% - 20px);
+	left:calc(10px);
+	top:calc(10px);
+	background-color:rgb(44, 43, 43);
+}
+.moderation.visible{
+	display:flex;
 }
 .moderation .img-wrapper{
-	height:50%;
+	height:100%;
 	width:100%;
+	display:flex;
+	justify-content:space-evenly;
+}
+.moderation .img-wrapper img{
+	height:100%;
+	min-width:200px;
+	transform:translateY(50%)
+	background-color:rgb(30, 30, 30);
+	border:none;
 }
 .moderation .buttons-wrapper{
 	width:100%;
 	height:auto;
+	display:flex;
+	flex-direction:row;
+	justify-content:space-evenly;
 }
-.moderation .buttons-wrapper .button{
+.moderation .buttons-wrapper button{
 	border:2px solid blue;
 	border-radius:4px;
 	background:transparent;
 	font-size:16px;	
-	
+	border:2px solid #8092E9;
+	color:#8092E9;
+	padding:3px;
+	margin:3px;
+}
+.moderation .buttons-wrapper button.accept{
+	border:2px solid green;
+	color:green;
+}
+.moderation .buttons-wrapper button.reject{
+	border:2px solid red;
+	color:red;
+}
+.moderation button.close{
+	position:absolute;
+	top:10px;
+	right:10px;
+	width:24px;
+	height:24px;
+	margin-right:5px;
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-image:url('/images/close.jpg');	
+	cursor:pointer;
+}
+.moderation button.close:hover{
+	background-image:url('/images/close-hover.jpg');	
 }

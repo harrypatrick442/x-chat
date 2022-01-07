@@ -397,6 +397,13 @@ var Lobby = (function(){
 			getRooms();
 			pms.load(userMe.getId());
 			ignoreManager.load(userMe.getId());
+			console.log('got user');
+			console.log(userMe.getModerator());
+			if(userMe.getModerator()){
+				moderation = new Moderation({});
+				document.documentElement.appendChild(moderation.getElement());
+				console.log('created moderation');
+			}
 		}
 		function showRoom(e){
 			rooms.showRoom(e.roomInfo);
