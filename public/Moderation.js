@@ -1,4 +1,5 @@
 function Moderation(params){
+	const self = this;
 	const {
 		
 	}=params;
@@ -6,6 +7,9 @@ function Moderation(params){
 	let currentImage = null;
 	const element = E.DIV();
 	element.classList.add('moderation');
+	const noMoreImagesElement=E.DIV();
+	noMoreImagesElement.classList.add('no-more-images');
+	noMoreImagesElement.innerHTML='No More Images';
 	const imgWrapperElement = E.DIV();
 	imgWrapperElement.classList.add('img-wrapper');
 	const imgElement = E.IMG();
@@ -20,6 +24,7 @@ function Moderation(params){
 	buttonsWrapperElement.classList.add('buttons-wrapper');
 	element.appendChild(imgWrapperElement);
 	imgWrapperElement.appendChild(imgElement);
+	imgWrapperElement.appendChild(noMoreImagesElement);
 	element.appendChild(buttonsWrapperElement);
 	element.appendChild(buttonClose);
 	buttonAccept.innerHTML='Accept';
@@ -31,9 +36,10 @@ function Moderation(params){
 	
 	let clickedOffHandle = null;
 	this.show = function(){
+		clickedOffHandle = ClickedOff.register(element, self.hide);
 		clickedOffHandle&&clickedOffHandle.dispose();
-		clickedOffHandle = ClickedOff.register(element, hide);
 		setVisible(true);
+		nextImageIfHasNoCurrentImage();
 	};
 	this.hide = function(){
 		clickedOffHandle&&clickedOffHandle.dispose();
@@ -43,7 +49,12 @@ function Moderation(params){
 	this.getElement=function(){
 		return element;
 	};
+	buttonClose.addEventListener('click', self.hide);
 	nextImage();
+	function nextImageIfHasNoCurrentImage(){
+		if(currentImage===undefined||currentImage===null)
+			nextImage();
+	}
 	function setVisible(value){
 		if(value)element.classList.add('visible');
 		else element.classList.remove('visible');
@@ -66,13 +77,16 @@ function Moderation(params){
 	function _nextImage(){
 		currentImage = imagesAwaitingModeration[0];
 		if(currentImage===undefined){
-			noMoreImages();
+			setHasImages(false);
 			return;
 		}
 		imgElement.src = currentImage.url;
 	}
-	function noMoreImages(){
-		
+	function setHasImages(value){
+		if(value)
+			imgWrapperElement.classList.add('has-images');
+		else 
+			imgWrapperElement.classList.remove('has-images');
 	}
 	function fetchImagesAwaitingModeration(){
 		return new Promise((resolve, reject)=>{
@@ -85,8 +99,11 @@ function Moderation(params){
 				});
 				handle.onDone=()=>{
 					console.log(handle.getResponse());
-					imagesAwaitingModeration = JSON.parse(handle.getResponse());
+					res = JSON.parse(handle.getResponse());
+					imagesAwaitingModeration=res.userImages;
+					console.log('imagesAwaitingModeration');
 					console.log(imagesAwaitingModeration);
+					setHasImages(imagesAwaitingModeration.length>0);
 					resolve();
 				};
 				handle.onError=()=>{

@@ -10,12 +10,12 @@ const UserImages = function({filePath, throwErrorLoadingSaving}){
 		entries.push(userImage);
 	};
 	this.remove=function(userImage){
-		const index = userImages.indexOf(userImage);
+		const index = entries.indexOf(userImage);
 		if(index<0)return;
-		userImages.splice(index, 1);
+		entries.splice(index, 1);
 	};
 	this.removeAll=function(userImages){
-		userImages.forEach(self.remove);
+		entries.forEach(self.remove);
 	};
 	this.getForUserId=function(userId){
 		return entries.filter(entry=>entry.getUserId()===userId);

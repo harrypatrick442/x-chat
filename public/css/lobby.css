@@ -124,7 +124,8 @@ margin-top:5px;
 .lobby .right .button-show-hide-wrapper .button-users-hide:hover{
 
 }
-.lobby .right .button-show-hide-wrapper .button-profile-picture{
+.lobby .right .button-show-hide-wrapper .button-profile-picture,
+.lobby .right .button-show-hide-wrapper .button-moderation{
 cursor:pointer;
 background-repeat:no-repeat;
 background-size:contain;

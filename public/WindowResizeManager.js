@@ -8,7 +8,6 @@ var WindowResizeManager=new (function(){
 			//temporalCallback.trigger();
 		}
 		function doResize(){
-			console.log('doing resize');
 			dispatchResized();
 		}
 		function dispatchResized(){

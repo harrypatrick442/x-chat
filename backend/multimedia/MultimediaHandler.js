@@ -41,7 +41,17 @@ module.exports = new (function(){
 			console.error(err);
 			res.json({userImages:null, error:'An Error occured'});
 		}
-	}
+	};
+	this.handleAcceptUserImage=function(req, res){
+		const {sessionId}=req.body;
+		getUserIdAndIsModeratorFromMainBackend(sessionId).then(({userId, moderator})=>{
+			
+		}).catch(reject);
+	};
+	this.handleRejectUserImage=function(req, res){
+		const {sessionId}=req.body;
+		
+	};
 	this.handleRequestUploadImage=function(req, res){
 		const {sessionId, cropValues, fileName}=req.body;
 		getUserIdAndValidateAllowedToUpload(sessionId)
@@ -68,7 +78,8 @@ module.exports = new (function(){
 	};
 	function getUserIdAndValidateAllowedToUpload(sessionId){
 		return new Promise((resolve, reject)=>{
-			getUserIdFromMainBackend(sessionId).then((userId)=>{
+			getUserIdAndIsModeratorFromMainBackend(sessionId).then(
+			({userId, moderator})=>{
 				const resolveNotAllowed =(message)=>resolve({
 						userId:userId, 
 						allowedToUpload:false, 
@@ -90,7 +101,7 @@ module.exports = new (function(){
 			}).catch(reject);
 		});
 	}
-	function getUserIdFromMainBackend(sessionId){
+	function getUserIdAndIsModeratorFromMainBackend(sessionId){
 		return new Promise((resolve, reject)=>{
 			fetch(Configuration.getBackendUrl()+'/get_user_id_from_session_id', 
 				{
@@ -102,8 +113,8 @@ module.exports = new (function(){
 				}
 			).then((response)=>{
 				response.json().then(jObjectResponse=>{
-					const { userId } = jObjectResponse;
-					resolve(userId);
+					const { userId, moderator} = jObjectResponse;
+					resolve({userId, moderator});
 				}).catch(reject);
 			}).catch(reject);
 		});

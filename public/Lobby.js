@@ -1,7 +1,8 @@
 var Lobby = (function(){
 	var IMAGE_WIDTH_SMALL=32;
 	var IMAGE_WIDTH_LARGE=256;
-	
+	var moderation;
+	var divButtonShowHideWrapper;
 	ImagePreloader.preloadRange([
 	'/images/close.jpg', 
 	'/images/tickbox-unticked.gif',
@@ -111,7 +112,7 @@ var Lobby = (function(){
 		classNames:['menu-button', 'button-profile-picture'],
 		imgUrl:'/images/profile-picture.gif',
 		imgUrlHover:'/images/profile-picture.gif'});
-			
+
 		var buttonNotifications = new NotificationsButton({notifications:notifications});
 		
 		var buttonMenu = new Button({
@@ -400,10 +401,22 @@ var Lobby = (function(){
 			console.log('got user');
 			console.log(userMe.getModerator());
 			if(userMe.getModerator()){
-				moderation = new Moderation({});
-				document.documentElement.appendChild(moderation.getElement());
-				console.log('created moderation');
+				createModeration();
+					
 			}
+		}
+		function createModeration(){
+			if(moderation)return;
+			moderation = new Moderation({});
+			document.documentElement.appendChild(moderation.getElement());
+			console.log('created moderation');				
+			var buttonModeration = new Button({ 
+			classNames:['menu-button', 'button-moderation'],
+			imgUrl:'/images/moderation.gif',
+			imgUrlHover:'/images/moderation.gif'});
+			divButtonShowHideWrapper.appendChild(buttonModeration.getElement());
+			buttonModeration.addEventListener('click', moderation.show);
+		
 		}
 		function showRoom(e){
 			rooms.showRoom(e.roomInfo);
@@ -509,7 +522,7 @@ var Lobby = (function(){
 		var buttonMenu = params.buttonMenu;
 		var notificationsMenu = params.notificationsMenu;
 		var spinnerAutomaticAuthentication = new Spinner({preventInterraction:true});
-		var divButtonShowHideWrapper = E.DIV();
+		divButtonShowHideWrapper = E.DIV();
 		var roomCreation = params.roomCreation;
 		var usersMenues = params.usersMenues;
 		var roomCreationMenuUI = new RoomCreationMenuUI(roomCreation);
@@ -518,7 +531,7 @@ var Lobby = (function(){
 			document.body.classList.add('brexit-chat');
 		var right = E.DIV();
 		var rightInner = E.DIV();
-		var divButtonShowHideWrapper = E.DIV();
+		divButtonShowHideWrapper = E.DIV();
 		element.classList.add('lobby');
 		right.classList.add('right');
 		rightInner.classList.add('right-inner');

@@ -1,5 +1,6 @@
 const throwArgumentError = require('../errors/throwArgumentError');
 const path = require('path');
+const fs = require('fs');
 const FilePaths = require('../FilePaths');
 const Configuration=require('../Configuration');
 const EventEnabledBuilder = require('../EventEnabledBuilder');
