@@ -6,7 +6,7 @@
     "bcryptjs": "^2.4.3",
     "callsite": "^1.0.0",
     "commondir": "^1.0.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-longpoll": "0.0.4",
     "express-ws": "^4.0.0",
     "greenlock-express": "^2.6.8",
